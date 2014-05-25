@@ -1,7 +1,7 @@
 /*
  * Sprite.cpp
  *
- *  Created on: 25 мая 2014 г.
+ *  Created on: 25 пїЅпїЅпїЅ 2014 пїЅ.
  *      Author: Admin
  */
 
@@ -10,7 +10,8 @@
 namespace ndk_game
 {
 
-Sprite::Sprite()
+Sprite::Sprite(Texture::Ptr texture) :
+        _texture(texture)
 {
 }
 
@@ -21,7 +22,7 @@ Sprite::~Sprite()
 void Sprite::draw()
 {
     _texture->bind();
-    glDrawTexfOES(0, 0, 0, 0);
+//    glDrawTex
 }
 
 } /* namespace ndk_game */

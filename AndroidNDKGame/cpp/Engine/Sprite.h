@@ -1,7 +1,7 @@
 /*
  * Sprite.h
  *
- *  Created on: 25 мая 2014 г.
+ *  Created on: 25 пїЅпїЅпїЅ 2014 пїЅ.
  *      Author: Admin
  */
 
@@ -9,7 +9,6 @@
 #define SPRITE_H_
 
 #include <Engine/Common.h>
-
 #include <Engine/Texture.h>
 
 namespace ndk_game
@@ -20,7 +19,7 @@ class Sprite
 public:
     using Ptr = std::shared_ptr<Sprite>;
 
-    Sprite();
+    Sprite(Texture::Ptr texture);
     virtual ~Sprite();
 
     virtual void draw();

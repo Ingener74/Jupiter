@@ -1,7 +1,7 @@
 /*
  * Texture.h
  *
- *  Created on: 25 мая 2014 г.
+ *  Created on: 25 пїЅпїЅпїЅ 2014 пїЅ.
  *      Author: Admin
  */
 
@@ -18,10 +18,15 @@ class Texture
 public:
     using Ptr = std::shared_ptr<Texture>;
 
-    Texture();
+    static Texture::Ptr create();
     virtual ~Texture();
 
     virtual void bind();
+
+private:
+    Texture();
+
+    GLuint _textureID;
 };
 
 } /* namespace ndk_game */
