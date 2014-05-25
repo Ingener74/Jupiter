@@ -1,4 +1,4 @@
-APP_PLATFORM := android-17
+APP_PLATFORM := android-14
 #APP_OPTIM := debug
 APP_STL := gnustl_static
 APP_CPPFLAGS += -frtti -fexceptions -std=c++11 -DANDROID
