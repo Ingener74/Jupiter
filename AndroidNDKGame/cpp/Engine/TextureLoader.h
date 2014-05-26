@@ -19,8 +19,9 @@ public:
     TextureLoader();
     virtual ~TextureLoader();
 
-    Image load(){
-    }
+    virtual Image load();
+private:
+    Image _image;
 };
 
 } /* namespace ndk_game */

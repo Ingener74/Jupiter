@@ -18,4 +18,9 @@ TextureLoader::~TextureLoader()
 {
 }
 
+Image TextureLoader::load()
+{
+    throw std::runtime_error("not implemented");
+}
+
 } /* namespace ndk_game */

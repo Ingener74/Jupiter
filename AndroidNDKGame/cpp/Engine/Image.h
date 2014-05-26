@@ -18,7 +18,10 @@ struct Image
     enum class Type
     {
         RGB, RGBA
-    };int width, height,
+    };
+    int width, height;
+    Type type;
+    std::shared_ptr<uint8_t> data;
 };
 
 }  // namespace ndk_game
