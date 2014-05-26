@@ -10,22 +10,22 @@
 namespace ndk_game
 {
 
-Tools::Tools()
+Tools::Ptr ndk_game::Tools::instance()
 {
+    static Tools::Ptr self(new Tools);
+    return self;
 }
 
-Tools::~Tools()
-{
-}
-
-void Tools::glError() throw (std::runtime_error)
+void Tools::glError() const throw (std::runtime_error)
 {
     GLenum err = glGetError();
-    if(err){
+    if (err)
+    {
         std::stringstream ss;
-        ss << "glGetError: " << std::hex << err << ", "<< glGetString(err);
+        ss << "glGetError: " << std::hex << err << ", " << glGetString(err);
         throw std::runtime_error(ss.str());
     }
 }
 
 } /* namespace ndk_game */
+

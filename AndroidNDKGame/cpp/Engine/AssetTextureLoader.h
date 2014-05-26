@@ -16,10 +16,13 @@ namespace ndk_game
 class AssetTextureLoader: public TextureLoader
 {
 public:
-    AssetTextureLoader();
+    AssetTextureLoader(android_app* application, const std::string& path);
     virtual ~AssetTextureLoader();
 
     virtual Image load();
+private:
+    android_app* _app;
+    std::string _path;
 };
 
 } /* namespace ndk_game */

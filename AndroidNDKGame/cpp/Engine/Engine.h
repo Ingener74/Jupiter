@@ -1,7 +1,7 @@
 /*
  * Engine.h
  *
- *  Created on: 25 мая 2014 г.
+ *  Created on: 25 пїЅпїЅпїЅ 2014 пїЅ.
  *      Author: Admin
  */
 
@@ -10,5 +10,7 @@
 
 #include <Engine/Texture.h>
 #include <Engine/Sprite.h>
+#include <Engine/Tools.h>
+#include <Engine/AssetTextureLoader.h>
 
 #endif /* ENGINE_H_ */

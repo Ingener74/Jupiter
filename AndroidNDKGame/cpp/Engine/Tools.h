@@ -16,10 +16,16 @@ namespace ndk_game
 class Tools
 {
 public:
-    Tools();
-    virtual ~Tools();
+    using Ptr = std::shared_ptr<Tools>;
+    static Tools::Ptr instance();
+    virtual ~Tools()
+    {
+    }
 
-    static void glError() throw (std::runtime_error);
+    static void glError() const throw (std::runtime_error);
+
+private:
+    Tools();
 };
 
 } /* namespace ndk_game */
