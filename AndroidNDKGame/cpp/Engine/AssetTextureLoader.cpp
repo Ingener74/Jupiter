@@ -36,10 +36,20 @@ Image AssetTextureLoader::load()
     png_int_32 lRowSize;
     bool lTransparency;
 
-    AAsset * file = AAssetManager_open(_app->activity->assetManager, _path.c_str());
+    std::shared_ptr<AAsset> asset;
+    {
+        AAsset * file = AAssetManager_open(_app->activity->assetManager,
+                _path.c_str(), AASSET_MODE_UNKNOWN);
+        if(!file)std::runtime_error(
+                std::string("can't open file from asset: ") + _path);
+        asset = std::shared_ptr<AAsset>(file, [](AAsset* file){
+            AAsset_close(file);
+        });
+    }
 
-    // Opens and checks image signature (first 8 bytes).
-    if (mResource.open() != STATUS_OK) goto ERROR;
+    AAsset_read(file.get(), lHeader, sizeof(lHeader)){
+
+    }
 
     Log() << "Checking signature.";
     if (mResource.read(lHeader, sizeof(lHeader)) != STATUS_OK) goto ERROR;
