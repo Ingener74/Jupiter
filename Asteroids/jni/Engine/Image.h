@@ -24,6 +24,8 @@ struct Image
     std::shared_ptr<uint8_t> data;
 };
 
+std::ostream& operator<<(std::ostream& sout, const Image& image);
+
 }  // namespace ndk_game
 
 #endif /* IMAGE_H_ */

@@ -66,8 +66,7 @@ struct engine
  * Game objects
  */
 
-Texture::Ptr ballTexture;
-Sprite::Ptr ball;
+Sprite::Ptr background;
 
 static int engine_init_display(struct engine* engine)
 {
@@ -117,17 +116,25 @@ static int engine_init_display(struct engine* engine)
     glShadeModel(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
 
+    LOGD("Bla bla");
+
     try
     {
+        Log() << "Load resources... ";
         Log::pushLog(std::make_shared<AndLog>());
 
-        ballTexture = Texture::create();
+        background = std::make_shared<Sprite>(
+                Texture::create(
+                        std::make_shared<AssetTextureLoader>(engine->app,
+                                "images/background.png")
+                )
+        );
 
-        ball = std::make_shared<Sprite>(ballTexture);
+        Log() << "done";
     }
     catch (std::exception const & e)
     {
-        Log(ERROR) << "Init game objects error: %s" << e.what();
+        Log(ERROR) << "Load resource error: " << e.what();
     }
 
     return 0;

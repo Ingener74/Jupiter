@@ -8,6 +8,8 @@
 #ifndef ASSETTEXTURELOADER_H_
 #define ASSETTEXTURELOADER_H_
 
+#include <libpng/png.h>
+
 #include <Engine/TextureLoader.h>
 
 namespace ndk_game
@@ -23,6 +25,10 @@ public:
 private:
     android_app* _app;
     std::string _path;
+
+    std::shared_ptr<AAsset> asset;
+
+    static void pngRwCallback(png_structp, png_bytep, png_size_t);
 };
 
 } /* namespace ndk_game */

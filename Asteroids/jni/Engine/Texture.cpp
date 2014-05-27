@@ -7,15 +7,32 @@
 
 #include <Engine/Tools.h>
 #include <Engine/Texture.h>
+#include <Engine/TextureLoader.h>
 
 namespace ndk_game
 {
 
-Texture::Ptr Texture::create()
+Texture::Ptr Texture::create(TextureLoader::Ptr textureLoader)
 {
     auto texture = std::shared_ptr<Texture>(new Texture);
 
     glGenTextures(1, &texture->_textureID);
+    Tools::glError();
+
+    glBindTexture(GL_TEXTURE_2D, texture->_textureID);
+    Tools::glError();
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    Image im = textureLoader->load();
+
+    texture->_type = (im.type == Image::Type::RGBA) ? GL_RGBA : GL_RGB;
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, im.width, im.height, 0,
+            texture->_type, GL_UNSIGNED_BYTE, im.data.get());
     Tools::glError();
 
     return texture;
@@ -23,15 +40,18 @@ Texture::Ptr Texture::create()
 
 Texture::~Texture()
 {
+    glDeleteTextures(1, &_textureID);
+    Tools::glError();
 }
 
 void Texture::bind()
 {
     glBindTexture(GL_TEXTURE_2D, _textureID);
+    Tools::glError();
 }
 
 Texture::Texture() :
-        _textureID(0)
+        _textureID(0), _type(GL_RGBA)
 {
 }
 

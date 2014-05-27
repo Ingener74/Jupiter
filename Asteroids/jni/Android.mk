@@ -12,8 +12,10 @@ LOCAL_SRC_FILES := main.cpp \
 	Engine/Texture.cpp \
 	Engine/TextureLoader.cpp \
 	Engine/Tools.cpp \
+	Engine/AssetTextureLoader.cpp \
+	Engine/Image.cpp \
 
-LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv1_CM
+LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv1_CM -lz
 LOCAL_STATIC_LIBRARIES := android_native_app_glue png
 
 include $(BUILD_SHARED_LIBRARY)

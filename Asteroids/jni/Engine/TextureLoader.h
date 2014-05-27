@@ -17,6 +17,8 @@ namespace ndk_game
 class TextureLoader
 {
 public:
+    using Ptr = std::shared_ptr<TextureLoader>;
+
     TextureLoader();
     virtual ~TextureLoader();
 

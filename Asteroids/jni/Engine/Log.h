@@ -42,27 +42,6 @@ public:
     Log(Level level = Level::DEBUG) :
             _level(level)
     {
-        class CoutLog: public ILog
-        {
-        public:
-            CoutLog()
-            {
-            }
-            virtual ~CoutLog()
-            {
-            }
-            virtual void Error(const std::string& message) throw ()
-            {
-                std::cerr << message << std::endl;
-            }
-            virtual void Debug(const std::string& message) throw ()
-            {
-                std::cout << message << std::endl;
-            }
-
-        private:
-        };
-        pushLog(std::make_shared<CoutLog>());
     }
     virtual ~Log()
     {
@@ -88,6 +67,29 @@ public:
 
     static ILog::Ptr getLog() throw ()
     {
+        if(regLog().empty()){
+            class CoutLog: public ILog
+            {
+            public:
+                CoutLog()
+                {
+                }
+                virtual ~CoutLog()
+                {
+                }
+                virtual void Error(const std::string& message) throw ()
+                {
+                    std::cerr << message << std::endl;
+                }
+                virtual void Debug(const std::string& message) throw ()
+                {
+                    std::cout << message << std::endl;
+                }
+
+            private:
+            };
+            pushLog(std::make_shared<CoutLog>());
+        }
         return regLog().back();
     }
     static void pushLog(ILog::Ptr log) throw ()
