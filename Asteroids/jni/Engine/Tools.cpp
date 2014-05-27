@@ -16,7 +16,7 @@ Tools::Ptr ndk_game::Tools::instance()
     return self;
 }
 
-void Tools::glError() const throw (std::runtime_error)
+void Tools::glError() throw (std::runtime_error)
 {
     GLenum err = glGetError();
     if (err)
@@ -25,6 +25,10 @@ void Tools::glError() const throw (std::runtime_error)
         ss << "glGetError: " << std::hex << err << ", " << glGetString(err);
         throw std::runtime_error(ss.str());
     }
+}
+
+Tools::Tools()
+{
 }
 
 } /* namespace ndk_game */

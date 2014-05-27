@@ -22,7 +22,8 @@ Sprite::~Sprite()
 void Sprite::draw()
 {
     _texture->bind();
-//    glDrawTex
+
+
 }
 
 } /* namespace ndk_game */

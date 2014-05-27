@@ -13,13 +13,14 @@
 namespace ndk_game
 {
 
+enum Level
+{
+    DEBUG, ERROR
+};
+
 class Log
 {
 public:
-    enum class Level
-    {
-        DEBUG, ERROR
-    };
     class ILog
     {
     public:

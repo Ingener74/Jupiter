@@ -17,12 +17,13 @@ class Tools
 {
 public:
     using Ptr = std::shared_ptr<Tools>;
+
     static Tools::Ptr instance();
     virtual ~Tools()
     {
     }
 
-    static void glError() const throw (std::runtime_error);
+    static void glError() throw (std::runtime_error);
 
 private:
     Tools();

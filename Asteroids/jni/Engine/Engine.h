@@ -12,5 +12,6 @@
 #include <Engine/Sprite.h>
 #include <Engine/Tools.h>
 #include <Engine/AssetTextureLoader.h>
+#include <Engine/Log.h>
 
 #endif /* ENGINE_H_ */

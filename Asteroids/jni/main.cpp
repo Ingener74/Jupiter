@@ -11,7 +11,8 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
-//#include <Engine/Engine.h>
+#include <Engine/Engine.h>
+using namespace ndk_game;
 
 const char *TAG = "Android NDK Game";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
@@ -19,27 +20,27 @@ const char *TAG = "Android NDK Game";
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, TAG, __VA_ARGS__))
 
-//class AndLog: public ndk_game::Log::ILog
-//{
-//public:
-//    AndLog()
-//    {
-//    }
-//    virtual ~AndLog()
-//    {
-//    }
-//
-//    virtual void Error(const std::string& message) throw ()
-//    {
-//        LOGE("%s", message.c_str());
-//    }
-//    virtual void Debug(const std::string& message) throw ()
-//    {
-//        LOGD("%s", message.c_str());
-//    }
-//
-//private:
-//};
+class AndLog: public Log::ILog
+{
+public:
+    AndLog()
+    {
+    }
+    virtual ~AndLog()
+    {
+    }
+
+    virtual void Error(const std::string& message) throw ()
+    {
+        LOGE("%s", message.c_str());
+    }
+    virtual void Debug(const std::string& message) throw ()
+    {
+        LOGD("%s", message.c_str());
+    }
+
+private:
+};
 
 struct saved_state
 {
@@ -65,9 +66,8 @@ struct engine
  * Game objects
  */
 
-//using namespace ndk_game;
-//Texture::Ptr ballTexture;
-//Sprite::Ptr ball;
+Texture::Ptr ballTexture;
+Sprite::Ptr ball;
 
 static int engine_init_display(struct engine* engine)
 {
@@ -117,18 +117,18 @@ static int engine_init_display(struct engine* engine)
     glShadeModel(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
 
-//    try
-//    {
-//        Log::pushLog(std::make_shared<AndLog>());
-//
-//        ballTexture = Texture::create();
-//
-//        ball = std::make_shared<Sprite>(ballTexture);
-//    }
-//    catch (std::exception const & e)
-//    {
-//        LOGE("Init game objects error: %s", e.what());
-//    }
+    try
+    {
+        Log::pushLog(std::make_shared<AndLog>());
+
+        ballTexture = Texture::create();
+
+        ball = std::make_shared<Sprite>(ballTexture);
+    }
+    catch (std::exception const & e)
+    {
+        Log(ERROR) << "Init game objects error: %s" << e.what();
+    }
 
     return 0;
 }

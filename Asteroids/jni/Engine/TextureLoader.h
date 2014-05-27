@@ -9,6 +9,7 @@
 #define TEXTURELOADER_H_
 
 #include <Engine/Common.h>
+#include <Engine/Image.h>
 
 namespace ndk_game
 {
