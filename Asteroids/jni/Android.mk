@@ -1,6 +1,8 @@
 
 LOCAL_PATH := $(call my-dir)
 
+include $(LOCAL_PATH)/libpng/Android.mk
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := native-activity
@@ -12,7 +14,9 @@ LOCAL_SRC_FILES := main.cpp \
 	Engine/Tools.cpp \
 
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv1_CM
-LOCAL_STATIC_LIBRARIES := android_native_app_glue
+LOCAL_STATIC_LIBRARIES := android_native_app_glue png
 
 include $(BUILD_SHARED_LIBRARY)
-$(call import-module,android/native_app_glue)
+
+# import modules from <path-to-android-ndk>/sources/android/native_app_glue
+$(call import-module,android/native_app_glue) 
