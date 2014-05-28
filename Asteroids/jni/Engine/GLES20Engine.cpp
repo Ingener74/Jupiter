@@ -28,6 +28,7 @@ GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho) :
 
 GLES20Engine::~GLES20Engine()
 {
+    Log() << "GLES20Engine::~GLES20Engine()";
     glDeleteProgram(_program);
     glDeleteShader(_vs);
     glDeleteShader(_fs);
@@ -39,6 +40,8 @@ void GLES20Engine::draw(Scene::Ptr scene) throw (std::runtime_error)
     Tools::glError();
 
     glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
+
+
 }
 
 GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)

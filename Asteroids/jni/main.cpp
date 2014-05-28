@@ -16,7 +16,7 @@
 #include <Engine/Engine.h>
 using namespace ndk_game;
 
-const char *TAG = "Android NDK Game";
+const char *TAG = "Asteroids";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__))
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__))
@@ -166,6 +166,89 @@ static int engine_init_display(struct engine* engine)
 
         currentScene = mainScene;
 
+        /*
+         *
+         */
+        class GameObject
+        {
+        public:
+            GameObject()
+            {
+            }
+            virtual ~GameObject()
+            {
+            }
+
+            virtual void update(double elapsed) throw (std::runtime_error) = 0;
+        };
+
+        class BattleShip: public GameObject
+        {
+        public:
+            BattleShip()
+            {
+            }
+            virtual ~BattleShip()
+            {
+            }
+
+            virtual void update(double elapsed) throw (std::runtime_error)
+            {
+                Log() << "Battle ship update elapsed = " << elapsed;
+            }
+
+        private:
+        };
+
+        class Rock : public GameObject{
+        public:
+            Rock(){
+            }
+            virtual ~Rock(){
+            }
+
+            virtual void update(double elapsed) throw (std::runtime_error){
+                Log() << "Rock update elapsed = " << elapsed;
+            }
+
+        private:
+        };
+
+        class Animate {
+        public:
+            Animate(){
+            }
+            virtual ~Animate(){
+            }
+
+            using UpdateCallback = std::function<void(double)>;
+
+            Animate& operator<<(UpdateCallback updateCallback)
+            {
+                callback.push_back(updateCallback);
+                return *this;
+            }
+
+            void animateAll()
+            {
+                for(auto &a: callback){
+                    a(0.001);
+                }
+            }
+
+        private:
+            std::list<UpdateCallback> callback;
+        };
+
+        BattleShip ship;
+        Rock rock;
+        Animate anim;
+
+        anim << std::bind(&BattleShip::update, &ship, std::placeholders::_1)
+                << std::bind(&Rock::update, &rock, std::placeholders::_1);
+
+        anim.animateAll();
+
         Log() << "done";
     }
     catch (std::exception const & e)
@@ -186,13 +269,24 @@ static void engine_draw_frame(struct engine* engine)
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    drawEngine->draw(currentScene);
+    /*
+     * here animate all objects, textures,
+     */
+
+    if(drawEngine)
+        drawEngine->draw(currentScene);
 
     eglSwapBuffers(engine->display, engine->surface);
 }
 
 static void engine_term_display(struct engine* engine)
 {
+    Log() << "Terminate display";
+
+    drawEngine.reset();
+    mainScene.reset();
+    currentScene.reset();
+
     if (engine->display != EGL_NO_DISPLAY)
     {
         eglMakeCurrent(engine->display, EGL_NO_SURFACE, EGL_NO_SURFACE,
