@@ -27,11 +27,11 @@ Texture::Ptr Texture::create(TextureLoader::Ptr textureLoader)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    Image im = textureLoader->load();
+    auto im = textureLoader->load();
 
     texture->_type = (im.type == Image::Type::RGBA) ? GL_RGBA : GL_RGB;
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, im.width, im.height, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, texture->_type, im.width, im.height, 0,
             texture->_type, GL_UNSIGNED_BYTE, im.data.get());
     Tools::glError();
 

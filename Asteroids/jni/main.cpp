@@ -116,12 +116,10 @@ static int engine_init_display(struct engine* engine)
     glShadeModel(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
 
-    LOGD("Bla bla");
-
     try
     {
-        Log() << "Load resources... ";
         Log::pushLog(std::make_shared<AndLog>());
+        Log() << "Load resources...";
 
         background = std::make_shared<Sprite>(
                 Texture::create(
@@ -129,6 +127,8 @@ static int engine_init_display(struct engine* engine)
                                 "images/background.png")
                 )
         );
+
+        Log() << "Prepare game objects...";
 
         Log() << "done";
     }

@@ -1,7 +1,5 @@
 
-$(info libpng here)
-
-LOCAL_MODULE    := png
+LOCAL_MODULE := png
 
 LOCAL_SRC_FILES := \
     libpng/png.c \

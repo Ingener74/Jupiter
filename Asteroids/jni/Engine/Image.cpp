@@ -9,8 +9,8 @@
 
 std::ostream& ndk_game::operator <<(std::ostream& sout, const Image& image)
 {
-    sout << "Image: " << image.width << " x " << image.height << ", "
-            << (image.type == Image::Type::RGB) ? "RGB" : "RGBA";
+    std::string type = (image.type == Image::Type::RGB) ? "RGB" : "RGBA";
+    sout << "Image: " << image.width << " x " << image.height << ", " << type;
     return sout;
 }
 
