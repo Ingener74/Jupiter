@@ -6,8 +6,9 @@
  */
 
 #include <Engine/Tools.h>
-#include <Engine/Texture.h>
 #include <Engine/TextureLoader.h>
+#include <Engine/Log.h>
+#include <Engine/Texture.h>
 
 namespace ndk_game
 {

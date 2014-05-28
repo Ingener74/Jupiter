@@ -19,11 +19,14 @@ Sprite::~Sprite()
 {
 }
 
-void Sprite::draw()
+Texture::Ptr Sprite::getTexture() const throw ()
 {
-    _texture->bind();
+    return _texture;
+}
 
-
+float* Sprite::getMesh() const throw ()
+{
+    return _data.get();
 }
 
 } /* namespace ndk_game */

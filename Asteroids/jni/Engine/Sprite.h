@@ -22,10 +22,12 @@ public:
     Sprite(Texture::Ptr texture);
     virtual ~Sprite();
 
-    virtual void draw();
+    virtual Texture::Ptr getTexture() const throw ();
+    virtual float* getMesh() const throw ();
 
 private:
     Texture::Ptr _texture;
+    std::shared_ptr<float> _data;
 };
 
 } /* namespace ndk_game */

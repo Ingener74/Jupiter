@@ -73,8 +73,9 @@ Image AssetTextureLoader::load()
     // Retrieves PNG info and updates PNG struct accordingly.
     png_int_32 lDepth, lColorType;
     png_uint_32 lWidth, lHeight;
-    png_get_IHDR(lPngPtr, lInfoPtr, &lWidth, &lHeight, &lDepth, &lColorType,
-    NULL, NULL, NULL);
+    png_get_IHDR(lPngPtr, lInfoPtr, &lWidth, &lHeight,
+            static_cast<int*>(&lDepth), static_cast<int*>(&lColorType),
+            NULL, NULL, NULL);
     result.width = lWidth;
     result.height = lHeight;
 
@@ -157,7 +158,9 @@ Image AssetTextureLoader::load()
     delete[] lRowPtrs;
 
     int size = result.height * result.width *
-            (result.type == Image::Type::RGBA) ? 4 : 3;
+            ((result.type == Image::Type::RGBA) ? 4 : 3);
+
+    Log() << "texture size " << size;
 
     result.data = std::shared_ptr<uint8_t>(new uint8_t[size], [](uint8_t * data)
     {
@@ -174,6 +177,8 @@ Image AssetTextureLoader::load()
 void AssetTextureLoader::pngRwCallback(png_structp pngStruct, png_bytep data,
         png_size_t size)
 {
+//    Log() << "png rw callback " << size;
+
     AssetTextureLoader* self = static_cast<AssetTextureLoader*>(png_get_io_ptr(
             pngStruct));
 

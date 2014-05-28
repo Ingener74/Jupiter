@@ -67,16 +67,30 @@ struct engine
  */
 
 Sprite::Ptr background;
+Scene::Ptr mainScene;
+
+IDrawEngine::Ptr drawEngine;
+Scene::Ptr currentScene;
 
 static int engine_init_display(struct engine* engine)
 {
-    const EGLint attribs[] =
-    {
-    EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-    EGL_BLUE_SIZE, 8,
-    EGL_GREEN_SIZE, 8,
-    EGL_RED_SIZE, 8,
-    EGL_NONE };
+    const EGLint attribs[] = {
+            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+            EGL_RED_SIZE,   8,
+            EGL_GREEN_SIZE, 8,
+            EGL_BLUE_SIZE,  8,
+            EGL_ALPHA_SIZE, 8,
+            EGL_DEPTH_SIZE, 8,
+            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+            EGL_NONE, EGL_NONE };
+
+//    const EGLint attribs[] =
+//    {
+//    EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+//    EGL_BLUE_SIZE, 8,
+//    EGL_GREEN_SIZE, 8,
+//    EGL_RED_SIZE, 8,
+//    EGL_NONE };
     EGLint w, h, dummy, format;
     EGLint numConfigs;
     EGLConfig config;
@@ -93,7 +107,12 @@ static int engine_init_display(struct engine* engine)
 
     surface = eglCreateWindowSurface(display, config,
             static_cast<EGLNativeWindowType>(engine->app->window), NULL);
-    context = eglCreateContext(display, config, NULL, NULL);
+
+    EGLint contextAttr[] = {
+            EGL_CONTEXT_CLIENT_VERSION, 2,
+            EGL_NONE
+    };
+    context = eglCreateContext(display, config, NULL, contextAttr);
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE)
     {
@@ -113,22 +132,47 @@ static int engine_init_display(struct engine* engine)
 
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
     glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
+//    glShadeModel(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
+
+    glViewport(0, 0, w, h);
+
+//    glOrthof(-10.f, 10.f, -10.f, 10.f, -10.f, 10.f);
 
     try
     {
         Log::pushLog(std::make_shared<AndLog>());
         Log() << "Load resources...";
 
-        background = std::make_shared<Sprite>(
-                Texture::create(
-                        std::make_shared<AssetTextureLoader>(engine->app,
-                                "images/background.png")
-                )
-        );
+        drawEngine = std::make_shared<GLES20Engine>(
+                std::make_shared<SimpleShaderLoader>(
+                        "uniform   mat4  MVP;"
+                        "attribute vec4  aVert;"
+                        "attribute vec2  aUVs;"
+                        "varying   vec2  vUVs;"
+                        "void main(){"
+                        "    gl_Position = MVP * aVert;"
+                        "    vUVs = aUVs;"
+                        "}",
 
-        Log() << "Prepare game objects...";
+                        "precision mediump float;"
+                        "varying vec2      vUVs;"
+                        "uniform sampler2D uTex;"
+                        "void main(){"
+                        "    gl_FragColor = texture2D(uTex, vUVs);"
+                        "}"
+                        ));
+
+        mainScene = std::make_shared<Scene>();
+
+//        background = std::make_shared<Sprite>(
+//                Texture::create(
+//                        std::make_shared<AssetTextureLoader>(engine->app,
+//                                "images/background.png")
+//                )
+//        );
+
+        currentScene = mainScene;
 
         Log() << "done";
     }
@@ -150,26 +194,7 @@ static void engine_draw_frame(struct engine* engine)
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    GLfloat quad[] =
-    {
-            0.f, 0.f, 0.5f, 0.2f, 0.4f, 1.f,
-            0.f, 10.f, 0.1f, 0.4f, 0.9f, 1.f,
-            10.f, 0.f, 0.0f, 1.0f, 0.5f, 1.f
-    };
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-//    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-
-    glVertexPointer(2, GL_FLOAT, 6, &quad[0]);
-//    glTexCoordPointer(2, GL_FLOAT, 4, &quad[2]);
-    glColorPointer(4, GL_FLOAT, 6, &quad[2]);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-//    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
+    drawEngine->draw(currentScene);
 
     eglSwapBuffers(engine->display, engine->surface);
 }
