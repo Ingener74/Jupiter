@@ -8,8 +8,7 @@
 #ifndef ASSETTEXTURELOADER_H_
 #define ASSETTEXTURELOADER_H_
 
-#include <libpng/png.h>
-
+#include <Engine/Common.h>
 #include <Engine/TextureLoader.h>
 
 namespace ndk_game

@@ -11,6 +11,8 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
+#include <glm/glm.hpp>
+
 #include <Engine/Engine.h>
 using namespace ndk_game;
 
@@ -66,7 +68,6 @@ struct engine
  * Game objects
  */
 
-Sprite::Ptr background;
 Scene::Ptr mainScene;
 
 IDrawEngine::Ptr drawEngine;
@@ -84,13 +85,6 @@ static int engine_init_display(struct engine* engine)
             EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
             EGL_NONE, EGL_NONE };
 
-//    const EGLint attribs[] =
-//    {
-//    EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-//    EGL_BLUE_SIZE, 8,
-//    EGL_GREEN_SIZE, 8,
-//    EGL_RED_SIZE, 8,
-//    EGL_NONE };
     EGLint w, h, dummy, format;
     EGLint numConfigs;
     EGLConfig config;
@@ -130,47 +124,45 @@ static int engine_init_display(struct engine* engine)
     engine->height = h;
     engine->state.angle = 0;
 
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
     glEnable(GL_CULL_FACE);
-//    glShadeModel(GL_SMOOTH);
     glDisable(GL_DEPTH_TEST);
 
     glViewport(0, 0, w, h);
-
-//    glOrthof(-10.f, 10.f, -10.f, 10.f, -10.f, 10.f);
 
     try
     {
         Log::pushLog(std::make_shared<AndLog>());
         Log() << "Load resources...";
 
+        glm::mat4 ortho = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
+
         drawEngine = std::make_shared<GLES20Engine>(
                 std::make_shared<SimpleShaderLoader>(
-                        "uniform   mat4  MVP;"
-                        "attribute vec4  aVert;"
-                        "attribute vec2  aUVs;"
-                        "varying   vec2  vUVs;"
+                        "uniform   mat4  uMVP;"
+                        "attribute vec4  aPOS;"
+                        "attribute vec2  aTEX;"
+                        "varying   vec2  vTEX;"
                         "void main(){"
-                        "    gl_Position = MVP * aVert;"
-                        "    vUVs = aUVs;"
+                        "    gl_Position = uMVP * aPOS;"
+                        "    vTEX = aTEX;"
                         "}",
 
                         "precision mediump float;"
-                        "varying vec2      vUVs;"
-                        "uniform sampler2D uTex;"
+                        "varying vec2      vTEX;"
+                        "uniform sampler2D uTEX;"
                         "void main(){"
-                        "    gl_FragColor = texture2D(uTex, vUVs);"
+                        "    gl_FragColor = texture2D(uTEX, vTEX);"
                         "}"
-                        ));
+                        ), ortho);
 
         mainScene = std::make_shared<Scene>();
 
-//        background = std::make_shared<Sprite>(
-//                Texture::create(
-//                        std::make_shared<AssetTextureLoader>(engine->app,
-//                                "images/background.png")
-//                )
-//        );
+        auto background = std::make_shared<Sprite>(
+                Texture::create(
+                        std::make_shared<AssetTextureLoader>(engine->app,
+                                "images/background.png")
+                )
+        );
 
         currentScene = mainScene;
 
@@ -192,7 +184,7 @@ static void engine_draw_frame(struct engine* engine)
     }
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     drawEngine->draw(currentScene);
 

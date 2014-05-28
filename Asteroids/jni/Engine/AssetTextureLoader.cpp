@@ -5,8 +5,6 @@
  *      Author: pavel
  */
 
-#include <android/asset_manager.h>
-
 #include <Engine/Log.h>
 #include <Engine/AssetTextureLoader.h>
 
@@ -177,8 +175,6 @@ Image AssetTextureLoader::load()
 void AssetTextureLoader::pngRwCallback(png_structp pngStruct, png_bytep data,
         png_size_t size)
 {
-//    Log() << "png rw callback " << size;
-
     AssetTextureLoader* self = static_cast<AssetTextureLoader*>(png_get_io_ptr(
             pngStruct));
 

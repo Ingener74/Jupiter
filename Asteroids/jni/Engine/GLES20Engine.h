@@ -18,7 +18,7 @@ namespace ndk_game
 class GLES20Engine: public IDrawEngine
 {
 public:
-    GLES20Engine(IShaderLoader::Ptr);
+    GLES20Engine(IShaderLoader::Ptr shaderLoader, const glm::mat4& Ortho);
     virtual ~GLES20Engine();
 
     virtual void draw(Scene::Ptr) throw (std::runtime_error);
@@ -27,6 +27,10 @@ private:
     GLuint _program;
     GLuint _vs;
     GLuint _fs;
+
+    GLuint _uMVP, _aPOS, _aTEX, _uTEX;
+
+    glm::mat4 _ortho;
 
     GLuint createProgram(const char* vertexShader,
             const char* fragmentShader);

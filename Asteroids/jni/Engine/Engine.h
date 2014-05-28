@@ -14,6 +14,8 @@
 
 #include <Engine/Texture.h>
 #include <Engine/AssetTextureLoader.h>
+#include <Engine/DummyTextureLoader.h>
+
 #include <Engine/Sprite.h>
 #include <Engine/Tools.h>
 #include <Engine/Log.h>

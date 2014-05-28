@@ -7,13 +7,23 @@
 
 #include <Engine/GLES20Engine.h>
 #include <Engine/Log.h>
+#include <Engine/Tools.h>
 
 namespace ndk_game
 {
 
-GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl)
+GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho) :
+        _program(0), _vs(0), _fs(0), _uMVP(0), _aPOS(0), _aTEX(0), _uTEX(0), _ortho(
+                ortho)
 {
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
+
+    Log() << "program " << _program;
+
+    _uMVP = glGetUniformLocation(_program, "uMVP");
+    _aPOS = glGetAttribLocation(_program, "aPOS");
+    _aTEX = glGetAttribLocation(_program, "aTEX");
+    _uTEX = glGetUniformLocation(_program, "uTEX");
 }
 
 GLES20Engine::~GLES20Engine()
@@ -23,8 +33,12 @@ GLES20Engine::~GLES20Engine()
     glDeleteShader(_fs);
 }
 
-void GLES20Engine::draw(Scene::Ptr) throw (std::runtime_error)
+void GLES20Engine::draw(Scene::Ptr scene) throw (std::runtime_error)
 {
+    glUseProgram(_program);
+    Tools::glError();
+
+    glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
 }
 
 GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)

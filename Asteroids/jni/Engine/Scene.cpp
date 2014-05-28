@@ -12,13 +12,10 @@ namespace ndk_game
 
 Scene::Scene()
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 Scene::~Scene()
 {
-    // TODO Auto-generated destructor stub
 }
 
 } /* namespace ndk_game */
