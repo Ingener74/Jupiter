@@ -23,11 +23,15 @@ public:
     virtual ~Sprite();
 
     virtual Texture::Ptr getTexture() const throw ();
-    virtual float* getMesh() const throw ();
+    virtual float* getVertex() const throw ();
+    virtual uint32_t getVertexCount() const throw ();
+    virtual const glm::mat4& getModelMatrix() const throw ();
 
 private:
     Texture::Ptr _texture;
-    std::shared_ptr<float> _data;
+    std::shared_ptr<float> _vertex;
+    uint32_t _vertexCount;
+    glm::mat4 _modelMatrix;
 };
 
 } /* namespace ndk_game */

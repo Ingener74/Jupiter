@@ -11,7 +11,7 @@ namespace ndk_game
 {
 
 Sprite::Sprite(Texture::Ptr texture) :
-        _texture(texture)
+        _texture(texture), _vertexCount(0)
 {
 }
 
@@ -24,9 +24,19 @@ Texture::Ptr Sprite::getTexture() const throw ()
     return _texture;
 }
 
-float* Sprite::getMesh() const throw ()
+float* Sprite::getVertex() const throw ()
 {
-    return _data.get();
+    return _vertex.get();
+}
+
+uint32_t Sprite::getVertexCount() const throw ()
+{
+    return _vertexCount;
+}
+
+const glm::mat4& Sprite::getModelMatrix() const throw ()
+{
+    return _modelMatrix;
 }
 
 } /* namespace ndk_game */
