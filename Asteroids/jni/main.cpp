@@ -129,6 +129,11 @@ static int engine_init_display(struct engine* engine)
 
     glViewport(0, 0, w, h);
 
+    /*
+     * 1. Start screen
+     *
+     */
+
     try
     {
         Log::pushLog(std::make_shared<AndLog>());
@@ -241,6 +246,7 @@ static int engine_init_display(struct engine* engine)
             }
 
             virtual void update(double elapsed) throw (std::runtime_error) = 0;
+            virtual void input(int x, int y) throw (std::runtime_error) = 0;
         };
 
         class BattleShip: public GameObject
@@ -370,6 +376,14 @@ static void engine_term_display(struct engine* engine)
 
 static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
 {
+    Log() << "Input event: ";
+
+    int x = AMotionEvent_getRawX(event, )
+
+    if(AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_DOWN){
+
+    }
+
     return 0;
 }
 
