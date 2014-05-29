@@ -10,6 +10,7 @@
 
 #include <Engine/Common.h>
 #include <Engine/Texture.h>
+#include <Engine/ISpriteLoader.h>
 
 namespace ndk_game
 {
@@ -19,7 +20,7 @@ class Sprite
 public:
     using Ptr = std::shared_ptr<Sprite>;
 
-    Sprite(Texture::Ptr texture);
+    Sprite(Texture::Ptr texture, ISpriteLoader::Ptr spriteLoader);
     virtual ~Sprite();
 
     virtual Texture::Ptr getTexture() const throw ();

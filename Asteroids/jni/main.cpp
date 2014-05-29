@@ -134,6 +134,8 @@ static int engine_init_display(struct engine* engine)
         Log::pushLog(std::make_shared<AndLog>());
         Log() << "Load resources...";
 
+        Log() << "View port " << w << " x " << h;
+
         glm::mat4 ortho = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
 
         drawEngine = std::make_shared<GLES20Engine>(
@@ -157,12 +159,39 @@ static int engine_init_display(struct engine* engine)
 
         mainScene = std::make_shared<Scene>();
 
+        /*
+         * 1                        2
+         * 0 0                      S 0
+         *
+         *
+         *
+         *
+         *
+         *
+         * 3                        4
+         * 0 S                      S S
+         */
+
+        float S = 10.f;
+        float bgV[]
+        {
+                -S, -S, 0.f,    0.f, 0.f,
+                  S, -S, 0.f,    1.f, 0.f,
+                  -S,   S, 0.f,    0.f, 1.f,
+
+                  S,   S, 0.f,    1.f, 1.f,
+                  -S,   S, 0.f,    0.f, 1.f,
+                  S, -S, 0.f,    1.f, 0.f
+        };
         auto background = std::make_shared<Sprite>(
                 Texture::create(
                         std::make_shared<AssetTextureLoader>(engine->app,
                                 "images/background.png")
-                )
+                ),
+                std::make_shared<SimpleSpriteLoader>(bgV, 6)
         );
+
+        mainScene->objects.push_back(background);
 
         currentScene = mainScene;
 

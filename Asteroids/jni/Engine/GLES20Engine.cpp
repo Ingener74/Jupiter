@@ -39,9 +39,34 @@ void GLES20Engine::draw(Scene::Ptr scene) throw (std::runtime_error)
     glUseProgram(_program);
     Tools::glError();
 
+    for (auto &s : scene->objects)
+    {
+        glActiveTexture(GL_TEXTURE0);
+
+        s->getTexture()->bind();
+
+        glUniform1i(_uTEX, 0);
+        glEnableVertexAttribArray(_aPOS);
+        glEnableVertexAttribArray(_aTEX);
+
+        GLfloat * spriteVertex = s->getVertex();
+        uint32_t spriteVertexCount = s->getVertexCount();
+
+        glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
+                &spriteVertex[0]);
+        glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
+                &spriteVertex[3]);
+
+        glm::mat4 mvp = _ortho * s->getModelMatrix();
+        glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+        glDrawArrays(GL_TRIANGLES, 0, spriteVertexCount);
+
+        glDisableVertexAttribArray(_aPOS);
+        glDisableVertexAttribArray(_aTEX);
+    }
+
     glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
-
-
 }
 
 GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)

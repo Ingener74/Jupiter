@@ -10,9 +10,17 @@
 namespace ndk_game
 {
 
-Sprite::Sprite(Texture::Ptr texture) :
+Sprite::Sprite(Texture::Ptr texture, ISpriteLoader::Ptr spriteLoader) :
         _texture(texture), _vertexCount(0)
 {
+    _vertex = std::shared_ptr<float>(
+            new float[spriteLoader->getVertexCount() * 5], [](float * p)
+            {
+                delete [] p;
+            });
+    _vertexCount = spriteLoader->getVertexCount();
+    memcpy(_vertex.get(), spriteLoader->getVertexes(),
+            _vertexCount * 5 * sizeof(float));
 }
 
 Sprite::~Sprite()

@@ -18,6 +18,7 @@ LOCAL_SRC_FILES := main.cpp \
 	Engine/Scene.cpp \
 	Engine/SimpleShaderLoader.cpp \
 	Engine/DummyTextureLoader.cpp \
+	Engine/SimpleSpriteLoader.cpp \
 
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lz
 LOCAL_STATIC_LIBRARIES := android_native_app_glue png

@@ -11,12 +11,15 @@
 #include <Engine/IDrawEngine.h>
 #include <Engine/IShaderLoader.h>
 #include <Engine/TextureLoader.h>
+#include <Engine/ISpriteLoader.h>
 
 #include <Engine/Texture.h>
 #include <Engine/AssetTextureLoader.h>
 #include <Engine/DummyTextureLoader.h>
 
 #include <Engine/Sprite.h>
+#include <Engine/SimpleSpriteLoader.h>
+
 #include <Engine/Tools.h>
 #include <Engine/Log.h>
 #include <Engine/Scene.h>
