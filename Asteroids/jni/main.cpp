@@ -136,6 +136,15 @@ static int engine_init_display(struct engine* engine)
 
         Log() << "View port " << w << " x " << h;
 
+        /*
+         *
+         * 05-29 08:39:41.138: D/Asteroids(22370): View port 1080 x 1776
+         * 05-29 08:40:00.357: D/Asteroids(23012): View port 1080 x 1776
+         * 05-29 08:40:53.114: D/Asteroids(23589): View port 1080 x 1776
+         * 05-29 08:40:57.629: D/Asteroids(23589): View port 1794 x 1080
+         *
+         */
+
         glm::mat4 ortho = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
 
         drawEngine = std::make_shared<GLES20Engine>(
@@ -176,12 +185,12 @@ static int engine_init_display(struct engine* engine)
         float bgV[]
         {
                 -S, -S, 0.f,    0.f, 0.f,
-                  S, -S, 0.f,    1.f, 0.f,
-                  -S,   S, 0.f,    0.f, 1.f,
+                 S, -S, 0.f,    1.f, 0.f,
+                -S,  S, 0.f,    0.f, 1.f,
 
-                  S,   S, 0.f,    1.f, 1.f,
-                  -S,   S, 0.f,    0.f, 1.f,
-                  S, -S, 0.f,    1.f, 0.f
+                 S,  S, 0.f,    1.f, 1.f,
+                -S,  S, 0.f,    0.f, 1.f,
+                 S, -S, 0.f,    1.f, 0.f
         };
         auto background = std::make_shared<Sprite>(
                 Texture::create(
@@ -190,8 +199,31 @@ static int engine_init_display(struct engine* engine)
                 ),
                 std::make_shared<SimpleSpriteLoader>(bgV, 6)
         );
-
         mainScene->objects.push_back(background);
+
+
+        /*
+         *
+         *           1
+         *           0 R
+         *
+         *
+         *          0 0
+         *
+         *
+         * 2                   3
+         * -R -R               R -R
+         */
+        float R = 1.3f, rV[]{
+                0.f, R, 1.f,   0.1f, 0.4f,
+                -R, -R, 1.f,   0.2f, 0.5f,
+                R, -R, 1.f,    0.1f, 0.2f
+        };
+        auto rock1 = std::make_shared<Sprite>(
+                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/rocks.png")),
+                std::make_shared<SimpleSpriteLoader>(rV, 3)
+                );
+        mainScene->objects.push_back(rock1);
 
         currentScene = mainScene;
 
