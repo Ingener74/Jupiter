@@ -1,0 +1,9 @@
+.cproject
+.project
+.settings/
+bin
+obj
+project.properties
+build_android
+libs
+.classpath
