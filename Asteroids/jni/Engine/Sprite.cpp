@@ -42,7 +42,7 @@ uint32_t Sprite::getVertexCount() const throw ()
     return _vertexCount;
 }
 
-const glm::mat4& Sprite::getModelMatrix() const throw ()
+glm::mat4& Sprite::getModelMatrix() throw ()
 {
     return _modelMatrix;
 }

@@ -26,7 +26,7 @@ public:
     virtual Texture::Ptr getTexture() const throw ();
     virtual float* getVertex() const throw ();
     virtual uint32_t getVertexCount() const throw ();
-    virtual const glm::mat4& getModelMatrix() const throw ();
+    virtual glm::mat4& getModelMatrix() throw ();
 
     virtual ISpriteLoader::SpriteType getDrawType() const throw ();
 

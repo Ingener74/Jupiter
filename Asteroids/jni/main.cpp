@@ -1,5 +1,3 @@
-#include <cstring>
-#include <memory>
 
 #include <jni.h>
 #include <errno.h>
@@ -11,16 +9,12 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
-//#include <glm/glm.hpp>
-
 #include <Engine/Engine.h>
 using namespace ndk_game;
 
 const char *TAG = "Asteroids";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__))
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, TAG, __VA_ARGS__))
 
 struct saved_state
 {
@@ -86,7 +80,7 @@ static int engine_init_display(struct engine* engine)
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE)
     {
-        LOGW("Unable to eglMakeCurrent");
+        LOGE("Unable to eglMakeCurrent");
         return -1;
     }
 
@@ -162,6 +156,10 @@ static int engine_init_display(struct engine* engine)
         /*
          * Create start scene
          */
+
+        auto startScene = std::make_shared<Scene>(),
+                mainScene = std::make_shared<Scene>();
+
         class BackGround: public IGameObject
         {
         public:
@@ -180,32 +178,73 @@ static int engine_init_display(struct engine* engine)
 
             virtual void update(double elapsed) throw (std::runtime_error)
             {
-                Log() << "BackGround elapsed " << elapsed << " sec";
+//                _bg->getModelMatrix() = glm::translate(_bg->getModelMatrix(), glm::vec3(1.f, 0.f, 0.f));
             }
             virtual void input(int x, int y) throw (std::runtime_error)
             {
-                Log() << "BackGround input: " << x << " x " << y;
             }
             virtual std::list<Sprite::Ptr> getSprites() const throw ()
             {
-                return
-                {   _bg};
+                return {_bg};
             }
         private:
             Sprite::Ptr _bg;
         };
-
-        auto startScene = std::make_shared<Scene>();
-
         startScene->gameObject.push_back(
                 std::make_shared<BackGround>(engine->app, w));
-//
-//        float startButtonW = w * 0.7, startButtonH = w * 0.4;
-//        auto startButton = std::make_shared<Sprite>(
-//                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/start.png")),
-//                std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
-//                );
-//        startScene->objects.push_back(startButton);
+
+        class StartButton: public IGameObject
+        {
+        public:
+            StartButton(android_app * app, int screenWidth, IDrawEngine::Ptr engine, Scene::Ptr mainScene):
+                _engine(engine), _mainScene(mainScene)
+            {
+                float startButtonW = screenWidth * 0.7, startButtonH = screenWidth * 0.4;
+
+                _sb1 = std::make_shared<Sprite>(
+                        Texture::create(std::make_shared<AssetTextureLoader>(app, "images/start.png")),
+                        std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
+                        );
+                _sb2 = std::make_shared<Sprite>(
+                        Texture::create(std::make_shared<AssetTextureLoader>(app, "images/start_pushed.png")),
+                        std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
+                        );
+                _sb2->getModelMatrix() = glm::translate(_sb2->getModelMatrix(), glm::vec3(2.f, -2.f, 0.f));
+
+                _cur = _sb1;
+            }
+            virtual ~StartButton()
+            {
+                Log() << "~StartButton()";
+            }
+
+            virtual void update(double elapsed) throw (std::runtime_error)
+            {
+//                _cur->getModelMatrix() = glm::translate(_cur->getModelMatrix(), glm::vec3(1.f, 0.f, 0.f));
+//                _cur->getModelMatrix() = glm::rotate(_cur->getModelMatrix(), 0.005f, glm::vec3(0.f, 0.f, 1.f));
+            }
+            virtual void input(int x, int y) throw (std::runtime_error)
+            {
+                Log() << "Start button " << x << " x " << y;
+                if (false)
+                {
+                    static bool _clicked = false;
+                    _clicked = !_clicked;
+                    _cur = (_clicked ? _sb2 : _sb1);
+                }
+            }
+            virtual std::list<Sprite::Ptr> getSprites() const throw ()
+            {
+                return {_cur};
+            }
+        private:
+            Sprite::Ptr _sb1, _sb2, _cur;
+
+            IDrawEngine::Ptr _engine;
+            Scene::Ptr _mainScene;
+        };
+        startScene->gameObject.push_back(
+                std::make_shared<StartButton>(engine->app, w, drawEngine, mainScene));
 //
 //        float shipW = w * 0.2f, shipH = w * 0.2f;
 //        auto ship = std::make_shared<Sprite>(
@@ -238,6 +277,8 @@ static int engine_init_display(struct engine* engine)
 
         drawEngine->setCurrentScene(startScene);
 
+        engine->animating = 1;
+
         Log() << "done";
     }
     catch (std::exception const & e)
@@ -258,34 +299,8 @@ static void engine_draw_frame(struct engine* engine)
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//    class TimeMeasure {
-//    public:
-//       TimeMeasure() {
-//          start();
-//       }
-//       void start() {
-//          m_start = now();
-//       }
-//       int elapsed_ms() const {
-//          return elapsed< std::chrono::milliseconds >();
-//       }
-//       int elapsed_mks() const {
-//          return elapsed< std::chrono::microseconds >();
-//       }
-//
-//    private:
-//       template< class D >
-//       int elapsed() const {
-//          return std::chrono::duration_cast< D >( now() - m_start ).count();
-//       }
-//       const std::chrono::system_clock::time_point now() const {
-//          return std::chrono::system_clock::now();
-//       }
-//       std::chrono::system_clock::time_point m_start;
-//    };
-
     /*
-     * here animate all objects, textures,
+     * here animate and draw our game
      */
     try
     {
@@ -297,11 +312,11 @@ static void engine_draw_frame(struct engine* engine)
                 duration_cast<microseconds>(now - tp).count() / 1000000.0);
         tp = now;
 
-        Log() << "draw all";
         if (drawEngine) drawEngine->draw();
     }
     catch (const std::exception& e)
     {
+        Log() << "draw or animate error: " << e.what();
     }
 
     eglSwapBuffers(engine->display, engine->surface);
@@ -398,7 +413,7 @@ void android_main(struct android_app* state)
         int events;
         struct android_poll_source* source;
 
-        while ((ident = ALooper_pollAll(engine.animating ? 0 : -1, NULL,
+        while ((ident = ALooper_pollAll(engine.animating ? /* 0 too small */ 10 : -1, NULL,
                 &events, (void**) &source)) >= 0)
         {
             if (source != NULL)
