@@ -68,6 +68,7 @@ struct engine
  * Game objects
  */
 
+Scene::Ptr startScene;
 Scene::Ptr mainScene;
 
 IDrawEngine::Ptr drawEngine;
@@ -117,6 +118,7 @@ static int engine_init_display(struct engine* engine)
     eglQuerySurface(display, surface, EGL_WIDTH, &w);
     eglQuerySurface(display, surface, EGL_HEIGHT, &h);
 
+
     engine->display = display;
     engine->context = context;
     engine->surface = surface;
@@ -125,7 +127,10 @@ static int engine_init_display(struct engine* engine)
     engine->state.angle = 0;
 
     glEnable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glViewport(0, 0, w, h);
 
@@ -141,16 +146,7 @@ static int engine_init_display(struct engine* engine)
 
         Log() << "View port " << w << " x " << h;
 
-        /*
-         *
-         * 05-29 08:39:41.138: D/Asteroids(22370): View port 1080 x 1776
-         * 05-29 08:40:00.357: D/Asteroids(23012): View port 1080 x 1776
-         * 05-29 08:40:53.114: D/Asteroids(23589): View port 1080 x 1776
-         * 05-29 08:40:57.629: D/Asteroids(23589): View port 1794 x 1080
-         *
-         */
-
-        glm::mat4 ortho = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
+        glm::mat4 ortho = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -100, 100);
 
         drawEngine = std::make_shared<GLES20Engine>(
                 std::make_shared<SimpleShaderLoader>(
@@ -174,38 +170,29 @@ static int engine_init_display(struct engine* engine)
         mainScene = std::make_shared<Scene>();
 
         /*
-         * 1                        2
-         * 0 0                      S 0
-         *
-         *
-         *
-         *
-         *
-         *
-         * 3                        4
-         * 0 S                      S S
+         * Create start scene
          */
+        startScene = std::make_shared<Scene>();
 
-        float S = 10.f;
-        float bgV[]
-        {
-                -S, -S, 0.f,    0.f, 0.f,
-                 S, -S, 0.f,    1.f, 0.f,
-                -S,  S, 0.f,    0.f, 1.f,
-
-                 S,  S, 0.f,    1.f, 1.f,
-                -S,  S, 0.f,    0.f, 1.f,
-                 S, -S, 0.f,    1.f, 0.f
-        };
         auto background = std::make_shared<Sprite>(
-                Texture::create(
-                        std::make_shared<AssetTextureLoader>(engine->app,
-                                "images/background.png")
-                ),
-                std::make_shared<SimpleSpriteLoader>(bgV, 6)
+                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/bg.png")),
+                std::make_shared<RectSpriteLoader>(w, w, 0, 0, 1, 0, 1)
         );
-        mainScene->objects.push_back(background);
+        startScene->objects.push_back(background);
 
+        float startButtonW = w * 0.7, startButtonH = w * 0.4;
+        auto startButton = std::make_shared<Sprite>(
+                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/start.png")),
+                std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
+                );
+        startScene->objects.push_back(startButton);
+
+        float shipW = w * 0.2f, shipH = w * 0.2f;
+        auto ship = std::make_shared<Sprite>(
+                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/ship.png")),
+                std::make_shared<RectSpriteLoader>(shipW, shipH, 2, 0, 0.5, 0, 0.5)
+                );
+        startScene->objects.push_back(ship);
 
         /*
          *
@@ -219,7 +206,7 @@ static int engine_init_display(struct engine* engine)
          * 2                   3
          * -R -R               R -R
          */
-        float R = 1.3f, rV[]{
+        float R = 100.3f, rV[]{
                 0.f, R, 1.f,   0.1f, 0.4f,
                 -R, -R, 1.f,   0.2f, 0.5f,
                 R, -R, 1.f,    0.1f, 0.2f
@@ -228,93 +215,84 @@ static int engine_init_display(struct engine* engine)
                 Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/rocks.png")),
                 std::make_shared<SimpleSpriteLoader>(rV, 3)
                 );
-        mainScene->objects.push_back(rock1);
+//        startScene->objects.push_back(rock1);
 
-        currentScene = mainScene;
+        currentScene = startScene;
 
         /*
          *
          */
-        class GameObject
-        {
-        public:
-            GameObject()
-            {
-            }
-            virtual ~GameObject()
-            {
-            }
-
-            virtual void update(double elapsed) throw (std::runtime_error) = 0;
-            virtual void input(int x, int y) throw (std::runtime_error) = 0;
-        };
-
-        class BattleShip: public GameObject
-        {
-        public:
-            BattleShip()
-            {
-            }
-            virtual ~BattleShip()
-            {
-            }
-
-            virtual void update(double elapsed) throw (std::runtime_error)
-            {
-                Log() << "Battle ship update elapsed = " << elapsed;
-            }
-
-        private:
-        };
-
-        class Rock : public GameObject{
-        public:
-            Rock(){
-            }
-            virtual ~Rock(){
-            }
-
-            virtual void update(double elapsed) throw (std::runtime_error){
-                Log() << "Rock update elapsed = " << elapsed;
-            }
-
-        private:
-        };
-
-        class Animate {
-        public:
-            Animate(){
-            }
-            virtual ~Animate(){
-            }
-
-            using UpdateCallback = std::function<void(double)>;
-
-            Animate& operator<<(UpdateCallback updateCallback)
-            {
-                callback.push_back(updateCallback);
-                return *this;
-            }
-
-            void animateAll()
-            {
-                for(auto &a: callback){
-                    a(0.001);
-                }
-            }
-
-        private:
-            std::list<UpdateCallback> callback;
-        };
-
-        BattleShip ship;
-        Rock rock;
-        Animate anim;
-
-        anim << std::bind(&BattleShip::update, &ship, std::placeholders::_1)
-                << std::bind(&Rock::update, &rock, std::placeholders::_1);
-
-        anim.animateAll();
+//        class BattleShip: public GameObject
+//        {
+//        public:
+//            BattleShip()
+//            {
+//            }
+//            virtual ~BattleShip()
+//            {
+//            }
+//
+//            virtual void update(double elapsed) throw (std::runtime_error)
+//            {
+//                Log() << "Battle ship update elapsed = " << elapsed;
+//            }
+//            virtual void input(int x, int y) throw (std::runtime_error){
+//                Log() << "Battle ship input";
+//            }
+//
+//        private:
+//        };
+//
+//        class Rock : public GameObject{
+//        public:
+//            Rock(){
+//            }
+//            virtual ~Rock(){
+//            }
+//
+//            virtual void update(double elapsed) throw (std::runtime_error){
+//                Log() << "Rock update elapsed = " << elapsed;
+//            }
+//            virtual void input(int x, int y) throw (std::runtime_error){
+//                Log() << "Rock input";
+//            }
+//
+//        private:
+//        };
+//
+//        class Animate {
+//        public:
+//            Animate(){
+//            }
+//            virtual ~Animate(){
+//            }
+//
+//            using UpdateCallback = std::function<void(double)>;
+//
+//            Animate& operator<<(UpdateCallback updateCallback)
+//            {
+//                callback.push_back(updateCallback);
+//                return *this;
+//            }
+//
+//            void animateAll()
+//            {
+//                for(auto &a: callback){
+//                    a(0.001);
+//                }
+//            }
+//
+//        private:
+//            std::list<UpdateCallback> callback;
+//        };
+//        BattleShip ship;
+//        Rock rock;
+//        Animate anim;
+//
+//        anim << std::bind(&BattleShip::update, &ship, std::placeholders::_1)
+//                << std::bind(&Rock::update, &rock, std::placeholders::_1);
+//
+//        anim.animateAll();
 
         Log() << "done";
     }
@@ -340,6 +318,7 @@ static void engine_draw_frame(struct engine* engine)
      * here animate all objects, textures,
      */
 
+    Log() << "draw all";
     if(drawEngine)
         drawEngine->draw(currentScene);
 
@@ -348,11 +327,13 @@ static void engine_draw_frame(struct engine* engine)
 
 static void engine_term_display(struct engine* engine)
 {
-    Log() << "Terminate display";
+    Log() << "close Engine";
 
     drawEngine.reset();
     mainScene.reset();
     currentScene.reset();
+
+    Log() << "Engine closed";
 
     if (engine->display != EGL_NO_DISPLAY)
     {
@@ -378,11 +359,11 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
 {
     Log() << "Input event: ";
 
-    int x = AMotionEvent_getRawX(event, )
-
-    if(AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_DOWN){
-
-    }
+//    int x = AMotionEvent_getRawX(event, )
+//
+//    if(AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_DOWN){
+//
+//    }
 
     return 0;
 }

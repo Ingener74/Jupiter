@@ -11,14 +11,14 @@ namespace ndk_game
 {
 
 Sprite::Sprite(Texture::Ptr texture, ISpriteLoader::Ptr spriteLoader) :
-        _texture(texture), _vertexCount(0)
+        _texture(texture), _vertexCount(0),
+         _type(spriteLoader->getSpriteType())
 {
-    _vertex = std::shared_ptr<float>(
-            new float[spriteLoader->getVertexCount() * 5], [](float * p)
-            {
-                delete [] p;
-            });
     _vertexCount = spriteLoader->getVertexCount();
+    _vertex = std::shared_ptr<float>(new float[_vertexCount * 5], [](float * p)
+    {
+        delete [] p;
+    });
     memcpy(_vertex.get(), spriteLoader->getVertexes(),
             _vertexCount * 5 * sizeof(float));
 }
@@ -47,4 +47,10 @@ const glm::mat4& Sprite::getModelMatrix() const throw ()
     return _modelMatrix;
 }
 
+ISpriteLoader::SpriteType Sprite::getDrawType() const throw ()
+{
+    return _type;
+}
+
 } /* namespace ndk_game */
+

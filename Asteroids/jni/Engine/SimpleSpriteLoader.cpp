@@ -10,8 +10,9 @@
 namespace ndk_game
 {
 
-SimpleSpriteLoader::SimpleSpriteLoader(float * vertexes, uint32_t vertexCount) :
-        _v(vertexes), _vc(vertexCount)
+SimpleSpriteLoader::SimpleSpriteLoader(float * vertexes, uint32_t vertexCount,
+        SpriteType st) :
+        _v(vertexes), _vc(vertexCount), _st(st)
 {
 }
 
@@ -19,7 +20,7 @@ SimpleSpriteLoader::~SimpleSpriteLoader()
 {
 }
 
-float* SimpleSpriteLoader::getVertexes() const throw ()
+const float* SimpleSpriteLoader::getVertexes() const throw ()
 {
     return _v;
 }
@@ -29,4 +30,10 @@ uint32_t SimpleSpriteLoader::getVertexCount() const throw ()
     return _vc;
 }
 
+SimpleSpriteLoader::SpriteType SimpleSpriteLoader::getSpriteType() const throw ()
+{
+    return _st;
+}
+
 } /* namespace ndk_game */
+

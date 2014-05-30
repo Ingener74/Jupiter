@@ -19,6 +19,7 @@
 
 #include <Engine/Sprite.h>
 #include <Engine/SimpleSpriteLoader.h>
+#include <Engine/RectSpriteLoader.h>
 
 #include <Engine/Tools.h>
 #include <Engine/Log.h>

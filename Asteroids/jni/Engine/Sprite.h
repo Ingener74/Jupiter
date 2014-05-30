@@ -28,11 +28,14 @@ public:
     virtual uint32_t getVertexCount() const throw ();
     virtual const glm::mat4& getModelMatrix() const throw ();
 
+    virtual ISpriteLoader::SpriteType getDrawType() const throw ();
+
 private:
     Texture::Ptr _texture;
     std::shared_ptr<float> _vertex;
     uint32_t _vertexCount;
     glm::mat4 _modelMatrix;
+    ISpriteLoader::SpriteType _type;
 };
 
 } /* namespace ndk_game */

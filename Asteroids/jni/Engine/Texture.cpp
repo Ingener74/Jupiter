@@ -35,8 +35,6 @@ Texture::Ptr Texture::create(TextureLoader::Ptr textureLoader)
             texture->_type, GL_UNSIGNED_BYTE, im.data.get());
     Tools::glError();
 
-    Log() << "Texture created";
-
     return texture;
 }
 

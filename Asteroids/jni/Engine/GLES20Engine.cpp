@@ -18,8 +18,6 @@ GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho) :
 {
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
 
-    Log() << "program " << _program;
-
     _uMVP = glGetUniformLocation(_program, "uMVP");
     _aPOS = glGetAttribLocation(_program, "aPOS");
     _aTEX = glGetAttribLocation(_program, "aTEX");
@@ -60,7 +58,22 @@ void GLES20Engine::draw(Scene::Ptr scene) throw (std::runtime_error)
         glm::mat4 mvp = _ortho * s->getModelMatrix();
         glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
 
-        glDrawArrays(GL_TRIANGLES, 0, spriteVertexCount);
+        GLenum drawType;
+        switch (s->getDrawType())
+        {
+        case ISpriteLoader::SpriteType::Triangles:
+            drawType = GL_TRIANGLES;
+            break;
+        case ISpriteLoader::SpriteType::TriangleFan:
+            drawType = GL_TRIANGLE_FAN;
+            break;
+        case ISpriteLoader::SpriteType::TriangleStrip:
+            drawType = GL_TRIANGLE_STRIP;
+            break;
+        default:
+            break;
+        }
+        glDrawArrays(drawType, 0, spriteVertexCount);
 
         glDisableVertexAttribArray(_aPOS);
         glDisableVertexAttribArray(_aTEX);
@@ -71,8 +84,6 @@ void GLES20Engine::draw(Scene::Ptr scene) throw (std::runtime_error)
 
 GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)
 {
-    Log() << "Create shader";
-
     GLuint shader = glCreateShader(shaderType);
     if (!shader) throw std::runtime_error("can't create shader");
 
@@ -96,8 +107,6 @@ GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)
 GLuint GLES20Engine::createProgram(const char* vertexShader,
         const char* fragmentShader)
 {
-    Log() << "Create program";
-
     _vs = createShader(GL_VERTEX_SHADER, vertexShader);
     _fs = createShader(GL_FRAGMENT_SHADER, fragmentShader);
 

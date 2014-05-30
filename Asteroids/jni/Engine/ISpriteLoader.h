@@ -22,8 +22,14 @@ public:
     {
     }
 
-    virtual float * getVertexes() const throw () = 0;
+    enum class SpriteType
+    {
+        Triangles, TriangleFan, TriangleStrip
+    };
+
+    virtual const float * getVertexes() const throw () = 0;
     virtual uint32_t getVertexCount() const throw () = 0;
+    virtual SpriteType getSpriteType() const throw () = 0;
 
 protected:
     ISpriteLoader()
