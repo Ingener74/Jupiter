@@ -11,7 +11,7 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
-#include <glm/glm.hpp>
+//#include <glm/glm.hpp>
 
 #include <Engine/Engine.h>
 using namespace ndk_game;
@@ -21,28 +21,6 @@ const char *TAG = "Asteroids";
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__))
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, TAG, __VA_ARGS__))
-
-class AndLog: public Log::ILog
-{
-public:
-    AndLog()
-    {
-    }
-    virtual ~AndLog()
-    {
-    }
-
-    virtual void Error(const std::string& message) throw ()
-    {
-        LOGE("%s", message.c_str());
-    }
-    virtual void Debug(const std::string& message) throw ()
-    {
-        LOGD("%s", message.c_str());
-    }
-
-private:
-};
 
 struct saved_state
 {
@@ -68,23 +46,20 @@ struct engine
  * Game objects
  */
 
-Scene::Ptr startScene;
-Scene::Ptr mainScene;
-
 IDrawEngine::Ptr drawEngine;
-Scene::Ptr currentScene;
 
 static int engine_init_display(struct engine* engine)
 {
-    const EGLint attribs[] = {
-            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-            EGL_RED_SIZE,   8,
-            EGL_GREEN_SIZE, 8,
-            EGL_BLUE_SIZE,  8,
-            EGL_ALPHA_SIZE, 8,
-            EGL_DEPTH_SIZE, 8,
-            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-            EGL_NONE, EGL_NONE };
+    const EGLint attribs[] =
+    {
+    EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+    EGL_RED_SIZE, 8,
+    EGL_GREEN_SIZE, 8,
+    EGL_BLUE_SIZE, 8,
+    EGL_ALPHA_SIZE, 8,
+    EGL_DEPTH_SIZE, 8,
+    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+    EGL_NONE, EGL_NONE };
 
     EGLint w, h, dummy, format;
     EGLint numConfigs;
@@ -103,10 +78,10 @@ static int engine_init_display(struct engine* engine)
     surface = eglCreateWindowSurface(display, config,
             static_cast<EGLNativeWindowType>(engine->app->window), NULL);
 
-    EGLint contextAttr[] = {
-            EGL_CONTEXT_CLIENT_VERSION, 2,
-            EGL_NONE
-    };
+    EGLint contextAttr[] =
+    {
+    EGL_CONTEXT_CLIENT_VERSION, 2,
+    EGL_NONE };
     context = eglCreateContext(display, config, NULL, contextAttr);
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE)
@@ -117,7 +92,6 @@ static int engine_init_display(struct engine* engine)
 
     eglQuerySurface(display, surface, EGL_WIDTH, &w);
     eglQuerySurface(display, surface, EGL_HEIGHT, &h);
-
 
     engine->display = display;
     engine->context = context;
@@ -141,12 +115,32 @@ static int engine_init_display(struct engine* engine)
 
     try
     {
+        class AndLog: public Log::ILog
+        {
+        public:
+            AndLog()
+            {
+            }
+            virtual ~AndLog()
+            {
+            }
+            virtual void Error(const std::string& message) throw ()
+            {
+                LOGE("%s", message.c_str());
+            }
+            virtual void Debug(const std::string& message) throw ()
+            {
+                LOGD("%s", message.c_str());
+            }
+        };
+
         Log::pushLog(std::make_shared<AndLog>());
         Log() << "Load resources...";
 
         Log() << "View port " << w << " x " << h;
 
-        glm::mat4 ortho = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -100, 100);
+        glm::mat4 ortho = glm::ortho<float>(-w / 2, w / 2, -h / 2, h / 2, -100,
+                100);
 
         drawEngine = std::make_shared<GLES20Engine>(
                 std::make_shared<SimpleShaderLoader>(
@@ -158,41 +152,67 @@ static int engine_init_display(struct engine* engine)
                         "    gl_Position = uMVP * aPOS;"
                         "    vTEX = aTEX;"
                         "}",
-
                         "precision mediump float;"
                         "varying vec2      vTEX;"
                         "uniform sampler2D uTEX;"
                         "void main(){"
                         "    gl_FragColor = texture2D(uTEX, vTEX);"
-                        "}"
-                        ), ortho);
-
-        mainScene = std::make_shared<Scene>();
+                        "}"), ortho);
 
         /*
          * Create start scene
          */
-        startScene = std::make_shared<Scene>();
+        class BackGround: public IGameObject
+        {
+        public:
+            BackGround(android_app * app, int screenWidth)
+            {
+                _bg = std::make_shared<Sprite>(
+                        Texture::create(
+                                std::make_shared<AssetTextureLoader>(app,
+                                        "images/bg.png")),
+                        std::make_shared<RectSpriteLoader>(screenWidth,
+                                screenWidth, 0, 0, 1, 0, 1));
+            }
+            virtual ~BackGround()
+            {
+            }
 
-        auto background = std::make_shared<Sprite>(
-                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/bg.png")),
-                std::make_shared<RectSpriteLoader>(w, w, 0, 0, 1, 0, 1)
-        );
-        startScene->objects.push_back(background);
+            virtual void update(double elapsed) throw (std::runtime_error)
+            {
+                Log() << "BackGround elapsed " << elapsed << " sec";
+            }
+            virtual void input(int x, int y) throw (std::runtime_error)
+            {
+                Log() << "BackGround input: " << x << " x " << y;
+            }
+            virtual std::list<Sprite::Ptr> getSprites() const throw ()
+            {
+                return
+                {   _bg};
+            }
+        private:
+            Sprite::Ptr _bg;
+        };
 
-        float startButtonW = w * 0.7, startButtonH = w * 0.4;
-        auto startButton = std::make_shared<Sprite>(
-                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/start.png")),
-                std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
-                );
-        startScene->objects.push_back(startButton);
+        auto startScene = std::make_shared<Scene>();
 
-        float shipW = w * 0.2f, shipH = w * 0.2f;
-        auto ship = std::make_shared<Sprite>(
-                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/ship.png")),
-                std::make_shared<RectSpriteLoader>(shipW, shipH, 2, 0, 0.5, 0, 0.5)
-                );
-        startScene->objects.push_back(ship);
+        startScene->gameObject.push_back(
+                std::make_shared<BackGround>(engine->app, w));
+//
+//        float startButtonW = w * 0.7, startButtonH = w * 0.4;
+//        auto startButton = std::make_shared<Sprite>(
+//                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/start.png")),
+//                std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
+//                );
+//        startScene->objects.push_back(startButton);
+//
+//        float shipW = w * 0.2f, shipH = w * 0.2f;
+//        auto ship = std::make_shared<Sprite>(
+//                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/ship.png")),
+//                std::make_shared<RectSpriteLoader>(shipW, shipH, 2, 0, 0.5, 0, 0.5)
+//                );
+//        startScene->objects.push_back(ship);
 
         /*
          *
@@ -206,93 +226,17 @@ static int engine_init_display(struct engine* engine)
          * 2                   3
          * -R -R               R -R
          */
-        float R = 100.3f, rV[]{
-                0.f, R, 1.f,   0.1f, 0.4f,
-                -R, -R, 1.f,   0.2f, 0.5f,
-                R, -R, 1.f,    0.1f, 0.2f
-        };
+        float R = 100.3f, rV[]
+        { 0.f, R, 1.f, 0.1f, 0.4f, -R, -R, 1.f, 0.2f, 0.5f, R, -R, 1.f, 0.1f,
+                0.2f };
         auto rock1 = std::make_shared<Sprite>(
-                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/rocks.png")),
-                std::make_shared<SimpleSpriteLoader>(rV, 3)
-                );
+                Texture::create(
+                        std::make_shared<AssetTextureLoader>(engine->app,
+                                "images/rocks.png")),
+                std::make_shared<SimpleSpriteLoader>(rV, 3));
 //        startScene->objects.push_back(rock1);
 
-        currentScene = startScene;
-
-        /*
-         *
-         */
-//        class BattleShip: public GameObject
-//        {
-//        public:
-//            BattleShip()
-//            {
-//            }
-//            virtual ~BattleShip()
-//            {
-//            }
-//
-//            virtual void update(double elapsed) throw (std::runtime_error)
-//            {
-//                Log() << "Battle ship update elapsed = " << elapsed;
-//            }
-//            virtual void input(int x, int y) throw (std::runtime_error){
-//                Log() << "Battle ship input";
-//            }
-//
-//        private:
-//        };
-//
-//        class Rock : public GameObject{
-//        public:
-//            Rock(){
-//            }
-//            virtual ~Rock(){
-//            }
-//
-//            virtual void update(double elapsed) throw (std::runtime_error){
-//                Log() << "Rock update elapsed = " << elapsed;
-//            }
-//            virtual void input(int x, int y) throw (std::runtime_error){
-//                Log() << "Rock input";
-//            }
-//
-//        private:
-//        };
-//
-//        class Animate {
-//        public:
-//            Animate(){
-//            }
-//            virtual ~Animate(){
-//            }
-//
-//            using UpdateCallback = std::function<void(double)>;
-//
-//            Animate& operator<<(UpdateCallback updateCallback)
-//            {
-//                callback.push_back(updateCallback);
-//                return *this;
-//            }
-//
-//            void animateAll()
-//            {
-//                for(auto &a: callback){
-//                    a(0.001);
-//                }
-//            }
-//
-//        private:
-//            std::list<UpdateCallback> callback;
-//        };
-//        BattleShip ship;
-//        Rock rock;
-//        Animate anim;
-//
-//        anim << std::bind(&BattleShip::update, &ship, std::placeholders::_1)
-//                << std::bind(&Rock::update, &rock, std::placeholders::_1);
-//
-//        anim.animateAll();
+        drawEngine->setCurrentScene(startScene);
 
         Log() << "done";
     }
@@ -314,26 +258,58 @@ static void engine_draw_frame(struct engine* engine)
     glClearColor(0.f, 0.f, 0.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+//    class TimeMeasure {
+//    public:
+//       TimeMeasure() {
+//          start();
+//       }
+//       void start() {
+//          m_start = now();
+//       }
+//       int elapsed_ms() const {
+//          return elapsed< std::chrono::milliseconds >();
+//       }
+//       int elapsed_mks() const {
+//          return elapsed< std::chrono::microseconds >();
+//       }
+//
+//    private:
+//       template< class D >
+//       int elapsed() const {
+//          return std::chrono::duration_cast< D >( now() - m_start ).count();
+//       }
+//       const std::chrono::system_clock::time_point now() const {
+//          return std::chrono::system_clock::now();
+//       }
+//       std::chrono::system_clock::time_point m_start;
+//    };
+
     /*
      * here animate all objects, textures,
      */
+    try
+    {
+        using namespace std::chrono;
+        static auto tp = system_clock::now();
 
-    Log() << "draw all";
-    if(drawEngine)
-        drawEngine->draw(currentScene);
+        auto now = system_clock::now();
+        drawEngine->animateAll(
+                duration_cast<microseconds>(now - tp).count() / 1000000.0);
+        tp = now;
+
+        Log() << "draw all";
+        if (drawEngine) drawEngine->draw();
+    }
+    catch (const std::exception& e)
+    {
+    }
 
     eglSwapBuffers(engine->display, engine->surface);
 }
 
 static void engine_term_display(struct engine* engine)
 {
-    Log() << "close Engine";
-
     drawEngine.reset();
-    mainScene.reset();
-    currentScene.reset();
-
-    Log() << "Engine closed";
 
     if (engine->display != EGL_NO_DISPLAY)
     {
@@ -357,13 +333,15 @@ static void engine_term_display(struct engine* engine)
 
 static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
 {
-    Log() << "Input event: ";
+    int pc = AMotionEvent_getPointerCount(event);
 
-//    int x = AMotionEvent_getRawX(event, )
-//
-//    if(AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_DOWN){
-//
-//    }
+    for (int i = 0, imax = pc; i < imax; ++i)
+    {
+        int x = AMotionEvent_getX(event, i);
+        int y = AMotionEvent_getY(event, i);
+
+        drawEngine->inputToAll(x, y);
+    }
 
     return 0;
 }
@@ -373,27 +351,27 @@ static void engine_handle_cmd(struct android_app* app, int32_t cmd)
     struct engine* engine = (struct engine*) app->userData;
     switch (cmd)
     {
-    case APP_CMD_SAVE_STATE:
-        engine->app->savedState = new saved_state;
-        *((struct saved_state*) engine->app->savedState) = engine->state;
-        engine->app->savedStateSize = sizeof(struct saved_state);
-        break;
-    case APP_CMD_INIT_WINDOW:
-        if (engine->app->window != NULL)
-        {
-            engine_init_display(engine);
+        case APP_CMD_SAVE_STATE:
+            engine->app->savedState = new saved_state;
+            *((struct saved_state*) engine->app->savedState) = engine->state;
+            engine->app->savedStateSize = sizeof(struct saved_state);
+            break;
+        case APP_CMD_INIT_WINDOW:
+            if (engine->app->window != NULL)
+            {
+                engine_init_display(engine);
+                engine_draw_frame(engine);
+            }
+            break;
+        case APP_CMD_TERM_WINDOW:
+            engine_term_display(engine);
+            break;
+        case APP_CMD_GAINED_FOCUS:
+            break;
+        case APP_CMD_LOST_FOCUS:
+            engine->animating = 0;
             engine_draw_frame(engine);
-        }
-        break;
-    case APP_CMD_TERM_WINDOW:
-        engine_term_display(engine);
-        break;
-    case APP_CMD_GAINED_FOCUS:
-        break;
-    case APP_CMD_LOST_FOCUS:
-        engine->animating = 0;
-        engine_draw_frame(engine);
-        break;
+            break;
     }
 }
 

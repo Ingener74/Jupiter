@@ -9,6 +9,7 @@
 #define SCENE_H_
 
 #include <Engine/Common.h>
+#include <Engine/IGameObject.h>
 #include <Engine/Sprite.h>
 
 namespace ndk_game
@@ -22,7 +23,7 @@ public:
     Scene();
     virtual ~Scene();
 
-    std::vector<Sprite::Ptr> objects;
+    std::list<IGameObject::Ptr> gameObject;
 };
 
 } /* namespace ndk_game */

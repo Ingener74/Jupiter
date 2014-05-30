@@ -12,6 +12,7 @@
 #include <Engine/IShaderLoader.h>
 #include <Engine/TextureLoader.h>
 #include <Engine/ISpriteLoader.h>
+#include <Engine/IGameObject.h>
 
 #include <Engine/Texture.h>
 #include <Engine/AssetTextureLoader.h>

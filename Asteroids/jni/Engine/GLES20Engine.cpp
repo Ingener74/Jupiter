@@ -32,54 +32,78 @@ GLES20Engine::~GLES20Engine()
     glDeleteShader(_fs);
 }
 
-void GLES20Engine::draw(Scene::Ptr scene) throw (std::runtime_error)
+void GLES20Engine::setCurrentScene(Scene::Ptr s) throw ()
+{
+    _currentScene = s;
+}
+
+void GLES20Engine::draw() throw (std::runtime_error)
 {
     glUseProgram(_program);
     Tools::glError();
 
-    for (auto &s : scene->objects)
+    for (auto &gameObj : _currentScene->gameObject)
     {
         glActiveTexture(GL_TEXTURE0);
 
-        s->getTexture()->bind();
-
-        glUniform1i(_uTEX, 0);
-        glEnableVertexAttribArray(_aPOS);
-        glEnableVertexAttribArray(_aTEX);
-
-        GLfloat * spriteVertex = s->getVertex();
-        uint32_t spriteVertexCount = s->getVertexCount();
-
-        glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
-                &spriteVertex[0]);
-        glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat),
-                &spriteVertex[3]);
-
-        glm::mat4 mvp = _ortho * s->getModelMatrix();
-        glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-        GLenum drawType;
-        switch (s->getDrawType())
+        for (auto &sprite : gameObj->getSprites())
         {
-        case ISpriteLoader::SpriteType::Triangles:
-            drawType = GL_TRIANGLES;
-            break;
-        case ISpriteLoader::SpriteType::TriangleFan:
-            drawType = GL_TRIANGLE_FAN;
-            break;
-        case ISpriteLoader::SpriteType::TriangleStrip:
-            drawType = GL_TRIANGLE_STRIP;
-            break;
-        default:
-            break;
-        }
-        glDrawArrays(drawType, 0, spriteVertexCount);
+            sprite->getTexture()->bind();
 
-        glDisableVertexAttribArray(_aPOS);
-        glDisableVertexAttribArray(_aTEX);
+            glUniform1i(_uTEX, 0);
+            glEnableVertexAttribArray(_aPOS);
+            glEnableVertexAttribArray(_aTEX);
+
+            GLfloat * spriteVertex = sprite->getVertex();
+            uint32_t spriteVertexCount = sprite->getVertexCount();
+
+            glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE,
+                    5 * sizeof(GLfloat), &spriteVertex[0]);
+            glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE,
+                    5 * sizeof(GLfloat), &spriteVertex[3]);
+
+            glm::mat4 mvp = _ortho * sprite->getModelMatrix();
+            glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+            GLenum drawType;
+            switch (sprite->getDrawType())
+            {
+                case ISpriteLoader::SpriteType::Triangles:
+                    drawType = GL_TRIANGLES;
+                    break;
+                case ISpriteLoader::SpriteType::TriangleFan:
+                    drawType = GL_TRIANGLE_FAN;
+                    break;
+                case ISpriteLoader::SpriteType::TriangleStrip:
+                    drawType = GL_TRIANGLE_STRIP;
+                    break;
+                default:
+                    break;
+            }
+            glDrawArrays(drawType, 0, spriteVertexCount);
+
+            glDisableVertexAttribArray(_aPOS);
+            glDisableVertexAttribArray(_aTEX);
+        }
     }
 
     glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
+}
+
+void GLES20Engine::inputToAll(int x, int y) throw ()
+{
+    for (auto gameObj : _currentScene->gameObject)
+    {
+        gameObj->input(x, y);
+    }
+}
+
+void GLES20Engine::animateAll(double elapsedMs) throw (std::runtime_error)
+{
+    for (auto gameObj : _currentScene->gameObject)
+    {
+        gameObj->update(elapsedMs);
+    }
 }
 
 GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)

@@ -23,7 +23,10 @@ public:
     {
     }
 
-    virtual void draw(Scene::Ptr) throw (std::runtime_error) = 0;
+    virtual void setCurrentScene(Scene::Ptr) throw () = 0;
+    virtual void draw() throw (std::runtime_error) = 0;
+    virtual void inputToAll(int x, int y) throw ()= 0;
+    virtual void animateAll(double elapsedMs) throw (std::runtime_error) = 0;
 
 protected:
     IDrawEngine()

@@ -14,6 +14,7 @@
 #include <vector>
 #include <cstdint>
 #include <sstream>
+#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>

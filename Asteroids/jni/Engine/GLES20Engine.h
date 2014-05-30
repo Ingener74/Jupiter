@@ -21,7 +21,10 @@ public:
     GLES20Engine(IShaderLoader::Ptr shaderLoader, const glm::mat4& Ortho);
     virtual ~GLES20Engine();
 
-    virtual void draw(Scene::Ptr) throw (std::runtime_error);
+    virtual void setCurrentScene(Scene::Ptr) throw ();
+    virtual void draw() throw (std::runtime_error);
+    virtual void inputToAll(int x, int y) throw ();
+    virtual void animateAll(double elapsedMs) throw (std::runtime_error);
 
 private:
     GLuint _program;
@@ -31,6 +34,8 @@ private:
     GLuint _uMVP, _aPOS, _aTEX, _uTEX;
 
     glm::mat4 _ortho;
+
+    Scene::Ptr _currentScene;
 
     GLuint createProgram(const char* vertexShader,
             const char* fragmentShader);
