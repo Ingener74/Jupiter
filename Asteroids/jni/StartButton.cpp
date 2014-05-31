@@ -48,23 +48,16 @@ void StartButton::update(double elapsed) throw (std::runtime_error)
 }
 void StartButton::input(int x, int y) throw (std::runtime_error)
 {
-//    Log() << "Start button " << _buttonRect << ", " << x << " x " << y;
-
     if (_buttonRect.isInside(x, y))
     {
-        Log() << "Start button clicked";
-
         _cur = _sb2;
 
         if (!_engine || !_mainScene) throw std::runtime_error(
                 "engine or main scene is null");
         _engine->setCurrentScene(_mainScene);
-
-        Log() << "Main scene installed";
     }
     else
     {
-        Log() << "Start button not clicked";
         _cur = _sb1;
     }
 }

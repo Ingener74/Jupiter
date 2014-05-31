@@ -9,6 +9,9 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
+/*
+ * Include My engine
+ */
 #include <Engine/Engine.h>
 using namespace ndk_game;
 
@@ -17,6 +20,8 @@ using namespace ndk_game;
  */
 #include <BackGround.h>
 #include <StartButton.h>
+#include <BattleShip.h>
+#include <FireButton.h>
 
 const char *TAG = "Asteroids";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
@@ -180,13 +185,13 @@ static int engine_init_display(struct engine* engine)
         /*
          * Create main scene
          */
+        auto battleShip = std::make_shared<BattleShip>(
+                engine->app, w);
 
-//        float shipW = w * 0.2f, shipH = w * 0.2f;
-//        auto ship = std::make_shared<Sprite>(
-//                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/ship.png")),
-//                std::make_shared<RectSpriteLoader>(shipW, shipH, 2, 0, 0.5, 0, 0.5)
-//                );
-//        startScene->gameObject.push_back(ship);
+        mainScene->gameObject.push_back(battleShip);
+
+        mainScene->gameObject.push_back(std::make_shared<FireButton>(
+                engine->app, w, h, battleShip));
 
         /*
          *
