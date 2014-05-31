@@ -12,9 +12,9 @@
 namespace ndk_game
 {
 
-GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho) :
+GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho, int screenW, int screenH) :
         _program(0), _vs(0), _fs(0), _uMVP(0), _aPOS(0), _aTEX(0), _uTEX(0), _ortho(
-                ortho)
+                ortho), _sW(screenW), _sH(screenH)
 {
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
 
@@ -97,7 +97,7 @@ void GLES20Engine::inputToAll(int x, int y) throw ()
 {
     for (auto gameObj : _currentScene->gameObject)
     {
-        gameObj->input(x, y);
+        gameObj->input(x - _sW/2, _sH/2 - y);
     }
 }
 

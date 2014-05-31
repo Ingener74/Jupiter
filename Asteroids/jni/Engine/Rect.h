@@ -14,7 +14,7 @@ namespace ndk_game
 class Rect
 {
 public:
-    Rect(int x1, int y1, int x2, int y2);
+    Rect(int x1 = 0, int y1 = 0, int x2 = 0, int y2 = 0);
     virtual ~Rect();
 
     bool operator||(const Rect&) const;
@@ -22,6 +22,8 @@ public:
 
     int x1, y1, x2, y2;
 };
+
+std::ostream& operator<<(std::ostream&, const Rect&);
 
 } /* namespace ndk_game */
 

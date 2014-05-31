@@ -35,9 +35,19 @@ bool Rect::isInside(int x, int y) const
 {
     return
     (
-        (x > std::min(x1, x2) && x < std::max(x1, x2)) ||
+        (x > std::min(x1, x2) && x < std::max(x1, x2)) &&
         (y > std::min(y1, y2) && y < std::max(y1, y2))
     );
+}
+
+std::ostream& operator <<(std::ostream& sout, const Rect& r)
+{
+    sout << "Rect: " <<
+            r.x1 << " x " << r.y1 << " -> " <<
+            r.x2 << " x " << r.y2 << ", " <<
+            std::max(r.x1, r.x2) - std::min(r.x1, r.x2) << " x " <<
+            std::max(r.y1, r.y2) - std::min(r.y1, r.y2);
+    return sout;
 }
 
 } /* namespace ndk_game */

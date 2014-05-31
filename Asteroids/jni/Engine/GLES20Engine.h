@@ -18,7 +18,7 @@ namespace ndk_game
 class GLES20Engine: public IDrawEngine
 {
 public:
-    GLES20Engine(IShaderLoader::Ptr shaderLoader, const glm::mat4& Ortho);
+    GLES20Engine(IShaderLoader::Ptr shaderLoader, const glm::mat4& Ortho, int screenW, int screenH);
     virtual ~GLES20Engine();
 
     virtual void setCurrentScene(Scene::Ptr) throw ();
@@ -34,6 +34,7 @@ private:
     GLuint _uMVP, _aPOS, _aTEX, _uTEX;
 
     glm::mat4 _ortho;
+    int _sW, _sH;
 
     Scene::Ptr _currentScene;
 

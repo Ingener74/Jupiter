@@ -12,6 +12,12 @@
 #include <Engine/Engine.h>
 using namespace ndk_game;
 
+/*
+ * Game logic files
+ */
+#include <BackGround.h>
+#include <StartButton.h>
+
 const char *TAG = "Asteroids";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__))
@@ -41,6 +47,8 @@ struct engine
  */
 
 IDrawEngine::Ptr drawEngine;
+
+Scene::Ptr startScene, mainScene;
 
 static int engine_init_display(struct engine* engine)
 {
@@ -104,7 +112,7 @@ static int engine_init_display(struct engine* engine)
 
     /*
      * 1. Start screen
-     *
+     * 2. Don't forget check Scene and start button shared cycle depened
      */
 
     try
@@ -151,115 +159,34 @@ static int engine_init_display(struct engine* engine)
                         "uniform sampler2D uTEX;"
                         "void main(){"
                         "    gl_FragColor = texture2D(uTEX, vTEX);"
-                        "}"), ortho);
+                        "}"), ortho, w, h);
 
         /*
          * Create start scene
          */
 
-        auto startScene = std::make_shared<Scene>(),
-                mainScene = std::make_shared<Scene>();
+        startScene = std::make_shared<Scene>();
+        mainScene = std::make_shared<Scene>();
 
-        class BackGround: public IGameObject
-        {
-        public:
-            BackGround(android_app * app, int screenWidth)
-            {
-                _bg = std::make_shared<Sprite>(
-                        Texture::create(
-                                std::make_shared<AssetTextureLoader>(app,
-                                        "images/bg.png")),
-                        std::make_shared<RectSpriteLoader>(screenWidth,
-                                screenWidth, 0, 0, 1, 0, 1));
-            }
-            virtual ~BackGround()
-            {
-            }
+        auto backGround = std::make_shared<BackGround>(
+                engine->app, w);
 
-            virtual void update(double elapsed) throw (std::runtime_error)
-            {
-//                _bg->getModelMatrix() = glm::translate(_bg->getModelMatrix(), glm::vec3(1.f, 0.f, 0.f));
-            }
-            virtual void input(int x, int y) throw (std::runtime_error)
-            {
-            }
-            virtual std::list<Sprite::Ptr> getSprites() const throw ()
-            {
-                return {_bg};
-            }
-        private:
-            Sprite::Ptr _bg;
-        };
-        startScene->gameObject.push_back(
-                std::make_shared<BackGround>(engine->app, w));
+        startScene->gameObject.push_back(backGround);
+        mainScene->gameObject.push_back(backGround);
 
-        class StartButton: public IGameObject
-        {
-        public:
-            StartButton(android_app * app, int screenWidth, IDrawEngine::Ptr engine, Scene::Ptr mainScene):
-                _engine(engine), _mainScene(mainScene)
-            {
-                float startButtonW = screenWidth * 0.7, startButtonH = screenWidth * 0.4;
+        startScene->gameObject.push_back(std::make_shared<StartButton>(
+                engine->app, w, drawEngine, mainScene));
 
-                _sb1 = std::make_shared<Sprite>(
-                        Texture::create(std::make_shared<AssetTextureLoader>(app, "images/start.png")),
-                        std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
-                        );
-                _sb2 = std::make_shared<Sprite>(
-                        Texture::create(std::make_shared<AssetTextureLoader>(app, "images/start_pushed.png")),
-                        std::make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 1, 0.4)
-                        );
-                _sb2->getModelMatrix() = glm::translate(_sb2->getModelMatrix(), glm::vec3(2.f, -2.f, 0.f));
+        /*
+         * Create main scene
+         */
 
-                Rect rect(-startButtonW / 2, -startButtonH / 2,
-                        startButtonW / 2, startButtonH / 2);
-
-                _rect = std::make_shared<Sprite>(
-                        Texture::create(std::make_shared<AssetTextureLoader>(app, "images/white.png")),
-                        std::make_shared<RectSpriteLoader>(rect, 2, 0, 0.91, 1, 0.4)
-                        );
-
-                _cur = _sb1;
-            }
-            virtual ~StartButton()
-            {
-                Log() << "~StartButton()";
-            }
-
-            virtual void update(double elapsed) throw (std::runtime_error)
-            {
-//                _cur->getModelMatrix() = glm::translate(_cur->getModelMatrix(), glm::vec3(1.f, 0.f, 0.f));
-//                _cur->getModelMatrix() = glm::rotate(_cur->getModelMatrix(), 0.005f, glm::vec3(0.f, 0.f, 1.f));
-            }
-            virtual void input(int x, int y) throw (std::runtime_error)
-            {
-                Log() << "Start button " << x << " x " << y;
-                if (false)
-                {
-                    static bool _clicked = false;
-                    _clicked = !_clicked;
-                    _cur = (_clicked ? _sb2 : _sb1);
-                }
-            }
-            virtual std::list<Sprite::Ptr> getSprites() const throw ()
-            {
-                return {_cur, _rect};
-            }
-        private:
-            Sprite::Ptr _sb1, _sb2, _cur, _rect;
-
-            IDrawEngine::Ptr _engine;
-            Scene::Ptr _mainScene;
-        };
-        startScene->gameObject.push_back(
-                std::make_shared<StartButton>(engine->app, w, drawEngine, mainScene));
-//
 //        float shipW = w * 0.2f, shipH = w * 0.2f;
 //        auto ship = std::make_shared<Sprite>(
 //                Texture::create(std::make_shared<AssetTextureLoader>(engine->app, "images/ship.png")),
 //                std::make_shared<RectSpriteLoader>(shipW, shipH, 2, 0, 0.5, 0, 0.5)
 //                );
-//        startScene->objects.push_back(ship);
+//        startScene->gameObject.push_back(ship);
 
         /*
          *
@@ -281,7 +208,7 @@ static int engine_init_display(struct engine* engine)
                         std::make_shared<AssetTextureLoader>(engine->app,
                                 "images/rocks.png")),
                 std::make_shared<SimpleSpriteLoader>(rV, 3));
-//        startScene->objects.push_back(rock1);
+//        mainScene->gameObject.push_back(rock1);
 
         drawEngine->setCurrentScene(startScene);
 
@@ -333,6 +260,9 @@ static void engine_draw_frame(struct engine* engine)
 static void engine_term_display(struct engine* engine)
 {
     drawEngine.reset();
+
+    startScene.reset();
+    mainScene.reset();
 
     if (engine->display != EGL_NO_DISPLAY)
     {
