@@ -21,6 +21,7 @@ public:
     virtual void update(double elapsed) throw (std::runtime_error);
     virtual void input(int x, int y) throw (std::runtime_error);
     virtual std::list<ndk_game::Sprite::Ptr> getSprites() const throw ();
+    virtual std::string getName() const throw ();
 
     virtual void fire() throw ();
     virtual void right() throw ();
@@ -31,6 +32,11 @@ private:
     ndk_game::Sprite::Ptr _ship, _engineFire;
 
     bool _gas;
+
+    double _mass;
+    glm::vec3 _acc;
+    glm::vec3 _vel;
+    glm::vec3 _pos;
 };
 
 #endif /* BATTLESHIP_H_ */

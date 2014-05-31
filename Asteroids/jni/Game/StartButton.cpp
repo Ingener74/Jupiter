@@ -11,7 +11,7 @@ using namespace ndk_game;
 
 StartButton::StartButton(android_app * app, int screenWidth,
         IDrawEngine::Ptr engine, Scene::Ptr mainScene) :
-        _engine(engine), _mainScene(mainScene)
+        _engine(engine), _mainScene(mainScene), _fadeOut(0)
 {
     float startButtonW = screenWidth * 0.4, startButtonH = screenWidth * 0.1;
 
@@ -41,10 +41,20 @@ StartButton::StartButton(android_app * app, int screenWidth,
     _cur = _sb1;
 }
 
+StartButton::~StartButton()
+{
+    Log() << "StartButton::~StartButton()";
+}
+
 void StartButton::update(double elapsed) throw (std::runtime_error)
 {
 //    _cur->getModelMatrix() = glm::translate(_cur->getModelMatrix(), glm::vec3(1.f, 0.f, 0.f));
 //    _cur->getModelMatrix() = glm::rotate(_cur->getModelMatrix(), 0.005f, glm::vec3(0.f, 0.f, 1.f));
+    if (_fadeOut >= 0)
+    {
+        _fadeOut -= elapsed;
+    }
+    else if (_cur == _sb2) _cur = _sb1;
 }
 void StartButton::input(int x, int y) throw (std::runtime_error)
 {
@@ -55,10 +65,8 @@ void StartButton::input(int x, int y) throw (std::runtime_error)
         if (!_engine || !_mainScene) throw std::runtime_error(
                 "engine or main scene is null");
         _engine->setCurrentScene(_mainScene);
-    }
-    else
-    {
-        _cur = _sb1;
+
+        _fadeOut = 0.1f;
     }
 }
 std::list<Sprite::Ptr> StartButton::getSprites() const throw ()
@@ -70,3 +78,7 @@ std::list<Sprite::Ptr> StartButton::getSprites() const throw ()
 #endif
 }
 
+std::string StartButton::getName() const throw ()
+{
+    return "StartButton";
+}

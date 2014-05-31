@@ -43,6 +43,7 @@ AssetShaderLoader::AssetShaderLoader(AAssetManager* aMgr, const std::string& vf,
 
 AssetShaderLoader::~AssetShaderLoader()
 {
+    Log() << "AssetShaderLoader::~AssetShaderLoader()";
 }
 
 const char* AssetShaderLoader::getVertexShader() const

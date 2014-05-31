@@ -26,6 +26,7 @@ BattleShip::BattleShip(android_app * app, int screenWidth) :
 
 BattleShip::~BattleShip()
 {
+    Log() << "BattleShip::~BattleShip()";
 }
 
 void BattleShip::update(double elapsed) throw (std::runtime_error)
@@ -63,6 +64,11 @@ void BattleShip::left() throw ()
     m = glm::rotate(m, -0.1f, glm::vec3(0.f, 0.f, 1.f));
 
     _ship->getModelMatrix() = _engineFire->getModelMatrix() = m;
+}
+
+std::string BattleShip::getName() const throw ()
+{
+    return "BattleShip";
 }
 
 void BattleShip::gas() throw ()

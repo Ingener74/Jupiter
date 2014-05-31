@@ -9,7 +9,7 @@
 
 using namespace ndk_game;
 
-LeftButton::LeftButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs)
+LeftButton::LeftButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 {
     float w = screenWidth * 0.18f, x = -screenWidth/2 + w/2, y = -screenHeight/2 + w/2;
 
@@ -40,10 +40,16 @@ LeftButton::LeftButton(android_app * app, int screenWidth, int screenHeight, Bat
 
 LeftButton::~LeftButton()
 {
+    Log() << "LeftButton::~LeftButton()";
 }
 
 void LeftButton::update(double elapsed) throw (std::runtime_error)
 {
+    if (_fadeOut >= 0)
+    {
+        _fadeOut -= elapsed;
+    }
+    else if (_cur == _pushed) _cur = _norm;
 }
 
 void LeftButton::input(int x, int y) throw (std::runtime_error)
@@ -54,11 +60,9 @@ void LeftButton::input(int x, int y) throw (std::runtime_error)
 
         if (!_bs) throw std::runtime_error("battle ship is null");
         _bs->left();
-    }
-    else
-    {
-        _cur = _norm;
-    }
+
+        _fadeOut = 0.1f;
+   }
 }
 
 std::list<ndk_game::Sprite::Ptr> LeftButton::getSprites() const throw ()
@@ -70,4 +74,7 @@ std::list<ndk_game::Sprite::Ptr> LeftButton::getSprites() const throw ()
 #endif
 }
 
-
+std::string LeftButton::getName() const throw ()
+{
+    return "LeftButton";
+}

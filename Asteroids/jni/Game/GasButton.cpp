@@ -9,7 +9,7 @@
 
 using namespace ndk_game;
 
-GasButton::GasButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs)
+GasButton::GasButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 {
     float w = screenWidth * 0.18f, x = -screenWidth/2 + w/2, y = screenHeight/2 - w/2;
 
@@ -40,10 +40,16 @@ GasButton::GasButton(android_app * app, int screenWidth, int screenHeight, Battl
 
 GasButton::~GasButton()
 {
+    Log() << "GasButton::~GasButton()";
 }
 
 void GasButton::update(double elapsed) throw (std::runtime_error)
 {
+    if (_fadeOut >= 0)
+    {
+        _fadeOut -= elapsed;
+    }
+    else if (_cur == _pushed) _cur = _norm;
 }
 
 void GasButton::input(int x, int y) throw (std::runtime_error)
@@ -54,10 +60,8 @@ void GasButton::input(int x, int y) throw (std::runtime_error)
 
         if (!_bs) throw std::runtime_error("battle ship is null");
         _bs->gas();
-    }
-    else
-    {
-        _cur = _norm;
+
+        _fadeOut = 0.1f;
     }
 }
 
@@ -68,4 +72,9 @@ std::list<ndk_game::Sprite::Ptr> GasButton::getSprites() const throw ()
 #else
     return {_cur};
 #endif
+}
+
+std::string GasButton::getName() const throw ()
+{
+    return "GasButton";
 }

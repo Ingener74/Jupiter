@@ -96,29 +96,29 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
 
 GameBuilder::~GameBuilder()
 {
+    Log() << "GameBuilder::~GameBuilder()";
 }
 
-std::tuple<void*, int> GameBuilder::saveGame()
+std::tuple<void*, size_t> GameBuilder::saveGame()
 {
+    size_t savedStateSize = 0;
     uint8_t * savedState = new uint8_t[sizeof(testSavedState)];
-    int savedStateSize = 0;
 
     /*
      * Save game here
      */
 
-    Log() << "Saving game to " << savedState;
+    Log() << "Saving game to " << std::hex << reinterpret_cast<int>(savedState);
 
-    testSavedState += 10;
+//    testSavedState += 10;
 
-//    *(reinterpret_cast<int*>(savedState)) = testSavedState;
-    memcpy(savedState, &testSavedState, sizeof(testSavedState));
+//    memcpy(savedState, &testSavedState, sizeof(testSavedState));
 
     Log() << "test saved";
 
     savedStateSize = sizeof(testSavedState);
 
-    return std::tuple<void*, int>(savedState, savedStateSize);
+    return std::tuple<void*, size_t>(savedState, savedStateSize);
 }
 
 ndk_game::IDrawEngine::Ptr GameBuilder::getEngine() const

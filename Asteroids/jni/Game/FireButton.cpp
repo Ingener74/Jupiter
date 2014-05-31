@@ -9,7 +9,7 @@
 
 using namespace ndk_game;
 
-FireButton::FireButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs)
+FireButton::FireButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 {
     float w = screenWidth * 0.18f, x = screenWidth/2 - w/2, y = screenHeight/2 - w/2;
 
@@ -40,10 +40,16 @@ FireButton::FireButton(android_app * app, int screenWidth, int screenHeight, Bat
 
 FireButton::~FireButton()
 {
+    Log() << "FireButton::~FireButton()";
 }
 
 void FireButton::update(double elapsed) throw (std::runtime_error)
 {
+    if (_fadeOut >= 0)
+    {
+        _fadeOut -= elapsed;
+    }
+    else if (_cur == _pushed) _cur = _norm;
 }
 
 void FireButton::input(int x, int y) throw (std::runtime_error)
@@ -54,10 +60,8 @@ void FireButton::input(int x, int y) throw (std::runtime_error)
 
         if (!_bs) throw std::runtime_error("battle ship is null");
         _bs->fire();
-    }
-    else
-    {
-        _cur = _norm;
+
+        _fadeOut = 0.1f;
     }
 }
 
@@ -68,4 +72,9 @@ std::list<ndk_game::Sprite::Ptr> FireButton::getSprites() const throw ()
 #else
     return {_cur};
 #endif
+}
+
+std::string FireButton::getName() const throw ()
+{
+    return "FireButton";
 }

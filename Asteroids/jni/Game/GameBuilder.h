@@ -19,7 +19,7 @@ public:
     GameBuilder(void *savedState, int savedStateSize, int screenWidth, int screenHeight, android_app*);
     virtual ~GameBuilder();
 
-    std::tuple<void *, int> saveGame();
+    std::tuple<void *, size_t> saveGame();
 
     ndk_game::IDrawEngine::Ptr getEngine() const throw (std::runtime_error);
 

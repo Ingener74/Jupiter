@@ -97,7 +97,10 @@ void GLES20Engine::inputToAll(int x, int y) throw ()
 {
     for (auto gameObj : _currentScene->gameObject)
     {
-        gameObj->input(x - _sW/2, _sH/2 - y);
+        if (!gameObj) throw std::runtime_error(
+                "input to all invalid game object");
+
+        gameObj->input(x - _sW / 2, _sH / 2 - y);
     }
 }
 

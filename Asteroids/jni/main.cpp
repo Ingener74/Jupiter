@@ -9,22 +9,9 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
-/*
- * Include My engine
- */
-#include <Game/GameBuilder.h>
-using namespace ndk_game;
-
 const char *TAG = "Asteroids";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__))
-
-//struct saved_state
-//{
-//    float angle;
-//    int32_t x;
-//    int32_t y;
-//};
 
 struct engine
 {
@@ -39,10 +26,14 @@ struct engine
 //    struct saved_state state;
 };
 
-/*
- * Game objects
- */
+
+
+#include <Game/GameBuilder.h>
+using namespace ndk_game;
+
 GameBuilder::Ptr game;
+
+
 
 static int engine_init_display(struct engine* engine)
 {
@@ -94,7 +85,6 @@ static int engine_init_display(struct engine* engine)
     engine->surface = surface;
     engine->width = w;
     engine->height = h;
-//    engine->state.angle = 0;
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -162,6 +152,8 @@ static void engine_draw_frame(struct engine* engine)
      */
     try
     {
+        if (!game) return;
+
         using namespace std::chrono;
         static auto tp = system_clock::now();
 
@@ -215,7 +207,9 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
 
         try
         {
+
             game->getEngine()->inputToAll(x, y);
+
         }
         catch (const std::exception& e)
         {
@@ -232,21 +226,25 @@ static void engine_handle_cmd(struct android_app* app, int32_t cmd)
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
-//            engine->app->savedState = new saved_state;
-//            *((struct saved_state*) engine->app->savedState) = engine->state;
-//            engine->app->savedStateSize = sizeof(struct saved_state);
         {
-            Log() << "Saving state";
-
-            auto savedState = game->saveGame();
-
-            Log() << "Check state " << *(static_cast<int*>(std::get<0>(savedState)));
-
-            engine->app->savedState = std::get<0>(savedState);
-            engine->app->savedStateSize = std::get<1>(savedState);
-
-            Log() << "State saved";
-
+            try
+            {
+//                Log() << "Saving state";
+//
+//                auto savedState = game->saveGame();
+//
+//                Log() << "Check state "
+//                        << *(static_cast<int*>(std::get<0>(savedState)));
+//
+//                engine->app->savedState = std::get<0>(savedState);
+//                engine->app->savedStateSize = std::get<1>(savedState);
+//
+//                Log() << "State saved";
+            }
+            catch (const std::exception& e)
+            {
+                Log() << "Saving state error: " << e.what();
+            }
             break;
         }
 

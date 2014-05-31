@@ -17,6 +17,11 @@ BackGround::BackGround(android_app * app, int screenWidth)
             );
 }
 
+BackGround::~BackGround()
+{
+    Log() << "BackGround::~BackGround()";
+}
+
 void BackGround::update(double elapsed) throw (std::runtime_error)
 {
 }
@@ -27,4 +32,10 @@ std::list<Sprite::Ptr> BackGround::getSprites() const throw ()
 {
     return
     {   _bg};
+}
+
+
+std::string BackGround::getName() const throw ()
+{
+    return "BackGround";
 }
