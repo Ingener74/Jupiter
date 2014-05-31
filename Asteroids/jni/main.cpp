@@ -211,6 +211,14 @@ static int engine_init_display(struct engine* engine)
                         );
                 _sb2->getModelMatrix() = glm::translate(_sb2->getModelMatrix(), glm::vec3(2.f, -2.f, 0.f));
 
+                Rect rect(-startButtonW / 2, -startButtonH / 2,
+                        startButtonW / 2, startButtonH / 2);
+
+                _rect = std::make_shared<Sprite>(
+                        Texture::create(std::make_shared<AssetTextureLoader>(app, "images/white.png")),
+                        std::make_shared<RectSpriteLoader>(rect, 2, 0, 0.91, 1, 0.4)
+                        );
+
                 _cur = _sb1;
             }
             virtual ~StartButton()
@@ -235,10 +243,10 @@ static int engine_init_display(struct engine* engine)
             }
             virtual std::list<Sprite::Ptr> getSprites() const throw ()
             {
-                return {_cur};
+                return {_cur, _rect};
             }
         private:
-            Sprite::Ptr _sb1, _sb2, _cur;
+            Sprite::Ptr _sb1, _sb2, _cur, _rect;
 
             IDrawEngine::Ptr _engine;
             Scene::Ptr _mainScene;

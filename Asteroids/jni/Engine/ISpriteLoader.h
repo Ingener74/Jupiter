@@ -24,7 +24,7 @@ public:
 
     enum class SpriteType
     {
-        Triangles, TriangleFan, TriangleStrip
+        Triangles, TriangleFan, TriangleStrip, LineStrip
     };
 
     virtual const float * getVertexes() const throw () = 0;

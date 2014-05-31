@@ -17,9 +17,9 @@ public:
     Rect(int x1, int y1, int x2, int y2);
     virtual ~Rect();
 
-    bool operator||(const Rect&);
+    bool operator||(const Rect&) const;
+    bool isInside(int x, int y) const;
 
-private:
     int x1, y1, x2, y2;
 };
 

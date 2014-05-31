@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 #include <functional>
 
 #include <libpng/png.h>

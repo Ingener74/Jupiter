@@ -9,6 +9,7 @@
 #define RECTSPRITELOADER_H_
 
 #include <Engine/ISpriteLoader.h>
+#include <Engine/Rect.h>
 
 namespace ndk_game
 {
@@ -18,6 +19,8 @@ class RectSpriteLoader: public ISpriteLoader
 public:
     RectSpriteLoader(float w, float h, float z, float tx1, float tx2, float ty1,
             float ty2);
+    RectSpriteLoader(Rect rect, float z, float tx1, float tx2, float ty1,
+            float ty2);
     virtual ~RectSpriteLoader();
 
     virtual const float * getVertexes() const throw ();
@@ -26,6 +29,7 @@ public:
 
 private:
     float _data[6 * 5];
+    ISpriteLoader::SpriteType _type;
 };
 
 } /* namespace ndk_game */

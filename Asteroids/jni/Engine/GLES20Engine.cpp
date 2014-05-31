@@ -77,6 +77,9 @@ void GLES20Engine::draw() throw (std::runtime_error)
                 case ISpriteLoader::SpriteType::TriangleStrip:
                     drawType = GL_TRIANGLE_STRIP;
                     break;
+                case ISpriteLoader::SpriteType::LineStrip:
+                    drawType = GL_LINE_STRIP;
+                    break;
                 default:
                     break;
             }
