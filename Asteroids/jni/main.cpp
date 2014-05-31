@@ -12,27 +12,19 @@
 /*
  * Include My engine
  */
-#include <Engine/Engine.h>
+#include <Game/GameBuilder.h>
 using namespace ndk_game;
-
-/*
- * Game logic files
- */
-#include <BackGround.h>
-#include <StartButton.h>
-#include <BattleShip.h>
-#include <FireButton.h>
 
 const char *TAG = "Asteroids";
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__))
 
-struct saved_state
-{
-    float angle;
-    int32_t x;
-    int32_t y;
-};
+//struct saved_state
+//{
+//    float angle;
+//    int32_t x;
+//    int32_t y;
+//};
 
 struct engine
 {
@@ -44,16 +36,13 @@ struct engine
     EGLContext context;
     int32_t width;
     int32_t height;
-    struct saved_state state;
+//    struct saved_state state;
 };
 
 /*
  * Game objects
  */
-
-IDrawEngine::Ptr drawEngine;
-
-Scene::Ptr startScene, mainScene;
+GameBuilder::Ptr game;
 
 static int engine_init_display(struct engine* engine)
 {
@@ -105,7 +94,7 @@ static int engine_init_display(struct engine* engine)
     engine->surface = surface;
     engine->width = w;
     engine->height = h;
-    engine->state.angle = 0;
+//    engine->state.angle = 0;
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -116,7 +105,6 @@ static int engine_init_display(struct engine* engine)
     glViewport(0, 0, w, h);
 
     /*
-     * 1. Start screen
      * 2. Don't forget check Scene and start button shared cycle depened
      */
 
@@ -140,82 +128,12 @@ static int engine_init_display(struct engine* engine)
                 LOGD("%s", message.c_str());
             }
         };
-
         Log::pushLog(std::make_shared<AndLog>());
-        Log() << "Load resources...";
 
-        Log() << "View port " << w << " x " << h;
+        Log() << "Creating game";
 
-        glm::mat4 ortho = glm::ortho<float>(-w / 2, w / 2, -h / 2, h / 2, -100,
-                100);
-
-        drawEngine = std::make_shared<GLES20Engine>(
-                std::make_shared<SimpleShaderLoader>(
-                        "uniform   mat4  uMVP;"
-                        "attribute vec4  aPOS;"
-                        "attribute vec2  aTEX;"
-                        "varying   vec2  vTEX;"
-                        "void main(){"
-                        "    gl_Position = uMVP * aPOS;"
-                        "    vTEX = aTEX;"
-                        "}",
-                        "precision mediump float;"
-                        "varying vec2      vTEX;"
-                        "uniform sampler2D uTEX;"
-                        "void main(){"
-                        "    gl_FragColor = texture2D(uTEX, vTEX);"
-                        "}"), ortho, w, h);
-
-        /*
-         * Create start scene
-         */
-
-        startScene = std::make_shared<Scene>();
-        mainScene = std::make_shared<Scene>();
-
-        auto backGround = std::make_shared<BackGround>(
-                engine->app, w);
-
-        startScene->gameObject.push_back(backGround);
-        mainScene->gameObject.push_back(backGround);
-
-        startScene->gameObject.push_back(std::make_shared<StartButton>(
-                engine->app, w, drawEngine, mainScene));
-
-        /*
-         * Create main scene
-         */
-        auto battleShip = std::make_shared<BattleShip>(
-                engine->app, w);
-
-        mainScene->gameObject.push_back(battleShip);
-
-        mainScene->gameObject.push_back(std::make_shared<FireButton>(
-                engine->app, w, h, battleShip));
-
-        /*
-         *
-         *           1
-         *           0 R
-         *
-         *
-         *          0 0
-         *
-         *
-         * 2                   3
-         * -R -R               R -R
-         */
-        float R = 100.3f, rV[]
-        { 0.f, R, 1.f, 0.1f, 0.4f, -R, -R, 1.f, 0.2f, 0.5f, R, -R, 1.f, 0.1f,
-                0.2f };
-        auto rock1 = std::make_shared<Sprite>(
-                Texture::create(
-                        std::make_shared<AssetTextureLoader>(engine->app,
-                                "images/rocks.png")),
-                std::make_shared<SimpleSpriteLoader>(rV, 3));
-//        mainScene->gameObject.push_back(rock1);
-
-        drawEngine->setCurrentScene(startScene);
+        game = std::make_shared<GameBuilder>(
+                engine->app->savedState, engine->app->savedStateSize, w, h, engine->app);
 
         engine->animating = 1;
 
@@ -223,7 +141,7 @@ static int engine_init_display(struct engine* engine)
     }
     catch (std::exception const & e)
     {
-        Log(ERROR) << "Load resource error: " << e.what();
+        Log(ERROR) << "Creating game error: " << e.what();
     }
 
     return 0;
@@ -248,11 +166,11 @@ static void engine_draw_frame(struct engine* engine)
         static auto tp = system_clock::now();
 
         auto now = system_clock::now();
-        drawEngine->animateAll(
+        game->getEngine()->animateAll(
                 duration_cast<microseconds>(now - tp).count() / 1000000.0);
         tp = now;
 
-        if (drawEngine) drawEngine->draw();
+        game->getEngine()->draw();
     }
     catch (const std::exception& e)
     {
@@ -264,10 +182,7 @@ static void engine_draw_frame(struct engine* engine)
 
 static void engine_term_display(struct engine* engine)
 {
-    drawEngine.reset();
-
-    startScene.reset();
-    mainScene.reset();
+    game.reset();
 
     if (engine->display != EGL_NO_DISPLAY)
     {
@@ -298,7 +213,14 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
         int x = AMotionEvent_getX(event, i);
         int y = AMotionEvent_getY(event, i);
 
-        drawEngine->inputToAll(x, y);
+        try
+        {
+            game->getEngine()->inputToAll(x, y);
+        }
+        catch (const std::exception& e)
+        {
+            Log() << "Input error: " << e.what();
+        }
     }
 
     return 0;
@@ -310,10 +232,24 @@ static void engine_handle_cmd(struct android_app* app, int32_t cmd)
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
-            engine->app->savedState = new saved_state;
-            *((struct saved_state*) engine->app->savedState) = engine->state;
-            engine->app->savedStateSize = sizeof(struct saved_state);
+//            engine->app->savedState = new saved_state;
+//            *((struct saved_state*) engine->app->savedState) = engine->state;
+//            engine->app->savedStateSize = sizeof(struct saved_state);
+        {
+            Log() << "Saving state";
+
+            auto savedState = game->saveGame();
+
+            Log() << "Check state " << *(static_cast<int*>(std::get<0>(savedState)));
+
+            engine->app->savedState = std::get<0>(savedState);
+            engine->app->savedStateSize = std::get<1>(savedState);
+
+            Log() << "State saved";
+
             break;
+        }
+
         case APP_CMD_INIT_WINDOW:
             if (engine->app->window != NULL)
             {
@@ -345,10 +281,10 @@ void android_main(struct android_app* state)
     state->onInputEvent = engine_handle_input;
     engine.app = state;
 
-    if (state->savedState != NULL)
-    {
-        engine.state = *(struct saved_state*) state->savedState;
-    }
+//    if (state->savedState != NULL)
+//    {
+//        engine.state = *(struct saved_state*) state->savedState;
+//    }
 
     while (1)
     {
@@ -371,14 +307,14 @@ void android_main(struct android_app* state)
             }
         }
 
-        if (engine.animating)
-        {
-            engine.state.angle += .01f;
-            if (engine.state.angle > 1)
-            {
-                engine.state.angle = 0;
-            }
-            engine_draw_frame(&engine);
-        }
+//        if (engine.animating)
+//        {
+//            engine.state.angle += .01f;
+//            if (engine.state.angle > 1)
+//            {
+//                engine.state.angle = 0;
+//            }
+//        }
+        engine_draw_frame(&engine);
     }
 }

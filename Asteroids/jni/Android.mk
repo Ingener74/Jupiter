@@ -24,10 +24,15 @@ LOCAL_SRC_FILES :=                      \
     Engine/RectSpriteLoader.cpp         \
     Engine/Rect.cpp                     \
                                         \
-    BackGround.cpp                      \
-    StartButton.cpp                     \
-    BattleShip.cpp                      \
-    FireButton.cpp                      \
+    Game/GameBuilder.cpp                \
+    Game/AssetShaderLoader.cpp          \
+    Game/BackGround.cpp                 \
+    Game/StartButton.cpp                \
+    Game/BattleShip.cpp                 \
+    Game/FireButton.cpp                 \
+    Game/RightButton.cpp                \
+    Game/LeftButton.cpp                 \
+    Game/GasButton.cpp                  \
                                         \
     main.cpp                            \
 

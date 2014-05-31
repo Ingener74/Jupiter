@@ -23,6 +23,9 @@ public:
     virtual std::list<ndk_game::Sprite::Ptr> getSprites() const throw ();
 
     virtual void fire() throw ();
+    virtual void right() throw ();
+    virtual void left() throw ();
+    virtual void gas() throw ();
 
 private:
     ndk_game::Sprite::Ptr _ship, _engineFire;

@@ -1,21 +1,21 @@
 /*
- * FireButton.h
+ * LeftButton.h
  *
  *  Created on: May 31, 2014
  *      Author: ingener
  */
 
-#ifndef FIREBUTTON_H_
-#define FIREBUTTON_H_
+#ifndef LEFTBUTTON_H_
+#define LEFTBUTTON_H_
 
 #include <Engine/Engine.h>
-#include <BattleShip.h>
+#include <Game/BattleShip.h>
 
-class FireButton: public ndk_game::IGameObject
+class LeftButton: public ndk_game::IGameObject
 {
 public:
-    FireButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr);
-    virtual ~FireButton();
+    LeftButton(android_app *, int screenWidth, int screenHeight, BattleShip::Ptr);
+    virtual ~LeftButton();
 
     virtual void update(double elapsed) throw (std::runtime_error);
     virtual void input(int x, int y) throw (std::runtime_error);
@@ -33,4 +33,4 @@ private:
     BattleShip::Ptr _bs;
 };
 
-#endif /* FIREBUTTON_H_ */
+#endif /* LEFTBUTTON_H_ */

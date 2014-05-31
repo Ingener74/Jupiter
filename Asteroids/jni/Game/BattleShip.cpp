@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <BattleShip.h>
+#include <Game/BattleShip.h>
 
 using namespace ndk_game;
 
@@ -45,4 +45,26 @@ std::list<Sprite::Ptr> BattleShip::getSprites() const throw ()
 void BattleShip::fire() throw ()
 {
     Log() << "Battle ship FIRE";
+}
+
+void BattleShip::right() throw ()
+{
+    glm::mat4 m = _ship->getModelMatrix();
+
+    m = glm::rotate(m, 0.1f, glm::vec3(0.f, 0.f, 1.f));
+
+    _ship->getModelMatrix() = _engineFire->getModelMatrix() = m;
+}
+
+void BattleShip::left() throw ()
+{
+    glm::mat4 m = _ship->getModelMatrix();
+
+    m = glm::rotate(m, -0.1f, glm::vec3(0.f, 0.f, 1.f));
+
+    _ship->getModelMatrix() = _engineFire->getModelMatrix() = m;
+}
+
+void BattleShip::gas() throw ()
+{
 }

@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <BackGround.h>
+#include <Game/BackGround.h>
 
 using namespace ndk_game;
 
