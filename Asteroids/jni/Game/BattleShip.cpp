@@ -60,6 +60,8 @@ void BattleShip::update(double elapsed) throw (std::runtime_error)
     if (_pos.y >= _screenHeight / 2) _pos.y -= _screenHeight;
     if (_pos.y <= - _screenHeight / 2) _pos.y += _screenHeight;
 
+    Log() << "battle ship position << " << _pos.x << " x " << _pos.y;
+
     glm::mat4 m = _ship->getModelMatrix();
 
     m = glm::translate(m, _pos);

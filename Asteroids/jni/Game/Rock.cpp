@@ -7,7 +7,7 @@
 
 #include <Game/Rock.h>
 
-Rock::Rock()
+Rock::Rock(android_app * app, int screenWidth, int screenHeight)
 {
 }
 
