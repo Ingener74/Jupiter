@@ -55,7 +55,7 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
     /*
      * Create main scene
      */
-    auto battleShip = std::make_shared<BattleShip>(app, w);
+    auto battleShip = std::make_shared<BattleShip>(app, w, h);
 
     mainScene->gameObject.push_back(battleShip);
 
@@ -67,6 +67,8 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
             std::make_shared<LeftButton>(app, w, h, battleShip));
     mainScene->gameObject.push_back(
             std::make_shared<GasButton>(app, w, h, battleShip));
+
+
 
     /*
      *
