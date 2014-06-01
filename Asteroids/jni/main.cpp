@@ -23,7 +23,6 @@ struct engine
     EGLContext context;
     int32_t width;
     int32_t height;
-//    struct saved_state state;
 };
 
 
@@ -93,10 +92,6 @@ static int engine_init_display(struct engine* engine)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glViewport(0, 0, w, h);
-
-    /*
-     * 2. Don't forget check Scene and start button shared cycle depened
-     */
 
     try
     {
@@ -279,11 +274,6 @@ void android_main(struct android_app* state)
     state->onInputEvent = engine_handle_input;
     engine.app = state;
 
-//    if (state->savedState != NULL)
-//    {
-//        engine.state = *(struct saved_state*) state->savedState;
-//    }
-
     while (1)
     {
         int ident;
@@ -304,15 +294,6 @@ void android_main(struct android_app* state)
                 return;
             }
         }
-
-//        if (engine.animating)
-//        {
-//            engine.state.angle += .01f;
-//            if (engine.state.angle > 1)
-//            {
-//                engine.state.angle = 0;
-//            }
-//        }
         engine_draw_frame(&engine);
     }
 }

@@ -15,15 +15,15 @@ FireButton::FireButton(android_app * app, int sw, int sh, BattleShip::Ptr bs): _
             x = sw/2 - w/2,
             y = sh/2 - w/2;
 
-    auto m = _norm->getModelMatrix();
-    m = glm::translate(m, glm::vec3(x, y, 0.f));
-
-    Log() << "fire button translate " << x << " x " << y;
 
     _norm = std::make_shared<Sprite>(
             Texture::create(std::make_shared<AssetTextureLoader>(app, "images/fire.png")),
             std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
+
+    auto m = _norm->getModelMatrix();
+    m = glm::translate(m, glm::vec3(x, y, 0.f));
+
     _norm->getModelMatrix() = m;
 
     _pushed = std::make_shared<Sprite>(

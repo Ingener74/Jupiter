@@ -7,7 +7,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := native-activity
 
-LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
+# LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
 
 LOCAL_SRC_FILES :=                      \
     Engine/Sprite.cpp                   \
@@ -33,6 +33,8 @@ LOCAL_SRC_FILES :=                      \
     Game/RightButton.cpp                \
     Game/LeftButton.cpp                 \
     Game/GasButton.cpp                  \
+    Game/Bullet.cpp                     \
+    Game/Rock.cpp                       \
                                         \
     main.cpp                            \
 
