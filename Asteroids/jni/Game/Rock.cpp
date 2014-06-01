@@ -6,53 +6,50 @@
  */
 
 #include <Game/Rock.h>
+#include <Game/Bullet.h>
 
 using namespace ndk_game;
 using namespace glm;
 using namespace std;
 
-enum{
-    MAX_PARTS = 5
-};
 
 Rock::Rock(android_app * app, int sw, int sh):
-        _angle(0), _screenWidth(sw), _screenHeight(sh)
+        _angle(0), _screenWidth(sw), _screenHeight(sh), _crash(false)
 {
-    int l = 5 + MAX_PARTS * (float(rand()) / RAND_MAX);
-    Log() << "Rock parts " << l;
+    enum{
+        MIN_PARTS = 5, PARTS = 5
+    };
+
+    int l = MIN_PARTS + PARTS * (float(rand()) / RAND_MAX);
     float R = 100.3f, *rV = new float[(l + 2) * 5];
 
-    float x = 0, y = 0;
-
     float * p = rV;
-    p[0] = x;
-    p[1] = y;
+    p[0] = 0;
+    p[1] = 0;
     p[2] = 3.f;
-    p[3] = .5f; //float(rand())/RAND_MAX;
-    p[4] = .5f; //float(rand())/RAND_MAX;
+    p[3] = .5f;
+    p[4] = .5f;
 
     p += 5;
 
     float r0 = 0, rd = 2*M_PI / l, t0 = sw * 0.05f, tl = sw * 0.02f;
 
-    Log() << "r0 = " << r0 << " rd = " << rd << " t0 = " << t0 << " tl = " << tl;
-
     for (int i = 0; i < l + 1; ++i, r0 += rd, p+= 5) {
 
         float t = t0 + tl*float(rand())/RAND_MAX;
-        p[0] = x + t*cos(r0);
-        p[1] = y + t*sin(r0);
+        p[0] = t*cos(r0);
+        p[1] = t*sin(r0);
 
         p[2] = 3.f;
 
-        p[3] = .5f + 0.5f * cos(r0); // float(rand())/RAND_MAX;
-        p[4] = .5f + 0.5f * sin(r0); // float(rand())/RAND_MAX;
+        p[3] = .5f + .45f * cos(r0);
+        p[4] = .5f + .45f * sin(r0);
 
-        Log() << "p0 " << p[0] << " p1 " << p[1] << " p2 " << p[2] << " p3 " << p[3] << " p4 " << p[4];
+//        Log() << i << " p0 " << setw(13) << p[0] << " p1 " << setw(13) << p[1] << " p2 " << setw(13) << p[2] << " p3 " << setw(13) << p[3] << " p4 " << setw(13) << p[4];
     }
 
     _rock = make_shared<Sprite>(
-            loadTexture(app),
+            Texture::create(make_shared<AssetTextureLoader>(app, "images/rocks.png")),
             make_shared<SimpleSpriteLoader>(rV, l + 2, ISpriteLoader::SpriteType::TriangleFan)
             );
 
@@ -70,30 +67,14 @@ Rock::Rock(android_app * app, int sw, int sh):
     _rockRect = Rect(-t0, -t0, t0, t0);
 
 #ifdef NDK_GAME_DEBUG
-    _rect = make_shared<Sprite>(loadTextureRect(app), createSpriteRect(_rockRect));
+    _rect = make_shared<Sprite>(
+            Texture::create(make_shared<AssetTextureLoader>(app, "images/white.png")),
+            make_shared<RectSpriteLoader>(_rockRect, 11, 0, 1, 0, 1));
 #endif
 }
 
 Rock::~Rock()
 {
-}
-
-Texture::Ptr Rock::loadTexture(android_app* app)
-{
-    static auto rt = Texture::create(make_shared<AssetTextureLoader>(app, "images/rocks.png"));
-    return rt;
-}
-
-Texture::Ptr Rock::loadTextureRect(android_app* app)
-{
-    static auto t = Texture::create(make_shared<AssetTextureLoader>(app, "images/white.png"));
-    return t;
-}
-
-ISpriteLoader::Ptr Rock::createSpriteRect(const Rect& r)
-{
-    static auto s = make_shared<RectSpriteLoader>(r, 11, 0, 1, 0, 1);
-    return s;
 }
 
 void Rock::update(double elapsed) throw (runtime_error)
@@ -116,10 +97,6 @@ void Rock::update(double elapsed) throw (runtime_error)
     _rock->getModelMatrix() = m;
 }
 
-void Rock::input(int x, int y) throw (runtime_error)
-{
-}
-
 list<Sprite::Ptr> Rock::getSprites() const throw ()
 {
 #ifdef NDK_GAME_DEBUG
@@ -132,4 +109,27 @@ list<Sprite::Ptr> Rock::getSprites() const throw ()
 string Rock::getName() const throw ()
 {
     return "Rock";
+}
+
+void Rock::collision(IGameObject::Ptr obj) throw (std::runtime_error)
+{
+    if(obj->getName() != "Bullet")
+        return;
+
+    if((_rockRect + _pos) || dynamic_cast<Bullet*>(obj.get())->getRect()){
+
+        Log() << "I am crash";
+
+        _crash = true;
+    }
+}
+
+bool Rock::removeMe() const throw ()
+{
+    return _crash;
+}
+
+ndk_game::Rect Rock::getRect() const
+{
+    return (_rockRect + _pos);
 }

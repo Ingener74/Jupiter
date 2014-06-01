@@ -68,6 +68,8 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
 
     startScene = make_shared<Scene>();
     mainScene = make_shared<Scene>();
+    winScene = make_shared<Scene>();
+    failScene = make_shared<Scene>();
 
     auto backGround = make_shared<BackGround>(app, w);
 
@@ -80,7 +82,7 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
     /*
      * Create main scene
      */
-    auto battleShip = make_shared<BattleShip>(app, w, h, mainScene);
+    auto battleShip = make_shared<BattleShip>(app, w, h, mainScene, failScene, drawEngine);
 
     mainScene->gameObject.push_back(battleShip);
 
@@ -95,6 +97,12 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
 
     mainScene->gameObject.push_back(
             make_shared<Rock>(app, w, h));
+    mainScene->gameObject.push_back(
+            make_shared<Rock>(app, w, h));
+
+    winScene->gameObject.push_back(backGround);
+
+    failScene->gameObject.push_back(backGround);
 
     drawEngine->setCurrentScene(startScene);
 }

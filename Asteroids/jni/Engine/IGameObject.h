@@ -24,9 +24,19 @@ public:
     }
 
     virtual void update(double elapsed) throw (std::runtime_error) = 0;
-    virtual void input(int x, int y) throw (std::runtime_error) = 0;
     virtual std::list<Sprite::Ptr> getSprites() const throw () = 0;
     virtual std::string getName() const throw () = 0;
+
+    virtual void input(int x, int y) throw (std::runtime_error)
+    {
+    }
+    virtual void collision(IGameObject::Ptr) throw (std::runtime_error)
+    {
+    }
+    virtual bool removeMe() const throw ()
+    {
+        return false;
+    }
 
 protected:
     IGameObject()

@@ -7,6 +7,7 @@
 
 #include <Game/BattleShip.h>
 #include <Game/Bullet.h>
+#include <Game/Rock.h>
 
 using namespace ndk_game;
 using namespace glm;
@@ -14,9 +15,14 @@ using namespace std;
 
 #define EPS 0.00001f
 
-BattleShip::BattleShip(android_app * app, int screenWidth, int screenHeight, ndk_game::Scene::Ptr ps) :
-        _app(app),
-        _gas(false), _mass(10.f), _angle(0), _screenWidth(screenWidth), _screenHeight(screenHeight), _parentScene(ps)
+BattleShip::BattleShip(android_app * app, int screenWidth, int screenHeight,
+        std::weak_ptr<ndk_game::Scene> parent,
+        std::weak_ptr<ndk_game::Scene> fail,
+        std::weak_ptr<ndk_game::IDrawEngine> e):
+
+        _app(app), _gas(false), _mass(10.f), _angle(0),
+        _screenWidth(screenWidth), _screenHeight(screenHeight),
+        _parentScene(parent), _failScene(fail), _engine(e), _armed(0), _life(3), _shield(0)
 {
     float shipSize = screenWidth * 0.1f;
 
@@ -48,6 +54,15 @@ BattleShip::~BattleShip()
 
 void BattleShip::update(double elapsed) throw (runtime_error)
 {
+    if (_armed > EPS)
+    {
+        _armed -= elapsed;
+    }
+    if (_shield > EPS)
+    {
+        _shield -= elapsed;
+    }
+
     _theForce = vec3(_theForce.x * .5f, _theForce.y * .5f, 0.f);
 
     if (abs(_theForce.x) < .05f && abs(_theForce.y) < .05f) _gas =
@@ -76,10 +91,6 @@ void BattleShip::update(double elapsed) throw (runtime_error)
     _engineFire->getModelMatrix() = m;
 }
 
-void BattleShip::input(int x, int y) throw (runtime_error)
-{
-}
-
 list<Sprite::Ptr> BattleShip::getSprites() const throw ()
 {
 #ifdef NDK_GAME_DEBUG
@@ -93,20 +104,23 @@ list<Sprite::Ptr> BattleShip::getSprites() const throw ()
 
 void BattleShip::fire() throw ()
 {
-    Log() << "Battle ship FIRE";
-    _parentScene->gameObject.push_back(
-            make_shared<Bullet>(_app, _screenWidth, _screenHeight, _pos.x, _pos.y, _angle)
-            );
+    if (_armed < EPS)
+    {
+        if (auto p = _parentScene.lock()) p->gameObject.push_back(
+                make_shared<Bullet>(_app, _screenWidth, _screenHeight, _pos.x,
+                        _pos.y, _angle));
+        _armed = .5f;
+    }
 }
 
 void BattleShip::right() throw ()
 {
-    _angle -= 0.1f;
+    _angle -= 0.05f;
 }
 
 void BattleShip::left() throw ()
 {
-    _angle += 0.1f;
+    _angle += 0.05f;
 }
 
 string BattleShip::getName() const throw ()
@@ -114,9 +128,27 @@ string BattleShip::getName() const throw ()
     return "BattleShip";
 }
 
+void BattleShip::collision(IGameObject::Ptr o) throw (std::runtime_error)
+{
+    if (o->getName() != "Rock") return;
+
+    if((_shipRect + _pos) || dynamic_cast<Rock*>(o.get())->getRect()){
+
+        Log() << "battle ship collision " << (_shipRect + _pos) << "  ===  " << dynamic_cast<Rock*>(o.get())->getRect();
+
+        if (_shield > EPS) if (--_life) if (auto eng = _engine.lock())
+        {
+            Log() << "Battle ship fail";
+
+            eng->setCurrentScene(_failScene.lock());
+            _shield = 3.f;
+        }
+    }
+}
+
 void BattleShip::gas() throw ()
 {
-    float f = 500.f;
+    float f = 2000.f;
     _theForce = _theForce + vec3(f * sin(_angle), -f * cos(_angle), 0.f);
 
     _gas = true;

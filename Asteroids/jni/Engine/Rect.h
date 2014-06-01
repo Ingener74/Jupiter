@@ -8,6 +8,8 @@
 #ifndef RECT_H_
 #define RECT_H_
 
+#include <Engine/Common.h>
+
 namespace ndk_game
 {
 
@@ -19,10 +21,12 @@ public:
 
     bool operator||(const Rect&) const;
     bool isInside(int x, int y) const;
+    Rect& operator+(const glm::vec3&);
 
     int x1, y1, x2, y2;
 };
 
+Rect operator+(const Rect&, const glm::vec3&);
 std::ostream& operator<<(std::ostream&, const Rect&);
 
 } /* namespace ndk_game */

@@ -25,9 +25,12 @@ public:
 #endif
 
     virtual void update(double elapsed) throw (std::runtime_error);
-    virtual void input(int x, int y) throw (std::runtime_error);
     virtual std::list<ndk_game::Sprite::Ptr> getSprites() const throw ();
     virtual std::string getName() const throw ();
+
+    virtual ndk_game::Rect getRect() const throw ();
+
+    virtual bool removeMe() const throw ();
 
 private:
     ndk_game::Sprite::Ptr _bullet;

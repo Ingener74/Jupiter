@@ -34,6 +34,7 @@ GLES20Engine::~GLES20Engine()
 
 void GLES20Engine::setCurrentScene(Scene::Ptr s) throw ()
 {
+    if (!s) throw std::runtime_error("set current scene null");
     _currentScene = s;
 }
 
@@ -110,6 +111,22 @@ void GLES20Engine::animateAll(double elapsedMs) throw (std::runtime_error)
     {
         gameObj->update(elapsedMs);
     }
+
+    for (auto go1 : _currentScene->gameObject)
+    {
+        for (auto go2 : _currentScene->gameObject)
+        {
+            if (go1 == go2) continue;
+            go1->collision(go2);
+        }
+    }
+
+    std::list<IGameObject::Ptr> gameObjs;
+    for (auto o : _currentScene->gameObject)
+    {
+        if (!o->removeMe()) gameObjs.push_back(o);
+    }
+    _currentScene->gameObject = gameObjs;
 }
 
 GLuint GLES20Engine::createShader(GLenum shaderType, const char* source)

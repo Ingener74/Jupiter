@@ -15,13 +15,17 @@ class BattleShip: public ndk_game::IGameObject
 public:
     using Ptr = std::shared_ptr<BattleShip>;
 
-    BattleShip(android_app * app, int screenWidth, int screenHeight, ndk_game::Scene::Ptr);
+    BattleShip(android_app * app, int screenWidth, int screenHeight,
+            std::weak_ptr<ndk_game::Scene> mainScene,
+            std::weak_ptr<ndk_game::Scene> failScene,
+            std::weak_ptr<ndk_game::IDrawEngine>);
     virtual ~BattleShip();
 
     virtual void update(double elapsed) throw (std::runtime_error);
-    virtual void input(int x, int y) throw (std::runtime_error);
     virtual std::list<ndk_game::Sprite::Ptr> getSprites() const throw ();
     virtual std::string getName() const throw ();
+
+    virtual void collision(IGameObject::Ptr) throw (std::runtime_error);
 
     virtual void fire() throw ();
     virtual void right() throw ();
@@ -45,8 +49,14 @@ private:
 
     int _screenWidth, _screenHeight;
 
-    ndk_game::Scene::Ptr _parentScene;
+    std::weak_ptr<ndk_game::Scene> _parentScene, _failScene;
+    std::weak_ptr<ndk_game::IDrawEngine> _engine;
 
+//    std::weak_ptr<ndk_game::Scene> _parentScene;
+
+    float _armed;
+    int _life;
+    float _shield;
 
     ndk_game::Rect _shipRect;
 #ifdef NDK_GAME_DEBUG

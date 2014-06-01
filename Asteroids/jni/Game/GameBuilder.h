@@ -25,7 +25,7 @@ public:
 
 private:
     ndk_game::IDrawEngine::Ptr drawEngine;
-    ndk_game::Scene::Ptr startScene, mainScene;
+    ndk_game::Scene::Ptr startScene, mainScene, winScene, failScene;
 
     int testSavedState;
 };

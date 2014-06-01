@@ -43,7 +43,7 @@ Texture::Ptr Bullet::loadTexture(android_app * app)
 
 ISpriteLoader::Ptr Bullet::createSprite(int w, int h)
 {
-    static auto s = make_shared<RectSpriteLoader>(w, h, 3, 0, 66.f/128.f, 0, 1);
+    static auto s = make_shared<RectSpriteLoader>(w, h, 6, 0, 66.f/128.f, 0, 1);
     return s;
 }
 
@@ -65,11 +65,6 @@ void Bullet::update(double elapsed) throw (runtime_error)
 {
     _pos = _pos + _vel * float(elapsed);
 
-    if (_pos.x >= _screenWidth / 2) _pos.x -= _screenWidth;
-    if (_pos.x <= - _screenWidth / 2) _pos.x += _screenWidth;
-    if (_pos.y >= _screenHeight / 2) _pos.y -= _screenHeight;
-    if (_pos.y <= - _screenHeight / 2) _pos.y += _screenHeight;
-
     auto m = translate(mat4(), _pos);
 
 #ifdef NDK_GAME_DEBUG
@@ -80,10 +75,6 @@ void Bullet::update(double elapsed) throw (runtime_error)
 
     _bullet->getModelMatrix() = m;
 
-}
-
-void Bullet::input(int x, int y) throw (runtime_error)
-{
 }
 
 list<ndk_game::Sprite::Ptr> Bullet::getSprites() const throw ()
@@ -99,4 +90,18 @@ list<ndk_game::Sprite::Ptr> Bullet::getSprites() const throw ()
 string Bullet::getName() const throw ()
 {
     return "Bullet";
+}
+
+ndk_game::Rect Bullet::getRect() const throw ()
+{
+    return (_bulletRect + _pos);
+}
+
+bool Bullet::removeMe() const throw ()
+{
+//    if (_pos.x >= _screenWidth / 2) return true;
+//    if (_pos.x <= -_screenWidth / 2) return true;
+//    if (_pos.y >= _screenHeight / 2) return true;
+//    if (_pos.y <= -_screenHeight / 2) return true;
+    return false;
 }
