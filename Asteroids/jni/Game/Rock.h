@@ -20,11 +20,10 @@ public:
             std::weak_ptr<ndk_game::IDrawEngine> engine,
             std::weak_ptr<ndk_game::Scene> winScene,
             std::weak_ptr<ndk_game::Scene> main,
+            std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
+            ndk_game::Texture::Ptr rockTex,
             glm::vec3 pos,
             bool second = false);
-
-    static ndk_game::Texture::Ptr loadTexture(android_app*);
-    static ndk_game::Texture::Ptr loadTextureRect(android_app*);
 
     virtual ~Rock();
 
@@ -42,6 +41,8 @@ private:
             std::weak_ptr<ndk_game::IDrawEngine> engine,
             std::weak_ptr<ndk_game::Scene> winScene,
             std::weak_ptr<ndk_game::Scene> main,
+            std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
+            ndk_game::Texture::Ptr rockTex,
             glm::vec3 pos,
             bool second);
 
@@ -57,14 +58,13 @@ private:
     bool _crash;
 
     ndk_game::Rect _rockRect;
-#ifdef NDK_GAME_DEBUG
-    ndk_game::Sprite::Ptr _rect;
-#endif
 
     static int rocks;
     std::weak_ptr<ndk_game::IDrawEngine> _engine;
     std::weak_ptr<ndk_game::Scene> _winScene;
     std::weak_ptr<ndk_game::Scene> _main;
+    std::shared_ptr<ndk_game::ISoundEngine> _soundEngine;
+    ndk_game::Texture::Ptr _rockTex;
 };
 
 #endif /* ROCK_H_ */

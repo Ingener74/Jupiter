@@ -18,7 +18,9 @@ public:
     BattleShip(android_app * app, int screenWidth, int screenHeight,
             std::weak_ptr<ndk_game::Scene> mainScene,
             std::weak_ptr<ndk_game::Scene> failScene,
-            std::weak_ptr<ndk_game::IDrawEngine>);
+            std::weak_ptr<ndk_game::IDrawEngine>,
+            std::shared_ptr<ndk_game::ISoundEngine> soundEngine);
+
     virtual ~BattleShip();
 
     virtual void update(double elapsed) throw (std::runtime_error);
@@ -60,6 +62,10 @@ private:
 #ifdef NDK_GAME_DEBUG
     ndk_game::Sprite::Ptr _rect;
 #endif
+
+    std::shared_ptr<ndk_game::ISoundEngine> _soundEngine;
+
+    ndk_game::Texture::Ptr _bulletTex;
 };
 
 #endif /* BATTLESHIP_H_ */

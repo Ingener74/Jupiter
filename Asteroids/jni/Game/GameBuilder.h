@@ -28,6 +28,7 @@ public:
 private:
     ndk_game::IDrawEngine::Ptr drawEngine;
     ndk_game::Scene::Ptr startScene, mainScene, winScene, failScene;
+    ndk_game::Texture::Ptr _rockTex;
 
     ndk_game::ISound::Ptr _background;
 

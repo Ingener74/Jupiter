@@ -84,6 +84,9 @@ void SLESSound::play(bool loop) throw (std::runtime_error)
     lRes = (*_playerSeek)->SetLoop(_playerSeek, loop/*SL_BOOLEAN_TRUE*/, 0, SL_TIME_UNKNOWN);
     if (lRes != SL_RESULT_SUCCESS) throw std::runtime_error("can't set loop");
 
+//    lRes = (*_playerSeek)->SetPosition(_playerSeek, 0, SL_SEEKMODE_FAST);
+//    if (lRes != SL_RESULT_SUCCESS) throw std::runtime_error("can't seek");
+
     lRes = (*_player)->SetPlayState(_player, SL_PLAYSTATE_PLAYING);
     if (lRes != SL_RESULT_SUCCESS) throw std::runtime_error("can't play");
 }

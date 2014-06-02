@@ -23,7 +23,7 @@ public:
     {
     }
 
-    ISound::Ptr loadSound(const std::string& file);
+    virtual ISound::Ptr loadSound(const std::string& file) = 0;
 
 protected:
     ISoundEngine()

@@ -21,6 +21,8 @@ std::list<Rock::Ptr> Rock::createRock(android_app* app,
         std::weak_ptr<ndk_game::IDrawEngine> engine,
         std::weak_ptr<ndk_game::Scene> winScene,
         std::weak_ptr<ndk_game::Scene> main,
+        std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
+        ndk_game::Texture::Ptr rockTex,
         glm::vec3 pos,
         bool second)
 {
@@ -32,38 +34,29 @@ std::list<Rock::Ptr> Rock::createRock(android_app* app,
         while (--n)
         {
             rocks_.push_back(shared_ptr<Rock>(new Rock(
-                    app, screenWidth, screenHeight, engine, winScene, main, pos, second)));
+                    app, screenWidth, screenHeight, engine, winScene, main, soundEngine, rockTex, pos, second)));
         }
     }
     else
     {
         rocks_.push_back(shared_ptr<Rock>(new Rock(
-                app, screenWidth, screenHeight, engine, winScene, main, pos, second)));
+                app, screenWidth, screenHeight, engine, winScene, main, soundEngine, rockTex, pos, second)));
     }
     return rocks_;
-}
-
-ndk_game::Texture::Ptr Rock::loadTexture(android_app* app)
-{
-    static auto t = Texture::create(make_shared<AssetTextureLoader>(app, "images/rocks.png"));
-    return t;
-}
-
-ndk_game::Texture::Ptr Rock::loadTextureRect(android_app* app)
-{
-    static auto tr = Texture::create(make_shared<AssetTextureLoader>(app, "images/white.png"));
-    return tr;
 }
 
 Rock::Rock(android_app * app, int sw, int sh,
         weak_ptr<IDrawEngine> engine,
         weak_ptr<Scene> win,
         weak_ptr<Scene> main,
+        std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
+        ndk_game::Texture::Ptr rockTex,
         glm::vec3 pos,
         bool second):
-                _app(app), _second(second),
-        _angle(0), _screenWidth(sw), _screenHeight(sh), _crash(false),
-        _engine(engine), _winScene(win), _main(main)
+                _app(app), _second(second), _angle(0), _screenWidth(sw),
+                _screenHeight(sh), _crash(false), _engine(engine),
+                _winScene(win), _main(main), _soundEngine(soundEngine),
+                _rockTex(rockTex)
 {
 
     rocks++;
@@ -80,7 +73,7 @@ Rock::Rock(android_app * app, int sw, int sh,
     float * p = rV;
     p[0] = 0;
     p[1] = 0;
-    p[2] = 3.f;
+    p[2] = 4.f;
     p[3] = .5f;
     p[4] = .5f;
 
@@ -98,14 +91,14 @@ Rock::Rock(android_app * app, int sw, int sh,
         p[0] = t*cos(r0);
         p[1] = t*sin(r0);
 
-        p[2] = 3.f;
+        p[2] = 4.f;
 
         p[3] = .5f + .45f * cos(r0);
         p[4] = .5f + .45f * sin(r0);
     }
 
     _rock = make_shared<Sprite>(
-            loadTexture(app),
+            rockTex,
             make_shared<SimpleSpriteLoader>(rV, l + 2, ISpriteLoader::SpriteType::TriangleFan)
             );
 
@@ -132,11 +125,6 @@ Rock::Rock(android_app * app, int sw, int sh,
 
     _rockRect = Rect(-t0, -t0, t0, t0);
 
-#ifdef NDK_GAME_DEBUG
-    _rect = make_shared<Sprite>(
-            loadTextureRect(app),
-            make_shared<RectSpriteLoader>(_rockRect, 11, 0, 1, 0, 1));
-#endif
 }
 
 Rock::~Rock()
@@ -155,10 +143,6 @@ void Rock::update(double elapsed) throw (runtime_error)
 
     auto m = translate(mat4(), _pos);
 
-#ifdef NDK_GAME_DEBUG
-    _rect->getModelMatrix() = m; // rect not rotating
-#endif
-
     m = rotate(m, _angle, vec3(0.f, 0.f, 1.f));
 
     _rock->getModelMatrix() = m;
@@ -166,11 +150,7 @@ void Rock::update(double elapsed) throw (runtime_error)
 
 list<Sprite::Ptr> Rock::getSprites() const throw ()
 {
-#ifdef NDK_GAME_DEBUG
-    return {_rock, _rect};
-#else
     return {_rock};
-#endif
 }
 
 string Rock::getName() const throw ()
@@ -190,10 +170,10 @@ void Rock::collision(IGameObject::Ptr obj) throw (runtime_error)
 
         Log() << "I am crash " << rocks;
 
-//        if (auto s = _main.lock()) s->gameObject.push_back(
-//                make_shared<Explosion>(_app, _screenWidth, _screenHeight, _pos.x, _pos.y));
+        _soundEngine->loadSound("sounds/explosion.mp3")->play();
+
         if (!_second){
-            auto ls = createRock(_app, _screenWidth, _screenHeight, _engine, _winScene, _main, _pos, true);
+            auto ls = createRock(_app, _screenWidth, _screenHeight, _engine, _winScene, _main, _soundEngine, _rockTex, _pos, true);
             for (auto sp : ls)
                 if (auto s = _main.lock()) s->gameObject.push_back(sp);
         }

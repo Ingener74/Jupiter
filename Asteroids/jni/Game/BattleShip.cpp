@@ -16,13 +16,15 @@ using namespace std;
 #define EPS 0.00001f
 
 BattleShip::BattleShip(android_app * app, int screenWidth, int screenHeight,
-        weak_ptr<ndk_game::Scene> parent,
-        weak_ptr<ndk_game::Scene> fail,
-        weak_ptr<ndk_game::IDrawEngine> e):
+        weak_ptr<Scene> parent,
+        weak_ptr<Scene> fail,
+        weak_ptr<IDrawEngine> e,
+        std::shared_ptr<ndk_game::ISoundEngine> soundEngine):
 
         _app(app), _gas(false), _mass(10.f), _angle(0),
         _screenWidth(screenWidth), _screenHeight(screenHeight),
-        _parentScene(parent), _failScene(fail), _engine(e), _armed(0), _life(3), _shield(0)
+        _parentScene(parent), _failScene(fail), _engine(e), _armed(0), _life(3),
+        _shield(0), _soundEngine(soundEngine)
 {
     float shipSize = screenWidth * 0.1f;
 
@@ -34,6 +36,9 @@ BattleShip::BattleShip(android_app * app, int screenWidth, int screenHeight,
     _engineFire = make_shared<Sprite>(t,
             make_shared<RectSpriteLoader>(shipSize, shipSize, 3, 0.5, 1.0, 0, 0.5)
             );
+
+    _bulletTex = Texture::create(
+            make_shared<AssetTextureLoader>(app, "images/bullet.png"));
 
     float rs = shipSize*.7f/2;
     _shipRect = Rect(-rs/2, -rs/2, rs/2, rs/2);
@@ -108,8 +113,10 @@ void BattleShip::fire() throw ()
     {
         if (auto p = _parentScene.lock()) p->gameObject.push_back(
                 make_shared<Bullet>(_app, _screenWidth, _screenHeight, _pos.x,
-                        _pos.y, _angle));
+                        _pos.y, _angle, _bulletTex));
         _armed = .5f;
+
+        _soundEngine->loadSound("sounds/shot.mp3")->play();
     }
 }
 
@@ -135,8 +142,7 @@ void BattleShip::collision(IGameObject::Ptr o) throw (runtime_error)
     Rect r = _shipRect + _pos;
     if(r || dynamic_cast<Rock*>(o.get())->getRect()){
 
-
-        if (_shield < EPS) if (!--_life) if (auto eng = _engine.lock())
+        if (_shield < EPS) if (--_life <= 0) if (auto eng = _engine.lock())
         {
             Log() << "Battle ship fail";
 

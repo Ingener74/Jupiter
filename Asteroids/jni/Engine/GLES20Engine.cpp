@@ -49,6 +49,8 @@ void GLES20Engine::draw() throw (std::runtime_error)
 
         for (auto &sprite : gameObj->getSprites())
         {
+            if (!sprite->getTexture()) throw std::runtime_error(
+                    "empty texture");
             sprite->getTexture()->bind();
 
             glUniform1i(_uTEX, 0);

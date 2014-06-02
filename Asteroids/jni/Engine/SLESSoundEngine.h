@@ -24,7 +24,7 @@ public:
     SLESSoundEngine(android_app*);
     virtual ~SLESSoundEngine();
 
-    ISound::Ptr loadSound(const std::string& file);
+    virtual ISound::Ptr loadSound(const std::string& file);
 
 private:
     SLObjectItf _engineObj;

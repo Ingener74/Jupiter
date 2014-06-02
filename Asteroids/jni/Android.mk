@@ -7,7 +7,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := native-activity
 
-LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
+# LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
 
 LOCAL_SRC_FILES :=                      \
     Engine/Sprite.cpp                   \
@@ -25,6 +25,8 @@ LOCAL_SRC_FILES :=                      \
     Engine/Rect.cpp                     \
     Engine/SLESSound.cpp                \
     Engine/SLESSoundEngine.cpp          \
+    Engine/DummySound.cpp               \
+    Engine/DummySoundEngine.cpp         \
                                         \
     Game/GameBuilder.cpp                \
     Game/AssetShaderLoader.cpp          \
