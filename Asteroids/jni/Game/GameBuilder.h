@@ -19,6 +19,8 @@ public:
     GameBuilder(void *savedState, int savedStateSize, int screenWidth, int screenHeight, android_app*);
     virtual ~GameBuilder();
 
+    ndk_game::Scene::Ptr newGame(android_app*, int screenWidth, int screenHeight);
+
     std::tuple<void *, size_t> saveGame();
 
     ndk_game::IDrawEngine::Ptr getEngine() const throw (std::runtime_error);
@@ -26,6 +28,8 @@ public:
 private:
     ndk_game::IDrawEngine::Ptr drawEngine;
     ndk_game::Scene::Ptr startScene, mainScene, winScene, failScene;
+
+    ndk_game::ISound::Ptr _background;
 
     int testSavedState;
 };

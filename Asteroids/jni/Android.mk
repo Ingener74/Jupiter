@@ -23,6 +23,8 @@ LOCAL_SRC_FILES :=                      \
     Engine/SimpleSpriteLoader.cpp       \
     Engine/RectSpriteLoader.cpp         \
     Engine/Rect.cpp                     \
+    Engine/SLESSound.cpp                \
+    Engine/SLESSoundEngine.cpp          \
                                         \
     Game/GameBuilder.cpp                \
     Game/AssetShaderLoader.cpp          \
@@ -35,10 +37,13 @@ LOCAL_SRC_FILES :=                      \
     Game/GasButton.cpp                  \
     Game/Bullet.cpp                     \
     Game/Rock.cpp                       \
+    Game/GameAgain.cpp                  \
+    Game/WinAgain.cpp                   \
+    Game/Explosion.cpp                  \
                                         \
     main.cpp                            \
 
-LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lz
+LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lz -lOpenSLES
 LOCAL_STATIC_LIBRARIES := android_native_app_glue png
 
 include $(BUILD_SHARED_LIBRARY)

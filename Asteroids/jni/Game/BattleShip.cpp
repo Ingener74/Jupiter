@@ -16,9 +16,9 @@ using namespace std;
 #define EPS 0.00001f
 
 BattleShip::BattleShip(android_app * app, int screenWidth, int screenHeight,
-        std::weak_ptr<ndk_game::Scene> parent,
-        std::weak_ptr<ndk_game::Scene> fail,
-        std::weak_ptr<ndk_game::IDrawEngine> e):
+        weak_ptr<ndk_game::Scene> parent,
+        weak_ptr<ndk_game::Scene> fail,
+        weak_ptr<ndk_game::IDrawEngine> e):
 
         _app(app), _gas(false), _mass(10.f), _angle(0),
         _screenWidth(screenWidth), _screenHeight(screenHeight),
@@ -115,12 +115,12 @@ void BattleShip::fire() throw ()
 
 void BattleShip::right() throw ()
 {
-    _angle -= 0.05f;
+    _angle -= 0.07f;
 }
 
 void BattleShip::left() throw ()
 {
-    _angle += 0.05f;
+    _angle += 0.07f;
 }
 
 string BattleShip::getName() const throw ()
@@ -128,21 +128,23 @@ string BattleShip::getName() const throw ()
     return "BattleShip";
 }
 
-void BattleShip::collision(IGameObject::Ptr o) throw (std::runtime_error)
+void BattleShip::collision(IGameObject::Ptr o) throw (runtime_error)
 {
     if (o->getName() != "Rock") return;
 
-    if((_shipRect + _pos) || dynamic_cast<Rock*>(o.get())->getRect()){
+    Rect r = _shipRect + _pos;
+    if(r || dynamic_cast<Rock*>(o.get())->getRect()){
 
-        Log() << "battle ship collision " << (_shipRect + _pos) << "  ===  " << dynamic_cast<Rock*>(o.get())->getRect();
 
-        if (_shield > EPS) if (--_life) if (auto eng = _engine.lock())
+        if (_shield < EPS) if (!--_life) if (auto eng = _engine.lock())
         {
             Log() << "Battle ship fail";
 
             eng->setCurrentScene(_failScene.lock());
-            _shield = 3.f;
         }
+        _shield = 3.f;
+
+        Log() << "shield " << _shield << " life " << _life;
     }
 }
 

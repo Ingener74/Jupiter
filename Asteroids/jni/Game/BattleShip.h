@@ -52,8 +52,6 @@ private:
     std::weak_ptr<ndk_game::Scene> _parentScene, _failScene;
     std::weak_ptr<ndk_game::IDrawEngine> _engine;
 
-//    std::weak_ptr<ndk_game::Scene> _parentScene;
-
     float _armed;
     int _life;
     float _shield;

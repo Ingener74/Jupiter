@@ -25,6 +25,12 @@
 #include <Engine/SimpleSpriteLoader.h>
 #include <Engine/RectSpriteLoader.h>
 
+#include <Engine/ISoundEngine.h>
+#include <Engine/SLESSoundEngine.h>
+
+#include <Engine/ISound.h>
+#include <Engine/SLESSound.h>
+
 #include <Engine/Tools.h>
 #include <Engine/Log.h>
 #include <Engine/Rect.h>

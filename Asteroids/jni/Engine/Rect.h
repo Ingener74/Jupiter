@@ -21,7 +21,6 @@ public:
 
     bool operator||(const Rect&) const;
     bool isInside(int x, int y) const;
-    Rect& operator+(const glm::vec3&);
 
     int x1, y1, x2, y2;
 };

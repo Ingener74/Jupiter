@@ -14,7 +14,7 @@ using namespace std;
 Bullet::Bullet(android_app * app, int sw, int sh, float x, float y, float angle):
         _angle(angle), _screenWidth(sw), _screenHeight(sh)
 {
-    auto v = 300.f;
+    auto v = 500.f;
     _vel = vec3(v * sin(angle), -v * cos(angle), 0.f);
     _pos = vec3(x, y, 0.f);
 
@@ -33,6 +33,7 @@ Bullet::Bullet(android_app * app, int sw, int sh, float x, float y, float angle)
 
 Bullet::~Bullet()
 {
+    Log() << "Bullet::~Bullet()";
 }
 
 Texture::Ptr Bullet::loadTexture(android_app * app)
@@ -99,9 +100,9 @@ ndk_game::Rect Bullet::getRect() const throw ()
 
 bool Bullet::removeMe() const throw ()
 {
-//    if (_pos.x >= _screenWidth / 2) return true;
-//    if (_pos.x <= -_screenWidth / 2) return true;
-//    if (_pos.y >= _screenHeight / 2) return true;
-//    if (_pos.y <= -_screenHeight / 2) return true;
+    if (_pos.x >= _screenWidth / 2) return true;
+    if (_pos.x <= -_screenWidth / 2) return true;
+    if (_pos.y >= _screenHeight / 2) return true;
+    if (_pos.y <= -_screenHeight / 2) return true;
     return false;
 }

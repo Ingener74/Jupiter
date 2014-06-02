@@ -15,7 +15,16 @@ class Rock: public ndk_game::IGameObject
 public:
     using Ptr = std::shared_ptr<Rock>;
 
-    Rock(android_app * app, int screenWidth, int screenHeight);
+    static std::list<Rock::Ptr> createRock(android_app * app,
+            int screenWidth, int screenHeight,
+            std::weak_ptr<ndk_game::IDrawEngine> engine,
+            std::weak_ptr<ndk_game::Scene> winScene,
+            std::weak_ptr<ndk_game::Scene> main,
+            glm::vec3 pos,
+            bool second = false);
+
+    static ndk_game::Texture::Ptr loadTexture(android_app*);
+    static ndk_game::Texture::Ptr loadTextureRect(android_app*);
 
     virtual ~Rock();
 
@@ -29,6 +38,16 @@ public:
     virtual ndk_game::Rect getRect() const;
 
 private:
+    Rock(android_app * app, int screenWidth, int screenHeight,
+            std::weak_ptr<ndk_game::IDrawEngine> engine,
+            std::weak_ptr<ndk_game::Scene> winScene,
+            std::weak_ptr<ndk_game::Scene> main,
+            glm::vec3 pos,
+            bool second);
+
+    android_app* _app;
+    bool _second;
+
     ndk_game::Sprite::Ptr _rock;
 
     glm::vec3 _vel, _pos;
@@ -41,6 +60,11 @@ private:
 #ifdef NDK_GAME_DEBUG
     ndk_game::Sprite::Ptr _rect;
 #endif
+
+    static int rocks;
+    std::weak_ptr<ndk_game::IDrawEngine> _engine;
+    std::weak_ptr<ndk_game::Scene> _winScene;
+    std::weak_ptr<ndk_game::Scene> _main;
 };
 
 #endif /* ROCK_H_ */

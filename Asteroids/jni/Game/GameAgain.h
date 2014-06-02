@@ -1,22 +1,22 @@
 /*
- * StartButton.h
+ * GameAgain.h
  *
- *  Created on: May 31, 2014
+ *  Created on: Jun 1, 2014
  *      Author: ingener
  */
 
-#ifndef STARTBUTTON_H_
-#define STARTBUTTON_H_
+#ifndef GAMEAGAIN_H_
+#define GAMEAGAIN_H_
 
 #include <Engine/Engine.h>
 
-class StartButton: public ndk_game::IGameObject
+class GameAgain: public ndk_game::IGameObject
 {
 public:
-    StartButton(android_app * app, int screenWidth, int screenHeight,
+    GameAgain(android_app * app, int screenWidth,
             std::weak_ptr<ndk_game::IDrawEngine> engine,
             std::weak_ptr<ndk_game::Scene> mainScene);
-    virtual ~StartButton();
+    virtual ~GameAgain();
 
     virtual void update(double elapsed) throw (std::runtime_error);
     virtual void input(int x, int y) throw (std::runtime_error);
@@ -24,7 +24,7 @@ public:
     virtual std::string getName() const throw ();
 
 private:
-    ndk_game::Sprite::Ptr _sb1, _sb2, _cur;
+    ndk_game::Sprite::Ptr _norm, _pushed, _cur;
 
 #ifdef NDK_GAME_DEBUG
     ndk_game::Sprite::Ptr _rect;
@@ -38,4 +38,4 @@ private:
     double _fadeOut;
 };
 
-#endif /* STARTBUTTON_H_ */
+#endif /* GAMEAGAIN_H_ */

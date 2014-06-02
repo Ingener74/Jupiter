@@ -36,4 +36,9 @@
 #include <android/asset_manager.h>
 #include <android_native_app_glue.h>
 
+#include <SLES/OpenSLES.h>
+#include <SLES/OpenSLES_Android.h>
+#include <SLES/OpenSLES_AndroidConfiguration.h>
+#include <SLES/OpenSLES_AndroidMetadata.h>
+
 #endif /* COMMON_H_ */
