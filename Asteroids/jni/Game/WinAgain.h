@@ -9,13 +9,16 @@
 #define WINAGAIN_H_
 
 #include <Engine/Engine.h>
+#include <Game/GameBuilder.h>
 
 class WinAgain: public ndk_game::IGameObject
 {
 public:
     WinAgain(android_app * app, int screenWidth,
             std::weak_ptr<ndk_game::IDrawEngine> engine,
-            std::weak_ptr<ndk_game::Scene> mainScene);
+            std::weak_ptr<ndk_game::Scene> mainScene,
+            GameBuilder* game
+            );
     virtual ~WinAgain();
 
     virtual void update(double elapsed) throw (std::runtime_error);
@@ -34,6 +37,8 @@ private:
 
     std::weak_ptr<ndk_game::IDrawEngine> _engine;
     std::weak_ptr<ndk_game::Scene> _mainScene;
+
+    GameBuilder* _game;
 
     double _fadeOut;
 };

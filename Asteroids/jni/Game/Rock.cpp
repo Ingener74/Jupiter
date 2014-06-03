@@ -191,3 +191,8 @@ Rect Rock::getRect() const
 {
     return (_rockRect + _pos);
 }
+
+void Rock::reset()
+{
+    rocks = 0;
+}

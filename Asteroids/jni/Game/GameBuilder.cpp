@@ -26,24 +26,13 @@ using namespace std;
 using namespace glm;
 
 GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
-        int screenHeight, android_app* app): testSavedState(0)
+        int screenHeight, android_app* app): testSavedState(0), _app(app),
+                _screenWidth(screenWidth), _screenHeight(screenHeight)
 {
-    /*
-     * 1. segfault in descructors
-     *      Don't forget check Scene and start button shared cycle depened
-     *
-     *      06-01 10:00:46.712: V/threaded_app(11017): APP_CMD_TERM_WINDOW
-     *      06-01 10:00:46.712: D/Asteroids(11017): GameBuilder::~GameBuilder()
-     *      06-01 10:00:46.712: D/Asteroids(11017): StartButton::~StartButton()
-     *      06-01 10:00:46.712: W/Adreno-ES20(11017): <core_glGetString:1654>: GL_INVALID_ENUM
-     *      06-01 10:00:46.722: A/libc(11017): Fatal signal 11 (SIGSEGV) at 0xdeadbaad (code=1), thread 11045 (native_activity)
-     *
-     * 2. do key controlling more comfortably
-     *
-     */
+    Rock::reset(); // hack ;)
 
     auto soundEngine = make_shared<SLESSoundEngine>(app);
-    _background = soundEngine->loadSound("sounds/background.mp3");
+    _background = soundEngine->loadSound("sounds/bgm.mp3");
     _background->play(true);
 
     if(savedStateSize > sizeof(int)){
@@ -81,7 +70,7 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
     /*
      * Create main scene / new game
      */
-    _rockTex = Texture::create(make_shared<AssetTextureLoader>(app, "images/rocks.png"));
+    _rockTex = Texture::create(make_shared<AssetTextureLoader>(app, "images/rocks1.png"));
 
     auto battleShip = make_shared<BattleShip>(
             app, w, h, mainScene, failScene, drawEngine, make_shared<DummySoundEngine>());
@@ -114,14 +103,14 @@ GameBuilder::GameBuilder(void *savedState, int savedStateSize, int screenWidth,
      */
     winScene->gameObject.push_back(backGround);
     winScene->gameObject.push_back(
-            make_shared<WinAgain>(app, w, drawEngine, mainScene));
+            make_shared<WinAgain>(app, w, drawEngine, mainScene, this));
 
     /*
      * Create fail scene
      */
     failScene->gameObject.push_back(backGround);
     failScene->gameObject.push_back(
-            make_shared<GameAgain>(app, w, drawEngine, mainScene));
+            make_shared<GameAgain>(app, w, drawEngine, mainScene, this));
 
     drawEngine->setCurrentScene(startScene);
 }
@@ -162,35 +151,40 @@ IDrawEngine::Ptr GameBuilder::getEngine() const
     return drawEngine;
 }
 
-Scene::Ptr GameBuilder::newGame(android_app* app, int w, int h)
+void GameBuilder::newGame()
 {
-    auto s = make_shared<Scene>();
+    android_app* app = _app;
+    int w = _screenWidth, h = _screenHeight;
+
+    mainScene->gameObject.clear();
+
+    auto backGround = make_shared<BackGround>(app, w);
+
+    mainScene->gameObject.push_back(backGround);
 
     auto battleShip = make_shared<BattleShip>(
-            app, w, h, s, failScene, drawEngine, make_shared<DummySoundEngine>());
+            app, w, h, mainScene, failScene, drawEngine, make_shared<DummySoundEngine>());
 
-    s->gameObject.push_back(battleShip);
+    mainScene->gameObject.push_back(battleShip);
 
-    s->gameObject.push_back(
+    mainScene->gameObject.push_back(
             make_shared<FireButton>(app, w, h, battleShip));
-    s->gameObject.push_back(
+    mainScene->gameObject.push_back(
             make_shared<RightButton>(app, w, h, battleShip));
-    s->gameObject.push_back(
+    mainScene->gameObject.push_back(
             make_shared<LeftButton>(app, w, h, battleShip));
-    s->gameObject.push_back(
+    mainScene->gameObject.push_back(
             make_shared<GasButton>(app, w, h, battleShip));
 
 
-    s->gameObject.push_back(
-            Rock::createRock(app, w, h, drawEngine, winScene, s, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
-    s->gameObject.push_back(
-            Rock::createRock(app, w, h, drawEngine, winScene, s, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
-    s->gameObject.push_back(
-            Rock::createRock(app, w, h, drawEngine, winScene, s, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
-    s->gameObject.push_back(
-            Rock::createRock(app, w, h, drawEngine, winScene, s, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
-    s->gameObject.push_back(
-            Rock::createRock(app, w, h, drawEngine, winScene, s, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
-
-    return s;
+    mainScene->gameObject.push_back(
+            Rock::createRock(app, w, h, drawEngine, winScene, mainScene, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
+    mainScene->gameObject.push_back(
+            Rock::createRock(app, w, h, drawEngine, winScene, mainScene, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
+    mainScene->gameObject.push_back(
+            Rock::createRock(app, w, h, drawEngine, winScene, mainScene, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
+    mainScene->gameObject.push_back(
+            Rock::createRock(app, w, h, drawEngine, winScene, mainScene, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
+    mainScene->gameObject.push_back(
+            Rock::createRock(app, w, h, drawEngine, winScene, mainScene, make_shared<DummySoundEngine>(), _rockTex, vec3()).front());
 }

@@ -6,6 +6,7 @@
  */
 
 #include <Game/WinAgain.h>
+#include <Game/Rock.h>
 
 using namespace ndk_game;
 using namespace std;
@@ -13,8 +14,9 @@ using namespace glm;
 
 WinAgain::WinAgain(android_app * app, int screenWidth,
         weak_ptr<ndk_game::IDrawEngine> engine,
-        weak_ptr<ndk_game::Scene> mainScene):
-                _engine(engine), _mainScene(mainScene), _fadeOut(0)
+        weak_ptr<ndk_game::Scene> mainScene,
+        GameBuilder* game):
+                _engine(engine), _mainScene(mainScene), _game(game), _fadeOut(0)
 {
     float winButtonW = screenWidth * 0.8, winButtonH = screenWidth * 0.4;
 
@@ -64,6 +66,8 @@ void WinAgain::input(int x, int y) throw (std::runtime_error)
     {
         _cur = _pushed;
 
+        Rock::reset();
+        _game->newGame();
         if(auto e = _engine.lock())e->setCurrentScene(_mainScene.lock());
 
         _fadeOut = 0.1f;

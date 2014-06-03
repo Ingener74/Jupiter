@@ -36,6 +36,8 @@ public:
 
     virtual ndk_game::Rect getRect() const;
 
+    static void reset();
+
 private:
     Rock(android_app * app, int screenWidth, int screenHeight,
             std::weak_ptr<ndk_game::IDrawEngine> engine,

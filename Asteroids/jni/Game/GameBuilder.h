@@ -19,7 +19,7 @@ public:
     GameBuilder(void *savedState, int savedStateSize, int screenWidth, int screenHeight, android_app*);
     virtual ~GameBuilder();
 
-    ndk_game::Scene::Ptr newGame(android_app*, int screenWidth, int screenHeight);
+    void newGame();
 
     std::tuple<void *, size_t> saveGame();
 
@@ -33,6 +33,9 @@ private:
     ndk_game::ISound::Ptr _background;
 
     int testSavedState;
+
+    android_app* _app;
+    int _screenWidth, _screenHeight;
 };
 
 #endif /* GAMEBUILDER_H_ */
