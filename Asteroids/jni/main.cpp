@@ -27,10 +27,12 @@ struct engine
 
 
 
-#include <Game/GameBuilder.h>
-using namespace ndk_game;
+//#include <Game/GameBuilder.h>
+//
+//GameBuilder::Ptr game;
 
-GameBuilder::Ptr game;
+#include <Game/Game.h>
+using namespace ndk_game;
 
 
 
@@ -117,8 +119,10 @@ static int engine_init_display(struct engine* engine)
 
         Log() << "Creating game";
 
-        game = std::make_shared<GameBuilder>(
-                engine->app->savedState, engine->app->savedStateSize, w, h, engine->app);
+//        game = std::make_shared<GameBuilder>(
+//                engine->app->savedState, engine->app->savedStateSize, w, h, engine->app);
+
+        Game::instance()->startGame(engine->app, w, h);
 
         engine->animating = 1;
 
@@ -147,14 +151,15 @@ static void engine_draw_frame(struct engine* engine)
      */
     try
     {
-        if (!game) return;
-
         using namespace std::chrono;
         static auto tp = system_clock::now();
 
+        Game::Ptr game = Game::instance();
+
         auto now = system_clock::now();
-        game->getEngine()->animateAll(
-                duration_cast<microseconds>(now - tp).count() / 1000000.0);
+
+        game->getEngine()->animateAll(duration_cast<microseconds>(now - tp).count() / 1000000.0);
+
         tp = now;
 
         game->getEngine()->draw();
@@ -169,7 +174,7 @@ static void engine_draw_frame(struct engine* engine)
 
 static void engine_term_display(struct engine* engine)
 {
-    game.reset();
+    Game::reset();
 
     if (engine->display != EGL_NO_DISPLAY)
     {
@@ -203,7 +208,7 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
         try
         {
 
-            game->getEngine()->inputToAll(x, y);
+            Game::instance()->getEngine()->inputToAll(x, y);
 
         }
         catch (const std::exception& e)

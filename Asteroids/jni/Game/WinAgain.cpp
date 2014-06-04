@@ -67,7 +67,7 @@ void WinAgain::input(int x, int y) throw (std::runtime_error)
         _cur = _pushed;
 
         Rock::reset();
-        _game->newGame();
+//        _game->newGame();
         if(auto e = _engine.lock())e->setCurrentScene(_mainScene.lock());
 
         _fadeOut = 0.1f;

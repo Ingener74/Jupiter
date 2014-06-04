@@ -6,29 +6,30 @@
  */
 
 #include <Game/StartButton.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
 using namespace std;
 using namespace glm;
 
-StartButton::StartButton(android_app * app, int screenWidth, int screenHeight,
-        weak_ptr<ndk_game::IDrawEngine> engine,
-        weak_ptr<ndk_game::Scene> mainScene) :
-        _engine(engine), _mainScene(mainScene), _fadeOut(0)
+StartButton::StartButton(int w, int h) :
+        _fadeOut(0)
 {
-    float startButtonW = screenWidth * 0.6, startButtonH = screenWidth * 0.2;
+    float startButtonW = w * 0.6, startButtonH = h * 0.2;
+
+    auto game = Game::instance();
 
     _sb1 = make_shared<Sprite>(
-            Texture::create(make_shared<AssetTextureLoader>(app, "images/start.png")),
+            game->getTexture("images/start.png"),
             make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65)
             );
 
     _sb2 = make_shared<Sprite>(
-            Texture::create(make_shared<AssetTextureLoader>(app, "images/start_pushed.png")),
+            game->getTexture("images/start_pushed.png"),
             make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65)
             );
 
-    vec3 v(0.f, screenHeight * 0.2f, 0.f);
+    vec3 v(0.f, h * 0.2f, 0.f);
     auto m = translate(mat4(), v);
 
     _sb1->getModelMatrix() = m;
@@ -39,7 +40,7 @@ StartButton::StartButton(android_app * app, int screenWidth, int screenHeight,
 
 #ifdef NDK_GAME_DEBUG
     _rect = make_shared<Sprite>(
-            Texture::create(make_shared<AssetTextureLoader>(app, "images/white.png")),
+            game->getTexture("images/white.png"),
             make_shared<RectSpriteLoader>(_buttonRect, 2, 0, 0.91, 1, 0.4)
             );
 #endif
@@ -66,7 +67,9 @@ void StartButton::input(int x, int y) throw (runtime_error)
     {
         _cur = _sb2;
 
-        if(auto e = _engine.lock())e->setCurrentScene(_mainScene.lock());
+        auto game = Game::instance();
+
+        game->getEngine()->setCurrentScene(game->getScene("Main"));
 
         _fadeOut = 0.1f;
     }

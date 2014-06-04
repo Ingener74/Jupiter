@@ -13,9 +13,7 @@
 class StartButton: public ndk_game::IGameObject
 {
 public:
-    StartButton(android_app * app, int screenWidth, int screenHeight,
-            std::weak_ptr<ndk_game::IDrawEngine> engine,
-            std::weak_ptr<ndk_game::Scene> mainScene);
+    StartButton(int screenWidth, int screenHeight);
     virtual ~StartButton();
 
     virtual void update(double elapsed) throw (std::runtime_error);
@@ -31,9 +29,6 @@ private:
 #endif
 
     ndk_game::Rect _buttonRect;
-
-    std::weak_ptr<ndk_game::IDrawEngine> _engine;
-    std::weak_ptr<ndk_game::Scene> _mainScene;
 
     double _fadeOut;
 };
