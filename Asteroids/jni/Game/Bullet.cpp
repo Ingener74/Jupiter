@@ -7,12 +7,13 @@
 
 #include <Game/Bullet.h>
 #include <Game/Rock.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
 using namespace glm;
 using namespace std;
 
-Bullet::Bullet(android_app * app, int sw, int sh, float x, float y, float angle, Texture::Ptr bulletTex):
+Bullet::Bullet(int sw, int sh, float x, float y, float angle):
         _angle(angle), _screenWidth(sw), _screenHeight(sh), _remove(false)
 {
     auto v = 500.f;
@@ -21,8 +22,10 @@ Bullet::Bullet(android_app * app, int sw, int sh, float x, float y, float angle,
 
     float bsw = sw * 0.01f, bsh = sw * 0.02f;
 
+    auto game = Game::instance();
+
     _bullet = make_shared<Sprite>(
-            bulletTex,
+            game->getTexture("images/bullet.png"),
             make_shared<RectSpriteLoader>(bsw, bsh, 6, 0, 66.f / 128.f, 0, 1));
 
     float rs = bsw;
@@ -43,7 +46,6 @@ void Bullet::update(double elapsed) throw (runtime_error)
     m = rotate(m, _angle, vec3(0.f, 0.f, 1.f));
 
     _bullet->getModelMatrix() = m;
-
 }
 
 list<ndk_game::Sprite::Ptr> Bullet::getSprites() const throw ()

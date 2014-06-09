@@ -37,7 +37,8 @@ public:
 private:
     Game();
 
-    android_app* _app;
+    android_app* _app = nullptr;
+    int _screenWidth = 0, _screenHeight = 0;
 
     ndk_game::IDrawEngine::Ptr _engine;
 

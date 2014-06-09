@@ -15,13 +15,8 @@ class Rock: public ndk_game::IGameObject
 public:
     using Ptr = std::shared_ptr<Rock>;
 
-    static std::list<Rock::Ptr> createRock(android_app * app,
-            int screenWidth, int screenHeight,
-            std::weak_ptr<ndk_game::IDrawEngine> engine,
-            std::weak_ptr<ndk_game::Scene> winScene,
-            std::weak_ptr<ndk_game::Scene> main,
+    static std::list<Rock::Ptr> createRock(int screenWidth, int screenHeight,
             std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
-            ndk_game::Texture::Ptr rockTex,
             glm::vec3 pos,
             bool second = false);
 
@@ -39,34 +34,26 @@ public:
     static void reset();
 
 private:
-    Rock(android_app * app, int screenWidth, int screenHeight,
-            std::weak_ptr<ndk_game::IDrawEngine> engine,
-            std::weak_ptr<ndk_game::Scene> winScene,
-            std::weak_ptr<ndk_game::Scene> main,
+    Rock(int screenWidth, int screenHeight,
             std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
-            ndk_game::Texture::Ptr rockTex,
             glm::vec3 pos,
             bool second);
 
-    android_app* _app;
-    bool _second;
+//    android_app* _app;
+    bool _second = false;
 
     ndk_game::Sprite::Ptr _rock;
 
     glm::vec3 _vel, _pos;
-    float _angle;
+    float _angle = 0.f;
 
     int _screenWidth, _screenHeight;
-    bool _crash;
+    bool _crash = false;
 
     ndk_game::Rect _rockRect;
 
     static int rocks;
-    std::weak_ptr<ndk_game::IDrawEngine> _engine;
-    std::weak_ptr<ndk_game::Scene> _winScene;
-    std::weak_ptr<ndk_game::Scene> _main;
     std::shared_ptr<ndk_game::ISoundEngine> _soundEngine;
-    ndk_game::Texture::Ptr _rockTex;
 };
 
 #endif /* ROCK_H_ */

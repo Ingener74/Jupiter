@@ -6,29 +6,33 @@
  */
 
 #include <Game/FireButton.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
+using namespace glm;
+using namespace std;
 
-FireButton::FireButton(android_app * app, int sw, int sh, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
+FireButton::FireButton(int sw, int sh, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 {
     float w = sw * 0.18f,
             x = sw/2 - w/2,
             y = sh/2 - w/2;
 
+    auto game = Game::instance();
 
-    _norm = std::make_shared<Sprite>(
-            Texture::create(std::make_shared<AssetTextureLoader>(app, "images/fire.png")),
-            std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
+    _norm = make_shared<Sprite>(
+            game->getTexture("images/fire.png"),
+            make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
 
     auto m = _norm->getModelMatrix();
-    m = glm::translate(m, glm::vec3(x, y, 0.f));
+    m = translate(m, vec3(x, y, 0.f));
 
     _norm->getModelMatrix() = m;
 
-    _pushed = std::make_shared<Sprite>(
-            Texture::create(std::make_shared<AssetTextureLoader>(app, "images/fire_pushed.png")),
-            std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
+    _pushed = make_shared<Sprite>(
+            game->getTexture("images/fire_pushed.png"),
+            make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
     _pushed->getModelMatrix() = m;
 
@@ -36,9 +40,9 @@ FireButton::FireButton(android_app * app, int sw, int sh, BattleShip::Ptr bs): _
     _buttonRect = Rect(xt - w/2, yt - w/2, xt + w/2, yt + w/2);
 
 #ifdef NDK_GAME_DEBUG
-    _rect = std::make_shared<Sprite>(
-            Texture::create(std::make_shared<AssetTextureLoader>(app, "images/white.png")),
-            std::make_shared<RectSpriteLoader>(_buttonRect, 11, 0, 1, 0, 1)
+    _rect = make_shared<Sprite>(
+            game->getTexture("images/white.png"),
+            make_shared<RectSpriteLoader>(_buttonRect, 11, 0, 1, 0, 1)
             );
 #endif
 
@@ -50,7 +54,7 @@ FireButton::~FireButton()
     Log() << "FireButton::~FireButton()";
 }
 
-void FireButton::update(double elapsed) throw (std::runtime_error)
+void FireButton::update(double elapsed) throw (runtime_error)
 {
     if (_fadeOut >= 0)
     {
@@ -59,20 +63,20 @@ void FireButton::update(double elapsed) throw (std::runtime_error)
     else if (_cur == _pushed) _cur = _norm;
 }
 
-void FireButton::input(int x, int y) throw (std::runtime_error)
+void FireButton::input(int x, int y) throw (runtime_error)
 {
     if (_buttonRect.isInside(x, y))
     {
         _cur = _pushed;
 
-        if (!_bs) throw std::runtime_error("battle ship is null");
+        if (!_bs) throw runtime_error("battle ship is null");
         _bs->fire();
 
         _fadeOut = 0.1f;
     }
 }
 
-std::list<ndk_game::Sprite::Ptr> FireButton::getSprites() const throw ()
+list<ndk_game::Sprite::Ptr> FireButton::getSprites() const throw ()
 {
 #ifdef NDK_GAME_DEBUG
     return {_cur, _rect};
@@ -81,7 +85,7 @@ std::list<ndk_game::Sprite::Ptr> FireButton::getSprites() const throw ()
 #endif
 }
 
-std::string FireButton::getName() const throw ()
+string FireButton::getName() const throw ()
 {
     return "FireButton";
 }

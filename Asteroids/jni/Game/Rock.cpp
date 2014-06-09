@@ -8,6 +8,7 @@
 #include <Game/Rock.h>
 #include <Game/Bullet.h>
 #include <Game/Explosion.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
 using namespace glm;
@@ -15,14 +16,9 @@ using namespace std;
 
 int Rock::rocks = 0;
 
-std::list<Rock::Ptr> Rock::createRock(android_app* app,
-        int screenWidth,
+std::list<Rock::Ptr> Rock::createRock(int screenWidth,
         int screenHeight,
-        std::weak_ptr<ndk_game::IDrawEngine> engine,
-        std::weak_ptr<ndk_game::Scene> winScene,
-        std::weak_ptr<ndk_game::Scene> main,
         std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
-        ndk_game::Texture::Ptr rockTex,
         glm::vec3 pos,
         bool second)
 {
@@ -34,34 +30,25 @@ std::list<Rock::Ptr> Rock::createRock(android_app* app,
         while (--n)
         {
             rocks_.push_back(shared_ptr<Rock>(new Rock(
-                    app, screenWidth, screenHeight, engine, winScene, main, soundEngine, rockTex, pos, second)));
+                    screenWidth, screenHeight, soundEngine, pos, second)));
         }
     }
     else
     {
         rocks_.push_back(shared_ptr<Rock>(new Rock(
-                app, screenWidth, screenHeight, engine, winScene, main, soundEngine, rockTex, pos, second)));
+                screenWidth, screenHeight, soundEngine, pos, second)));
     }
     return rocks_;
 }
 
-Rock::Rock(android_app * app, int sw, int sh,
-        weak_ptr<IDrawEngine> engine,
-        weak_ptr<Scene> win,
-        weak_ptr<Scene> main,
+Rock::Rock(int sw, int sh,
         std::shared_ptr<ndk_game::ISoundEngine> soundEngine,
-        ndk_game::Texture::Ptr rockTex,
         glm::vec3 pos,
-        bool second):
-                _app(app), _second(second), _angle(0), _screenWidth(sw),
-                _screenHeight(sh), _crash(false), _engine(engine),
-                _winScene(win), _main(main), _soundEngine(soundEngine),
-                _rockTex(rockTex)
+        bool second):_second(second), _screenWidth(sw),
+                _screenHeight(sh), _soundEngine(soundEngine)
 {
 
     rocks++;
-
-    Log() << "rocks " << rocks;
 
     enum{
         MIN_PARTS = 5, PARTS = 5
@@ -98,7 +85,7 @@ Rock::Rock(android_app * app, int sw, int sh,
     }
 
     _rock = make_shared<Sprite>(
-            rockTex,
+            Game::instance()->getTexture("images/rocks1.png"),
             make_shared<SimpleSpriteLoader>(rV, l + 2, ISpriteLoader::SpriteType::TriangleFan)
             );
 
@@ -165,17 +152,19 @@ void Rock::collision(IGameObject::Ptr obj) throw (runtime_error)
 
     if((_rockRect + _pos) || dynamic_cast<Bullet*>(obj.get())->getRect()){
 
-        if (!--rocks) if (auto e = _engine.lock()) e->setCurrentScene(
-                _winScene.lock());
+        auto game = Game::instance();
+
+        if (!--rocks)
+            game->getEngine()->setCurrentScene(game->getScene("Win"));
 
         Log() << "I am crash " << rocks;
 
         _soundEngine->loadSound("sounds/explosion.mp3")->play();
 
         if (!_second){
-            auto ls = createRock(_app, _screenWidth, _screenHeight, _engine, _winScene, _main, _soundEngine, _rockTex, _pos, true);
+            auto ls = createRock(_screenWidth, _screenHeight, _soundEngine, _pos, true);
             for (auto sp : ls)
-                if (auto s = _main.lock()) s->gameObject.push_back(sp);
+                game->getScene("Main")->gameObject.push_front(sp);
         }
 
         _crash = true;

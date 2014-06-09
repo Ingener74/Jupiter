@@ -7,16 +7,13 @@
 
 #include <Game/GameAgain.h>
 #include <Game/Rock.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
 using namespace std;
 using namespace glm;
 
-GameAgain::GameAgain(android_app * app, int screenWidth,
-        weak_ptr<ndk_game::IDrawEngine> engine,
-        weak_ptr<ndk_game::Scene> mainScene,
-        GameBuilder* game):
-        _engine(engine), _mainScene(mainScene), _fadeOut(0), _game(game)
+GameAgain::GameAgain(android_app * app, int screenWidth)
 {
     float againButtonW = screenWidth * 0.8, againButtonH = screenWidth * 0.4;
 
@@ -66,9 +63,11 @@ void GameAgain::input(int x, int y) throw (runtime_error)
     {
         _cur = _pushed;
 
+        auto game = Game::instance();
+
         Rock::reset();
-//        _game->newGame();
-        if(auto e = _engine.lock())e->setCurrentScene(_mainScene.lock());
+        game->newGame();
+        game->getEngine()->setCurrentScene(game->getScene("Main"));
 
         _fadeOut = 0.1f;
     }

@@ -14,7 +14,7 @@
 class GasButton: public ndk_game::IGameObject
 {
 public:
-    GasButton(android_app *, int screenWidth, int screenHeight, BattleShip::Ptr);
+    GasButton(int screenWidth, int screenHeight, BattleShip::Ptr);
     virtual ~GasButton();
 
     virtual void update(double elapsed) throw (std::runtime_error);

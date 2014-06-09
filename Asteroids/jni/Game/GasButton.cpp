@@ -6,21 +6,24 @@
  */
 
 #include <Game/GasButton.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
 
-GasButton::GasButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
+GasButton::GasButton(int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 {
     float w = screenWidth * 0.18f, x = -screenWidth/2 + w/2, y = screenHeight/2 - w/2;
 
+    auto game = Game::instance();
+
     _norm = std::make_shared<Sprite>(
-            Texture::create(std::make_shared<AssetTextureLoader>(app, "images/gas.png")),
+            game->getTexture("images/gas.png"),
             std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
     _norm->getModelMatrix() = glm::translate(_norm->getModelMatrix(), glm::vec3(x, y, 0.f));
 
     _pushed = std::make_shared<Sprite>(
-            Texture::create(std::make_shared<AssetTextureLoader>(app, "images/gas_pushed.png")),
+            game->getTexture("images/gas_pushed.png"),
             std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
     _pushed->getModelMatrix() = glm::translate(_pushed->getModelMatrix(), glm::vec3(x, y, 0.f));
@@ -30,7 +33,7 @@ GasButton::GasButton(android_app * app, int screenWidth, int screenHeight, Battl
 
 #ifdef NDK_GAME_DEBUG
     _rect = std::make_shared<Sprite>(
-            Texture::create(std::make_shared<AssetTextureLoader>(app, "images/white.png")),
+            game->getTexture("images/white.png"),
             std::make_shared<RectSpriteLoader>(_buttonRect, 11, 0, 1, 0, 1)
             );
 #endif

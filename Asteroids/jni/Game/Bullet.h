@@ -13,7 +13,7 @@
 class Bullet: public ndk_game::IGameObject
 {
 public:
-    Bullet(android_app * app, int screenWidth, int screenHeight, float x, float y, float angle, ndk_game::Texture::Ptr bulletTex);
+    Bullet(int screenWidth, int screenHeight, float x, float y, float angle);
     virtual ~Bullet();
 
     virtual void update(double elapsed) throw (std::runtime_error);
@@ -29,13 +29,13 @@ private:
     ndk_game::Sprite::Ptr _bullet;
 
     glm::vec3 _vel, _pos;
-    float _angle;
+    float _angle = 0.f;
 
-    int _screenWidth, _screenHeight;
+    int _screenWidth = 0, _screenHeight = 0;
 
     ndk_game::Rect _bulletRect;
 
-    bool _remove;
+    bool _remove = false;
 };
 
 #endif /* BULLET_H_ */

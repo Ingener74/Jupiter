@@ -18,6 +18,7 @@
 #include <Game/GameAgain.h>
 #include <Game/WinAgain.h>
 #include <Game/Explosion.h>
+#include <Game/Life.h>
 
 #include <Game/Game.h>
 
@@ -73,6 +74,8 @@ IDrawEngine::Ptr Game::getEngine()
 void Game::startGame(android_app* a, int w, int h)
 {
     _app = a;
+    _screenWidth = w;
+    _screenHeight = h;
 
     Rock::reset(); // hack ;)
 
@@ -86,28 +89,53 @@ void Game::startGame(android_app* a, int w, int h)
 
     auto backGround = make_shared<BackGround>(a, w);
 
-    getScene("Start")->gameObject.push_back(backGround);
-    getScene("Main")->gameObject.push_back(backGround);
-    getScene("Fail")->gameObject.push_back(backGround);
-    getScene("Win")->gameObject.push_back(backGround);
+    auto startScene = getScene("Start");
+    startScene->gameObject.push_back(backGround);
+    startScene->gameObject.push_back(make_shared<StartButton>(w, h));
+    _engine->setCurrentScene(startScene);
 
-    getScene("Start")->gameObject.push_back(make_shared<StartButton>(w, h));
+    auto failScene = getScene("Fail");
+    failScene->gameObject.push_back(backGround);
+    failScene->gameObject.push_back(make_shared<GameAgain>(_app, w));
+
+    auto winScene = getScene("Win");
+    winScene->gameObject.push_back(backGround);
+    winScene->gameObject.push_back(make_shared<WinAgain>(_app, w));
 
     newGame();
-
-
-    _engine->setCurrentScene(getScene("Start"));
 }
 
 void Game::newGame()
 {
+    auto ms = getScene("Main");
+    ms->gameObject.clear();
+
+    auto w = _screenWidth, h = _screenHeight;
+
+    ms->gameObject.push_back(make_shared<BackGround>(_app, w));
+
+    auto dse = make_shared<DummySoundEngine>();
+
+    auto l = make_shared<Life>(w, h);
+
+    auto bs = make_shared<BattleShip>(w, h, l, dse);
+
+    ms->gameObject.push_back( Rock::createRock(w, h, dse, vec3()).front() );
+    ms->gameObject.push_back( Rock::createRock(w, h, dse, vec3()).front() );
+    ms->gameObject.push_back( Rock::createRock(w, h, dse, vec3()).front() );
+
+    ms->gameObject.push_back(bs);
+    ms->gameObject.push_back(make_shared<FireButton>(w, h, bs));
+    ms->gameObject.push_back(make_shared<GasButton>(w, h, bs));
+    ms->gameObject.push_back(make_shared<RightButton>(w, h, bs));
+    ms->gameObject.push_back(make_shared<LeftButton>(w, h, bs));
+    ms->gameObject.push_back(l);
 }
 
 void Game::stopGame()
 {
 }
 
-
-Game::Game(): _app(0)
+Game::Game()
 {
 }

@@ -42,6 +42,7 @@ LOCAL_SRC_FILES :=                      \
     Game/GameAgain.cpp                  \
     Game/WinAgain.cpp                   \
     Game/Explosion.cpp                  \
+    Game/Life.cpp                       \
     Game/Game.cpp                       \
                                         \
     main.cpp                            \

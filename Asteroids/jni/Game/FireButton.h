@@ -14,7 +14,7 @@
 class FireButton: public ndk_game::IGameObject
 {
 public:
-    FireButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr);
+    FireButton(int screenWidth, int screenHeight, BattleShip::Ptr);
     virtual ~FireButton();
 
     virtual void update(double elapsed) throw (std::runtime_error);
