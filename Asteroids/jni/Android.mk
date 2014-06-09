@@ -8,7 +8,8 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := native-activity
 
 # LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
-
+#    Game/GameBuilder.cpp                \
+    
 LOCAL_SRC_FILES :=                      \
     Engine/Sprite.cpp                   \
     Engine/Texture.cpp                  \
@@ -28,7 +29,6 @@ LOCAL_SRC_FILES :=                      \
     Engine/DummySound.cpp               \
     Engine/DummySoundEngine.cpp         \
                                         \
-    Game/GameBuilder.cpp                \
     Game/AssetShaderLoader.cpp          \
     Game/BackGround.cpp                 \
     Game/StartButton.cpp                \
@@ -42,6 +42,8 @@ LOCAL_SRC_FILES :=                      \
     Game/GameAgain.cpp                  \
     Game/WinAgain.cpp                   \
     Game/Explosion.cpp                  \
+    Game/Life.cpp                       \
+    Game/Game.cpp                       \
                                         \
     main.cpp                            \
 

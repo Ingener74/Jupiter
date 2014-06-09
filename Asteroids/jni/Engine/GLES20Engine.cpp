@@ -43,55 +43,107 @@ void GLES20Engine::draw() throw (std::runtime_error)
     glUseProgram(_program);
     Tools::glError();
 
-    for (auto &gameObj : _currentScene->gameObject)
+    std::list<Sprite::Ptr> sprites;
+
+    for(auto go: _currentScene->gameObject)
+        for(auto s: go->getSprites())
+            sprites.push_back(s);
+
+    glActiveTexture(GL_TEXTURE0);
+
+    for (auto s : sprites)
     {
-        glActiveTexture(GL_TEXTURE0);
+        if (!s->getTexture()) throw std::runtime_error(
+                "empty texture");
+        s->getTexture()->bind();
 
-        for (auto &sprite : gameObj->getSprites())
+        glUniform1i(_uTEX, 0);
+        glEnableVertexAttribArray(_aPOS);
+        glEnableVertexAttribArray(_aTEX);
+
+        GLfloat * spriteVertex = s->getVertex();
+        uint32_t spriteVertexCount = s->getVertexCount();
+
+        glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE,
+                5 * sizeof(GLfloat), &spriteVertex[0]);
+        glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE,
+                5 * sizeof(GLfloat), &spriteVertex[3]);
+
+        glm::mat4 mvp = _ortho * s->getModelMatrix();
+        glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+        GLenum drawType;
+        switch (s->getDrawType())
         {
-            if (!sprite->getTexture()) throw std::runtime_error(
-                    "empty texture");
-            sprite->getTexture()->bind();
-
-            glUniform1i(_uTEX, 0);
-            glEnableVertexAttribArray(_aPOS);
-            glEnableVertexAttribArray(_aTEX);
-
-            GLfloat * spriteVertex = sprite->getVertex();
-            uint32_t spriteVertexCount = sprite->getVertexCount();
-
-            glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE,
-                    5 * sizeof(GLfloat), &spriteVertex[0]);
-            glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE,
-                    5 * sizeof(GLfloat), &spriteVertex[3]);
-
-            glm::mat4 mvp = _ortho * sprite->getModelMatrix();
-            glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-            GLenum drawType;
-            switch (sprite->getDrawType())
-            {
-                case ISpriteLoader::SpriteType::Triangles:
-                    drawType = GL_TRIANGLES;
-                    break;
-                case ISpriteLoader::SpriteType::TriangleFan:
-                    drawType = GL_TRIANGLE_FAN;
-                    break;
-                case ISpriteLoader::SpriteType::TriangleStrip:
-                    drawType = GL_TRIANGLE_STRIP;
-                    break;
-                case ISpriteLoader::SpriteType::LineStrip:
-                    drawType = GL_LINE_STRIP;
-                    break;
-                default:
-                    break;
-            }
-            glDrawArrays(drawType, 0, spriteVertexCount);
-
-            glDisableVertexAttribArray(_aPOS);
-            glDisableVertexAttribArray(_aTEX);
+            case ISpriteLoader::SpriteType::Triangles:
+                drawType = GL_TRIANGLES;
+                break;
+            case ISpriteLoader::SpriteType::TriangleFan:
+                drawType = GL_TRIANGLE_FAN;
+                break;
+            case ISpriteLoader::SpriteType::TriangleStrip:
+                drawType = GL_TRIANGLE_STRIP;
+                break;
+            case ISpriteLoader::SpriteType::LineStrip:
+                drawType = GL_LINE_STRIP;
+                break;
+            default:
+                break;
         }
+        glDrawArrays(drawType, 0, spriteVertexCount);
+
+        glDisableVertexAttribArray(_aPOS);
+        glDisableVertexAttribArray(_aTEX);
     }
+    //    for (auto &gameObj : _currentScene->gameObject)
+    //    {
+    //        glActiveTexture(GL_TEXTURE0);
+    //
+    //        for (auto &sprite : gameObj->getSprites())
+    //        {
+    //            if (!sprite->getTexture()) throw std::runtime_error(
+    //                    "empty texture");
+    //            sprite->getTexture()->bind();
+    //
+    //            glUniform1i(_uTEX, 0);
+    //            glEnableVertexAttribArray(_aPOS);
+    //            glEnableVertexAttribArray(_aTEX);
+    //
+    //            GLfloat * spriteVertex = sprite->getVertex();
+    //            uint32_t spriteVertexCount = sprite->getVertexCount();
+    //
+    //            glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE,
+    //                    5 * sizeof(GLfloat), &spriteVertex[0]);
+    //            glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE,
+    //                    5 * sizeof(GLfloat), &spriteVertex[3]);
+    //
+    //            glm::mat4 mvp = _ortho * sprite->getModelMatrix();
+    //            glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+    //
+    //            GLenum drawType;
+    //            switch (sprite->getDrawType())
+    //            {
+    //                case ISpriteLoader::SpriteType::Triangles:
+    //                    drawType = GL_TRIANGLES;
+    //                    break;
+    //                case ISpriteLoader::SpriteType::TriangleFan:
+    //                    drawType = GL_TRIANGLE_FAN;
+    //                    break;
+    //                case ISpriteLoader::SpriteType::TriangleStrip:
+    //                    drawType = GL_TRIANGLE_STRIP;
+    //                    break;
+    //                case ISpriteLoader::SpriteType::LineStrip:
+    //                    drawType = GL_LINE_STRIP;
+    //                    break;
+    //                default:
+    //                    break;
+    //            }
+    //            glDrawArrays(drawType, 0, spriteVertexCount);
+    //
+    //            glDisableVertexAttribArray(_aPOS);
+    //            glDisableVertexAttribArray(_aTEX);
+    //        }
+    //    }
 
     glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
 }

@@ -14,7 +14,7 @@
 class LeftButton: public ndk_game::IGameObject
 {
 public:
-    LeftButton(android_app *, int screenWidth, int screenHeight, BattleShip::Ptr);
+    LeftButton(int screenWidth, int screenHeight, BattleShip::Ptr);
     virtual ~LeftButton();
 
     virtual void update(double elapsed) throw (std::runtime_error);

@@ -14,10 +14,7 @@
 class GameAgain: public ndk_game::IGameObject
 {
 public:
-    GameAgain(android_app * app, int screenWidth,
-            std::weak_ptr<ndk_game::IDrawEngine> engine,
-            std::weak_ptr<ndk_game::Scene> mainScene,
-            GameBuilder* game);
+    GameAgain(android_app * app, int screenWidth);
     virtual ~GameAgain();
 
     virtual void update(double elapsed) throw (std::runtime_error);
@@ -34,12 +31,7 @@ private:
 
     ndk_game::Rect _buttonRect;
 
-    std::weak_ptr<ndk_game::IDrawEngine> _engine;
-    std::weak_ptr<ndk_game::Scene> _mainScene;
-
-    double _fadeOut;
-
-    GameBuilder* _game;
+    double _fadeOut = 0.0;
 };
 
 #endif /* GAMEAGAIN_H_ */

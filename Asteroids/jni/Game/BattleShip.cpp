@@ -8,6 +8,7 @@
 #include <Game/BattleShip.h>
 #include <Game/Bullet.h>
 #include <Game/Rock.h>
+#include <Game/Game.h>
 
 using namespace ndk_game;
 using namespace glm;
@@ -15,41 +16,29 @@ using namespace std;
 
 #define EPS 0.00001f
 
-BattleShip::BattleShip(android_app * app, int screenWidth, int screenHeight,
-        weak_ptr<Scene> parent,
-        weak_ptr<Scene> fail,
-        weak_ptr<IDrawEngine> e,
-        std::shared_ptr<ndk_game::ISoundEngine> soundEngine):
-
-        _app(app), _gas(false), _mass(10.f), _angle(0),
+BattleShip::BattleShip(int screenWidth, int screenHeight, Life::Ptr life,
+        ISoundEngine::Ptr se):
         _screenWidth(screenWidth), _screenHeight(screenHeight),
-        _parentScene(parent), _failScene(fail), _engine(e), _armed(0), _life(3),
-        _shield(0), _soundEngine(soundEngine)
+        _soundEngine(se), _lifeObj(life)
 {
     float shipSize = screenWidth * 0.1f;
 
-    auto t = Texture::create(make_shared<AssetTextureLoader>(app, "images/ship.png"));
-    _ship = make_shared<Sprite>(t,
-            make_shared<RectSpriteLoader>(shipSize, shipSize, 2, 0, 0.5, 0, 0.5)
-            );
+    auto game = Game::instance();
 
-    _engineFire = make_shared<Sprite>(t,
-            make_shared<RectSpriteLoader>(shipSize, shipSize, 3, 0.5, 1.0, 0, 0.5)
-            );
+    auto t = game->getTexture("images/ship.png");
 
-    _bulletTex = Texture::create(
-            make_shared<AssetTextureLoader>(app, "images/bullet.png"));
+    _ship = make_shared<Sprite>(t, make_shared<RectSpriteLoader>(shipSize, shipSize, 2, 0, 0.5, 0, 0.5));
+    _engineFire = make_shared<Sprite>(t, make_shared<RectSpriteLoader>(shipSize, shipSize, 3, 0.5, 1.0, 0, 0.5));
 
     float rs = shipSize*.7f/2;
     _shipRect = Rect(-rs/2, -rs/2, rs/2, rs/2);
 
 #ifdef NDK_GAME_DEBUG
     _rect = make_shared<Sprite>(
-            Texture::create(make_shared<AssetTextureLoader>(app, "images/white.png")),
+            game->getTexture("images/white.png"),
             make_shared<RectSpriteLoader>(_shipRect, 11, 0, 1, 0, 1)
             );
 #endif
-
 }
 
 BattleShip::~BattleShip()
@@ -111,9 +100,11 @@ void BattleShip::fire() throw ()
 {
     if (_armed < EPS)
     {
-        if (auto p = _parentScene.lock()) p->gameObject.push_back(
-                make_shared<Bullet>(_app, _screenWidth, _screenHeight, _pos.x,
-                        _pos.y, _angle, _bulletTex));
+        auto game = Game::instance();
+
+        game->getScene("Main")->gameObject.push_back(
+                make_shared<Bullet>(
+                        _screenWidth, _screenHeight, _pos.x, _pos.y, _angle));
         _armed = .5f;
 
         _soundEngine->loadSound("sounds/shot.mp3")->play();
@@ -140,13 +131,18 @@ void BattleShip::collision(IGameObject::Ptr o) throw (runtime_error)
     if (o->getName() != "Rock") return;
 
     Rect r = _shipRect + _pos;
-    if(r || dynamic_cast<Rock*>(o.get())->getRect()){
+    if (r || dynamic_cast<Rock*>(o.get())->getRect())
+    {
+        auto game = Game::instance();
 
-        if (_shield < EPS) if (--_life <= 0) if (auto eng = _engine.lock())
+        if (_shield < EPS)
         {
-            Log() << "Battle ship fail";
-
-            eng->setCurrentScene(_failScene.lock());
+            if (--_life <= 0)
+            {
+                Log() << "Battle ship fail";
+                game->getEngine()->setCurrentScene(game->getScene("Fail"));
+            }
+            _lifeObj->setLife(_life);
         }
         _shield = 3.f;
 

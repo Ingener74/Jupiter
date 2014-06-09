@@ -14,7 +14,7 @@
 class RightButton: public ndk_game::IGameObject
 {
 public:
-    RightButton(android_app * app, int screenWidth, int screenHeight, BattleShip::Ptr);
+    RightButton(int screenWidth, int screenHeight, BattleShip::Ptr);
     virtual ~RightButton();
 
     virtual void update(double elapsed) throw (std::runtime_error);
