@@ -67,8 +67,6 @@ void Life::newLife()
             lifeTex = "images/life/life3.png";
     }
 
-    Log() << "new life = " << lifeTex;
-
     _life = std::make_shared<Sprite>(
             game->getTexture(lifeTex),
             std::make_shared<RectSpriteLoader>(_w, _w, 10, 0, 1, 1, 0)
