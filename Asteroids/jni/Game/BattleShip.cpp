@@ -146,7 +146,7 @@ void BattleShip::collision(IGameObject::Ptr o) throw (runtime_error)
         }
         _shield = 3.f;
 
-        Log() << "shield " << _shield << " life " << _life;
+//        Log() << "shield " << _shield << " life " << _life;
     }
 }
 
