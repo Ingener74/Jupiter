@@ -3,7 +3,9 @@
 
 -- implementation
 
-scenes = {
+
+
+local scenes = {
 }
 
 function inputToAll(x, y)

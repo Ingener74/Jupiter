@@ -20,6 +20,8 @@
 #include <Game/Explosion.h>
 #include <Game/Life.h>
 
+#include <lua/lua.hpp>
+
 #include <Game/Game.h>
 
 using namespace ndk_game;
@@ -77,6 +79,9 @@ void Game::startGame(android_app* a, int w, int h)
     _screenWidth = w;
     _screenHeight = h;
 
+
+    lua_State* L = luaL_newstate();
+
     Rock::reset(); // hack ;)
 
     Log() << "View port " << w << " x " << h;
@@ -103,6 +108,8 @@ void Game::startGame(android_app* a, int w, int h)
     winScene->gameObject.push_back(make_shared<WinAgain>(_app, w));
 
     newGame();
+
+    lua_close(L);
 }
 
 void Game::newGame()

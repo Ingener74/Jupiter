@@ -9,9 +9,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := native-activity
 
 # LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
-
-LOCAL_CFLAGS    := -DLUA_ANSI
-# LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
     
 LOCAL_SRC_FILES :=                 \
     Engine/Sprite.cpp              \
