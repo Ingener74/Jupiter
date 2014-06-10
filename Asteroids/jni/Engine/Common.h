@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <functional>
 
-#include <libpng/png.h>
+#include <png/png.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -39,6 +39,5 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
-//#include <SLES/OpenSLES_AndroidMetadata.h>
 
 #endif /* COMMON_H_ */

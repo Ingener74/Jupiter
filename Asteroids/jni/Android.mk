@@ -1,7 +1,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-include $(LOCAL_PATH)/libpng/Android.mk
+include $(LOCAL_PATH)/png/Android.mk
 include $(LOCAL_PATH)/lua/Android.mk
 
 include $(CLEAR_VARS)
