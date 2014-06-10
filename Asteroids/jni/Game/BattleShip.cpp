@@ -102,7 +102,7 @@ void BattleShip::fire() throw ()
     {
         auto game = Game::instance();
 
-        game->getScene("Main")->gameObject.push_back(
+        game->getScene("Main")->gameObject.push_front(
                 make_shared<Bullet>(
                         _screenWidth, _screenHeight, _pos.x, _pos.y, _angle));
         _armed = .5f;

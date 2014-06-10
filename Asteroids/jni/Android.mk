@@ -8,8 +8,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := native-activity
 
 # LOCAL_CPPFLAGS := -DNDK_GAME_DEBUG
-#    Game/GameBuilder.cpp                \
-    
+
 LOCAL_SRC_FILES :=                      \
     Engine/Sprite.cpp                   \
     Engine/Texture.cpp                  \
