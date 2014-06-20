@@ -1,10 +1,4 @@
-##Asteroids game
+##Jupiter small game engine
 
-### How to build
+### How include in Android (NativeActivity/JNI) Project
 
-In Eclipse with Android Developer Tools
-
-```
-1. Project Explorer -> Import -> Existing Android Code Into Workspace -> Add Native Support -> libnative-activity.so
-2. Run as Android Application
-```
