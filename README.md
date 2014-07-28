@@ -17,7 +17,7 @@ sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev
 
 4. Go to Jupiter/build
 
-5. Make 
+5. Do CMake 
 
 ```
 cmake .. -DCMAKE_PREFIX_PATH=~/Qt5.3.1/5.3/gcc_64/lib/cmake
