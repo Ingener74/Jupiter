@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Level Editor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QListView" name="ScenesListView">
@@ -32,6 +32,23 @@
       <width>621</width>
       <height>471</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>290</y>
+      <width>171</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>BlaBla</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../res/qt_level_editor.png</normaloff>../res/qt_level_editor.png</iconset>
     </property>
    </widget>
   </widget>

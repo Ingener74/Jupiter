@@ -5,10 +5,7 @@
  *      Author: ingener
  */
 
-#include <iostream>
-#include <stdexcept>
-
-#include <QtWidgets/qapplication.h>
+#include <LevelEditor.h>
 
 using namespace std;
 
@@ -20,7 +17,8 @@ int main( int argc, char **argv )
 
         QApplication app(argc, argv);
 
-
+        LevelEditor le;
+        le.show();
 
         return app.exec();
     }
