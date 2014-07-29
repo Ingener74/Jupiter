@@ -9,23 +9,23 @@
 
 using namespace std;
 
+shared_ptr<QApplication> app;
+
 int main( int argc, char **argv )
 {
-    try
-    {
-        cout << "Level editor" << endl;
+	try
+	{
+		app = make_shared<QApplication>( argc, argv );
 
-        QApplication app(argc, argv);
+		LevelEditor le( app );
+		le.show();
 
-        LevelEditor le;
-        le.show();
-
-        return app.exec();
-    }
-    catch ( exception const & e )
-    {
-        cerr << "Error: " << e.what() << endl;
-    }
-    return 0;
+		return app->exec();
+	}
+	catch ( exception const & e )
+	{
+		cerr << "Error: " << e.what() << endl;
+	}
+	return 0;
 }
 

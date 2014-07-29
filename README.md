@@ -8,23 +8,15 @@ install dependencies
 
 1. Install Qt5 from http://qt-project.org/downloads
 
-2. Install 
+2. Install other dependencies
 ```
 sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev
 ```
-
-3. Make directory Jupiter/build
-
-4. Go to Jupiter/build
-
-5. Do CMake 
-
+3. Build
 ```
-cmake .. -DCMAKE_PREFIX_PATH=~/Qt5.3.1/5.3/gcc_64/lib/cmake
-```
-
-6. Do make
-
-```
+git clone https://github.com/Ingener74/Jupiter.git
+cd Jupiter
+mkdir build
+cmake -DCMAKE_PREFIX_PATH=~/Qt5.3.1/5.3/gcc_64/lib/cmake ..
 make
 ```
