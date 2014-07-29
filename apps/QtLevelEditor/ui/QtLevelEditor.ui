@@ -6,59 +6,70 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1041</width>
+    <width>1054</width>
     <height>666</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Level Editor</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/QtLevelEditor.qrc">
+    <normaloff>:/qt_level_editor.png</normaloff>:/qt_level_editor.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListView" name="ScenesListView">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QWidget" name="PreviewWidget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>30</y>
-      <width>621</width>
-      <height>471</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>290</y>
-      <width>171</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>BlaBla</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>../res/qt_level_editor.png</normaloff>../res/qt_level_editor.png</iconset>
-    </property>
-   </widget>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QListView" name="ScenesListView"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="AddSceneButton">
+          <property name="text">
+           <string>Add scene</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/QtLevelEditor.qrc">
+            <normaloff>:/qt_level_editor.png</normaloff>:/qt_level_editor.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Remove scene</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QWidget" name="PreviewWidget" native="true">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1041</width>
-     <height>29</height>
+     <width>1054</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -112,6 +123,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/QtLevelEditor.qrc"/>
+ </resources>
  <connections/>
 </ui>
