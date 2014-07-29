@@ -9,11 +9,10 @@
 
 using namespace std;
 
-LevelEditor::LevelEditor( QWidget* parent ) :
-        QMainWindow(parent)
+LevelEditor::LevelEditor( std::shared_ptr<QApplication> app, QWidget* parent ) :
+		QMainWindow( parent )
 {
-    _ui = make_shared<Ui_MainWindow>();
-    _ui->setupUi(this);
+	(_ui = make_shared<Ui_MainWindow>())->setupUi( this );
 }
 
 LevelEditor::~LevelEditor()

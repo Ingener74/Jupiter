@@ -14,13 +14,13 @@
 
 class LevelEditor: public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    LevelEditor( QWidget* parent = nullptr );
-    virtual ~LevelEditor();
+	LevelEditor( std::shared_ptr<QApplication>, QWidget* parent = nullptr );
+	virtual ~LevelEditor();
 
 private:
-    std::shared_ptr<Ui_MainWindow> _ui;
+	std::shared_ptr<Ui_MainWindow> _ui;
 };
 
 #endif /* LEVELEDITOR_H_ */
