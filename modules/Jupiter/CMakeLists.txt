@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 2.8.11)
+
+set(PROJECT_NAME Jupiter)
+project(${PROJECT_NAME})
+
+set(SOURCES
+    src/AssetTextureLoader.cpp
+    src/DummySound.cpp
+    src/DummySoundEngine.cpp
+    src/DummyTextureLoader.cpp
+    src/GLES20Engine.cpp
+    src/Image.cpp
+    src/Rect.cpp
+    src/RectSpriteLoader.cpp
+    src/Scene.cpp
+    src/SimpleShaderLoader.cpp
+    src/SimpleSpriteLoader.cpp
+    src/SLESSound.cpp
+    src/SLESSoundEngine.cpp
+    src/Sprite.cpp
+    src/Texture.cpp
+    src/TextureLoader.cpp
+    src/Tools.cpp
+)
+
+add_library(${PROJECT_NAME} ${SOURCES})
+
+# set(LIBS
+# )
+# if(ANDROID)
+#     set(LIBS ${LIBS}
+#     )
+# else()
+#     set(LIBS ${LIBS}
+#     )
+# endif()
+# 
+# target_link_libraries(${PROJECT_NAME} ${LIBS})
