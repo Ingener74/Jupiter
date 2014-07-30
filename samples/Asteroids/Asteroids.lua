@@ -33,7 +33,8 @@ scenes = {
                     print("x = ", x, ", y = ", y)
                 end,
                 onUpdate = function(bg1, dt)
-                    print("update = ", dt)
+                    bg1.bla = bg1.bla + dt
+                    print("update = ", dt, ", bla = ", bg1.bla)
                 end
             }
         }
