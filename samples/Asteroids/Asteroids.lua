@@ -21,15 +21,18 @@ scenes = {
             }
         },
         game_objects = {
-            {
+            bg1 = {
                 name = "bg",
-                controller = function()
-                    print("background controller")
+                
+                bla = 123,
+                
+                controller = function(bg1)
+                    print("background controller", bg1.name)
                 end,
-                onInput = function(x, y)
+                onInput = function(bg1, x, y)
                     print("x = ", x, ", y = ", y)
                 end,
-                onUpdate = function(dt)
+                onUpdate = function(bg1, dt)
                     print("update = ", dt)
                 end
             }
@@ -66,10 +69,10 @@ for i, n in pairs(scenes) do
     end
     for s1, g in pairs(n.game_objects) do
         print("\t", s1, " -> ", g.name)
-        g.controller()        
-        g.onInput(100, 123)
+        g:controller()        
+        g:onInput(100, 123)
         if g.onUpdate ~= nil then
-            g.onUpdate(0.1)
+            g:onUpdate(0.1)
         end
     end
 end
