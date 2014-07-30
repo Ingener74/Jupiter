@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../res/QtLevelEditor.qrc">
-    <normaloff>:/qt_level_editor.png</normaloff>:/qt_level_editor.png</iconset>
+    <normaloff>:/stationery.png</normaloff>:/stationery.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -33,7 +33,7 @@
           </property>
           <property name="icon">
            <iconset resource="../res/QtLevelEditor.qrc">
-            <normaloff>:/qt_level_editor.png</normaloff>:/qt_level_editor.png</iconset>
+            <normaloff>:/add.png</normaloff>:/add.png</iconset>
           </property>
          </widget>
         </item>
@@ -41,6 +41,10 @@
          <widget class="QPushButton" name="pushButton">
           <property name="text">
            <string>Remove scene</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/QtLevelEditor.qrc">
+            <normaloff>:/rb_full.png</normaloff>:/rb_full.png</iconset>
           </property>
          </widget>
         </item>
