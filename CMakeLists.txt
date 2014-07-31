@@ -24,6 +24,8 @@ include_directories(
     
     ${PNG_INCLUDE_DIRS}
     
+    ${GLUT_LIBRARIES}
+    
     ${GLM_INCLUDE_DIRS}
 
     modules/Jupiter/include

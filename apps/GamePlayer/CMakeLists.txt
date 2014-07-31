@@ -9,8 +9,9 @@ set(SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# set(LIBS
-# )
-# target_link_libraries(${PROJECT_NAME} ${LIBS})
+set(LIBS
+    ${GLUT_LIBRARIES}
+)
+target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/bin)
