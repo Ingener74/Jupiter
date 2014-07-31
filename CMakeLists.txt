@@ -15,6 +15,9 @@ find_package(PNG REQUIRED)
 # find glm
 find_package(GLM REQUIRED)
 
+# find GLUT
+find_package(GLUT REQUIRED)
+
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
