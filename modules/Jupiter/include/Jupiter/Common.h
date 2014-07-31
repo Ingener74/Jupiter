@@ -21,23 +21,28 @@
 #include <algorithm>
 #include <functional>
 
-#include <png/png.h>
+#include <png.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-#include <GLES2/gl2platform.h>
+#ifdef ANDROID
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+	#include <GLES2/gl2platform.h>
 
-#include <android/log.h>
-#include <android/asset_manager.h>
-#include <android_native_app_glue.h>
+	#include <android/log.h>
+	#include <android/asset_manager.h>
+	#include <android_native_app_glue.h>
 
-#include <SLES/OpenSLES.h>
-#include <SLES/OpenSLES_Android.h>
-#include <SLES/OpenSLES_AndroidConfiguration.h>
+	#include <SLES/OpenSLES.h>
+	#include <SLES/OpenSLES_Android.h>
+	#include <SLES/OpenSLES_AndroidConfiguration.h>
+#else
+#include <GL/gl.h>
+#endif
+
 
 #endif /* COMMON_H_ */

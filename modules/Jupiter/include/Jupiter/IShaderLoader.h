@@ -8,7 +8,7 @@
 #ifndef ISHADERLOADER_H_
 #define ISHADERLOADER_H_
 
-#include <Engine/Common.h>
+#include <Jupiter/Common.h>
 
 namespace ndk_game
 {

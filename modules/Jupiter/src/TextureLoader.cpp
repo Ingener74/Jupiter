@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Engine/TextureLoader.h>
+#include <Jupiter/TextureLoader.h>
 
 namespace ndk_game
 {

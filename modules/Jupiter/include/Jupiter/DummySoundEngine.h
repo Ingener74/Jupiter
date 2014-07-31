@@ -8,7 +8,7 @@
 #ifndef DUMMYSOUNDENGINE_H_
 #define DUMMYSOUNDENGINE_H_
 
-#include <Engine/ISoundEngine.h>
+#include <Jupiter/ISoundEngine.h>
 
 namespace ndk_game
 {

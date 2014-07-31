@@ -5,7 +5,7 @@
  *      Author: pavel
  */
 
-#include <Engine/SimpleSpriteLoader.h>
+#include <Jupiter/SimpleSpriteLoader.h>
 
 namespace ndk_game
 {

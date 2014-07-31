@@ -5,10 +5,10 @@
  *      Author: Admin
  */
 
-#include <Engine/Tools.h>
-#include <Engine/TextureLoader.h>
-#include <Engine/Log.h>
-#include <Engine/Texture.h>
+#include <Jupiter/Tools.h>
+#include <Jupiter/TextureLoader.h>
+#include <Jupiter/Log.h>
+#include <Jupiter/Texture.h>
 
 namespace ndk_game
 {

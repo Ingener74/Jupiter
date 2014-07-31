@@ -5,7 +5,7 @@
  *      Author: pavel
  */
 
-#include <Engine/RectSpriteLoader.h>
+#include <Jupiter/RectSpriteLoader.h>
 
 namespace ndk_game
 {

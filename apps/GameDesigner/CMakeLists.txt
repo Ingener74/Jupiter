@@ -16,3 +16,5 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES} ${UI_SOURCES} ${RES_SOURCES})
 
 qt5_use_modules(GameDesigner Widgets Core)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/bin)

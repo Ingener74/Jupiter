@@ -8,8 +8,8 @@
 #ifndef RECTSPRITELOADER_H_
 #define RECTSPRITELOADER_H_
 
-#include <Engine/ISpriteLoader.h>
-#include <Engine/Rect.h>
+#include <Jupiter/ISpriteLoader.h>
+#include <Jupiter/Rect.h>
 
 namespace ndk_game
 {

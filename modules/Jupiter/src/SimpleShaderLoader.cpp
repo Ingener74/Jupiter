@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Engine/SimpleShaderLoader.h>
+#include <Jupiter/SimpleShaderLoader.h>
 
 namespace ndk_game
 {

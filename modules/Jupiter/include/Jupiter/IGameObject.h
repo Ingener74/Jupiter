@@ -8,8 +8,8 @@
 #ifndef IGAMEOBJECT_H_
 #define IGAMEOBJECT_H_
 
-#include <Engine/Common.h>
-#include <Engine/Sprite.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/Sprite.h>
 
 namespace ndk_game
 {

@@ -8,7 +8,7 @@
 #ifndef RECT_H_
 #define RECT_H_
 
-#include <Engine/Common.h>
+#include <Jupiter/Common.h>
 
 namespace ndk_game
 {

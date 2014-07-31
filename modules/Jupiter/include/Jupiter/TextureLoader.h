@@ -8,8 +8,8 @@
 #ifndef TEXTURELOADER_H_
 #define TEXTURELOADER_H_
 
-#include <Engine/Common.h>
-#include <Engine/Image.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/Image.h>
 
 namespace ndk_game
 {

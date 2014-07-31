@@ -8,8 +8,8 @@
 #ifndef SIMPLESHADERLOADER_H_
 #define SIMPLESHADERLOADER_H_
 
-#include <Engine/Common.h>
-#include <Engine/IShaderLoader.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/IShaderLoader.h>
 
 namespace ndk_game
 {

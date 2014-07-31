@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Engine/Scene.h>
+#include <Jupiter/Scene.h>
 
 namespace ndk_game
 {

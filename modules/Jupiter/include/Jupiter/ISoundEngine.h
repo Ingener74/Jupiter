@@ -8,8 +8,8 @@
 #ifndef ISOUNDENGINE_H_
 #define ISOUNDENGINE_H_
 
-#include <Engine/Common.h>
-#include <Engine/ISound.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/ISound.h>
 
 namespace ndk_game
 {

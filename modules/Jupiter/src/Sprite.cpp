@@ -5,7 +5,7 @@
  *      Author: Admin
  */
 
-#include <Engine/Sprite.h>
+#include <Jupiter/Sprite.h>
 
 namespace ndk_game
 {
