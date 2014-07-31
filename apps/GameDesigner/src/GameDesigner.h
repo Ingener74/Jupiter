@@ -1,5 +1,5 @@
 /*
- * LevelEditor.h
+ * GameDesigner.h
  *
  *  Created on: Jul 27, 2014
  *      Author: ingener
@@ -10,14 +10,14 @@
 
 #include <Common.h>
 
-#include <ui_QtLevelEditor.h>
+#include <ui_GameDesigner.h>
 
-class LevelEditor: public QMainWindow
+class GameDesigner: public QMainWindow
 {
 	Q_OBJECT
 public:
-	LevelEditor( std::shared_ptr<QApplication>, QWidget* parent = nullptr );
-	virtual ~LevelEditor();
+	GameDesigner( std::shared_ptr<QApplication>, QWidget* parent = nullptr );
+	virtual ~GameDesigner();
 
 private:
 	std::shared_ptr<Ui_MainWindow> _ui;

@@ -5,8 +5,8 @@
  *      Author: pavel
  */
 
-#include <Engine/Log.h>
-#include <Engine/AssetTextureLoader.h>
+#include <Jupiter/Log.h>
+#include <Jupiter/AssetTextureLoader.h>
 
 namespace ndk_game
 {

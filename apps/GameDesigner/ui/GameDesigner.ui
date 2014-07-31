@@ -14,7 +14,7 @@
    <string>Level Editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../res/QtLevelEditor.qrc">
+   <iconset resource="../res/GameDesigner.qrc">
     <normaloff>:/stationery.png</normaloff>:/stationery.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -32,7 +32,7 @@
            <string>Add scene</string>
           </property>
           <property name="icon">
-           <iconset resource="../res/QtLevelEditor.qrc">
+           <iconset resource="../res/GameDesigner.qrc">
             <normaloff>:/add.png</normaloff>:/add.png</iconset>
           </property>
          </widget>
@@ -43,7 +43,7 @@
            <string>Remove scene</string>
           </property>
           <property name="icon">
-           <iconset resource="../res/QtLevelEditor.qrc">
+           <iconset resource="../res/GameDesigner.qrc">
             <normaloff>:/rb_full.png</normaloff>:/rb_full.png</iconset>
           </property>
          </widget>
@@ -128,7 +128,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../res/QtLevelEditor.qrc"/>
+  <include location="../res/GameDesigner.qrc"/>
  </resources>
  <connections/>
 </ui>
