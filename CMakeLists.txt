@@ -18,28 +18,31 @@ find_package(GLM REQUIRED)
 # find GLUT
 find_package(GLUT REQUIRED)
 
+# find GLEW
+find_package(GLEW REQUIRED)
+
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
     
     ${PNG_INCLUDE_DIRS}
     
-    ${GLUT_LIBRARIES}
-    
     ${GLM_INCLUDE_DIRS}
+    
+    ${GLUT_INCLUDE_DIR}
+
+    ${GLEW_INCLUDE_DIRS}
 
     modules/Jupiter/include
 )
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+
 add_definitions(
+    -std=c++11
     ${Qt5Widgets_DEFINITIONS}
     ${Qt5Core_DEFINITIONS}
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
-
-add_definitions(-std=c++11)
 
 add_subdirectory(apps)
 

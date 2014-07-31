@@ -10,6 +10,7 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
+    GL
     ${GLUT_LIBRARIES}
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
