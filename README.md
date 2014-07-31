@@ -10,7 +10,7 @@ install dependencies
 
 2. Install other dependencies
 ```
-sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev
+sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev
 ```
 3. Build and install dependencies
 
