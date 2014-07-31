@@ -36,3 +36,6 @@ add_library(${PROJECT_NAME} ${SOURCES})
 # endif()
 # 
 # target_link_libraries(${PROJECT_NAME} ${LIBS})
+
+install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
+install(DIRECTORY include DESTINATION Jupiter)

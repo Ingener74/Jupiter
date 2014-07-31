@@ -39,3 +39,5 @@ add_definitions(-std=c++11)
 add_subdirectory(apps)
 
 add_subdirectory(modules)
+
+add_subdirectory(samples)
