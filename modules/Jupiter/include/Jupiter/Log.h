@@ -8,7 +8,7 @@
 #ifndef LOG_H_
 #define LOG_H_
 
-#include <Engine/Common.h>
+#include <Jupiter/Common.h>
 
 namespace ndk_game
 {

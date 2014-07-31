@@ -21,20 +21,21 @@ scenes = {
             }
         },
         game_objects = {
-            bg1 = {
+            bg = {
                 name = "bg",
                 
                 bla = 123,
                 
-                controller = function(bg1)
-                    print("background controller", bg1.name)
+                controller = function(bg)
+                    print("background controller", bg.name)
                 end,
-                onInput = function(bg1, x, y)
-                    print("x = ", x, ", y = ", y)
+                onInput = function(bg, x, y)
+                    bg.bla = bg.bla + 10;
+                    print("x = ", x, ", y = ", y, ", bla = ", bg.bla)
                 end,
-                onUpdate = function(bg1, dt)
-                    bg1.bla = bg1.bla + dt
-                    print("update = ", dt, ", bla = ", bg1.bla)
+                onUpdate = function(bg, dt)
+                    bg.bla = bg.bla + dt
+                    print("update = ", dt, ", bla = ", bg.bla)
                 end
             }
         }
@@ -62,6 +63,7 @@ scenes = {
     }
 }
 
+--[[ 
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 for i, n in pairs(scenes) do
     print(i, " -> ", n.name);
@@ -70,13 +72,14 @@ for i, n in pairs(scenes) do
     end
     for s1, g in pairs(n.game_objects) do
         print("\t", s1, " -> ", g.name)
-        g:controller()        
+        g:controller()
         g:onInput(100, 123)
         if g.onUpdate ~= nil then
             g:onUpdate(0.1)
         end
     end
 end
+--]]
 
 
 

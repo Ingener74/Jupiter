@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <LevelEditor.h>
+#include <GameDesigner.h>
 
 using namespace std;
 
@@ -17,8 +17,8 @@ int main( int argc, char **argv )
 	{
 		app = make_shared<QApplication>( argc, argv );
 
-		LevelEditor le( app );
-		le.show();
+		GameDesigner gd( app );
+		gd.show();
 
 		return app->exec();
 	}
