@@ -8,9 +8,9 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include <Engine/Common.h>
-#include <Engine/Texture.h>
-#include <Engine/ISpriteLoader.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/Texture.h>
+#include <Jupiter/ISpriteLoader.h>
 
 namespace ndk_game
 {

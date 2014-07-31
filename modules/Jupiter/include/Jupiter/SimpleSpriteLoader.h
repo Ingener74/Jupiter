@@ -8,7 +8,7 @@
 #ifndef SIMPLESPRITELOADER_H_
 #define SIMPLESPRITELOADER_H_
 
-#include <Engine/ISpriteLoader.h>
+#include <Jupiter/ISpriteLoader.h>
 
 namespace ndk_game
 {

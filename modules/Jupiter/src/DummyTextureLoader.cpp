@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Engine/DummyTextureLoader.h>
+#include <Jupiter/DummyTextureLoader.h>
 
 namespace ndk_game
 {

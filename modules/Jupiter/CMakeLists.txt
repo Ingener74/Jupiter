@@ -4,19 +4,19 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
-    src/AssetTextureLoader.cpp
+    #src/AssetTextureLoader.cpp
     src/DummySound.cpp
     src/DummySoundEngine.cpp
     src/DummyTextureLoader.cpp
-    src/GLES20Engine.cpp
+    #src/GLES20Engine.cpp
     src/Image.cpp
     src/Rect.cpp
     src/RectSpriteLoader.cpp
     src/Scene.cpp
     src/SimpleShaderLoader.cpp
     src/SimpleSpriteLoader.cpp
-    src/SLESSound.cpp
-    src/SLESSoundEngine.cpp
+    #src/SLESSound.cpp
+    #src/SLESSoundEngine.cpp
     src/Sprite.cpp
     src/Texture.cpp
     src/TextureLoader.cpp

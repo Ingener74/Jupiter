@@ -8,8 +8,8 @@
 #ifndef ASSETTEXTURELOADER_H_
 #define ASSETTEXTURELOADER_H_
 
-#include <Engine/Common.h>
-#include <Engine/TextureLoader.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/TextureLoader.h>
 
 namespace ndk_game
 {

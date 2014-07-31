@@ -8,9 +8,9 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-#include <Engine/Common.h>
-#include <Engine/IGameObject.h>
-#include <Engine/Sprite.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/IGameObject.h>
+#include <Jupiter/Sprite.h>
 
 namespace ndk_game
 {

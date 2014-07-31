@@ -8,7 +8,7 @@
 #ifndef DUMMYTEXTURELOADER_H_
 #define DUMMYTEXTURELOADER_H_
 
-#include <Engine/TextureLoader.h>
+#include <Jupiter/TextureLoader.h>
 
 namespace ndk_game
 {

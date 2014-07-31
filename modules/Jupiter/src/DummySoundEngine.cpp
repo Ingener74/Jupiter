@@ -5,8 +5,8 @@
  *      Author: ingener
  */
 
-#include <Engine/DummySoundEngine.h>
-#include <Engine/DummySound.h>
+#include <Jupiter/DummySoundEngine.h>
+#include <Jupiter/DummySound.h>
 
 namespace ndk_game
 {

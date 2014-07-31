@@ -5,9 +5,9 @@
  *      Author: ingener
  */
 
-#include <Engine/Common.h>
-#include <Engine/Rect.h>
-#include <Engine/Log.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/Rect.h>
+#include <Jupiter/Log.h>
 
 namespace ndk_game
 {

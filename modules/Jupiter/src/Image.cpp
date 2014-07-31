@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Engine/Image.h>
+#include <Jupiter/Image.h>
 
 std::ostream& ndk_game::operator <<(std::ostream& sout, const Image& image)
 {
