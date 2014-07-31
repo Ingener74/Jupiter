@@ -1,14 +1,20 @@
 cmake_minimum_required(VERSION 2.8.11)
 
+# find Qt5
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core    REQUIRED)
 
+# find png
+find_package(PNG REQUIRED)
+
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
     
+    ${PNG_INCLUDE_DIRS}
+
     modules/Jupiter/include
 )
 
