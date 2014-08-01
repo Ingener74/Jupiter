@@ -9,6 +9,9 @@ set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core    REQUIRED)
 
+# find boost
+find_package(Boost 1.53.0 REQUIRED system thread filesystem)
+
 # find png
 find_package(PNG REQUIRED)
 
@@ -28,6 +31,8 @@ include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
     
+    ${Boost_INCLUDE_DIRS}
+    
     ${PNG_INCLUDE_DIRS}
     
     ${GLM_INCLUDE_DIRS}
@@ -37,7 +42,7 @@ include_directories(
     ${GLEW_INCLUDE_DIRS}
     
     ${LUA_INCLUDE_DIR}
-
+    
     modules/Jupiter/include
 )
 
