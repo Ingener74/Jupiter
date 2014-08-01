@@ -7,7 +7,6 @@
 
 #include <Jupiter/Tools.h>
 #include <Jupiter/TextureLoader.h>
-#include <Jupiter/Log.h>
 #include <Jupiter/Texture.h>
 
 namespace ndk_game

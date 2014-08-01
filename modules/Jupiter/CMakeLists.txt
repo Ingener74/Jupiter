@@ -25,17 +25,18 @@ set(SOURCES
 
 add_library(${PROJECT_NAME} ${SOURCES})
 
-# set(LIBS
-# )
-# if(ANDROID)
-#     set(LIBS ${LIBS}
-#     )
-# else()
-#     set(LIBS ${LIBS}
-#     )
-# endif()
-# 
-# target_link_libraries(${PROJECT_NAME} ${LIBS})
+set(LIBS
+    ${PNG_LIBRARIES}
+)
+if(ANDROID)
+    set(LIBS ${LIBS}
+    )
+else()
+    set(LIBS ${LIBS}
+    )
+endif()
+
+target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
 install(DIRECTORY include DESTINATION Jupiter)

@@ -21,6 +21,9 @@ find_package(GLUT REQUIRED)
 # find GLEW
 find_package(GLEW REQUIRED)
 
+# find Lua
+find_package(Lua REQUIRED)
+
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
@@ -32,6 +35,8 @@ include_directories(
     ${GLUT_INCLUDE_DIR}
 
     ${GLEW_INCLUDE_DIRS}
+    
+    ${LUA_INCLUDE_DIR}
 
     modules/Jupiter/include
 )

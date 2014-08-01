@@ -5,59 +5,88 @@
  *      Author: pavel
  */
 
+#include <fstream>
+#include <iterator>
 #include <iostream>
 #include <stdexcept>
 
+#include <GL/glew.h>
 #include <GL/glut.h>
+
+#include <lua.hpp>
 
 using namespace std;
 
-void display(void){
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.1f, 0.4f, 0.2f, 1.f);
-
-
-
-    glutSwapBuffers();
-}
-
-void reshape(int w, int h){
-    glViewport(0, 0, w, h);
-}
-
-int main( int argc, char **argv )
+void display(void)
 {
-    try
-    {
-        cout << "Game player" << endl;
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.1f, 0.4f, 0.2f, 1.f);
 
-        /*
-         * read program from lua file
-         *
-         *  -- set viewport
-         *  -- set ortho projection
-         *  -- create engine
-         */
+	glutSwapBuffers();
+}
 
-        int windowWidth = 800, windowHeight = 600;
+void reshape(int w, int h)
+{
+	glViewport(0, 0, w, h);
+}
 
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-        glutInitWindowSize(windowWidth, windowHeight);
-        glutCreateWindow("Jupiter game player");
+int main(int argc, char **argv)
+{
+	try
+	{
+		cout << "Jupiter game player" << endl;
 
-        glutReshapeFunc (reshape);
-        glutDisplayFunc (display);
-        glutIdleFunc(display);
+		if (argc < 2) throw runtime_error(""
+				"Usage  : ./GamePlayer <path-to-game>\n"
+				"Example: ./GamePlayer ~/games/Asteroids/Asteroids.lua");
 
-        glutMainLoop();
+		/*
+		 * read program from lua file
+		 *
+		 *  -- set viewport
+		 *  -- set ortho projection
+		 *  -- create engine
+		 */
 
-        return EXIT_SUCCESS;
-    }
-    catch ( exception const & e )
-    {
-        cerr << "Error: " << e.what() << endl;
-        return EXIT_FAILURE;
-    }
+		lua_State* L = luaL_newstate();
+		luaL_openlibs(L);
+
+		fstream file(argv[1]);
+
+		cout << "loading lua file " << luaL_loadstring(
+				L, string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>()).c_str()) << endl;
+
+		lua_getglobal(L, "viewport");
+
+		if (!lua_istable(L, -1)) throw runtime_error("can't find viewport table");
+
+		lua_getfield(L, -1, "width");
+
+		cout << "width from lua = " << lua_tonumberx(L, -1, nullptr) << endl;
+
+		int windowWidth = 800, windowHeight = 600;
+
+		glutInit(&argc, argv);
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+		glutInitWindowSize(windowWidth, windowHeight);
+		glutCreateWindow("Jupiter game player");
+
+		glutReshapeFunc(reshape);
+		glutDisplayFunc(display);
+		glutIdleFunc(display);
+
+		if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
+
+		glutMainLoop();
+
+		lua_close(L);
+
+		return EXIT_SUCCESS;
+	}
+	catch ( exception const & e )
+	{
+		cerr << "Error: " << e.what() << endl;
+		return EXIT_FAILURE;
+	}
 }
 
