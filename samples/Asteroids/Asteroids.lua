@@ -92,6 +92,12 @@ scenes = {
     }
 }
 
+local old_print = print
+print = function(...)
+  new_print(...);
+end
+
+--[[
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 for i, n in pairs(scenes) do
     print(i, " -> ", n.name);
@@ -111,7 +117,4 @@ for i, n in pairs(scenes) do
         end
     end
 end
-
-
-
-
+--]]

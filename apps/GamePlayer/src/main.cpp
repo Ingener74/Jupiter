@@ -30,6 +30,21 @@ void reshape(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
+extern "C"
+{
+
+static int l_new_print(lua_State* L)
+{
+	for (int i = 1; i < lua_gettop(L) + 1; ++i)
+	{
+		cout << lua_tostring(L, i);
+	}
+	cout << endl;
+	return 0;
+}
+
+}
+
 int main(int argc, char **argv)
 {
 	try
@@ -51,10 +66,13 @@ int main(int argc, char **argv)
 		lua_State* L = luaL_newstate();
 		luaL_openlibs(L);
 
+		lua_register(L, "new_print", l_new_print);
+
 		fstream file(argv[1]);
 
-		cout << "loading lua file " << luaL_loadstring(
-				L, string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>()).c_str()) << endl;
+		luaL_loadstring(L, string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>()).c_str());
+
+		lua_pcall(L, 0, 0, 0);
 
 		lua_getglobal(L, "viewport");
 
@@ -62,7 +80,7 @@ int main(int argc, char **argv)
 
 		lua_getfield(L, -1, "width");
 
-		cout << "width from lua = " << lua_tonumberx(L, -1, nullptr) << endl;
+		cout << "width from lua = " << lua_tonumberx(L, -2, nullptr) << endl;
 
 		int windowWidth = 800, windowHeight = 600;
 
