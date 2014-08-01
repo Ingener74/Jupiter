@@ -7,7 +7,6 @@
 
 #include <Jupiter/Common.h>
 #include <Jupiter/Rect.h>
-#include <Jupiter/Log.h>
 
 namespace ndk_game
 {
@@ -49,14 +48,14 @@ Rect operator +(const Rect& r, const glm::vec3& v)
     return res;
 }
 
-std::ostream& operator <<(std::ostream& sout, const Rect& r)
+std::ostream& operator <<(std::ostream& out, const Rect& r)
 {
-    sout << "Rect: " <<
+    out << "Rect: " <<
             r.x1 << " x " << r.y1 << " -> " <<
             r.x2 << " x " << r.y2 << ", " <<
             std::max(r.x1, r.x2) - std::min(r.x1, r.x2) << " x " <<
             std::max(r.y1, r.y2) - std::min(r.y1, r.y2);
-    return sout;
+    return out;
 }
 
 } /* namespace ndk_game */

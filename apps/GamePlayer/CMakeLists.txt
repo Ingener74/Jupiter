@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
     GL
+    ${GLEW_LIBRARIES}
     ${GLUT_LIBRARIES}
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
