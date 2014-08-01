@@ -84,18 +84,18 @@ int main(int argc, char **argv)
 
 		int windowWidth = 800, windowHeight = 600;
 
-		glutInit(&argc, argv);
-		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-		glutInitWindowSize(windowWidth, windowHeight);
-		glutCreateWindow("Jupiter game player");
-
-		glutReshapeFunc(reshape);
-		glutDisplayFunc(display);
-		glutIdleFunc(display);
-
-		if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
-
-		glutMainLoop();
+//		glutInit(&argc, argv);
+//		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+//		glutInitWindowSize(windowWidth, windowHeight);
+//		glutCreateWindow("Jupiter game player");
+//
+//		glutReshapeFunc(reshape);
+//		glutDisplayFunc(display);
+//		glutIdleFunc(display);
+//
+//		if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
+//
+//		glutMainLoop();
 
 		lua_close(L);
 

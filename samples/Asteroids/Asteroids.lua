@@ -97,6 +97,8 @@ print = function(...)
   new_print(...);
 end
 
+dofile("../samples/Asteroids/ext.lua")
+
 --[[
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 for i, n in pairs(scenes) do
