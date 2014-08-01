@@ -14,6 +14,7 @@ set(LIBS
     ${GLEW_LIBRARIES}
     ${GLUT_LIBRARIES}
     ${LUA_LIBRARIES}
+    ${Boost_LIBRARIES}
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 

@@ -10,12 +10,17 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <boost/filesystem.hpp>
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 
 #include <lua.hpp>
 
 using namespace std;
+using namespace boost;
+
+filesystem::path gameFileLocation;
 
 void display(void)
 {
@@ -43,6 +48,12 @@ static int l_new_print(lua_State* L)
 	return 0;
 }
 
+static int lua_getGameLocation(lua_State* L)
+{
+	lua_pushstring(L, gameFileLocation.parent_path().c_str());
+	return 1;
+}
+
 }
 
 int main(int argc, char **argv)
@@ -68,7 +79,11 @@ int main(int argc, char **argv)
 
 		lua_register(L, "new_print", l_new_print);
 
+		gameFileLocation = filesystem::path(argv[1]);
+
 		fstream file(argv[1]);
+
+		lua_register(L, "getGameLocation", lua_getGameLocation);
 
 		luaL_loadstring(L, string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>()).c_str());
 
@@ -101,7 +116,7 @@ int main(int argc, char **argv)
 
 		return EXIT_SUCCESS;
 	}
-	catch ( exception const & e )
+	catch ( std::exception const & e )
 	{
 		cerr << "Error: " << e.what() << endl;
 		return EXIT_FAILURE;
