@@ -97,6 +97,7 @@ print = function(...)
   new_print(...);
 end
 
+-- TODO getGameLocation() function return Asteroids containg directory
 dofile("../samples/Asteroids/ext.lua")
 
 --[[
