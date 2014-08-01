@@ -97,7 +97,7 @@ print = function(...)
   new_print(...);
 end
 
-dofile(getGameLocation() .. "/ext.lua")
+dofile(getGameLocation() .. "/scripts/ext.lua")
 
 --[[
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
