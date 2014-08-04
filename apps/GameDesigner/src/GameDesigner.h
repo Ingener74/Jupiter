@@ -8,9 +8,10 @@
 #ifndef LEVELEDITOR_H_
 #define LEVELEDITOR_H_
 
-#include <Common.h>
-
 #include <ui_GameDesigner.h>
+
+#include <Common.h>
+#include <GLViewer.h>
 
 class GameDesigner: public QMainWindow
 {

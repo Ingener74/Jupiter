@@ -80,8 +80,10 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionCreate_game"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
+    <addaction name="actionSave_game_project_as"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -91,7 +93,14 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionPreference"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -108,7 +117,7 @@
   </widget>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Open game project</string>
    </property>
   </action>
   <action name="actionExit">
@@ -118,12 +127,27 @@
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>Save game project</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionCreate_game">
+   <property name="text">
+    <string>Create game project</string>
+   </property>
+  </action>
+  <action name="actionSave_game_project_as">
+   <property name="text">
+    <string>Save game project as</string>
+   </property>
+  </action>
+  <action name="actionPreference">
+   <property name="text">
+    <string>Preference</string>
    </property>
   </action>
  </widget>
