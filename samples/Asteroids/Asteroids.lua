@@ -92,12 +92,7 @@ scenes = {
     }
 }
 
-local old_print = print
-print = function(...)
-  new_print(...);
-end
-
-dofile(getGameLocation() .. "/scripts/ext.lua")
+dofile(getGameLocation() .. "/ext.lua")
 
 --[[
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
