@@ -92,7 +92,7 @@ scenes = {
     }
 }
 
-dofile(getGameLocation() .. "/ext.lua")
+dofile(getGameLocation() .. "/" .. "ext.lua")
 
 --[[
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")

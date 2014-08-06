@@ -12,6 +12,7 @@
 
 class GLViewer: public QGLWidget
 {
+	Q_OBJECT
 public:
 	GLViewer();
 	virtual ~GLViewer();
