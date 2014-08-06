@@ -11,7 +11,6 @@
 #include <ui_GameDesigner.h>
 
 #include <Common.h>
-#include <GLViewer.h>
 
 class GameDesigner: public QMainWindow
 {

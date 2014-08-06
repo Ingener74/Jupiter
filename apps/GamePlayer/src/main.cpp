@@ -27,8 +27,10 @@ int y = 0;
 int width = 0;
 int height = 0;
 
-extern "C"
-{
+/*
+ * Lua functions
+ */
+extern "C" {
 
 static int lua_getGameLocation( lua_State* L )
 {
@@ -38,6 +40,9 @@ static int lua_getGameLocation( lua_State* L )
 
 }
 
+/*
+ * Other functions
+ */
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -64,7 +69,6 @@ int main( int argc, char **argv )
         /*
          * read program from lua file
          *
-         *  -- set viewport
          *  -- set ortho projection
          *  -- create engine
          */
@@ -108,20 +112,20 @@ int main( int argc, char **argv )
             lua_pop(L, 1);
         }
 
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-        glutInitWindowSize(width, height);
-        glutCreateWindow("Jupiter game player");
-
-        glutReshapeFunc(reshape);
-        glutDisplayFunc(display);
-        glutIdleFunc(display);
-
-        if ( glewInit() != GLEW_OK ) throw runtime_error("glew init error");
-
-        glViewport(x, y, width, height);
-
-        glutMainLoop();
+//        glutInit(&argc, argv);
+//        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+//        glutInitWindowSize(width, height);
+//        glutCreateWindow("Jupiter game player");
+//
+//        glutReshapeFunc(reshape);
+//        glutDisplayFunc(display);
+//        glutIdleFunc(display);
+//
+//        if ( glewInit() != GLEW_OK ) throw runtime_error("glew init error");
+//
+//        glViewport(x, y, width, height);
+//
+//        glutMainLoop();
 
         lua_close(L);
 
