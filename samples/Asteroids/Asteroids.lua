@@ -31,7 +31,7 @@ scenes = {
                         y = 0
                     }
                 },
-                
+
                 bla = 123,
                 controller = function(bg)
                     print("background controller", bg.name)
@@ -55,7 +55,7 @@ scenes = {
         game_objects = {
             battleship = {
                 name = "Battle ship",
-                
+
                 sprites = {
                     -- one texture two spirites, different texture coords
                     body = {
@@ -83,6 +83,7 @@ scenes = {
     {
         name = "Win",
         sprites = {
+            background_sprite
         },
         game_objects = {
         }
@@ -90,6 +91,7 @@ scenes = {
     {
         name = "Fail",
         sprites = {
+            background_sprite
         },
         game_objects = {
         }

@@ -18,19 +18,19 @@ GLEngine::~GLEngine()
 {
 }
 
-void GLEngine::setCurrentScene(Scene::Ptr) throw ()
+void GLEngine::setCurrentScene(Scene::Ptr)
 {
 }
 
-void GLEngine::draw() throw (std::runtime_error)
+void GLEngine::draw()
 {
 }
 
-void GLEngine::inputToAll(int x, int y) throw ()
+void GLEngine::inputToAll(int x, int y)
 {
 }
 
-void GLEngine::animateAll(double elapsedMs) throw (std::runtime_error)
+void GLEngine::animateAll(double elapsedMs)
 {
 }
 

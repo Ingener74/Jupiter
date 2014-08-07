@@ -19,10 +19,10 @@ public:
 	GLEngine();
 	virtual ~GLEngine();
 
-    virtual void setCurrentScene(Scene::Ptr) throw ();
-    virtual void draw() throw (std::runtime_error);
-    virtual void inputToAll(int x, int y) throw ();
-    virtual void animateAll(double elapsedMs) throw (std::runtime_error);
+	virtual void setCurrentScene(Scene::Ptr);
+	virtual void draw();
+	virtual void inputToAll(int x, int y);
+	virtual void animateAll(double elapsedMs);
 };
 
 } /* namespace ndk_game */

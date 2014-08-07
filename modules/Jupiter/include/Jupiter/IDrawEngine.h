@@ -33,6 +33,6 @@ protected:
 	static GLuint createShader(GLenum shaderType, std::string source);
 };
 
-} /* namespace ndk_game */
+} /* namespace jupiter */
 
 #endif /* IDRAWENGINE_H_ */
