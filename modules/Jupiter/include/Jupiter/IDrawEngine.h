@@ -8,32 +8,31 @@
 #ifndef IDRAWENGINE_H_
 #define IDRAWENGINE_H_
 
-#include <Engine/Common.h>
-#include <Engine/Scene.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/Scene.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class IDrawEngine
 {
 public:
-    using Ptr = std::shared_ptr<IDrawEngine>;
+	using Ptr = std::shared_ptr<IDrawEngine>;
 
-    virtual ~IDrawEngine()
-    {
-    }
+	virtual ~IDrawEngine();
 
-    virtual void setCurrentScene(Scene::Ptr) throw () = 0;
-    virtual void draw() throw (std::runtime_error) = 0;
-    virtual void inputToAll(int x, int y) throw ()= 0;
-    virtual void animateAll(double elapsedMs) throw (std::runtime_error) = 0;
+	virtual void setCurrentScene(Scene::Ptr);
+	virtual void draw();
+	virtual void inputToAll(int x, int y);
+	virtual void animateAll(double elapsedMs);
 
 protected:
-    IDrawEngine()
-    {
-    }
+	IDrawEngine();
+
+	static GLuint createProgram(std::string vertexShader, std::string fragmentShader);
+	static GLuint createShader(GLenum shaderType, std::string source);
 };
 
-} /* namespace ndk_game */
+} /* namespace jupiter */
 
 #endif /* IDRAWENGINE_H_ */

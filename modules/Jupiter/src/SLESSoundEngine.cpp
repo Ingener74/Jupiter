@@ -5,11 +5,10 @@
  *      Author: ingener
  */
 
-#include <Engine/SLESSoundEngine.h>
-#include <Engine/SLESSound.h>
-#include <Engine/Log.h>
+#include <Jupiter/SLESSoundEngine.h>
+#include <Jupiter/SLESSound.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 using namespace std;

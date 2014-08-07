@@ -7,10 +7,10 @@
 
 #include <Jupiter/Tools.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
-Tools::Ptr ndk_game::Tools::instance()
+Tools::Ptr Tools::instance()
 {
     static Tools::Ptr self(new Tools);
     return self;

@@ -1,23 +1,28 @@
+
+aspect = 4 / 3
+w = 1024
+
 viewport = {
-    x = 0;
-    y = 0;
-    width = 800;
-    height = 600;
+    x = 0,
+    y = 0,
+    width = w,
+    height = w / aspect,
 }
 
-background_sprite = {
-    texture = "bg.png",
-    x = 0,
-    y = 0
+background = {
+    sprites = {
+        background_sprite = {
+            texture = "bg.png",
+            x = 0,
+            y = 0
+        }
+    }
 }
 
 scenes = {
-    {
-        name = "Start",
-        sprites = {
-            background_sprite
-        },
+    Start = {
         game_objects = {
+            background,
             start_button = {
                 name = "start button",
                 sprites = {
@@ -27,7 +32,6 @@ scenes = {
                         y = 0
                     }
                 },
-                
                 bla = 123,
                 controller = function(bg)
                     print("background controller", bg.name)
@@ -43,15 +47,12 @@ scenes = {
             }
         }
     },
-    {
-        name = "Main",
-        sprites = {
-            background_sprite
-        },
+    Main = {
         game_objects = {
+            background,
             battleship = {
                 name = "Battle ship",
-                
+
                 sprites = {
                     -- one texture two spirites, different texture coords
                     body = {
@@ -76,18 +77,14 @@ scenes = {
             }
         }
     },
-    {
-        name = "Win",
-        sprites = {
-        },
+    Win = {
         game_objects = {
+            background,
         }
     },
-    {
-        name = "Fail",
-        sprites = {
-        },
+    Fail = {
         game_objects = {
+            background,
         }
     }
 }
@@ -95,11 +92,8 @@ scenes = {
 dofile(getGameLocation() .. "/" .. "ext.lua")
 
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
+--[[ 
 for i, n in pairs(scenes) do
-    print(i, " -> ", n.name);
-    for s, t in pairs(n.sprites) do
-        print("\t", s, " -> ", t.texture)
-    end
     for s1, g in pairs(n.game_objects) do
         print("\t", s1, " -> ", g.name)
         if g.controller ~= nil then
@@ -113,3 +107,4 @@ for i, n in pairs(scenes) do
         end
     end
 end
+]]--

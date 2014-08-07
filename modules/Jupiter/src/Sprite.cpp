@@ -7,8 +7,10 @@
 
 #include <Jupiter/Sprite.h>
 
-namespace ndk_game
+namespace jupiter
 {
+
+using namespace std;
 
 Sprite::Sprite(Texture::Ptr texture, ISpriteLoader::Ptr spriteLoader) :
         _texture(texture), _vertexCount(0),

@@ -7,10 +7,17 @@
 
 #include <Jupiter/Image.h>
 
-std::ostream& ndk_game::operator <<(std::ostream& sout, const Image& image)
+namespace jupiter
 {
-    std::string type = (image.type == Image::Type::RGB) ? "RGB" : "RGBA";
-    sout << "Image: " << image.width << " x " << image.height << ", " << type;
-    return sout;
+
+using namespace std;
+
+ostream& operator <<(ostream& sout, const Image& image)
+{
+	string type = (image.type == Image::Type::RGB) ? "RGB" : "RGBA";
+	sout << "Image: " << image.width << " x " << image.height << ", " << type;
+	return sout;
 }
+
+}  // namespace jupiter
 

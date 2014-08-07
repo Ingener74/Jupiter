@@ -8,7 +8,7 @@
 #include <Jupiter/Common.h>
 #include <Jupiter/Rect.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 Rect::Rect(int x1, int y1, int x2, int y2) :

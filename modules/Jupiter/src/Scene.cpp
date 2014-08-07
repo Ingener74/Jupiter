@@ -7,7 +7,7 @@
 
 #include <Jupiter/Scene.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 Scene::Scene()

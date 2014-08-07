@@ -11,7 +11,7 @@
 #include <Jupiter/Common.h>
 #include <Jupiter/Image.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class TextureLoader

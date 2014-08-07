@@ -7,7 +7,7 @@
 
 #include <Jupiter/DummySound.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 DummySound::DummySound()

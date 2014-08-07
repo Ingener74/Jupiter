@@ -11,7 +11,7 @@
 #include <Jupiter/ISpriteLoader.h>
 #include <Jupiter/Rect.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class RectSpriteLoader: public ISpriteLoader

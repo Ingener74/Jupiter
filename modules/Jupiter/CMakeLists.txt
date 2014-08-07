@@ -4,24 +4,34 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
-    #src/AssetTextureLoader.cpp
     src/DummySound.cpp
     src/DummySoundEngine.cpp
     src/DummyTextureLoader.cpp
-    #src/GLES20Engine.cpp
     src/Image.cpp
     src/Rect.cpp
     src/RectSpriteLoader.cpp
     src/Scene.cpp
     src/SimpleShaderLoader.cpp
     src/SimpleSpriteLoader.cpp
-    #src/SLESSound.cpp
-    #src/SLESSoundEngine.cpp
     src/Sprite.cpp
     src/Texture.cpp
     src/TextureLoader.cpp
     src/Tools.cpp
+    src/DrawEngine.cpp
 )
+
+if(ANDROID)
+    set(SOURCES ${SOURCES}
+        #src/AssetTextureLoader.cpp
+        #src/SLESSound.cpp
+        #src/SLESSoundEngine.cpp
+        src/GLES20Engine.cpp
+    )
+else()
+    set(SOURCES ${SOURCES}
+        src/GLEngine.cpp
+    )
+endif()
 
 add_library(${PROJECT_NAME} ${SOURCES})
 

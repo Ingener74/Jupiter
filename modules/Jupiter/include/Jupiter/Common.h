@@ -8,6 +8,10 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
+#ifndef ANDROID
+	#include <execinfo.h>
+#endif
+
 #include <list>
 #include <memory>
 #include <string>
@@ -41,7 +45,8 @@
 	#include <SLES/OpenSLES_Android.h>
 	#include <SLES/OpenSLES_AndroidConfiguration.h>
 #else
-#include <GL/gl.h>
+	#include <GL/glew.h>
+	#include <GL/gl.h>
 #endif
 
 

@@ -12,7 +12,7 @@
 #include <Jupiter/IGameObject.h>
 #include <Jupiter/Sprite.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class Scene

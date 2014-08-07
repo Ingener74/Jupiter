@@ -5,12 +5,13 @@
  *      Author: ingener
  */
 
-#include <Engine/GLES20Engine.h>
-#include <Engine/Log.h>
-#include <Engine/Tools.h>
+#include <Jupiter/GLES20Engine.h>
+#include <Jupiter/Tools.h>
 
-namespace ndk_game
+namespace jupiter
 {
+
+using namespace std;
 
 GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho, int screenW, int screenH) :
         _program(0), _vs(0), _fs(0), _uMVP(0), _aPOS(0), _aTEX(0), _uTEX(0), _ortho(
@@ -26,7 +27,7 @@ GLES20Engine::GLES20Engine(IShaderLoader::Ptr sl, const glm::mat4& ortho, int sc
 
 GLES20Engine::~GLES20Engine()
 {
-    Log() << "GLES20Engine::~GLES20Engine()";
+    cout << "GLES20Engine::~GLES20Engine()" << endl;
     glDeleteProgram(_program);
     glDeleteShader(_vs);
     glDeleteShader(_fs);

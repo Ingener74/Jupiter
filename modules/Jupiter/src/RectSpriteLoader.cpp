@@ -7,7 +7,7 @@
 
 #include <Jupiter/RectSpriteLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 RectSpriteLoader::RectSpriteLoader(float w, float h, float z, float tx1,

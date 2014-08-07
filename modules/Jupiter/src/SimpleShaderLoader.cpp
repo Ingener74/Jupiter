@@ -7,7 +7,7 @@
 
 #include <Jupiter/SimpleShaderLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 SimpleShaderLoader::SimpleShaderLoader(const std::string& vertexShader,

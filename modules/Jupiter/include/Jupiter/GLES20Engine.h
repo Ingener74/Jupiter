@@ -8,11 +8,11 @@
 #ifndef GLES20ENGINE_H_
 #define GLES20ENGINE_H_
 
-#include <Engine/Common.h>
-#include <Engine/IDrawEngine.h>
-#include <Engine/IShaderLoader.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/IDrawEngine.h>
+#include <Jupiter/IShaderLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class GLES20Engine: public IDrawEngine

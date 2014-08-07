@@ -8,12 +8,11 @@
 #ifndef SLESSOUND_H_
 #define SLESSOUND_H_
 
-#include <Engine/Common.h>
-#include <Engine/ISound.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/ISound.h>
+#include <Jupiter/SLESSoundEngine.h>
 
-#include <Engine/SLESSoundEngine.h>
-
-namespace ndk_game
+namespace jupiter
 {
 
 class SLESSound: public ISound

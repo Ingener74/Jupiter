@@ -7,7 +7,7 @@
 
 #include <Jupiter/SimpleSpriteLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 SimpleSpriteLoader::SimpleSpriteLoader(float * vertexes, uint32_t vertexCount,

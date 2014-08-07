@@ -7,7 +7,7 @@
 
 #include <Jupiter/DummyTextureLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 DummyTextureLoader::DummyTextureLoader()
