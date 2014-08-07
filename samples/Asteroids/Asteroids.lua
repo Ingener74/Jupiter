@@ -94,7 +94,6 @@ scenes = {
 
 dofile(getGameLocation() .. "/" .. "ext.lua")
 
---[[
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 for i, n in pairs(scenes) do
     print(i, " -> ", n.name);
@@ -114,4 +113,3 @@ for i, n in pairs(scenes) do
         end
     end
 end
---]]

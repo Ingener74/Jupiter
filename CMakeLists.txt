@@ -8,6 +8,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core    REQUIRED)
+find_package(Qt5OpenGL  REQUIRED)
 
 # find boost
 find_package(Boost 1.53.0 REQUIRED system thread filesystem)
@@ -30,6 +31,7 @@ find_package(Lua REQUIRED)
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
+    ${Qt5OpenGL_INCLUDES}
     
     ${Boost_INCLUDE_DIRS}
     
@@ -43,6 +45,8 @@ include_directories(
     
     ${LUA_INCLUDE_DIR}
     
+    3rdparty/Selene/include
+    
     modules/Jupiter/include
 )
 
@@ -52,6 +56,7 @@ add_definitions(
     -std=c++11
     ${Qt5Widgets_DEFINITIONS}
     ${Qt5Core_DEFINITIONS}
+    ${Qt5OpenGL_DEFINITIONS}
 )
 
 add_subdirectory(apps)

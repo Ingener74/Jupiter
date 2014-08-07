@@ -15,3 +15,22 @@ GLViewer::~GLViewer()
 {
 }
 
+void GLViewer::initializeGL()
+{
+}
+
+void GLViewer::paintGL()
+{
+}
+
+void GLViewer::resizeGL(int width, int height)
+{
+}
+
+void GLViewer::mousePressEvent(QMouseEvent *event)
+{
+}
+
+void GLViewer::mouseMoveEvent(QMouseEvent *event)
+{
+}

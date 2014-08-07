@@ -8,14 +8,21 @@
 #ifndef GLVIEWER_H_
 #define GLVIEWER_H_
 
-#include <QtWidgets/QWidget>
+#include <QtOpenGL/QGLWidget>
 
 class GLViewer: public QGLWidget
 {
-	Q_OBJECT
+Q_OBJECT
 public:
 	GLViewer();
 	virtual ~GLViewer();
+
+protected:
+	void initializeGL();
+	void paintGL();
+	void resizeGL(int width, int height);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif /* GLVIEWER_H_ */
