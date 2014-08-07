@@ -1,8 +1,12 @@
+
+aspect = 4 / 3
+w = 1024
+
 viewport = {
-    x = 0;
-    y = 0;
-    width = 800;
-    height = 600;
+    x = 0,
+    y = 0,
+    width = w,
+    height = w / aspect,
 }
 
 background_sprite = {
@@ -96,7 +100,7 @@ dofile(getGameLocation() .. "/" .. "ext.lua")
 
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 for i, n in pairs(scenes) do
-    print(i, " -> ", n.name);
+    print(i, " -> ", n.name)
     for s, t in pairs(n.sprites) do
         print("\t", s, " -> ", t.texture)
     end
