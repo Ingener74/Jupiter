@@ -9,20 +9,20 @@ viewport = {
     height = w / aspect,
 }
 
-background_sprite = {
-    texture = "bg.png",
-    x = 0,
-    y = 0
+background = {
+    sprites = {
+        background_sprite = {
+            texture = "bg.png",
+            x = 0,
+            y = 0
+        }
+    }
 }
 
 scenes = {
     Start = {
         game_objects = {
-            background = {
-                sprites = {
-                    background_sprite
-                }
-            },
+            background,
             start_button = {
                 name = "start button",
                 sprites = {
@@ -32,7 +32,6 @@ scenes = {
                         y = 0
                     }
                 },
-
                 bla = 123,
                 controller = function(bg)
                     print("background controller", bg.name)
@@ -50,11 +49,7 @@ scenes = {
     },
     Main = {
         game_objects = {
-            background = {
-                sprites = {
-                    background_sprite
-                },
-            },
+            background,
             battleship = {
                 name = "Battle ship",
 
@@ -84,20 +79,12 @@ scenes = {
     },
     Win = {
         game_objects = {
-            background = {
-                sprites = {
-                    background_sprite
-                }
-            }
+            background,
         }
     },
     Fail = {
         game_objects = {
-            background = {
-                sprites = {
-                    background_sprite
-                }
-            }
+            background,
         }
     }
 }
@@ -105,11 +92,8 @@ scenes = {
 dofile(getGameLocation() .. "/" .. "ext.lua")
 
 print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
+--[[ 
 for i, n in pairs(scenes) do
-    print(i, " -> ", n.name)
-    for s, t in pairs(n.sprites) do
-        print("\t", s, " -> ", t.texture)
-    end
     for s1, g in pairs(n.game_objects) do
         print("\t", s1, " -> ", g.name)
         if g.controller ~= nil then
@@ -123,3 +107,4 @@ for i, n in pairs(scenes) do
         end
     end
 end
+]]--
