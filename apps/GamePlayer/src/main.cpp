@@ -41,7 +41,7 @@ static int lua_getGameLocation( lua_State* L )
 }
 
 /*
- * Other functions
+ * Code
  */
 void display( void )
 {
