@@ -24,6 +24,17 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 make
 sudo make install
 ```
+Lua
+3.2 Clone and build Lua
+```
+git clone <DistLua>
+cd lua
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make
+sudo make install
+```
 4. Build
 ```
 git clone https://github.com/Ingener74/Jupiter.git
