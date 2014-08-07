@@ -12,7 +12,7 @@
 #include <Jupiter/Texture.h>
 #include <Jupiter/ISpriteLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class Sprite

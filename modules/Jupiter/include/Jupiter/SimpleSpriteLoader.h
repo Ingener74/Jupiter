@@ -10,7 +10,7 @@
 
 #include <Jupiter/ISpriteLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class SimpleSpriteLoader: public ISpriteLoader

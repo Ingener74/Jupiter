@@ -5,9 +5,9 @@
  *      Author: ingener
  */
 
-#include <Engine/SLESSound.h>
+#include <Jupiter/SLESSound.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 SLESSound::SLESSound(android_app* app, const std::string& file, std::weak_ptr<SLESSoundEngine> soundEngine):

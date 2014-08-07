@@ -7,7 +7,7 @@
 
 #include <Jupiter/TextureLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 TextureLoader::TextureLoader()

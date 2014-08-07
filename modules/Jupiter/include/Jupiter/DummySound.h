@@ -10,7 +10,7 @@
 
 #include <Jupiter/ISound.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class DummySound: public ISound

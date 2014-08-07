@@ -11,7 +11,7 @@
 #include <Jupiter/Common.h>
 #include <Jupiter/IShaderLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class SimpleShaderLoader: public IShaderLoader

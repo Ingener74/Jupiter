@@ -10,7 +10,7 @@
 
 #include <Jupiter/Common.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 struct Image

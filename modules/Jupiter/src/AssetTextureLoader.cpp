@@ -5,11 +5,12 @@
  *      Author: pavel
  */
 
-#include <Jupiter/Log.h>
 #include <Jupiter/AssetTextureLoader.h>
 
-namespace ndk_game
+namespace jupiter
 {
+
+using namespace std;
 
 AssetTextureLoader::AssetTextureLoader(android_app* application,
         const std::string& path) :
@@ -23,7 +24,7 @@ AssetTextureLoader::~AssetTextureLoader()
 
 Image AssetTextureLoader::load()
 {
-    Log() << "Loading texture " << _path;
+    cout << "Loading texture " << _path << endl;
 
     Image result;
 

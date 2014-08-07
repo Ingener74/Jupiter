@@ -9,7 +9,7 @@
 #include <Jupiter/TextureLoader.h>
 #include <Jupiter/Texture.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 Texture::Ptr Texture::create(TextureLoader::Ptr textureLoader)

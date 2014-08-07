@@ -8,10 +8,10 @@
 #ifndef SLESSOUNDENGINE_H_
 #define SLESSOUNDENGINE_H_
 
-#include <Engine/Common.h>
-#include <Engine/ISoundEngine.h>
+#include <Jupiter/Common.h>
+#include <Jupiter/ISoundEngine.h>
 
-namespace ndk_game
+namespace jupiter
 {
 
 class SLESSound;

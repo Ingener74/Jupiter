@@ -17,6 +17,8 @@
 
 #include <selene.h>
 
+#include <Jupiter/Jupiter>
+
 using namespace std;
 using namespace boost;
 
