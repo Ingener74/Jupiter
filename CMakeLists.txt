@@ -45,6 +45,8 @@ include_directories(
     
     ${LUA_INCLUDE_DIR}
     
+    3rdparty/Selene/include
+    
     modules/Jupiter/include
 )
 

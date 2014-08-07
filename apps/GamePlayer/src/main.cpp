@@ -17,6 +17,8 @@
 
 #include <lua.hpp>
 
+#include <selene.h>
+
 using namespace std;
 using namespace boost;
 
@@ -72,45 +74,21 @@ int main( int argc, char **argv )
          *  -- set ortho projection
          *  -- create engine
          */
-
-        lua_State* L = luaL_newstate();
-        luaL_openlibs(L);
-        lua_register(L, "getGameLocation", lua_getGameLocation);
-
         gameFileLocation = filesystem::path(argv[ 1 ]);
 
-        luaL_loadfile(L, argv[1]);
-        lua_pcall(L, 0, 0, 0);
+        sel::State state{true};
+        state.Load(argv[1]);
 
-        {
-            lua_getglobal(L, "viewport");
-            if ( !lua_istable(L, -1) ) throw runtime_error("can't find viewport table");
-            {
-                lua_getfield(L, -1, "x");
-                if ( !lua_isnumber(L, -1) ) throw runtime_error("can't find x in viewport table");
-                x = (int) lua_tonumber(L, -1);
-                lua_pop(L, 1);
-            }
-            {
-                lua_getfield(L, -1, "y");
-                if ( !lua_isnumber(L, -1) ) throw runtime_error("can't find y in viewport table");
-                y = (int) lua_tonumber(L, -1);
-                lua_pop(L, 1);
-            }
-            {
-                lua_getfield(L, -1, "width");
-                if ( !lua_isnumber(L, -1) ) throw runtime_error("can't find width in viewport table");
-                width = (int) lua_tonumber(L, -1);
-                lua_pop(L, 1);
-            }
-            {
-                lua_getfield(L, -1, "height");
-                if ( !lua_isnumber(L, -1) ) throw runtime_error("can't find height in viewport table");
-                height = (int) lua_tonumber(L, -1);
-                lua_pop(L, 1);
-            }
-            lua_pop(L, 1);
-        }
+        x = state["viewport"]["x"];
+        y = state["viewport"]["y"];
+        width = state["viewport"]["width"];
+        height = state["viewport"]["height"];
+
+        cout << x << " " << y << " " << width << " " << height << endl;
+
+
+
+//        state["getGameLocation"] = &lua_getGameLocation;
 
 //        glutInit(&argc, argv);
 //        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -126,8 +104,6 @@ int main( int argc, char **argv )
 //        glViewport(x, y, width, height);
 //
 //        glutMainLoop();
-
-        lua_close(L);
 
         return EXIT_SUCCESS;
     }
