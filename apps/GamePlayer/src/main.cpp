@@ -21,6 +21,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace jupiter;
 
 filesystem::path gameFileLocation;
 
@@ -28,6 +29,8 @@ int x = 0;
 int y = 0;
 int width = 0;
 int height = 0;
+
+IDrawEngine::Ptr engine;
 
 /*
  * Code
@@ -68,16 +71,16 @@ int main( int argc, char **argv )
          */
         gameFileLocation = filesystem::path(argv[ 1 ]);
 
-        sel::State state{true};
+        sel::State L{true};
 
-        state["getGameLocation"] = &getGameLocation;
+        L["getGameLocation"] = &getGameLocation;
 
-        state.Load(argv[1]);
+        L.Load(argv[1]);
 
-        x = state["viewport"]["x"];
-        y = state["viewport"]["y"];
-        width = state["viewport"]["width"];
-        height = state["viewport"]["height"];
+        x = L["viewport"]["x"];
+        y = L["viewport"]["y"];
+        width = L["viewport"]["width"];
+        height = L["viewport"]["height"];
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -91,6 +94,8 @@ int main( int argc, char **argv )
         if ( glewInit() != GLEW_OK ) throw runtime_error("glew init error");
 
         glViewport(x, y, width, height);
+
+        engine = make_shared<GLEngine>();
 
         glutMainLoop();
 

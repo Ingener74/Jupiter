@@ -16,12 +16,13 @@ background_sprite = {
 }
 
 scenes = {
-    {
-        name = "Start",
-        sprites = {
-            background_sprite
-        },
+    Start = {
         game_objects = {
+            background = {
+                sprites = {
+                    background_sprite
+                }
+            },
             start_button = {
                 name = "start button",
                 sprites = {
@@ -47,12 +48,13 @@ scenes = {
             }
         }
     },
-    {
-        name = "Main",
-        sprites = {
-            background_sprite
-        },
+    Main = {
         game_objects = {
+            background = {
+                sprites = {
+                    background_sprite
+                },
+            },
             battleship = {
                 name = "Battle ship",
 
@@ -80,20 +82,22 @@ scenes = {
             }
         }
     },
-    {
-        name = "Win",
-        sprites = {
-            background_sprite
-        },
+    Win = {
         game_objects = {
+            background = {
+                sprites = {
+                    background_sprite
+                }
+            }
         }
     },
-    {
-        name = "Fail",
-        sprites = {
-            background_sprite
-        },
+    Fail = {
         game_objects = {
+            background = {
+                sprites = {
+                    background_sprite
+                }
+            }
         }
     }
 }
