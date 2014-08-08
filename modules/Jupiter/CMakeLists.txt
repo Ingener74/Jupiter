@@ -18,6 +18,7 @@ set(SOURCES
     src/TextureLoader.cpp
     src/Tools.cpp
     src/DrawEngine.cpp
+    src/ResourceManager.cpp
 )
 
 if(ANDROID)
