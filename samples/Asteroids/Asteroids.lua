@@ -19,6 +19,11 @@ background = {
     }
 }
 
+t = {
+    file = "",
+    critical = true
+}
+
 scenes = {
     Start = {
         game_objects = {
