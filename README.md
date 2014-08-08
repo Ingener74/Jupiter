@@ -1,21 +1,21 @@
-##Jupiter small game engine
+#Jupiter small game engine
 
-### How include in Android (NativeActivity/JNI) Project
+##How to build on Linux
 
-### How to build on Linux
+###1. install dependencies
 
-install dependencies
+1.1. install Qt5 from http://qt-project.org/downloads
 
-1. Install Qt5 from http://qt-project.org/downloads
+1.2. install other dependencies
 
-2. Install other dependencies
 ```
 sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev
 ```
-3. Build and install dependencies
 
-libpng
-3.1 Download libpng-<version>.tar.gz
+1.3. libpng 
+
+download libpng-<version>.tar.gz
+
 ```
 cd libpng
 mkdir build
@@ -24,10 +24,11 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 make
 sudo make install
 ```
-Lua
-3.2 Clone and build Lua
+
+1.4. install Lua
+
 ```
-git clone <DistLua>
+git clone https://github.com/LuaDist/lua.git
 cd lua
 mkdir build
 cd build
@@ -35,7 +36,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 make
 sudo make install
 ```
-4. Build
+
+2. build
+
 ```
 git clone https://github.com/Ingener74/Jupiter.git
 cd Jupiter
