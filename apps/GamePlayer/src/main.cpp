@@ -21,6 +21,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace glm;
 using namespace jupiter;
 
 filesystem::path gameFileLocation;
@@ -89,7 +90,32 @@ int main( int argc, char **argv )
 
         glViewport(x, y, width, height);
 
-//        engine = make_shared<DrawEngine>(make_shared<SimpleShaderLoader>(),);
+        auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
+
+        class DummyShaderLoader: public IShaderLoader
+        {
+        public:
+            DummyShaderLoader()
+            {
+            }
+            virtual ~DummyShaderLoader()
+            {
+            }
+
+            virtual const char* getVertexShader() const
+            {
+                return "";
+            }
+            virtual const char* getFragmentShader() const
+            {
+                return "";
+            }
+
+        private:
+        };
+
+        /*a->activity->assetManager, "shader/vertex.shader", "shader/fragment.shader"*/
+        engine = make_shared<DrawEngine>(make_shared<DummyShaderLoader>(), o, width, height);
 
         glutMainLoop();
 

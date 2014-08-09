@@ -30,8 +30,6 @@ public:
 
 protected:
     GLuint _program = 0;
-    GLuint _vs = 0;
-    GLuint _fs = 0;
 
     GLuint _uMVP = 0, _aPOS = 0, _aTEX = 0, _uTEX = 0;
 

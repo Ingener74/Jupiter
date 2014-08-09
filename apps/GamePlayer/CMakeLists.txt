@@ -15,6 +15,8 @@ set(LIBS
     ${GLUT_LIBRARIES}
     ${LUA_LIBRARIES}
     ${Boost_LIBRARIES}
+    
+    Jupiter
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 

@@ -7,13 +7,14 @@
 
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/DrawEngine.h>
+#include <Jupiter/Tools.h>
 
 namespace jupiter
 {
 
 using namespace std;
 
-DrawEngine::DrawEngine(IShaderLoader::Ptr sl, const glm::mat4& ortho, int screenW, int screenH)
+DrawEngine::DrawEngine( IShaderLoader::Ptr sl, const glm::mat4& ortho, int screenW, int screenH )
 {
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
 
@@ -27,85 +28,214 @@ DrawEngine::~DrawEngine()
 {
     cout << "GLES20Engine::~GLES20Engine()" << endl;
     glDeleteProgram(_program);
-    glDeleteShader(_vs);
-    glDeleteShader(_fs);
 }
 
-void DrawEngine::setCurrentScene(Scene::Ptr)
+void DrawEngine::setCurrentScene( Scene::Ptr s )
 {
-	throw JupiterError("not implemented");
+    if ( !s ) throw JupiterError("set current scene null");
+    _currentScene = s;
 }
 
 void DrawEngine::draw()
 {
-	throw JupiterError("not implemented");
+    glUseProgram(_program);
+    Tools::glError();
+
+    std::list<Sprite::Ptr> sprites;
+
+    for ( auto go : _currentScene->gameObject )
+        for ( auto s : go->getSprites() )
+            sprites.push_back(s);
+
+    glActiveTexture(GL_TEXTURE0);
+
+    for ( auto s : sprites )
+    {
+        if ( !s->getTexture() ) throw JupiterError("empty texture");
+        s->getTexture()->bind();
+
+        glUniform1i(_uTEX, 0);
+        glEnableVertexAttribArray(_aPOS);
+        glEnableVertexAttribArray(_aTEX);
+
+        GLfloat * spriteVertex = s->getVertex();
+        uint32_t spriteVertexCount = s->getVertexCount();
+
+        glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[ 0 ]);
+        glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[ 3 ]);
+
+        glm::mat4 mvp = _ortho * s->getModelMatrix();
+        glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+        GLenum drawType;
+        switch ( s->getDrawType() )
+        {
+        case ISpriteLoader::SpriteType::Triangles:
+            drawType = GL_TRIANGLES;
+            break;
+        case ISpriteLoader::SpriteType::TriangleFan:
+            drawType = GL_TRIANGLE_FAN;
+            break;
+        case ISpriteLoader::SpriteType::TriangleStrip:
+            drawType = GL_TRIANGLE_STRIP;
+            break;
+        case ISpriteLoader::SpriteType::LineStrip:
+            drawType = GL_LINE_STRIP;
+            break;
+        default:
+            break;
+        }
+        glDrawArrays(drawType, 0, spriteVertexCount);
+
+        glDisableVertexAttribArray(_aPOS);
+        glDisableVertexAttribArray(_aTEX);
+    }
+
+    //    for (auto &gameObj : _currentScene->gameObject)
+    //    {
+    //        glActiveTexture(GL_TEXTURE0);
+    //
+    //        for (auto &sprite : gameObj->getSprites())
+    //        {
+    //            if (!sprite->getTexture()) throw std::runtime_error(
+    //                    "empty texture");
+    //            sprite->getTexture()->bind();
+    //
+    //            glUniform1i(_uTEX, 0);
+    //            glEnableVertexAttribArray(_aPOS);
+    //            glEnableVertexAttribArray(_aTEX);
+    //
+    //            GLfloat * spriteVertex = sprite->getVertex();
+    //            uint32_t spriteVertexCount = sprite->getVertexCount();
+    //
+    //            glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE,
+    //                    5 * sizeof(GLfloat), &spriteVertex[0]);
+    //            glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE,
+    //                    5 * sizeof(GLfloat), &spriteVertex[3]);
+    //
+    //            glm::mat4 mvp = _ortho * sprite->getModelMatrix();
+    //            glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+    //
+    //            GLenum drawType;
+    //            switch (sprite->getDrawType())
+    //            {
+    //                case ISpriteLoader::SpriteType::Triangles:
+    //                    drawType = GL_TRIANGLES;
+    //                    break;
+    //                case ISpriteLoader::SpriteType::TriangleFan:
+    //                    drawType = GL_TRIANGLE_FAN;
+    //                    break;
+    //                case ISpriteLoader::SpriteType::TriangleStrip:
+    //                    drawType = GL_TRIANGLE_STRIP;
+    //                    break;
+    //                case ISpriteLoader::SpriteType::LineStrip:
+    //                    drawType = GL_LINE_STRIP;
+    //                    break;
+    //                default:
+    //                    break;
+    //            }
+    //            glDrawArrays(drawType, 0, spriteVertexCount);
+    //
+    //            glDisableVertexAttribArray(_aPOS);
+    //            glDisableVertexAttribArray(_aTEX);
+    //        }
+    //    }
+
+    glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
 }
 
-void DrawEngine::inputToAll(int x, int y)
+void DrawEngine::inputToAll( int x, int y )
 {
-	throw JupiterError("not implemented");
+    for ( auto gameObj : _currentScene->gameObject )
+    {
+        if ( !gameObj ) throw JupiterError("input to all invalid game object");
+
+        gameObj->input(x - _sW / 2, _sH / 2 - y);
+    }
 }
 
-void DrawEngine::animateAll(double elapsedMs)
+void DrawEngine::animateAll( double elapsedMs )
 {
-	throw JupiterError("not implemented");
+    for ( auto gameObj : _currentScene->gameObject )
+    {
+        gameObj->update(elapsedMs);
+    }
+
+    for ( auto go1 : _currentScene->gameObject )
+    {
+        for ( auto go2 : _currentScene->gameObject )
+        {
+            if ( go1 == go2 ) continue;
+            go1->collision(go2);
+        }
+    }
+
+    std::list<IGameObject::Ptr> gameObjs;
+    for ( auto o : _currentScene->gameObject )
+    {
+        if ( !o->removeMe() ) gameObjs.push_back(o);
+    }
+    _currentScene->gameObject = gameObjs;
 }
 
-GLuint DrawEngine::createProgram(string vertexShader, string fragmentShader)
+GLuint DrawEngine::createProgram( string vertexShader, string fragmentShader )
 {
-	GLuint _vs = createShader(GL_VERTEX_SHADER, vertexShader);
-	GLuint _fs = createShader(GL_FRAGMENT_SHADER, fragmentShader);
+    if ( vertexShader.empty() ) throw JupiterError("vertex shader is empty");
+    if ( fragmentShader.empty() ) throw JupiterError("fragment shader is empty");
 
-	GLuint program = glCreateProgram();
-	if (!program) throw JupiterError("can't create program");
+    GLuint _vs = createShader(GL_VERTEX_SHADER, vertexShader);
+    GLuint _fs = createShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-	glAttachShader(program, _vs);
-	glAttachShader(program, _fs);
+    GLuint program = glCreateProgram();
+    if ( !program ) throw JupiterError("can't create program");
 
-	glLinkProgram(program);
-	GLint linkStatus = GL_FALSE;
-	glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
+    glAttachShader(program, _vs);
+    glAttachShader(program, _fs);
 
-	if (linkStatus != GL_TRUE)
-	{
-		GLint bufLen = 0;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufLen);
-		if (bufLen)
-		{
-			vector<char> buf(bufLen);
-			glGetProgramInfoLog(program, bufLen, NULL, &buf.front());
-			throw JupiterError(&buf.front());
-		}
-	}
+    glLinkProgram(program);
+    GLint linkStatus = GL_FALSE;
+    glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
 
-	glDeleteShader(_vs);
-	glDeleteShader(_fs);
+    if ( linkStatus != GL_TRUE )
+    {
+        GLint bufLen = 0;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufLen);
+        if ( bufLen )
+        {
+            vector<char> buf(bufLen);
+            glGetProgramInfoLog(program, bufLen, NULL, &buf.front());
+            throw JupiterError(&buf.front());
+        }
+    }
 
-	return program;
+    glDeleteShader(_vs);
+    glDeleteShader(_fs);
+
+    return program;
 }
 
-GLuint DrawEngine::createShader(GLenum shaderType, string source)
+GLuint DrawEngine::createShader( GLenum shaderType, string source )
 {
-	GLuint shader = glCreateShader(shaderType);
-	if (!shader) throw JupiterError("can't create shader");
+    GLuint shader = glCreateShader(shaderType);
+    if ( !shader ) throw JupiterError("can't create shader");
 
-	const char* source_buffer = source.c_str();
+    const char* source_buffer = source.c_str();
 
-	glShaderSource(shader, 1, &source_buffer, 0);
-	glCompileShader(shader);
+    glShaderSource(shader, 1, &source_buffer, 0);
+    glCompileShader(shader);
 
-	GLint compiled = 0;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-	if (compiled) return shader;
+    GLint compiled = 0;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+    if ( compiled ) return shader;
 
-	GLint infoLen = 0;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-	if (!infoLen) throw JupiterError("error in create shader");
+    GLint infoLen = 0;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+    if ( !infoLen ) throw JupiterError("error in create shader");
 
-	vector<char> buf(infoLen);
-	glGetShaderInfoLog(shader, infoLen, 0, &buf.front());
+    vector<char> buf(infoLen);
+    glGetShaderInfoLog(shader, infoLen, 0, &buf.front());
 
-	throw JupiterError(&buf.front());
+    throw JupiterError(&buf.front());
 }
 
 }  // namespace jupiter
