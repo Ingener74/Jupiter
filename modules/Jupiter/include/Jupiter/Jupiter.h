@@ -8,7 +8,7 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
-#include <Jupiter/IDrawEngine.h>
+#include <Jupiter/DrawEngine.h>
 #include <Jupiter/IGameObject.h>
 
 #include <Jupiter/IShaderLoader.h>
@@ -42,7 +42,6 @@
 	#include <Jupiter/AssetTextureLoader.h>
 	#include <Jupiter/GLES20Engine.h>
 #else
-	#include <Jupiter/GLEngine.h>
 #endif
 
 #endif /* ENGINE_H_ */

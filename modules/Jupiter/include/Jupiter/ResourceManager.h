@@ -8,7 +8,7 @@
 #ifndef RESOURCEMANAGER_H_
 #define RESOURCEMANAGER_H_
 
-#include <Jupiter>
+#include <Jupiter/Common.h>
 
 namespace jupiter
 {

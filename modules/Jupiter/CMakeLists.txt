@@ -26,11 +26,9 @@ if(ANDROID)
         #src/AssetTextureLoader.cpp
         #src/SLESSound.cpp
         #src/SLESSoundEngine.cpp
-        src/GLES20Engine.cpp
     )
 else()
     set(SOURCES ${SOURCES}
-        src/GLEngine.cpp
     )
 endif()
 

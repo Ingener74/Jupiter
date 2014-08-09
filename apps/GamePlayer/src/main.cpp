@@ -17,7 +17,7 @@
 
 #include <selene.h>
 
-#include <Jupiter/Jupiter>
+#include <Jupiter/Jupiter.h>
 
 using namespace std;
 using namespace boost;
@@ -30,7 +30,7 @@ int y = 0;
 int width = 0;
 int height = 0;
 
-IDrawEngine::Ptr engine;
+DrawEngine::Ptr engine;
 
 /*
  * Code
@@ -63,12 +63,6 @@ int main( int argc, char **argv )
                 "Usage  : ./GamePlayer <path-to-game>\n"
                 "Example: ./GamePlayer ~/games/Asteroids/Asteroids.lua");
 
-        /*
-         * read program from lua file
-         *
-         *  -- set ortho projection
-         *  -- create engine
-         */
         gameFileLocation = filesystem::path(argv[ 1 ]);
 
         sel::State L{true};
@@ -95,7 +89,7 @@ int main( int argc, char **argv )
 
         glViewport(x, y, width, height);
 
-        engine = make_shared<GLEngine>();
+//        engine = make_shared<DrawEngine>(make_shared<SimpleShaderLoader>(),);
 
         glutMainLoop();
 
