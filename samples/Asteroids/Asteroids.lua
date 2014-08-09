@@ -24,6 +24,11 @@ t = {
     critical = true
 }
 
+program = {
+  vertex = "resources/shaders/vertex.shader",
+  fragment = "resources/shaders/fragment.shader"
+}
+
 scenes = {
     current_scene = Start,
     

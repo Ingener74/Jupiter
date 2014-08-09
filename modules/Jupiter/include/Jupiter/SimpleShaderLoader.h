@@ -21,8 +21,8 @@ public:
             const std::string fragmentShader);
     virtual ~SimpleShaderLoader();
 
-    virtual const char* getVertexShader() const;
-    virtual const char* getFragmentShader() const;
+    virtual std::string getVertexShader() const;
+    virtual std::string getFragmentShader() const;
 
 private:
     std::string _vs, _fs;

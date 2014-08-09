@@ -16,6 +16,8 @@ using namespace std;
 
 DrawEngine::DrawEngine( IShaderLoader::Ptr sl, const glm::mat4& ortho, int screenW, int screenH )
 {
+    cout << "vertex file" << endl << sl->getVertexShader() << endl << "fragment file" << endl << sl->getFragmentShader() << endl;
+
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
 
     _uMVP = glGetUniformLocation(_program, "uMVP");

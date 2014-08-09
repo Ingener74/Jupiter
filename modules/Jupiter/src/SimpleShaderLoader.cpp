@@ -10,8 +10,10 @@
 namespace jupiter
 {
 
-SimpleShaderLoader::SimpleShaderLoader(const std::string& vertexShader,
-        const std::string fragmentShader) :
+using namespace std;
+
+SimpleShaderLoader::SimpleShaderLoader(const string& vertexShader,
+        const string fragmentShader) :
         _vs(vertexShader), _fs(fragmentShader)
 {
 }
@@ -20,12 +22,12 @@ SimpleShaderLoader::~SimpleShaderLoader()
 {
 }
 
-const char* SimpleShaderLoader::getVertexShader() const
+string SimpleShaderLoader::getVertexShader() const
 {
     return _vs.c_str();
 }
 
-const char* SimpleShaderLoader::getFragmentShader() const
+string SimpleShaderLoader::getFragmentShader() const
 {
     return _fs.c_str();
 }

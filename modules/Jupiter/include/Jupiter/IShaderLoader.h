@@ -22,8 +22,8 @@ public:
     {
     }
 
-    virtual const char* getVertexShader() const = 0;
-    virtual const char* getFragmentShader() const = 0;
+    virtual std::string getVertexShader() const = 0;
+    virtual std::string getFragmentShader() const = 0;
 
 protected:
     IShaderLoader()
