@@ -25,6 +25,8 @@ t = {
 }
 
 scenes = {
+    current_scene = Start,
+    
     Start = {
         game_objects = {
             background,

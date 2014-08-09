@@ -22,7 +22,7 @@ ResourceManager::~ResourceManager()
 
 ResourceManager::Resource ResourceManager::createResource(const std::string& filename)
 {
-	return make_shared<Resource>;
+//	return make_shared<istream>();
 }
 
 } /* namespace jupiter */

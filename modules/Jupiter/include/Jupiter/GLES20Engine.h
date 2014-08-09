@@ -9,13 +9,13 @@
 #define GLES20ENGINE_H_
 
 #include <Jupiter/Common.h>
-#include <Jupiter/IDrawEngine.h>
+#include <Jupiter/DrawEngine.h>
 #include <Jupiter/IShaderLoader.h>
 
 namespace jupiter
 {
 
-class GLES20Engine: public IDrawEngine
+class GLES20Engine: public DrawEngine
 {
 public:
     GLES20Engine(IShaderLoader::Ptr shaderLoader, const glm::mat4& Ortho, int screenW, int screenH);
