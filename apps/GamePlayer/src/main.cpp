@@ -21,7 +21,9 @@
 
 using namespace std;
 using namespace boost;
+using namespace glm;
 using namespace jupiter;
+using namespace sel;
 
 filesystem::path gameFileLocation;
 
@@ -30,6 +32,7 @@ int y = 0;
 int width = 0;
 int height = 0;
 
+std::shared_ptr<State> luaState;
 DrawEngine::Ptr engine;
 
 /*
@@ -59,22 +62,27 @@ int main( int argc, char **argv )
     {
         cout << "Jupiter game player" << endl;
 
+        /*
+         * boost program options
+         */
+
         if ( argc < 2 ) throw runtime_error(""
                 "Usage  : ./GamePlayer <path-to-game>\n"
                 "Example: ./GamePlayer ~/games/Asteroids/Asteroids.lua");
 
         gameFileLocation = filesystem::path(argv[ 1 ]);
 
-        sel::State L{true};
+        luaState = make_shared<State>(true);
+//        sel::State L{true};
 
-        L["getGameLocation"] = &getGameLocation;
+        (*luaState)["getGameLocation"] = &getGameLocation;
 
-        L.Load(argv[1]);
+        luaState->Load(argv[1]);
 
-        x = L["viewport"]["x"];
-        y = L["viewport"]["y"];
-        width = L["viewport"]["width"];
-        height = L["viewport"]["height"];
+        x = (*luaState)["viewport"]["x"];
+        y = (*luaState)["viewport"]["y"];
+        width = (*luaState)["viewport"]["width"];
+        height = (*luaState)["viewport"]["height"];
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -89,7 +97,38 @@ int main( int argc, char **argv )
 
         glViewport(x, y, width, height);
 
-//        engine = make_shared<DrawEngine>(make_shared<SimpleShaderLoader>(),);
+        auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
+
+        class DummyShaderLoader: public IShaderLoader
+        {
+        public:
+            DummyShaderLoader(std::shared_ptr<State> L): _L(L)
+            {
+            }
+            virtual ~DummyShaderLoader()
+            {
+            }
+
+            virtual string getVertexShader() const
+            {
+                string fn = (*_L)[ "program" ][ "vertex" ];
+                cout << fn << endl;
+                fstream file(fn);
+                return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+            }
+            virtual string getFragmentShader() const
+            {
+                string fn = (*_L)[ "program" ][ "fragment" ];
+                fstream file(fn);
+                return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+            }
+
+        private:
+            std::shared_ptr<State> _L;
+        };
+
+        /*a->activity->assetManager, "shader/vertex.shader", "shader/fragment.shader"*/
+        engine = make_shared<DrawEngine>(make_shared<DummyShaderLoader>(luaState), o, width, height);
 
         glutMainLoop();
 
