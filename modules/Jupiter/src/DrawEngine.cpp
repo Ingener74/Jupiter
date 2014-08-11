@@ -26,7 +26,6 @@ DrawEngine::DrawEngine( IShaderLoader::Ptr sl, const glm::mat4& ortho, int scree
 
 DrawEngine::~DrawEngine()
 {
-    cout << "GLES20Engine::~GLES20Engine()" << endl;
     glDeleteProgram(_program);
 }
 

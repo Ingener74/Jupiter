@@ -71,14 +71,6 @@ int main( int argc, char **argv )
     {
         cout << "Jupiter game player" << endl;
 
-        /*
-         * boost program options
-         */
-
-//        if ( argc < 2 ) throw runtime_error(""
-//                "Usage  : ./GamePlayer <path-to-game>\n"
-//                "Example: ./GamePlayer ~/games/Asteroids/Asteroids.lua");
-
 		desc.add_options()
 				("help,h", "Show help")
 				("game,g", value<std::string>(), "Path to game file");
@@ -152,7 +144,12 @@ int main( int argc, char **argv )
         };
 
         /*a->activity->assetManager, "shader/vertex.shader", "shader/fragment.shader"*/
+
         engine = make_shared<DrawEngine>(make_shared<DummyShaderLoader>(luaState), o, width, height);
+
+        auto mainScene = make_shared<Scene>();
+
+        engine->setCurrentScene(mainScene);
 
         glutMainLoop();
 
