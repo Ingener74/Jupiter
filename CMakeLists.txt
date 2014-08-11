@@ -11,7 +11,7 @@ find_package(Qt5Core    REQUIRED)
 find_package(Qt5OpenGL  REQUIRED)
 
 # find boost
-find_package(Boost 1.53.0 REQUIRED system thread filesystem)
+find_package(Boost 1.53.0 REQUIRED system thread filesystem program_options)
 
 # find png
 find_package(PNG REQUIRED)

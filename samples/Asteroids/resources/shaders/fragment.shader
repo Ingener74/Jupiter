@@ -1,4 +1,4 @@
-precision mediump float;
+// precision mediump float;
 varying vec2      vTEX;
 uniform sampler2D uTEX;
 void main(){
