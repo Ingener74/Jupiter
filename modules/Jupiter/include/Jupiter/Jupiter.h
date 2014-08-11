@@ -11,6 +11,8 @@
 #include <Jupiter/DrawEngine.h>
 #include <Jupiter/IGameObject.h>
 
+#include <Jupiter/ResourceManager.h>
+
 #include <Jupiter/IShaderLoader.h>
 #include <Jupiter/SimpleShaderLoader.h>
 

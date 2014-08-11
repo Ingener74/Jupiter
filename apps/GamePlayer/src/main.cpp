@@ -150,9 +150,9 @@ int main( int argc, char **argv )
                 string fn = (*_L)[ "program" ][ "vertex" ];
 //                fstream file(getGameLocation() + "/" + fn);
 
-				istream file = ResourceManager::instance()->createResource(getGameLocation() + "/" + fn);
+				auto file = ResourceManager::instance()->createResource(getGameLocation() + string("/") + fn);
 
-                return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+                return string((istreambuf_iterator<char>(*file)), istreambuf_iterator<char>());
             }
             virtual string getFragmentShader() const
             {
