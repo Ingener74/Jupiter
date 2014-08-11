@@ -158,8 +158,6 @@ int main( int argc, char **argv )
             std::shared_ptr<State> _L;
         };
 
-        /*a->activity->assetManager, "shader/vertex.shader", "shader/fragment.shader"*/
-
         engine = make_shared<DrawEngine>(make_shared<DummyShaderLoader>(luaState), o, width, height);
 
         auto mainScene = make_shared<Scene>();
