@@ -1,6 +1,6 @@
 
-aspect = 4 / 3
-w = 1024
+aspect = 16 / 9
+w = 800
 
 viewport = {
     x = 0,
@@ -19,14 +19,17 @@ background = {
     }
 }
 
-t = {
-    file = "",
-    critical = true
+resources_dir = "resources/"
+imgs = resources_dir .. "images/"
+shaders = resources_dir .. "shaders/"
+
+bg_tex = {
+    file = imgs .. "bg.png"
 }
 
 program = {
-  vertex = "resources/shaders/vertex.shader",
-  fragment = "resources/shaders/fragment.shader"
+  vertex = shaders .. "vertex.shader",
+  fragment = shaders .. "fragment.shader"
 }
 
 scenes = {

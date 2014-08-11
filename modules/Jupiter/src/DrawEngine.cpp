@@ -129,19 +129,19 @@ void DrawEngine::animateAll( double elapsedMs )
     _currentScene->gameObject = gameObjs;
 }
 
-GLuint DrawEngine::createProgram( string vertexShader, string fragmentShader )
+GLuint DrawEngine::createProgram( string vertexShaderSource, string fragmentShaderSource )
 {
-    if ( vertexShader.empty() ) throw JupiterError("vertex shader is empty");
-    if ( fragmentShader.empty() ) throw JupiterError("fragment shader is empty");
+    if ( vertexShaderSource.empty() ) throw JupiterError("vertex shader is empty");
+    if ( fragmentShaderSource.empty() ) throw JupiterError("fragment shader is empty");
 
-    GLuint _vs = createShader(GL_VERTEX_SHADER, vertexShader);
-    GLuint _fs = createShader(GL_FRAGMENT_SHADER, fragmentShader);
+    GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource); // TODO surrount shaders to RAII
+    GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     GLuint program = glCreateProgram();
     if ( !program ) throw JupiterError("can't create program");
 
-    glAttachShader(program, _vs);
-    glAttachShader(program, _fs);
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
 
     glLinkProgram(program);
     GLint linkStatus = GL_FALSE;
@@ -159,8 +159,8 @@ GLuint DrawEngine::createProgram( string vertexShader, string fragmentShader )
         }
     }
 
-    glDeleteShader(_vs);
-    glDeleteShader(_fs);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     return program;
 }
