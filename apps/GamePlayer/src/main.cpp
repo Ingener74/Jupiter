@@ -38,15 +38,15 @@ std::shared_ptr<State> luaState;
 DrawEngine::Ptr engine;
 
 string usage = ""
-		"Usage  : ./GamePlayer -g <path-to-game>\n"
-		"Example: ./GamePlayer -g ~/games/Asteroids/Asteroids.lua";
+        "Usage  : ./GamePlayer -g <path-to-game>\n"
+        "Example: ./GamePlayer -g ~/games/Asteroids/Asteroids.lua";
 
 /*
  * Code
  */
 string getGameLocation()
 {
-	return string(gameFileLocation.parent_path().c_str());
+    return string(gameFileLocation.parent_path().c_str());
 }
 
 void display( void )
@@ -66,40 +66,38 @@ void reshape( int w, int h )
 
 int main( int argc, char **argv )
 {
-	options_description desc("General description");
+    options_description desc("General description");
     try
     {
         cout << "Jupiter game player" << endl;
 
-		desc.add_options()
-				("help,h", "Show help")
-				("game,g", value<std::string>(), "Path to game file");
-		variables_map vm;
+        desc.add_options()("help,h", "Show help")("game,g", value<std::string>(), "Path to game file");
+        variables_map vm;
 
-		store(parse_command_line(argc, argv, desc), vm);
-		notify(vm);
+        store(parse_command_line(argc, argv, desc), vm);
+        notify(vm);
 
-		if (vm.count("help"))
-		{
-			desc.print(std::cout);
-			std::cout << usage << endl;
-			return 0;
-		}
+        if ( vm.count("help") )
+        {
+            desc.print(std::cout);
+            std::cout << usage << endl;
+            return 0;
+        }
 
-		if(!vm.count("game")) throw JupiterError("have no game file");
+        if ( !vm.count("game") ) throw JupiterError("have no game file");
 
-        gameFileLocation = filesystem::path(vm["game"].as<string>());
+        gameFileLocation = filesystem::path(vm[ "game" ].as<string>());
 
         luaState = make_shared<State>(true);
 
-        (*luaState)["getGameLocation"] = &getGameLocation;
+        (*luaState)[ "getGameLocation" ] = &getGameLocation;
 
-		luaState->Load(vm["game"].as<string>());
+        luaState->Load(vm[ "game" ].as<string>());
 
-        x = (*luaState)["viewport"]["x"];
-        y = (*luaState)["viewport"]["y"];
-        width = (*luaState)["viewport"]["width"];
-        height = (*luaState)["viewport"]["height"];
+        x = (*luaState)[ "viewport" ][ "x" ];
+        y = (*luaState)[ "viewport" ][ "y" ];
+        width = (*luaState)[ "viewport" ][ "width" ];
+        height = (*luaState)[ "viewport" ][ "height" ];
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -116,29 +114,24 @@ int main( int argc, char **argv )
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-		class FstreamResource: public ResourceManager::IFactory
-		{
-		public:
-			FstreamResource()
-			{
-			}
-			virtual ~FstreamResource()
-			{
-			}
+        class FstreamResource: public ResourceManager::IFactory
+        {
+        public:
+            FstreamResource() = default;
+            virtual ~FstreamResource() = default;
 
-			virtual ResourceManager::Resource createResource(const std::string& fileName)
-			{
-				return make_shared<ifstream>(fileName);
-			}
-		private:
-		};
-
-		ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
+            virtual ResourceManager::Resource createResource( const std::string& fileName )
+            {
+                return make_shared<ifstream>(fileName);
+            }
+        };
+        ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
 
         class DummyShaderLoader: public IShaderLoader
         {
         public:
-            DummyShaderLoader(std::shared_ptr<State> L): _L(L)
+            DummyShaderLoader( std::shared_ptr<State> L ) :
+                    _L(L)
             {
             }
             virtual ~DummyShaderLoader()
@@ -150,7 +143,7 @@ int main( int argc, char **argv )
                 string fn = (*_L)[ "program" ][ "vertex" ];
 //                fstream file(getGameLocation() + "/" + fn);
 
-				auto file = ResourceManager::instance()->createResource(getGameLocation() + string("/") + fn);
+                auto file = ResourceManager::instance()->createResource(getGameLocation() + string("/") + fn);
 
                 return string((istreambuf_iterator<char>(*file)), istreambuf_iterator<char>());
             }
@@ -179,8 +172,8 @@ int main( int argc, char **argv )
     }
     catch ( std::exception const & e )
     {
-		desc.print(std::cerr);
-		cerr << usage << endl << "Error: " << e.what() << endl;
+        desc.print(std::cerr);
+        cerr << usage << endl << "Error: " << e.what() << endl;
         return EXIT_FAILURE;
     }
 }

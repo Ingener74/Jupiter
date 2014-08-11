@@ -13,27 +13,27 @@
 
 using namespace std;
 
-int main(int argc, char **argv)
+int main( int argc, char **argv )
 {
-	try
-	{
-		cout << "Parse lua test" << endl;
+    try
+    {
+        cout << "Parse lua test" << endl;
 
-		if(argc < 2) throw runtime_error(""
-				"Usage: ./lua_parse_test <path-to-lua-file>");
+        if ( argc < 2 ) throw runtime_error(""
+                "Usage: ./lua_parse_test <path-to-lua-file>");
 
-		lua_State* L = luaL_newstate();
+        lua_State* L = luaL_newstate();
 
 //		luaY_parser(L, )
 
-		lua_close(L);
+        lua_close(L);
 
-		return 0;
-	}
-	catch ( std::exception const & e )
-	{
-		cerr << "Error: " << e.what() << endl;
-		return 1;
-	}
+        return 0;
+    }
+    catch ( std::exception const & e )
+    {
+        cerr << "Error: " << e.what() << endl;
+        return 1;
+    }
 }
 

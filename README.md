@@ -25,18 +25,6 @@ make
 sudo make install
 ```
 
-1.4. install Lua
-
-```
-git clone https://github.com/LuaDist/lua.git
-cd lua
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make
-sudo make install
-```
-
 2. build
 
 ```

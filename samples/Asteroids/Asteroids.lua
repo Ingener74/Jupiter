@@ -23,7 +23,7 @@ background = {
             texcoord_x_1 = 0,
             texcoord_y_1 = 0,
             texcoord_x_2 = 1.0,
-            texcoord_y_2 = 1.0,
+            texcoord_y_2 = 1.0
         }
     }
 }

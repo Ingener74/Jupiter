@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8.11)
 
+include_directories(
+    3rdparty/lua/src
+)
+
 add_subdirectory(3rdparty)
 
 # include modules
@@ -27,9 +31,6 @@ find_package(GLUT REQUIRED)
 # find GLEW
 find_package(GLEW REQUIRED)
 
-# find Lua
-find_package(Lua REQUIRED)
-
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
@@ -44,8 +45,6 @@ include_directories(
     ${GLUT_INCLUDE_DIR}
 
     ${GLEW_INCLUDE_DIRS}
-    
-    ${LUA_INCLUDE_DIR}
     
     3rdparty/Selene/include
     
