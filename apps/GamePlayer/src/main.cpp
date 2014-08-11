@@ -116,6 +116,25 @@ int main( int argc, char **argv )
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
+		class FstreamResource: public ResourceManager::IFactory
+		{
+		public:
+			FstreamResource()
+			{
+			}
+			virtual ~FstreamResource()
+			{
+			}
+
+			virtual ResourceManager::Resource createResource(const std::string& fileName)
+			{
+				return make_shared<ifstream>(fileName);
+			}
+		private:
+		};
+
+		ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
+
         class DummyShaderLoader: public IShaderLoader
         {
         public:
@@ -129,7 +148,10 @@ int main( int argc, char **argv )
             virtual string getVertexShader() const
             {
                 string fn = (*_L)[ "program" ][ "vertex" ];
-                fstream file(getGameLocation() + "/" + fn);
+//                fstream file(getGameLocation() + "/" + fn);
+
+				istream file = ResourceManager::instance()->createResource(getGameLocation() + "/" + fn);
+
                 return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
             }
             virtual string getFragmentShader() const
