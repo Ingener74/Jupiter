@@ -15,14 +15,15 @@ background = {
             texture = "bg.png",
             x = 0,
             y = 0,
+            z = 0,
             
             width = 100,
             height = 100,
-            z = 0,
-            texture_x_1 = 0,
-            texture_y_1 = 0,
-            texture_x_2 = 1.0,
-            texture_y_2 = 1.0,
+            
+            texcoord_x_1 = 0,
+            texcoord_y_1 = 0,
+            texcoord_x_2 = 1.0,
+            texcoord_y_2 = 1.0,
         }
     }
 }
