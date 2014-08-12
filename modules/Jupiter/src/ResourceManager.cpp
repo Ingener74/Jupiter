@@ -29,6 +29,7 @@ ResourceManager::Resource ResourceManager::createResource(const string& filename
 
 void ResourceManager::pushResourceFactory(IFactory::Ptr factory)
 {
+    Register().push_back(factory);
 }
 
 ResourceManager::ResourceManager()

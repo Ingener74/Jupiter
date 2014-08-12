@@ -141,8 +141,6 @@ int main( int argc, char **argv )
             virtual string getVertexShader() const
             {
                 string fn = (*_L)[ "program" ][ "vertex" ];
-//                fstream file(getGameLocation() + "/" + fn);
-
                 auto file = ResourceManager::instance()->createResource(getGameLocation() + string("/") + fn);
 
                 return string((istreambuf_iterator<char>(*file)), istreambuf_iterator<char>());
