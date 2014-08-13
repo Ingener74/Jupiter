@@ -21,12 +21,12 @@
 #include <Jupiter/Jupiter.h>
 
 using namespace std;
-using namespace boost;
-using namespace boost::program_options;
-using namespace boost::filesystem;
 using namespace glm;
-using namespace jupiter;
 using namespace sel;
+using namespace jupiter;
+using namespace boost;
+using namespace boost::filesystem;
+using namespace boost::program_options;
 
 path gameFileLocation;
 
