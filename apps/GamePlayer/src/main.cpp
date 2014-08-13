@@ -123,6 +123,9 @@ int main( int argc, char **argv )
 				getGameLocation() + "/" + vs,
 				getGameLocation() + "/" + fs), o, width, height);
 
+		int sceneSize = (*luaState)["scenes"];
+		cout << "scenes " << sceneSize << endl;
+
         auto mainScene = make_shared<Scene>();
         engine->setCurrentScene(mainScene);
 
