@@ -15,6 +15,7 @@
 
 #include <Jupiter/IShaderLoader.h>
 #include <Jupiter/SimpleShaderLoader.h>
+#include <Jupiter/ResourceShaderLoader.h>
 
 #include <Jupiter/Texture.h>
 #include <Jupiter/TextureLoader.h>

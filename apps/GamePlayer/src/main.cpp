@@ -23,11 +23,12 @@
 using namespace std;
 using namespace boost;
 using namespace boost::program_options;
+using namespace boost::filesystem;
 using namespace glm;
 using namespace jupiter;
 using namespace sel;
 
-filesystem::path gameFileLocation;
+path gameFileLocation;
 
 int x = 0;
 int y = 0;
@@ -86,7 +87,7 @@ int main( int argc, char **argv )
 
         if ( !vm.count("game") ) throw JupiterError("have no game file");
 
-        gameFileLocation = filesystem::path(vm[ "game" ].as<string>());
+        gameFileLocation = path(vm[ "game" ].as<string>());
 
         luaState = make_shared<State>(true);
 
@@ -127,39 +128,13 @@ int main( int argc, char **argv )
         };
         ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
 
-        class DummyShaderLoader: public IShaderLoader
-        {
-        public:
-            DummyShaderLoader( std::shared_ptr<State> L ) :
-                    _L(L)
-            {
-            }
-            virtual ~DummyShaderLoader()
-            {
-            }
+		string vs = (*luaState)["program"]["vertex"], fs = (*luaState)["program"]["fragment"];
 
-            virtual string getVertexShader() const
-            {
-                string fn = (*_L)[ "program" ][ "vertex" ];
-                auto file = ResourceManager::instance()->createResource(getGameLocation() + string("/") + fn);
-
-                return string((istreambuf_iterator<char>(*file)), istreambuf_iterator<char>());
-            }
-            virtual string getFragmentShader() const
-            {
-                string fn = (*_L)[ "program" ][ "fragment" ];
-                fstream file(getGameLocation() + "/" + fn);
-                return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-            }
-
-        private:
-            std::shared_ptr<State> _L;
-        };
-
-        engine = make_shared<DrawEngine>(make_shared<DummyShaderLoader>(luaState), o, width, height);
+		engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(
+				getGameLocation() + "/" + vs,
+				getGameLocation() + "/" + fs), o, width, height);
 
         auto mainScene = make_shared<Scene>();
-
         engine->setCurrentScene(mainScene);
 
         glutMainLoop();

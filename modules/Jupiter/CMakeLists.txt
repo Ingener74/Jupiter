@@ -19,6 +19,7 @@ set(SOURCES
     src/Tools.cpp
     src/DrawEngine.cpp
     src/ResourceManager.cpp
+    src/ResourceShaderLoader.cpp
 )
 
 if(ANDROID)
