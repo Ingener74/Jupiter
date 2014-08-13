@@ -115,18 +115,7 @@ int main( int argc, char **argv )
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        class FstreamResource: public ResourceManager::IFactory
-        {
-        public:
-            FstreamResource() = default;
-            virtual ~FstreamResource() = default;
-
-            virtual ResourceManager::Resource createResource( const std::string& fileName )
-            {
-                return make_shared<ifstream>(fileName);
-            }
-        };
-        ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
+		ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
 
 		string vs = (*luaState)["program"]["vertex"], fs = (*luaState)["program"]["fragment"];
 

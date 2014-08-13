@@ -115,8 +115,8 @@ scenes = {
 
 dofile(getGameLocation() .. "/resources/scripts/ext.lua")
 
-print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 --[[ 
+print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
 for i, n in pairs(scenes) do
     for s1, g in pairs(n.game_objects) do
         print("\t", s1, " -> ", g.name)

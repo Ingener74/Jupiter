@@ -20,6 +20,7 @@ set(SOURCES
     src/DrawEngine.cpp
     src/ResourceManager.cpp
     src/ResourceShaderLoader.cpp
+    src/FStreamResource.cpp
 )
 
 if(ANDROID)
