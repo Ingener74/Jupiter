@@ -115,16 +115,13 @@ int main( int argc, char **argv )
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-		ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
+        ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
 
-		string vs = (*luaState)["program"]["vertex"], fs = (*luaState)["program"]["fragment"];
+        string vs = (*luaState)[ "program" ][ "vertex" ], fs = (*luaState)[ "program" ][ "fragment" ];
 
-		engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(
-				getGameLocation() + "/" + vs,
-				getGameLocation() + "/" + fs), o, width, height);
-
-		int sceneSize = (*luaState)["scenes"];
-		cout << "scenes " << sceneSize << endl;
+        engine = make_shared<DrawEngine>(
+                make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs), o, width,
+                height);
 
         auto mainScene = make_shared<Scene>();
         engine->setCurrentScene(mainScene);

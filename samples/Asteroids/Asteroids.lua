@@ -9,10 +9,15 @@ viewport = {
     height = w / aspect,
 }
 
+
+resources_dir = "resources/"
+imgs = resources_dir .. "images/"
+shaders = resources_dir .. "shaders/"
+
 background = {
     sprites = {
         background_sprite = {
-            texture = "bg.png",
+            texture = imgs .. "bg.png",
             x = 0,
             y = 0,
             z = 0,
@@ -28,22 +33,12 @@ background = {
     }
 }
 
-resources_dir = "resources/"
-imgs = resources_dir .. "images/"
-shaders = resources_dir .. "shaders/"
-
-bg_tex = {
-    file = imgs .. "bg.png"
-}
-
 program = {
   vertex = shaders .. "vertex.shader",
   fragment = shaders .. "fragment.shader"
 }
 
 scenes = {
-    current_scene = Start,
-    
     Start = {
         game_objects = {
             background,
@@ -115,20 +110,14 @@ scenes = {
 
 dofile(getGameLocation() .. "/resources/scripts/ext.lua")
 
---[[ 
-print("viewport ", viewport.x, " ", viewport.y, " ", viewport.width, " ", viewport.height, " ")
-for i, n in pairs(scenes) do
-    for s1, g in pairs(n.game_objects) do
-        print("\t", s1, " -> ", g.name)
-        if g.controller ~= nil then
-            g:controller()
-        end
-        if g.onInput ~= nil then
-            g:onInput(100, 123)
-        end
-        if g.onUpdate ~= nil then
-            g:onUpdate(0.1)
+print("viewport " .. viewport.x .. " " .. viewport.y .. " " .. viewport.width .. " " .. viewport.height)
+
+for i1, n in pairs(scenes) do
+    print("scene ", i1)
+    for i2, g in pairs(n.game_objects) do
+        print("|--> game object " .. i2)
+        for i3, s in pairs(g.sprites) do
+            print("|    |--> sprite " .. i3 .. " " .. s.texture)
         end
     end
 end
-]]--
