@@ -1,6 +1,6 @@
 
 aspect = 16 / 9
-w = 800
+w = 640
 
 viewport = {
     x = 0,
@@ -9,7 +9,6 @@ viewport = {
     height = w / aspect,
 }
 
-
 resources_dir = "resources/"
 imgs = resources_dir .. "images/"
 shaders = resources_dir .. "shaders/"
@@ -17,25 +16,30 @@ shaders = resources_dir .. "shaders/"
 background = {
     sprites = {
         background_sprite = {
-            texture = imgs .. "bg.png",
+            textures = {
+                background_texture = {
+                    file = imgs .. "bg.png",
+                    tx1 = 0.0,
+                    ty1 = 0.0,
+                    tx2 = 1.0,
+                    ty2 = 1.0
+                }
+            },
             x = 0,
             y = 0,
             z = 0,
-            
             width = 100,
-            height = 100,
-            
-            texcoord_x_1 = 0,
-            texcoord_y_1 = 0,
-            texcoord_x_2 = 1.0,
-            texcoord_y_2 = 1.0
+            height = 100
         }
-    }
+    },
+    onUpdate = function(background, dt)
+        print("background on update")
+    end
 }
 
 program = {
-  vertex = shaders .. "vertex.shader",
-  fragment = shaders .. "fragment.shader"
+    vertex = shaders .. "vertex.shader",
+    fragment = shaders .. "fragment.shader"
 }
 
 scenes = {
@@ -43,25 +47,35 @@ scenes = {
         game_objects = {
             background,
             start_button = {
-                name = "start button",
                 sprites = {
                     {
-                        texture = "start_button.png",
+                        textures = {
+                            {
+                                file = imgs .. "start_button.png",
+                                tx1 = 0.0,
+                                ty1 = 0.0,
+                                tx2 = 1.0,
+                                ty2 = 1.0
+                            }
+                        },
                         x = 0,
-                        y = 0
+                        y = 0,
+                        z = 0,
+                        width = 100,
+                        height = 100
                     }
                 },
                 bla = 123,
                 controller = function(bg)
-                    print("background controller", bg.name)
+                    print("background controller")
                 end,
                 onInput = function(bg, x, y)
                     bg.bla = bg.bla + 10;
-                    print("x = ", x, ", y = ", y, ", bla = ", bg.bla)
+                    print("x = " .. x .. ", y = " .. y .. ", bla = " .. bg.bla)
                 end,
                 onUpdate = function(bg, dt)
                     bg.bla = bg.bla + dt
-                    print("update = ", dt, ", bla = ", bg.bla)
+                    print("update = " .. dt .. ", bla = " .. bg.bla)
                 end
             }
         }
@@ -70,28 +84,48 @@ scenes = {
         game_objects = {
             background,
             battleship = {
-                name = "Battle ship",
-
                 sprites = {
                     -- one texture two spirites, different texture coords
                     body = {
-                        texture = "battleship.png",
+                        textures = {
+                            battleship_texture = {
+                                file = imgs .. "battleship.png",
+                                tx1 = 0.0,
+                                ty1 = 0.0,
+                                tx2 = 1.0,
+                                ty2 = 1.0
+                            },
+                        },
                         x = 0,
                         y = 0,
+                        z = 0,
+                        width = 100,
+                        height = 100
                     },
                     fire = {
-                        texture = "battleship.png",
+                        textures = {
+                            fire = {
+                                file = imgs .. "bullet.png",
+                                tx1 = 0.0,
+                                ty1 = 0.0,
+                                tx2 = 1.0,
+                                ty2 = 1.0
+                            }
+                        },
                         x = 0,
                         y = 0,
+                        z = 0,
+                        width = 100,
+                        height = 100
                     }
                 },
                 onInput = function(battleship, x, y)
                     if x > 100 and x < 300 then
-                        print("battleship pressed")
+                        print("battleship pressed " .. x .. " " .. y)
                     end
                 end,
                 onUpdate = function(battleship, dt)
-                    print("update battleship = ", dt)
+                    print("update battleship = " .. dt)
                 end
             }
         }
@@ -105,7 +139,8 @@ scenes = {
         game_objects = {
             background,
         }
-    }
+    },
+    current_scene = Start
 }
 
 dofile(getGameLocation() .. "/resources/scripts/ext.lua")
@@ -114,10 +149,21 @@ print("viewport " .. viewport.x .. " " .. viewport.y .. " " .. viewport.width ..
 
 for i1, n in pairs(scenes) do
     print("scene ", i1)
-    for i2, g in pairs(n.game_objects) do
-        print("|--> game object " .. i2)
-        for i3, s in pairs(g.sprites) do
-            print("|    |--> sprite " .. i3 .. " " .. s.texture)
+    if n.game_objects ~= nil then
+        for i2, g in pairs(n.game_objects) do
+            print("|--> game object " .. i2)
+            for i3, s in pairs(g.sprites) do
+                print("|    |--> sprite      " .. i3)
+                for i4, t in pairs(s.textures) do
+                    print("|    |    |--> texture      " .. i4 .. " -- " .. t.file)
+                end
+            end
+            if g.onUpdate ~= nil then
+                g:onUpdate(0.31415)
+            end
+            if g.onInput ~= nil then
+                g:onInput(100, 200)
+            end
         end
     end
 end
