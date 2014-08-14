@@ -50,6 +50,11 @@ string getGameLocation()
     return string(gameFileLocation.parent_path().c_str());
 }
 
+void createScene(/*const string& */ const char* sceneName)
+{
+	cout << "create scene " << sceneName << endl;
+}
+
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -91,7 +96,8 @@ int main( int argc, char **argv )
 
         luaState = make_shared<State>(true);
 
-        (*luaState)[ "getGameLocation" ] = &getGameLocation;
+		(*luaState)["getGameLocation"] = &getGameLocation;
+		(*luaState)["createScene"] = &createScene;
 
         luaState->Load(vm[ "game" ].as<string>());
 

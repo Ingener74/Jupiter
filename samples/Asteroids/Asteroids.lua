@@ -1,6 +1,6 @@
 
 aspect = 16 / 9
-w = 640
+w = 100
 
 viewport = {
     x = 0,
@@ -150,6 +150,9 @@ print("viewport " .. viewport.x .. " " .. viewport.y .. " " .. viewport.width ..
 for i1, n in pairs(scenes) do
     print("scene ", i1)
     if n.game_objects ~= nil then
+    
+        createScene(i1)
+        
         for i2, g in pairs(n.game_objects) do
             print("|--> game object " .. i2)
             for i3, s in pairs(g.sprites) do
