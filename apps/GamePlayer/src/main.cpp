@@ -50,9 +50,14 @@ string getGameLocation()
     return string(gameFileLocation.parent_path().c_str());
 }
 
-void createScene(/*const string& */ const char* sceneName)
+void createScene(const string& sceneName)
 {
 	cout << "create scene " << sceneName << endl;
+}
+
+void createSceneNumber(int i)
+{
+	cout << "create scene number " << i << endl;
 }
 
 void display( void )
@@ -90,7 +95,7 @@ int main( int argc, char **argv )
             return 0;
         }
 
-        if ( !vm.count("game") ) throw JupiterError("have no game file");
+        if ( !vm.count("game") ) throw runtime_error("have no game file");
 
         gameFileLocation = path(vm[ "game" ].as<string>());
 
@@ -98,6 +103,7 @@ int main( int argc, char **argv )
 
 		(*luaState)["getGameLocation"] = &getGameLocation;
 		(*luaState)["createScene"] = &createScene;
+		(*luaState)["createSceneNumber"] = &createSceneNumber;
 
         luaState->Load(vm[ "game" ].as<string>());
 

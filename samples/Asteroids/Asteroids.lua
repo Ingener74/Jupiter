@@ -151,7 +151,8 @@ for i1, n in pairs(scenes) do
     print("scene ", i1)
     if n.game_objects ~= nil then
     
-        createScene(i1)
+        -- createScene("Test")
+        createSceneNumber(123)
         
         for i2, g in pairs(n.game_objects) do
             print("|--> game object " .. i2)
