@@ -16,13 +16,14 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-#include <selene.h>
+//#include <selene.h>
 
+#include <Ganymede/Ganimede.h>
 #include <Jupiter/Jupiter.h>
 
 using namespace std;
 using namespace glm;
-using namespace sel;
+//using namespace sel;
 using namespace jupiter;
 using namespace boost;
 using namespace boost::filesystem;
@@ -35,7 +36,7 @@ int y = 0;
 int width = 0;
 int height = 0;
 
-std::shared_ptr<State> luaState;
+//std::shared_ptr<State> luaState;
 DrawEngine::Ptr engine;
 
 string usage = ""
@@ -97,20 +98,27 @@ int main( int argc, char **argv )
 
         if ( !vm.count("game") ) throw runtime_error("have no game file");
 
+        ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
+
         gameFileLocation = path(vm[ "game" ].as<string>());
 
-        luaState = make_shared<State>(true);
+        ganymede::State L;
 
-		(*luaState)["getGameLocation"] = &getGameLocation;
-		(*luaState)["createScene"] = &createScene;
-		(*luaState)["createSceneNumber"] = &createSceneNumber;
+        auto file = ResourceManager::instance()->createResource(vm["game"].as<string>());
+        L.load(*file);
 
-        luaState->Load(vm[ "game" ].as<string>());
-
-        x = (*luaState)[ "viewport" ][ "x" ];
-        y = (*luaState)[ "viewport" ][ "y" ];
-        width = (*luaState)[ "viewport" ][ "width" ];
-        height = (*luaState)[ "viewport" ][ "height" ];
+//        luaState = make_shared<State>(true);
+//
+//		(*luaState)["getGameLocation"] = &getGameLocation;
+//		(*luaState)["createScene"] = &createScene;
+//		(*luaState)["createSceneNumber"] = &createSceneNumber;
+//
+//        luaState->Load(vm[ "game" ].as<string>());
+//
+//        x = (*luaState)[ "viewport" ][ "x" ];
+//        y = (*luaState)[ "viewport" ][ "y" ];
+//        width = (*luaState)[ "viewport" ][ "width" ];
+//        height = (*luaState)[ "viewport" ][ "height" ];
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -127,9 +135,7 @@ int main( int argc, char **argv )
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
-
-        string vs = (*luaState)[ "program" ][ "vertex" ], fs = (*luaState)[ "program" ][ "fragment" ];
+        string vs = /*(*luaState)[ "program" ][ "vertex" ]*/ "", fs = /*(*luaState)[ "program" ][ "fragment" ]*/ "";
 
         engine = make_shared<DrawEngine>(
                 make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs), o, width,

@@ -16,6 +16,7 @@ set(LIBS
     ${Boost_LIBRARIES}
     
     lua
+    Ganymede
     Jupiter
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})

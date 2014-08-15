@@ -8,6 +8,8 @@
 #ifndef STATE_H_
 #define STATE_H_
 
+#include <Ganymede/GanymedeCommon.h>
+
 namespace ganymede
 {
 
@@ -15,9 +17,25 @@ class State
 {
 public:
 	State();
+
+	template<typename T>
+	T& get();
+
+	State& load(std::istream& in);
+	State& load(const std::string& program);
+
 	virtual ~State();
+
+private:
+	lua_State* _L = nullptr;
 };
 
+template<typename T>
+inline T& State::get()
+{
+}
+
 } /* namespace ganymede */
+
 
 #endif /* STATE_H_ */

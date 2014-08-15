@@ -143,7 +143,7 @@ scenes = {
     current_scene = Start
 }
 
-dofile(getGameLocation() .. "/resources/scripts/ext.lua")
+-- dofile(getGameLocation() .. "/resources/scripts/ext.lua")
 
 print("viewport " .. viewport.x .. " " .. viewport.y .. " " .. viewport.width .. " " .. viewport.height)
 
@@ -152,7 +152,7 @@ for i1, n in pairs(scenes) do
     if n.game_objects ~= nil then
     
         -- createScene("Test")
-        createSceneNumber(123)
+        -- createSceneNumber(123)
         
         for i2, g in pairs(n.game_objects) do
             print("|--> game object " .. i2)
