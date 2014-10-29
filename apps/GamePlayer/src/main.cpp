@@ -24,10 +24,12 @@
 using namespace std;
 using namespace glm;
 //using namespace sel;
-using namespace jupiter;
 using namespace boost;
 using namespace boost::filesystem;
 using namespace boost::program_options;
+
+using namespace ganymede;
+using namespace jupiter;
 
 path gameFileLocation;
 
@@ -150,7 +152,7 @@ int main( int argc, char **argv )
     }
     catch ( std::exception const & e )
     {
-        desc.print(std::cerr);
+        desc.print(cerr);
         cerr << usage << endl << "Error: " << e.what() << endl;
         return EXIT_FAILURE;
     }
