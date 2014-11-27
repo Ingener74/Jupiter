@@ -1,28 +1,31 @@
 {
-    "name": "Asteroids",
+    "name":"Asteroids",
     "resolution":{
-        "width": 800,
-        "height": 600
+        "width":800,
+        "height":600
     },
+    "texture_dir":"resources/images",
+    "scripts_dir":"resources/scripts",
+    "shaders_dir":"resources/shaders",
     "program":{
-        "vertex": "",
-        "fragment": ""
+        "vertex":"vertex.shader",
+        "fragment":"fragment.shader"
     },
     "game_objects": [
         {
-            "name": "background",
-            "": "",
+            "name":"background",
+            "controller":"background.lua",
         }
     ],
     "scenes": [
         {
-            "name": "Start",
+            "name":"Start",
             "game_objects":[
                 {
-                    "name":""
+                    "name":"Button start",
+                    "controller":"start_button.lua"
                 }
-            ],
-            "":
+            ]
         }
     ]
 }
