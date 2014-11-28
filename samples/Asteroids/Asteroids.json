@@ -15,6 +15,13 @@
         {
             "name":"background",
             "controller":"background.lua",
+            "sprites":[
+                {
+                    "file":"bg.png",
+                    "x":0,
+                    "y":0,
+                }
+            ]
         }
     ],
     "scenes": [
