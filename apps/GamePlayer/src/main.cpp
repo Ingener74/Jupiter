@@ -12,6 +12,8 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -55,15 +57,15 @@ string getGameLocation()
 
 void createScene(const string& sceneName)
 {
-	cout << "create scene " << sceneName << endl;
+    cout << "create scene " << sceneName << endl;
 }
 
 void createSceneNumber(int i)
 {
-	cout << "create scene number " << i << endl;
+    cout << "create scene number " << i << endl;
 }
 
-void display( void )
+void display(void)
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -73,12 +75,12 @@ void display( void )
     glutSwapBuffers();
 }
 
-void reshape( int w, int h )
+void reshape(int w, int h)
 {
     glViewport(0, 0, w, h);
 }
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
     options_description desc("General description");
     try
@@ -91,23 +93,26 @@ int main( int argc, char **argv )
         store(parse_command_line(argc, argv, desc), vm);
         notify(vm);
 
-        if ( vm.count("help") )
+        if (vm.count("help"))
         {
-            desc.print(std::cout);
-            std::cout << usage << endl;
+            cout << desc << endl << usage << endl;
             return 0;
         }
 
-        if ( !vm.count("game") ) throw runtime_error("have no game file");
+        if (!vm.count("game")) throw runtime_error("have no game file");
 
-        ResourceManager::pushResourceFactory(make_shared<FstreamResource>());
+        ResourceManager::pushResourceFactory(make_shared<FileResource>());
 
-        gameFileLocation = path(vm[ "game" ].as<string>());
+        gameFileLocation = path(vm["game"].as<string>());
 
         ganymede::State L;
 
+        property_tree::ptree pt;
+
         auto file = ResourceManager::instance()->createResource(vm["game"].as<string>());
-        L.load(*file);
+        property_tree::json_parser::read_json(*file, pt);
+
+//        L.load(*file);
 
 //        luaState = make_shared<State>(true);
 //
@@ -131,13 +136,13 @@ int main( int argc, char **argv )
         glutDisplayFunc(display);
         glutIdleFunc(display);
 
-        if ( glewInit() != GLEW_OK ) throw runtime_error("glew init error");
+        if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
 
         glViewport(x, y, width, height);
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        string vs = /*(*luaState)[ "program" ][ "vertex" ]*/ "", fs = /*(*luaState)[ "program" ][ "fragment" ]*/ "";
+        string vs = /*(*luaState)[ "program" ][ "vertex" ]*/"", fs = /*(*luaState)[ "program" ][ "fragment" ]*/"";
 
         engine = make_shared<DrawEngine>(
                 make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs), o, width,
@@ -150,10 +155,9 @@ int main( int argc, char **argv )
 
         return EXIT_SUCCESS;
     }
-    catch ( std::exception const & e )
+    catch (std::exception const & e)
     {
-        desc.print(cerr);
-        cerr << usage << endl << "Error: " << e.what() << endl;
+        cerr << desc << endl << usage << endl << "Error: " << e.what() << endl;
         return EXIT_FAILURE;
     }
 }

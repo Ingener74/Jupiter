@@ -14,7 +14,7 @@ using namespace std;
 
 ResourceManager::Resource FstreamResource::createResource(const std::string& fileName)
 {
-	return make_shared<ifstream>(fileName);
+    return make_shared<ifstream>(fileName);
 }
 
 }  // namespace jupiter

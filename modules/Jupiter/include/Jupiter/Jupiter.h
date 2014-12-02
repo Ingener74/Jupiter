@@ -13,6 +13,7 @@
 
 #include <Jupiter/ResourceManager.h>
 #include <Jupiter/FStreamResource.h>
+#include <Jupiter/FileResource.h>
 
 #include <Jupiter/IShaderLoader.h>
 #include <Jupiter/SimpleShaderLoader.h>

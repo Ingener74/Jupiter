@@ -13,6 +13,10 @@
 namespace jupiter
 {
 
+#define THROW_JUPITER_ERROR(message) \
+    throw JupiterError(std::string(__FILE__) + ":" std::string(__LINE__) + ": " + \
+            std::string(__PRETTY_FUNCTION__) + ": " + message)
+
 class JupiterError: public std::runtime_error
 {
 public:

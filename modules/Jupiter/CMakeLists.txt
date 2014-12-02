@@ -21,6 +21,7 @@ set(SOURCES
     # Resources
     src/Resources/ResourceManager.cpp
     src/Resources/FStreamResource.cpp
+    src/Resources/FileResource.cpp
     # Common
     src/ResourceShaderLoader.cpp
     src/SimpleShaderLoader.cpp
