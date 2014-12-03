@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include <memory>
 #include <fstream>
 #include <iterator>
 #include <iostream>
@@ -20,8 +21,8 @@
 
 //#include <selene.h>
 
-#include <Ganymede/Ganimede.h>
 #include <Jupiter/Jupiter.h>
+#include <Ganymede/Ganimede.h>
 
 using namespace std;
 using namespace glm;
@@ -41,7 +42,7 @@ int width = 0;
 int height = 0;
 
 //std::shared_ptr<State> luaState;
-DrawEngine::Ptr engine;
+std::shared_ptr<DrawEngine> engine;
 
 string usage = ""
         "Usage  : ./GamePlayer -g <path-to-game>\n"
@@ -153,10 +154,44 @@ int main(int argc, char **argv)
                 fs = "resources/shaders/fragment.shader" /*(*luaState)[ "program" ][ "fragment" ]*/;
 
         engine = make_shared<DrawEngine>(
-                make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs), o, width,
-                height);
+                make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs),
+                o, width, height);
 
         auto mainScene = make_shared<Scene>();
+
+        /*
+         * BackGround
+         */
+        class BackGround: public IGameObject
+        {
+        public:
+            BackGround()
+            {
+//                background = std::make_shared<Sprite>(
+//                        std::make_shared<RectSpriteLoader>()
+//                        );
+            }
+            virtual ~BackGround()
+            {
+            }
+
+            virtual void update(double elapsed) throw (JupiterError)
+            {
+            }
+            virtual list<std::shared_ptr<Sprite>> getSprites() const throw ()
+            {
+                return {};
+            }
+            virtual string getName() const throw ()
+            {
+                return "Test Background";
+            }
+
+        private:
+            std::shared_ptr<Sprite> background;
+        };
+        mainScene->gameObject.push_back(make_shared<BackGround>());
+
         engine->setCurrentScene(mainScene);
 
         /*

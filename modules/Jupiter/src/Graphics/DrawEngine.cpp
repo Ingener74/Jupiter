@@ -8,13 +8,16 @@
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/DrawEngine.h>
 #include <Jupiter/Tools.h>
+#include <Jupiter/Sprite.h>
+#include <Jupiter/IShaderLoader.h>
+#include <Jupiter/IGameObject.h>
 
 namespace jupiter
 {
 
 using namespace std;
 
-DrawEngine::DrawEngine( IShaderLoader::Ptr sl, const glm::mat4& ortho, int screenW, int screenH )
+DrawEngine::DrawEngine( shared_ptr<IShaderLoader> sl, const glm::mat4& ortho, int screenW, int screenH )
 {
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
 
@@ -30,7 +33,7 @@ DrawEngine::~DrawEngine()
     cout << __PRETTY_FUNCTION__ << endl;
 }
 
-void DrawEngine::setCurrentScene( Scene::Ptr s )
+void DrawEngine::setCurrentScene( shared_ptr<Scene> s )
 {
     if ( !s ) throw JupiterError("set current scene null");
     _currentScene = s;
@@ -41,7 +44,7 @@ void DrawEngine::draw()
     glUseProgram(_program);
     Tools::glError();
 
-    std::list<Sprite::Ptr> sprites;
+    list<shared_ptr<Sprite>> sprites;
 
 	if (!_currentScene) throw JupiterError("engine has no scenes");
 
@@ -122,7 +125,7 @@ void DrawEngine::animateAll( double elapsedMs )
         }
     }
 
-    std::list<IGameObject::Ptr> gameObjs;
+    list<shared_ptr<IGameObject>> gameObjs;
     for ( auto o : _currentScene->gameObject )
     {
         if ( !o->removeMe() ) gameObjs.push_back(o);

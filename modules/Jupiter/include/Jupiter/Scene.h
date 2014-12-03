@@ -8,22 +8,21 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-#include <Jupiter/Common.h>
-#include <Jupiter/IGameObject.h>
-#include <Jupiter/Sprite.h>
+#include <list>
+#include <memory>
 
 namespace jupiter
 {
 
+class IGameObject;
+
 class Scene
 {
 public:
-    using Ptr = std::shared_ptr<Scene>;
-
     Scene();
     virtual ~Scene();
 
-    std::list<IGameObject::Ptr> gameObject;
+    std::list<std::shared_ptr<IGameObject>> gameObject;
 };
 
 } /* namespace ndk_game */
