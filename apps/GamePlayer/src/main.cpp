@@ -112,6 +112,13 @@ int main(int argc, char **argv)
         auto file = ResourceManager::instance()->createResource(vm["game"].as<string>());
         property_tree::json_parser::read_json(*file, pt);
 
+        cout << "name = " << pt.get<string>("name") << endl;
+
+        cout << "w = " << pt.get<int>("resolution.width") << endl;
+        cout << "h = " << pt.get<int>("resolution.height") << endl;
+
+        cout << "texture_dir = " << pt.get<string>("texture_dir") << endl;
+
 //        L.load(*file);
 
 //        luaState = make_shared<State>(true);
@@ -142,7 +149,8 @@ int main(int argc, char **argv)
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        string vs = /*(*luaState)[ "program" ][ "vertex" ]*/"", fs = /*(*luaState)[ "program" ][ "fragment" ]*/"";
+        string vs = /*(*luaState)[ "program" ][ "vertex" ]*/"resources/shaders/vertex.shader",
+                fs = /*(*luaState)[ "program" ][ "fragment" ]*/"resources/shaders/fragment.shader";
 
         engine = make_shared<DrawEngine>(
                 make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs), o, width,

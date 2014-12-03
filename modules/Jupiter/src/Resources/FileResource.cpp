@@ -28,12 +28,13 @@ FileResource::~FileResource()
 /*
  * FileBuffer
  */
-class FileBuffer: public basic_streambuf<char>
+class FileBuffer: public streambuf
 {
 public:
     FileBuffer(const string& fileName)
     {
         auto file = fopen(fileName.c_str(), "rb");
+        if (!file) throw JupiterError("can't open file " + fileName);
         fseek(file, 0, SEEK_END);
         auto size = ftell(file);
         rewind(file);
@@ -45,9 +46,7 @@ public:
             throw JupiterError("can't read file");
         fclose(file);
 
-//        cout << string(_buffer.data()) << endl;
-
-        setg(_buffer.data(), _buffer.data(), _buffer.data() + _buffer.size());
+        setg(_buffer.data(), _buffer.data(), _buffer.data() + _buffer.capacity());
     }
     virtual ~FileBuffer() = default;
 
