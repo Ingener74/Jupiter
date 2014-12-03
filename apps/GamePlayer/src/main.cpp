@@ -159,9 +159,6 @@ int main(int argc, char **argv)
 
         auto mainScene = make_shared<Scene>();
 
-        /*
-         * BackGround
-         */
         class BackGround: public IGameObject
         {
         public:
