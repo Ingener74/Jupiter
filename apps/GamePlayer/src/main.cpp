@@ -165,6 +165,7 @@ int main(int argc, char **argv)
          * auto game = gameBuilder->createGame();
          */
 
+
         glutMainLoop();
 
         return EXIT_SUCCESS;
