@@ -17,14 +17,6 @@ using namespace std;
 namespace jupiter
 {
 
-FileResource::FileResource()
-{
-}
-
-FileResource::~FileResource()
-{
-}
-
 /*
  * FileBuffer
  */
@@ -42,13 +34,16 @@ public:
         _buffer.reserve(size);
 
         auto res = fread(_buffer.data(), sizeof(char), size, file);
-        if(res != size)
-            throw JupiterError("can't read file");
+        if (res != size) throw JupiterError("can't read file");
         fclose(file);
 
         setg(_buffer.data(), _buffer.data(), _buffer.data() + _buffer.capacity());
     }
-    virtual ~FileBuffer() = default;
+    virtual ~FileBuffer() // = default;
+    {
+        // FIXME dtor not called
+        cout << __PRETTY_FUNCTION__ << endl;
+    }
 
 private:
     vector<char> _buffer;
@@ -56,7 +51,16 @@ private:
 
 ResourceManager::Resource FileResource::createResource(const string& fileName)
 {
-    return make_shared<istream>(new FileBuffer(fileName));
+    auto tmp = new istream(new FileBuffer(fileName));
+//    cout << __PRETTY_FUNCTION__ << " " << static_cast<void*>(tmp) << endl;
+    ResourceManager::Resource t(tmp, [](istream* d)
+    {
+        delete d->rdbuf();
+//        cout << __PRETTY_FUNCTION__ << " " << static_cast<void*>(d) << endl;
+    });
+    return t;
+
+//    return make_shared<istream>(new FileBuffer(fileName));
 }
 
 } /* namespace jupiter */

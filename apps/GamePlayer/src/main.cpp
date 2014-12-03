@@ -72,6 +72,10 @@ void display(void)
 
     engine->draw();
 
+    /*
+     * game->getEngine()->draw();
+     */
+
     glutSwapBuffers();
 }
 
@@ -112,12 +116,8 @@ int main(int argc, char **argv)
         auto file = ResourceManager::instance()->createResource(vm["game"].as<string>());
         property_tree::json_parser::read_json(*file, pt);
 
-        cout << "name = " << pt.get<string>("name") << endl;
-
-        cout << "w = " << pt.get<int>("resolution.width") << endl;
-        cout << "h = " << pt.get<int>("resolution.height") << endl;
-
-        cout << "texture_dir = " << pt.get<string>("texture_dir") << endl;
+        width  = pt.get<int>("resolution.width");
+        height = pt.get<int>("resolution.height");
 
 //        L.load(*file);
 
@@ -149,8 +149,8 @@ int main(int argc, char **argv)
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        string vs = /*(*luaState)[ "program" ][ "vertex" ]*/"resources/shaders/vertex.shader",
-                fs = /*(*luaState)[ "program" ][ "fragment" ]*/"resources/shaders/fragment.shader";
+        string vs = "resources/shaders/vertex.shader" /*(*luaState)[ "program" ][ "vertex" ]*/,
+                fs = "resources/shaders/fragment.shader" /*(*luaState)[ "program" ][ "fragment" ]*/;
 
         engine = make_shared<DrawEngine>(
                 make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs), o, width,
@@ -158,6 +158,12 @@ int main(int argc, char **argv)
 
         auto mainScene = make_shared<Scene>();
         engine->setCurrentScene(mainScene);
+
+        /*
+         * auto gameBuilder = make_shader<LinuxGameBuilder>( vm["game"].as<string>() );
+         *
+         * auto game = gameBuilder->createGame();
+         */
 
         glutMainLoop();
 

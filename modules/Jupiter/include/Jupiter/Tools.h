@@ -9,6 +9,7 @@
 #define TOOLS_H_
 
 #include <Jupiter/Common.h>
+#include <Jupiter/JupiterError.h>
 
 namespace jupiter
 {
@@ -19,14 +20,12 @@ public:
     using Ptr = std::shared_ptr<Tools>;
 
     static Tools::Ptr instance();
-    virtual ~Tools()
-    {
-    }
+    virtual ~Tools() = default;
 
-    static void glError() throw (std::runtime_error);
+    static void glError() throw (JupiterError);
 
 private:
-    Tools();
+    Tools() = default;
 };
 
 } /* namespace ndk_game */

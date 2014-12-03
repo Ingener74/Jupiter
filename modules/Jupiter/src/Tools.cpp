@@ -16,19 +16,15 @@ Tools::Ptr Tools::instance()
     return self;
 }
 
-void Tools::glError() throw (std::runtime_error)
+void Tools::glError() throw (JupiterError)
 {
     GLenum err = glGetError();
     if (err)
     {
         std::stringstream ss;
         ss << "glGetError: " << std::hex << err << ", " << glGetString(err);
-        throw std::runtime_error(ss.str());
+        throw JupiterError(ss.str());
     }
-}
-
-Tools::Tools()
-{
 }
 
 } /* namespace ndk_game */

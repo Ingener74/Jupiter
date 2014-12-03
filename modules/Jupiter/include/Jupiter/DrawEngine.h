@@ -23,10 +23,10 @@ public:
     DrawEngine(IShaderLoader::Ptr shaderLoader, const glm::mat4& Ortho, int screenW, int screenH);
     virtual ~DrawEngine();
 
-    virtual void setCurrentScene( Scene::Ptr );
+    virtual void setCurrentScene(Scene::Ptr);
     virtual void draw();
-    virtual void inputToAll( int x, int y );
-    virtual void animateAll( double elapsedMs );
+    virtual void inputToAll(int x, int y);
+    virtual void animateAll(double elapsedMs);
 
 protected:
     GLuint _program = 0;
@@ -38,8 +38,8 @@ protected:
 
     Scene::Ptr _currentScene;
 
-    static GLuint createProgram( std::string vertexShader, std::string fragmentShader );
-    static GLuint createShader( GLenum shaderType, std::string source );
+    static GLuint createProgram(std::string vertexShader, std::string fragmentShader);
+    static GLuint createShader(GLenum shaderType, std::string source);
 };
 
 } /* namespace jupiter */

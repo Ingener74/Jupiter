@@ -16,8 +16,8 @@ namespace jupiter
 class FileResource: public ResourceManager::IFactory
 {
 public:
-    FileResource();
-    virtual ~FileResource();
+    FileResource() = default;
+    virtual ~FileResource() = default;
 
     virtual ResourceManager::Resource createResource(const std::string& fileName);
 };
