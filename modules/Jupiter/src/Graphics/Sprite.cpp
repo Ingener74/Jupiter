@@ -12,31 +12,32 @@ namespace jupiter
 
 using namespace std;
 
-Sprite::Sprite(Texture::Ptr texture, ISpriteLoader::Ptr spriteLoader) :
+Sprite::Sprite(shared_ptr<Texture> texture, ISpriteLoader::Ptr spriteLoader) :
         _texture(texture), _vertexCount(0),
          _type(spriteLoader->getSpriteType())
 {
     _vertexCount = spriteLoader->getVertexCount();
-    _vertex = std::shared_ptr<float>(new float[_vertexCount * 5], [](float * p)
-    {
-        delete [] p;
-    });
-    memcpy(_vertex.get(), spriteLoader->getVertexes(),
-            _vertexCount * 5 * sizeof(float));
+//    _vertex = std::shared_ptr<float>(new float[_vertexCount * 5], [](float * p)
+//    {
+//        delete [] p;
+//    });
+
+    auto p = spriteLoader->getVertexes();
+    _vertex = vector<float>{p, p + _vertexCount};
+
+//    memcpy(_vertex.get(), spriteLoader->getVertexes(),
+//            _vertexCount * 5 * sizeof(float));
 }
 
-Sprite::~Sprite()
-{
-}
-
-Texture::Ptr Sprite::getTexture() const throw ()
+std::shared_ptr<Texture> Sprite::getTexture() const throw ()
 {
     return _texture;
 }
 
-float* Sprite::getVertex() const throw ()
+const float* Sprite::getVertex() const throw ()
 {
-    return _vertex.get();
+//    return _vertex.get();
+    return _vertex.data();
 }
 
 uint32_t Sprite::getVertexCount() const throw ()

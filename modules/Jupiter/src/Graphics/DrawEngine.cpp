@@ -63,7 +63,7 @@ void DrawEngine::draw()
         glEnableVertexAttribArray(_aPOS);
         glEnableVertexAttribArray(_aTEX);
 
-        GLfloat * spriteVertex = s->getVertex();
+        const GLfloat * spriteVertex = s->getVertex();
         uint32_t spriteVertexCount = s->getVertexCount();
 
         glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[ 0 ]);

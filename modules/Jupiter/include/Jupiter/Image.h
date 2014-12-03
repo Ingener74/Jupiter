@@ -21,7 +21,8 @@ struct Image
     };
     int width, height;
     Type type;
-    std::shared_ptr<uint8_t> data;
+//    std::shared_ptr<uint8_t> data;
+    std::vector<uint8_t> data;
 };
 
 std::ostream& operator<<(std::ostream& sout, const Image& image);

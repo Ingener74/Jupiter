@@ -18,21 +18,22 @@ namespace jupiter
 class Sprite
 {
 public:
-    using Ptr = std::shared_ptr<Sprite>;
+    Sprite(std::shared_ptr<Texture> texture, ISpriteLoader::Ptr spriteLoader);
+    virtual ~Sprite() = default;
 
-    Sprite(Texture::Ptr texture, ISpriteLoader::Ptr spriteLoader);
-    virtual ~Sprite();
-
-    virtual Texture::Ptr getTexture() const throw ();
-    virtual float* getVertex() const throw ();
+    virtual std::shared_ptr<Texture> getTexture() const throw ();
+    virtual const float* getVertex() const throw ();
     virtual uint32_t getVertexCount() const throw ();
     virtual glm::mat4& getModelMatrix() throw ();
 
     virtual ISpriteLoader::SpriteType getDrawType() const throw ();
 
 private:
-    Texture::Ptr _texture;
-    std::shared_ptr<float> _vertex;
+    std::shared_ptr<Texture> _texture;
+
+//    std::shared_ptr<float> _vertex;
+    std::vector<float> _vertex;
+
     uint32_t _vertexCount;
     glm::mat4 _modelMatrix;
     ISpriteLoader::SpriteType _type;

@@ -17,12 +17,11 @@ namespace jupiter
 class TextureLoader
 {
 public:
-    using Ptr = std::shared_ptr<TextureLoader>;
-
     TextureLoader();
     virtual ~TextureLoader();
 
     virtual Image load();
+
 private:
     Image _image;
 };

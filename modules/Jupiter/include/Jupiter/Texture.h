@@ -17,9 +17,7 @@ namespace jupiter
 class Texture
 {
 public:
-    using Ptr = std::shared_ptr<Texture>;
-
-    static Texture::Ptr create(TextureLoader::Ptr);
+    static std::shared_ptr<Texture> create(std::shared_ptr<TextureLoader>);
     virtual ~Texture();
 
     virtual void bind();

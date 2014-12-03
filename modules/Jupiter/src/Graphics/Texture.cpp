@@ -12,9 +12,11 @@
 namespace jupiter
 {
 
-Texture::Ptr Texture::create(TextureLoader::Ptr textureLoader)
+using namespace std;
+
+shared_ptr<Texture> Texture::create(shared_ptr<TextureLoader> textureLoader)
 {
-    auto texture = std::shared_ptr<Texture>(new Texture);
+    auto texture = shared_ptr<Texture>(new Texture);
 
     glGenTextures(1, &texture->_textureID);
     Tools::glError();
@@ -31,7 +33,7 @@ Texture::Ptr Texture::create(TextureLoader::Ptr textureLoader)
     texture->_type = ((im.type == Image::Type::RGBA) ? GL_RGBA : GL_RGB);
 
     glTexImage2D(GL_TEXTURE_2D, 0, texture->_type, im.width, im.height, 0,
-            texture->_type, GL_UNSIGNED_BYTE, im.data.get());
+            texture->_type, GL_UNSIGNED_BYTE, im.data.data());
     Tools::glError();
 
     return texture;
