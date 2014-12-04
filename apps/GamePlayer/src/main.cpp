@@ -184,6 +184,7 @@ int main(int argc, char **argv)
 
             virtual void update(double elapsed) throw (JupiterError)
             {
+                throw JupiterError("test");
             }
             virtual list<std::shared_ptr<Sprite>> getSprites() const throw ()
             {
