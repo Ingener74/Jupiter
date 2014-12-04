@@ -170,9 +170,13 @@ int main(int argc, char **argv)
         public:
             BackGround()
             {
-//                background = std::make_shared<Sprite>(
-//                        std::make_shared<RectSpriteLoader>()
-//                        );
+                auto textureLoader = std::make_shared<FileTextureLoader>("resources/images/bg.png");
+
+                auto texture = Texture::create(textureLoader);
+
+                auto rect = std::make_shared<RectSpriteLoader>(10, 10, 0, 0, 1, 0, 1);
+
+                background = std::make_shared<Sprite>(texture, rect);
             }
             virtual ~BackGround()
             {
@@ -183,7 +187,7 @@ int main(int argc, char **argv)
             }
             virtual list<std::shared_ptr<Sprite>> getSprites() const throw ()
             {
-                return {};
+                return {background};
             }
             virtual string getName() const throw ()
             {

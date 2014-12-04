@@ -20,7 +20,6 @@ public:
     virtual ~TextureLoader();
 
     virtual Image load();
-
 private:
     Image _image;
 };

@@ -5,6 +5,7 @@ project(${PROJECT_NAME})
 
 set(SOURCES
     # Graphics
+    src/Graphics/FileTextureLoader.cpp
     src/Graphics/DummyTextureLoader.cpp
     src/Graphics/Image.cpp
     src/Graphics/Rect.cpp

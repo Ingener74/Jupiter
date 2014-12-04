@@ -22,6 +22,7 @@
 #include <Jupiter/Texture.h>
 #include <Jupiter/TextureLoader.h>
 #include <Jupiter/DummyTextureLoader.h>
+#include <Jupiter/FileTextureLoader.h>
 
 #include <Jupiter/Sprite.h>
 #include <Jupiter/ISpriteLoader.h>
