@@ -8,7 +8,8 @@
 #ifndef ISHADERLOADER_H_
 #define ISHADERLOADER_H_
 
-#include <Jupiter/Common.h>
+#include <memory>
+#include <string>
 
 namespace jupiter
 {
@@ -16,19 +17,13 @@ namespace jupiter
 class IShaderLoader
 {
 public:
-    using Ptr = std::shared_ptr<IShaderLoader>;
-
-    virtual ~IShaderLoader()
-    {
-    }
+    virtual ~IShaderLoader() = default;
 
     virtual std::string getVertexShader() const = 0;
     virtual std::string getFragmentShader() const = 0;
 
 protected:
-    IShaderLoader()
-    {
-    }
+    IShaderLoader() = default;
 };
 
 } /* namespace ndk_game */

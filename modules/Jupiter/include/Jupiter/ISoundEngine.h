@@ -8,27 +8,23 @@
 #ifndef ISOUNDENGINE_H_
 #define ISOUNDENGINE_H_
 
-#include <Jupiter/Common.h>
-#include <Jupiter/ISound.h>
+#include <memory>
+#include <string>
 
 namespace jupiter
 {
 
+class ISound;
+
 class ISoundEngine
 {
 public:
-    using Ptr = std::shared_ptr<ISoundEngine>;
+    virtual ~ISoundEngine() = default;
 
-    virtual ~ISoundEngine()
-    {
-    }
-
-    virtual ISound::Ptr loadSound(const std::string& file) = 0;
+    virtual std::shared_ptr<ISound> loadSound(const std::string& file) = 0;
 
 protected:
-    ISoundEngine()
-    {
-    }
+    ISoundEngine() = default;
 };
 
 } /* namespace ndk_game */

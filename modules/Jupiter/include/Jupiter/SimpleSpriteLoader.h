@@ -19,9 +19,9 @@ public:
     SimpleSpriteLoader(float * vertexes, uint32_t vertexCount, SpriteType spriteType = SpriteType::Triangles);
     virtual ~SimpleSpriteLoader();
 
-    virtual const float * getVertexes() const throw ();
-    virtual uint32_t getVertexCount() const throw ();
-    virtual SpriteType getSpriteType() const throw ();
+    virtual const float * getVertexes() const;
+    virtual uint32_t getVertexCount() const;
+    virtual SpriteType getSpriteType() const;
 
 private:
     float * _v;

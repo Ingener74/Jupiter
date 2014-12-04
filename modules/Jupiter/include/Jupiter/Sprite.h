@@ -8,25 +8,31 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include <Jupiter/Common.h>
-#include <Jupiter/Texture.h>
+#include <cstdint>
+#include <memory>
+#include <vector>
+
+#include <glm/glm.hpp>
+
 #include <Jupiter/ISpriteLoader.h>
 
 namespace jupiter
 {
 
+class Texture;
+
 class Sprite
 {
 public:
-    Sprite(std::shared_ptr<Texture> texture, ISpriteLoader::Ptr spriteLoader);
+    Sprite(std::shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader);
     virtual ~Sprite() = default;
 
-    virtual std::shared_ptr<Texture> getTexture() const throw ();
-    virtual const float* getVertex() const throw ();
-    virtual uint32_t getVertexCount() const throw ();
-    virtual glm::mat4& getModelMatrix() throw ();
+    virtual std::shared_ptr<Texture> getTexture() const;
+    virtual const float* getVertex() const;
+    virtual uint32_t getVertexCount() const;
+    virtual glm::mat4& getModelMatrix();
 
-    virtual ISpriteLoader::SpriteType getDrawType() const throw ();
+    virtual ISpriteLoader::SpriteType getDrawType() const;
 
 private:
     std::shared_ptr<Texture> _texture;

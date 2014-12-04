@@ -11,20 +11,11 @@
 namespace jupiter
 {
 
-DummySoundEngine::DummySoundEngine()
-{
-    // TODO Auto-generated constructor stub
+using namespace std;
 
-}
-
-DummySoundEngine::~DummySoundEngine()
+shared_ptr<ISound> DummySoundEngine::loadSound(const string& file)
 {
-    // TODO Auto-generated destructor stub
-}
-
-ISound::Ptr DummySoundEngine::loadSound(const std::string& file)
-{
-    return std::make_shared<DummySound>();
+    return make_shared<DummySound>();
 }
 
 } /* namespace ndk_game */

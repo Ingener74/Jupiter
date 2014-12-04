@@ -21,11 +21,11 @@ DummySound::~DummySound()
     // TODO Auto-generated destructor stub
 }
 
-void DummySound::play(bool loop) throw (std::runtime_error)
+void DummySound::play(bool loop)
 {
 }
 
-void DummySound::stop() throw ()
+void DummySound::stop()
 {
 }
 

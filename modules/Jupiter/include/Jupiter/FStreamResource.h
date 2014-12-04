@@ -8,6 +8,7 @@
 #ifndef FSTREAMRESOURCE_H_
 #define FSTREAMRESOURCE_H_
 
+#include <string>
 #include <Jupiter/ResourceManager.h>
 
 namespace jupiter {

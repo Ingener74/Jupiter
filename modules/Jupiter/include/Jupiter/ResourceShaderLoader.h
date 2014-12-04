@@ -8,7 +8,8 @@
 #ifndef RESOURCESHADERLOADER_H_
 #define RESOURCESHADERLOADER_H_
 
-#include <Jupiter/Common.h>
+#include <string>
+
 #include <Jupiter/IShaderLoader.h>
 
 namespace jupiter

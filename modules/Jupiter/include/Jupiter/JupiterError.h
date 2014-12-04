@@ -8,7 +8,11 @@
 #ifndef JUPITERERROR_H_
 #define JUPITERERROR_H_
 
-#include <Jupiter/Common.h>
+#include <execinfo.h>
+#include <stdlib.h>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 
 namespace jupiter
 {
@@ -20,37 +24,37 @@ namespace jupiter
 class JupiterError: public std::runtime_error
 {
 public:
-	JupiterError(const std::string& message = "Jupiter error") :
-			std::runtime_error(message + backtrace())
-	{
-	}
+    JupiterError(const std::string& message = "Jupiter error") :
+            std::runtime_error(message + backtrace())
+    {
+    }
 
-	virtual ~JupiterError() throw ()
-	{
-	}
+    virtual ~JupiterError() throw ()
+    {
+    }
 
-	static std::string backtrace()
-	{
+    static std::string backtrace()
+    {
 #ifndef ANDROID
-		using namespace std;
+        using namespace std;
 
-		const int buffer_size = 1000;
-		void *buffer[ buffer_size ];
-		int n = ::backtrace(buffer, buffer_size);
+        const int buffer_size = 1000;
+        void *buffer[buffer_size];
+        int n = ::backtrace(buffer, buffer_size);
 
-		char** strings = backtrace_symbols(buffer, n);
-		if ( strings == nullptr ) return string("i can't print stack trace");
+        char** strings = backtrace_symbols(buffer, n);
+        if (strings == nullptr) return string("i can't print stack trace");
 
-		stringstream res;
-		res << endl << "Call stack" << endl;
-		for ( int i = 2; i < n; ++i )
-		{
-			res << i << ": " << strings[ i ] << endl;
-		}
-		free(strings);
-		return res.str();
+        stringstream res;
+        res << endl << "Call stack" << endl;
+        for (int i = 2; i < n; ++i)
+        {
+            res << i << ": " << strings[i] << endl;
+        }
+        free(strings);
+        return res.str();
 #endif
-	}
+    }
 };
 
 }  // namespace jupiter

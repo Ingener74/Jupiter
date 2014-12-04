@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include <map>
 #include <memory>
 #include <fstream>
 #include <iterator>
@@ -15,6 +16,11 @@
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -187,9 +193,20 @@ int main(int argc, char **argv)
         private:
             std::shared_ptr<Sprite> background;
         };
-        mainScene->gameObject.push_back(make_shared<BackGround>());
+
+        auto background = make_shared<BackGround>();
+
+        mainScene->gameObject.push_back(background);
 
         engine->setCurrentScene(mainScene);
+
+        map<string, std::shared_ptr<IGameObject>> gameObjects;
+
+        gameObjects[background->getName()] = background;
+
+        cout << "game objects" << endl;
+        for(auto i: gameObjects)
+            cout << "game object " << i.first << endl;
 
         /*
          * auto gameBuilder = make_shader<LinuxGameBuilder>( vm["game"].as<string>() );

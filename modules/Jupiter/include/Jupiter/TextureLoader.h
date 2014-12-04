@@ -8,7 +8,6 @@
 #ifndef TEXTURELOADER_H_
 #define TEXTURELOADER_H_
 
-#include <Jupiter/Common.h>
 #include <Jupiter/Image.h>
 
 namespace jupiter

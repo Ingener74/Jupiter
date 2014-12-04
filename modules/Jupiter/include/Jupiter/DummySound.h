@@ -19,8 +19,8 @@ public:
     DummySound();
     virtual ~DummySound();
 
-    virtual void play(bool loop = false) throw (std::runtime_error);
-    virtual void stop() throw ();
+    virtual void play(bool loop = false);
+    virtual void stop();
 };
 
 } /* namespace ndk_game */

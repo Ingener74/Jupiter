@@ -5,6 +5,7 @@
  *      Author: ingener
  */
 
+#include <Jupiter/JupiterError.h>
 #include <Jupiter/TextureLoader.h>
 
 namespace jupiter
@@ -20,7 +21,7 @@ TextureLoader::~TextureLoader()
 
 Image TextureLoader::load()
 {
-    throw std::runtime_error("not implemented");
+    throw JupiterError("not implemented");
 }
 
 } /* namespace ndk_game */

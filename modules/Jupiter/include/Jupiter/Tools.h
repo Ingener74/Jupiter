@@ -8,7 +8,7 @@
 #ifndef TOOLS_H_
 #define TOOLS_H_
 
-#include <Jupiter/Common.h>
+#include <memory>
 #include <Jupiter/JupiterError.h>
 
 namespace jupiter

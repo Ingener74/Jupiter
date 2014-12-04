@@ -21,29 +21,25 @@ class Sprite;
 class IGameObject
 {
 public:
-    virtual ~IGameObject()
-    {
-    }
+    virtual ~IGameObject() = default;
 
-    virtual void update(double elapsed) throw (JupiterError) = 0;
-    virtual std::list<std::shared_ptr<Sprite>> getSprites() const throw () = 0;
-    virtual std::string getName() const throw () = 0;
+    virtual void update(double elapsed) = 0;
+    virtual std::list<std::shared_ptr<Sprite>> getSprites() const = 0;
+    virtual std::string getName() const = 0;
 
-    virtual void input(int x, int y) throw (JupiterError)
+    virtual void input(int x, int y)
     {
     }
-    virtual void collision(std::shared_ptr<IGameObject>) throw (JupiterError)
+    virtual void collision(std::shared_ptr<IGameObject>)
     {
     }
-    virtual bool removeMe() const throw ()
+    virtual bool removeMe() const
     {
         return false;
     }
 
 protected:
-    IGameObject()
-    {
-    }
+    IGameObject() = default;
 };
 
 } /* namespace ndk_game */

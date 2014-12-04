@@ -18,10 +18,6 @@ SimpleShaderLoader::SimpleShaderLoader(const string& vertexShader,
 {
 }
 
-SimpleShaderLoader::~SimpleShaderLoader()
-{
-}
-
 string SimpleShaderLoader::getVertexShader() const
 {
     return _vs.c_str();

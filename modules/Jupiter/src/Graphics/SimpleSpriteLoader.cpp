@@ -10,8 +10,7 @@
 namespace jupiter
 {
 
-SimpleSpriteLoader::SimpleSpriteLoader(float * vertexes, uint32_t vertexCount,
-        SpriteType st) :
+SimpleSpriteLoader::SimpleSpriteLoader(float * vertexes, uint32_t vertexCount, SpriteType st) :
         _v(vertexes), _vc(vertexCount), _st(st)
 {
 }
@@ -20,17 +19,17 @@ SimpleSpriteLoader::~SimpleSpriteLoader()
 {
 }
 
-const float* SimpleSpriteLoader::getVertexes() const throw ()
+const float* SimpleSpriteLoader::getVertexes() const
 {
     return _v;
 }
 
-uint32_t SimpleSpriteLoader::getVertexCount() const throw ()
+uint32_t SimpleSpriteLoader::getVertexCount() const
 {
     return _vc;
 }
 
-SimpleSpriteLoader::SpriteType SimpleSpriteLoader::getSpriteType() const throw ()
+SimpleSpriteLoader::SpriteType SimpleSpriteLoader::getSpriteType() const
 {
     return _st;
 }

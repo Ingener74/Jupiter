@@ -8,7 +8,10 @@
 #ifndef RESOURCEMANAGER_H_
 #define RESOURCEMANAGER_H_
 
-#include <Jupiter/Common.h>
+#include <iostream>
+#include <list>
+#include <memory>
+#include <string>
 
 namespace jupiter
 {
@@ -16,31 +19,31 @@ namespace jupiter
 class ResourceManager
 {
 public:
+    using Resource = std::shared_ptr<std::istream>;
 
-	using Resource = std::shared_ptr<std::istream>;
-	using Ptr = std::shared_ptr<ResourceManager>;
+    class IFactory
+    {
+    public:
+        IFactory() = default;
+        virtual Resource createResource(const std::string& fileName) = 0;
 
-	class IFactory
-	{
-	public:
-		using Ptr = std::shared_ptr<IFactory>;
+    protected:
+        virtual ~IFactory() = default;
+    };
 
-		virtual Resource createResource(const std::string& fileName) = 0;
-	};
+    static std::shared_ptr<ResourceManager> instance();
 
-	static Ptr instance();
+    virtual ~ResourceManager();
 
-	virtual ~ResourceManager();
+    Resource createResource(const std::string& filename);
 
-	Resource createResource(const std::string& filename);
-
-	static void pushResourceFactory(IFactory::Ptr factory);
-	static void popResourceFactory();
+    static void pushResourceFactory(std::shared_ptr<IFactory> factory);
+    static void popResourceFactory();
 
 private:
-	ResourceManager();
+    ResourceManager();
 
-	static std::list<IFactory::Ptr>& Register();
+    static std::list<std::shared_ptr<IFactory>>& Register();
 };
 
 } /* namespace jupiter */

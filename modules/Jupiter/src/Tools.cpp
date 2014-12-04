@@ -5,6 +5,11 @@
  *      Author: ingener
  */
 
+#include <iostream>
+#include <sstream>
+
+#include <GL/glew.h>
+
 #include <Jupiter/Tools.h>
 
 namespace jupiter

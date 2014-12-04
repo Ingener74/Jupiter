@@ -8,11 +8,13 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 
-#include <Jupiter/Common.h>
-#include <Jupiter/TextureLoader.h>
+#include <memory>
+#include <GL/glew.h>
 
 namespace jupiter
 {
+
+class TextureLoader;
 
 class Texture
 {

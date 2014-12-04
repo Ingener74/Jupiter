@@ -8,7 +8,7 @@
 #ifndef ISPRITELOADER_H_
 #define ISPRITELOADER_H_
 
-#include <Jupiter/Common.h>
+#include <cstdint>
 
 namespace jupiter
 {
@@ -16,25 +16,19 @@ namespace jupiter
 class ISpriteLoader
 {
 public:
-    using Ptr = std::shared_ptr<ISpriteLoader>;
-
-    virtual ~ISpriteLoader()
-    {
-    }
+    virtual ~ISpriteLoader() = default;
 
     enum class SpriteType
     {
         Triangles, TriangleFan, TriangleStrip, LineStrip
     };
 
-    virtual const float * getVertexes() const throw () = 0;
-    virtual uint32_t getVertexCount() const throw () = 0;
-    virtual SpriteType getSpriteType() const throw () = 0;
+    virtual const float * getVertexes() const = 0;
+    virtual uint32_t getVertexCount() const = 0;
+    virtual SpriteType getSpriteType() const = 0;
 
 protected:
-    ISpriteLoader()
-    {
-    }
+    ISpriteLoader() = default;
 };
 
 } /* namespace ndk_game */

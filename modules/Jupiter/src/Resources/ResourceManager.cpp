@@ -12,7 +12,7 @@ namespace jupiter
 
 using namespace std;
 
-ResourceManager::Ptr ResourceManager::instance()
+std::shared_ptr<ResourceManager> ResourceManager::instance()
 {
 	static shared_ptr<ResourceManager> self(new ResourceManager);
 	return self;
@@ -27,7 +27,7 @@ ResourceManager::Resource ResourceManager::createResource(const string& filename
 	return Register().back()->createResource(filename);
 }
 
-void ResourceManager::pushResourceFactory(IFactory::Ptr factory)
+void ResourceManager::pushResourceFactory(std::shared_ptr<IFactory> factory)
 {
     Register().push_back(factory);
 }
@@ -36,9 +36,9 @@ ResourceManager::ResourceManager()
 {
 }
 
-list<ResourceManager::IFactory::Ptr>& ResourceManager::Register()
+list<std::shared_ptr<ResourceManager::IFactory>>& ResourceManager::Register()
 {
-	static list<IFactory::Ptr> factoryStack;
+	static list<std::shared_ptr<IFactory>> factoryStack;
 	return factoryStack;
 }
 

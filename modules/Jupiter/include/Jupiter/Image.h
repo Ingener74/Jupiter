@@ -8,7 +8,9 @@
 #ifndef IMAGE_H_
 #define IMAGE_H_
 
-#include <Jupiter/Common.h>
+#include <cstdint>
+#include <iostream>
+#include <vector>
 
 namespace jupiter
 {
@@ -23,9 +25,10 @@ struct Image
     Type type;
 //    std::shared_ptr<uint8_t> data;
     std::vector<uint8_t> data;
+
+    friend std::ostream& operator<<(std::ostream&, const Image&);
 };
 
-std::ostream& operator<<(std::ostream& sout, const Image& image);
 
 }  // namespace ndk_game
 

@@ -8,11 +8,17 @@
 #ifndef DRAWENGINE_H_
 #define DRAWENGINE_H_
 
-#include <Jupiter/Common.h>
-#include <Jupiter/Scene.h>
+#include <memory>
+#include <string>
+
+#include <GL/glew.h>
+
+#include <glm/glm.hpp>
 
 namespace jupiter
 {
+
+class Scene;
 
 class IShaderLoader;
 

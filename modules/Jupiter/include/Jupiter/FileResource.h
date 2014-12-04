@@ -8,6 +8,7 @@
 #ifndef FILERESOURCE_H_
 #define FILERESOURCE_H_
 
+#include <string>
 #include <Jupiter/ResourceManager.h>
 
 namespace jupiter

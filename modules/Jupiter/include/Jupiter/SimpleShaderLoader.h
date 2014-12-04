@@ -8,7 +8,7 @@
 #ifndef SIMPLESHADERLOADER_H_
 #define SIMPLESHADERLOADER_H_
 
-#include <Jupiter/Common.h>
+#include <string>
 #include <Jupiter/IShaderLoader.h>
 
 namespace jupiter
@@ -19,7 +19,7 @@ class SimpleShaderLoader: public IShaderLoader
 public:
     SimpleShaderLoader(const std::string& vertexShader,
             const std::string fragmentShader);
-    virtual ~SimpleShaderLoader();
+    virtual ~SimpleShaderLoader() = default;
 
     virtual std::string getVertexShader() const;
     virtual std::string getFragmentShader() const;

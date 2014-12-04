@@ -5,7 +5,10 @@
  *      Author: ingener
  */
 
-#include <Jupiter/Common.h>
+#include <algorithm>
+
+#include <glm/glm.hpp>
+
 #include <Jupiter/Rect.h>
 
 namespace jupiter
@@ -13,10 +16,6 @@ namespace jupiter
 
 Rect::Rect(int x1, int y1, int x2, int y2) :
         x1(x1), y1(y1), x2(x2), y2(y2)
-{
-}
-
-Rect::~Rect()
 {
 }
 
@@ -50,12 +49,11 @@ Rect operator +(const Rect& r, const glm::vec3& v)
 
 std::ostream& operator <<(std::ostream& out, const Rect& r)
 {
-    out << "Rect: " <<
+    return out << "Rect: " <<
             r.x1 << " x " << r.y1 << " -> " <<
             r.x2 << " x " << r.y2 << ", " <<
             std::max(r.x1, r.x2) - std::min(r.x1, r.x2) << " x " <<
             std::max(r.y1, r.y2) - std::min(r.y1, r.y2);
-    return out;
 }
 
 } /* namespace ndk_game */

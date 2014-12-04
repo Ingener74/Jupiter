@@ -5,10 +5,14 @@
  *      Author: pavel
  */
 
+#include <cstring>
+
 #include <Jupiter/RectSpriteLoader.h>
 
 namespace jupiter
 {
+
+using namespace std;
 
 RectSpriteLoader::RectSpriteLoader(float w, float h, float z, float tx1,
         float tx2, float ty1, float ty2): _type(ISpriteLoader::SpriteType::Triangles)
@@ -39,6 +43,7 @@ RectSpriteLoader::RectSpriteLoader(float w, float h, float z, float tx1,
             w / 2, -h / 2, z, tx2, ty2,
             w / 2, h / 2, z, tx2, ty1,
             -w / 2, -h / 2, z, tx1, ty2, };
+
     memcpy(_data, data, 6 * 5 * sizeof(float));
 }
 RectSpriteLoader::RectSpriteLoader(Rect r, float z, float tx1, float tx2, float ty1,

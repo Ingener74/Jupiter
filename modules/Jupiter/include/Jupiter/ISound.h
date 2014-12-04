@@ -8,7 +8,8 @@
 #ifndef ISOUND_H_
 #define ISOUND_H_
 
-#include <Jupiter/Common.h>
+#include <memory>
+#include <Jupiter/JupiterError.h>
 
 namespace jupiter
 {
@@ -16,14 +17,12 @@ namespace jupiter
 class ISound
 {
 public:
-    using Ptr = std::shared_ptr<ISound>;
-
     virtual ~ISound()
     {
     }
 
-    virtual void play(bool loop = false) throw (std::runtime_error) = 0;
-    virtual void stop() throw () = 0;
+    virtual void play(bool loop = false) = 0;
+    virtual void stop() = 0;
 
 protected:
     ISound()

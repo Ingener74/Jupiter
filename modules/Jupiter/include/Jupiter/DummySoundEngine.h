@@ -8,6 +8,8 @@
 #ifndef DUMMYSOUNDENGINE_H_
 #define DUMMYSOUNDENGINE_H_
 
+#include <memory>
+#include <string>
 #include <Jupiter/ISoundEngine.h>
 
 namespace jupiter
@@ -16,10 +18,10 @@ namespace jupiter
 class DummySoundEngine: public ISoundEngine
 {
 public:
-    DummySoundEngine();
-    virtual ~DummySoundEngine();
+    DummySoundEngine() = default;
+    virtual ~DummySoundEngine() = default;
 
-    virtual ISound::Ptr loadSound(const std::string& file);
+    virtual std::shared_ptr<ISound> loadSound(const std::string& file);
 };
 
 } /* namespace ndk_game */

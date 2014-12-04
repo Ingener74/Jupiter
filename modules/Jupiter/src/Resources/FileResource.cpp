@@ -5,12 +5,13 @@
  *      Author: pavel
  */
 
-#include <Jupiter/FileResource.h>
-#include <Jupiter/JupiterError.h>
-
 #include <string>
 #include <memory>
+#include <vector>
 #include <iostream>
+
+#include <Jupiter/FileResource.h>
+#include <Jupiter/JupiterError.h>
 
 using namespace std;
 

@@ -5,6 +5,9 @@
  *      Author: pavel
  */
 
+#include <memory>
+#include <iostream>
+#include <fstream>
 #include <Jupiter/FStreamResource.h>
 
 namespace jupiter

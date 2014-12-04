@@ -5,6 +5,7 @@
  *      Author: ingener
  */
 
+#include <string>
 #include <Jupiter/Image.h>
 
 namespace jupiter
@@ -12,11 +13,10 @@ namespace jupiter
 
 using namespace std;
 
-ostream& operator <<(ostream& sout, const Image& image)
+ostream& operator <<(ostream& out, const Image& r)
 {
-	string type = (image.type == Image::Type::RGB) ? "RGB" : "RGBA";
-	sout << "Image: " << image.width << " x " << image.height << ", " << type;
-	return sout;
+    return out << "Image: " << r.width << " x " << r.height << ", " <<
+            (r.type == Image::Type::RGB ? string("RGB") : string("RGBA"));
 }
 
 }  // namespace jupiter

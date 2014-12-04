@@ -10,6 +10,8 @@
 namespace jupiter
 {
 
+using namespace std;
+
 DummyTextureLoader::DummyTextureLoader()
 {
 }

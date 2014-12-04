@@ -10,6 +10,7 @@
 
 #include <Jupiter/ISpriteLoader.h>
 #include <Jupiter/Rect.h>
+#include <cstdint>
 
 namespace jupiter
 {
@@ -28,7 +29,7 @@ public:
     virtual SpriteType getSpriteType() const throw ();
 
 private:
-    float _data[6 * 5];
+    float _data[6 * 5]; // TODO std::array
     ISpriteLoader::SpriteType _type;
 };
 
