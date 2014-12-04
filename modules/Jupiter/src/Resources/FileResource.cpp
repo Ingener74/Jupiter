@@ -28,7 +28,8 @@ public:
     {
         shared_ptr<FILE> f(fopen(fileName.c_str(), "rb"), [](FILE* df)
         {
-            fclose(df);
+            if(df)
+                fclose(df);
         });
         if (!f) throw JupiterError("can't open file " + fileName);
 

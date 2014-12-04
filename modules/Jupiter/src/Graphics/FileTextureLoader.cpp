@@ -51,7 +51,8 @@ Image FileTextureLoader::load()
 //        AAsset_close(file);
 //    });
 
-    auto file = ResourceManager::instance()->createResource(fileName);
+//    auto
+    file = ResourceManager::instance()->createResource(fileName);
 
     file->read(reinterpret_cast<char*>(lHeader), sizeof(lHeader));
 
@@ -149,11 +150,12 @@ Image FileTextureLoader::load()
         static_cast<uint8_t*>(lImageBuffer + size)
     };
 
-//    std::shared_ptr<uint8_t>(new uint8_t[size], [](uint8_t * data)
+//    cout << result << endl;
+//    for (int i = 0; i < 100; ++i)
 //    {
-//        delete[] data;
-//    });
-//    memcpy(result.data.data(), lImageBuffer, size);
+//        cout << static_cast<int>(result.data[i]) << " ";
+//    }
+//    cout << endl;
 
     delete[] lImageBuffer;
 
@@ -161,8 +163,12 @@ Image FileTextureLoader::load()
 
 }
 
-void FileTextureLoader::pngRwCallback(png_structp, png_bytep, png_size_t unsignedLongInt)
+void FileTextureLoader::pngRwCallback(png_structp pngStruct, png_bytep data, png_size_t size)
 {
+    auto* self = static_cast<FileTextureLoader*>(png_get_io_ptr(pngStruct));
+    self->file->read(reinterpret_cast<char*>(data), size);
+
+//    AAsset_read(self->asset.get(), data, size);
 }
 
 } /* namespace jupiter */

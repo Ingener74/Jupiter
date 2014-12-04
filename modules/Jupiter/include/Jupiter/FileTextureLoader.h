@@ -12,6 +12,7 @@
 
 #include <png.h>
 
+#include <Jupiter/ResourceManager.h>
 #include <Jupiter/TextureLoader.h>
 
 namespace jupiter
@@ -27,6 +28,8 @@ public:
 
 private:
     std::string fileName;
+
+    ResourceManager::Resource file;
 
     static void pngRwCallback(png_structp, png_bytep, png_size_t);
 };
