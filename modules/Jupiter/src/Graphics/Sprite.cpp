@@ -5,13 +5,21 @@
  *      Author: Admin
  */
 
+#include <map>
 #include <Jupiter/Sprite.h>
 #include <Jupiter/JupiterError.h>
+
+#include "../Builders/SpriteBuilder.h"
 
 namespace jupiter
 {
 
 using namespace std;
+
+Sprite::Sprite(const std::string& sprite) :
+        Sprite(detail::SpriteBuilder::create(sprite))
+{
+}
 
 Sprite::Sprite(shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader) :
         _texture(texture ? texture : throw JupiterError("invalid texture")),

@@ -167,40 +167,6 @@ int main(int argc, char **argv)
 
         auto mainScene = make_shared<Scene>();
 
-//        class BackGround: public IGameObject
-//        {
-//        public:
-//            BackGround()
-//            {
-//                auto textureLoader = std::make_shared<FileTextureLoader>(getGameLocation() + "/resources/images/rocks1.png");
-//
-//                auto texture = Texture::create(textureLoader);
-//
-//                auto rect = std::make_shared<RectSpriteLoader>(100, 100, 0, 0, 1, 0, 1);
-//
-//                background = std::make_shared<Sprite>(texture, rect);
-//            }
-//            virtual ~BackGround()
-//            {
-//            }
-//
-//            virtual void update(double elapsed) throw (JupiterError)
-//            {
-//                throw JupiterError("test");
-//            }
-//            virtual list<std::shared_ptr<Sprite>> getSprites() const throw ()
-//            {
-//                return {background};
-//            }
-//            virtual string getName() const throw ()
-//            {
-//                return "Test Background";
-//            }
-//
-//        private:
-//            std::shared_ptr<Sprite> background;
-//        };
-
         auto background = make_shared<BackGround>([](){ return getGameLocation(); });
 
         mainScene->gameObject.push_back(background);
@@ -228,7 +194,9 @@ int main(int argc, char **argv)
     }
     catch (std::exception const & e)
     {
-        cerr << desc << endl << usage << endl << "Error: " << e.what() << endl;
+        cerr << desc << endl;
+        cerr << usage << endl;
+        cerr << "Error: " << e.what() << endl;
         return EXIT_FAILURE;
     }
 }

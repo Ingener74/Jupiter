@@ -24,6 +24,8 @@ class Texture;
 class Sprite
 {
 public:
+    Sprite() = default;
+    Sprite(const std::string& sprite);
     Sprite(std::shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader);
     virtual ~Sprite() = default;
 
@@ -39,9 +41,9 @@ private:
 
     std::vector<float> _vertex;
 
-    uint32_t _vertexCount;
+    uint32_t _vertexCount = 0;
     glm::mat4 _modelMatrix;
-    ISpriteLoader::SpriteType _type;
+    ISpriteLoader::SpriteType _type = ISpriteLoader::SpriteType::Triangles;
 };
 
 } /* namespace ndk_game */
