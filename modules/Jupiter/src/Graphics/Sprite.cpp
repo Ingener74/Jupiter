@@ -6,6 +6,7 @@
  */
 
 #include <Jupiter/Sprite.h>
+#include <Jupiter/JupiterError.h>
 
 namespace jupiter
 {
@@ -13,20 +14,12 @@ namespace jupiter
 using namespace std;
 
 Sprite::Sprite(shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader) :
-        _texture(texture), _vertexCount(0), _type(spriteLoader->getSpriteType())
+        _texture(texture ? texture : throw JupiterError("invalid texture")),
+        _vertexCount(spriteLoader ? spriteLoader->getVertexCount() : throw JupiterError("bad vertex count")),
+        _type(spriteLoader ? spriteLoader->getSpriteType() : throw JupiterError("bad sprite type"))
 {
-    _vertexCount = spriteLoader->getVertexCount();
-//    _vertex = std::shared_ptr<float>(new float[_vertexCount * 5], [](float * p)
-//    {
-//        delete [] p;
-//    });
-
     auto p = spriteLoader->getVertexes();
-    _vertex = vector<float>
-    { p, p + _vertexCount };
-
-//    memcpy(_vertex.get(), spriteLoader->getVertexes(),
-//            _vertexCount * 5 * sizeof(float));
+    _vertex = {p, p + _vertexCount};
 }
 
 std::shared_ptr<Texture> Sprite::getTexture() const
@@ -36,7 +29,6 @@ std::shared_ptr<Texture> Sprite::getTexture() const
 
 const float* Sprite::getVertex() const
 {
-//    return _vertex.get();
     return _vertex.data();
 }
 
@@ -45,7 +37,7 @@ uint32_t Sprite::getVertexCount() const
     return _vertexCount;
 }
 
-glm::mat4& Sprite::getModelMatrix()
+const glm::mat4& Sprite::getModelMatrix() const
 {
     return _modelMatrix;
 }

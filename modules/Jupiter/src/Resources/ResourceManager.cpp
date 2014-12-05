@@ -6,46 +6,35 @@
  */
 
 #include <Jupiter/ResourceManager.h>
+#include <Jupiter/JupiterError.h>
 
 namespace jupiter
 {
 
 using namespace std;
 
-std::shared_ptr<ResourceManager> ResourceManager::instance()
-{
-	static shared_ptr<ResourceManager> self(new ResourceManager);
-	return self;
-}
-
-ResourceManager::~ResourceManager()
-{
-}
-
 ResourceManager::Resource ResourceManager::createResource(const string& filename)
 {
-	return Register().back()->createResource(filename);
+    auto reg = Register();
+    if(reg.empty())
+        throw JupiterError("have no resource factories");
+	return reg.back()->createResource(filename);
 }
 
-void ResourceManager::pushResourceFactory(std::shared_ptr<IFactory> factory)
+void ResourceManager::pushResourceFactory(shared_ptr<IFactory> factory)
 {
     Register().push_back(factory);
 }
 
-ResourceManager::ResourceManager()
-{
-}
-
-list<std::shared_ptr<ResourceManager::IFactory>>& ResourceManager::Register()
-{
-	static list<std::shared_ptr<IFactory>> factoryStack;
-	return factoryStack;
-}
-
 void ResourceManager::popResourceFactory()
 {
-	if (Register().size() < 2) return;
 	Register().pop_back();
+}
+
+list<shared_ptr<ResourceManager::IFactory>>& ResourceManager::Register()
+{
+	static list<shared_ptr<IFactory>> factoryStack;
+	return factoryStack;
 }
 
 } /* namespace jupiter */

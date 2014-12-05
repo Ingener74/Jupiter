@@ -30,14 +30,13 @@ public:
     virtual std::shared_ptr<Texture> getTexture() const;
     virtual const float* getVertex() const;
     virtual uint32_t getVertexCount() const;
-    virtual glm::mat4& getModelMatrix();
+    virtual const glm::mat4& getModelMatrix() const;
 
     virtual ISpriteLoader::SpriteType getDrawType() const;
 
 private:
     std::shared_ptr<Texture> _texture;
 
-//    std::shared_ptr<float> _vertex;
     std::vector<float> _vertex;
 
     uint32_t _vertexCount;

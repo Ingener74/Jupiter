@@ -20,13 +20,13 @@ ResourceShaderLoader::ResourceShaderLoader(const std::string& vertexShaderPath, 
 
 string ResourceShaderLoader::getVertexShader() const
 {
-	auto file = ResourceManager::instance()->createResource(_vs);
+	auto file = ResourceManager::createResource(_vs);
 	return string((istreambuf_iterator<char>(*file)), istreambuf_iterator<char>());
 }
 
 string ResourceShaderLoader::getFragmentShader() const
 {
-	auto file = ResourceManager::instance()->createResource(_fs);
+	auto file = ResourceManager::createResource(_fs);
 	return string((istreambuf_iterator<char>(*file)), istreambuf_iterator<char>());
 }
 

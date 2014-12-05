@@ -41,23 +41,9 @@ Image FileTextureLoader::load()
     png_int_32 lRowSize;
     bool lTransparency;
 
-//    asset = std::shared_ptr<AAsset>(
-//            AAssetManager_open(
-//                    _app->activity->assetManager,
-//                    _path.c_str(),
-//                    AASSET_MODE_UNKNOWN),
-//                    [](AAsset* file)
-//    {
-//        AAsset_close(file);
-//    });
-
-//    auto
-    file = ResourceManager::instance()->createResource(fileName);
+    file = ResourceManager::createResource(fileName);
 
     file->read(reinterpret_cast<char*>(lHeader), sizeof(lHeader));
-
-//    int res = AAsset_read(asset.get(), lHeader, sizeof(lHeader));
-//    if (res < 0) throw std::runtime_error("can't read png header from asset");
 
     if (png_sig_cmp(lHeader, 0, 8) != 0) throw std::runtime_error("can't signature mismatch");
 
@@ -150,13 +136,6 @@ Image FileTextureLoader::load()
         static_cast<uint8_t*>(lImageBuffer + size)
     };
 
-//    cout << result << endl;
-//    for (int i = 0; i < 100; ++i)
-//    {
-//        cout << static_cast<int>(result.data[i]) << " ";
-//    }
-//    cout << endl;
-
     delete[] lImageBuffer;
 
     return result;
@@ -167,8 +146,6 @@ void FileTextureLoader::pngRwCallback(png_structp pngStruct, png_bytep data, png
 {
     auto* self = static_cast<FileTextureLoader*>(png_get_io_ptr(pngStruct));
     self->file->read(reinterpret_cast<char*>(data), size);
-
-//    AAsset_read(self->asset.get(), data, size);
 }
 
 } /* namespace jupiter */

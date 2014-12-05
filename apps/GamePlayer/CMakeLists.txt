@@ -5,6 +5,7 @@ project(${PROJECT_NAME})
 
 set(SOURCES
     src/main.cpp
+    src/TempAsteroidsControllers/BackGround.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
