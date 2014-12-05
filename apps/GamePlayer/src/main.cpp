@@ -170,11 +170,11 @@ int main(int argc, char **argv)
         public:
             BackGround()
             {
-                auto textureLoader = std::make_shared<FileTextureLoader>("/home/pavel/prj/Jupiter/samples/Asteroids/resources/images/bg.png");
+                auto textureLoader = std::make_shared<FileTextureLoader>(getGameLocation() + "/resources/images/bg.png");
 
                 auto texture = Texture::create(textureLoader);
 
-                auto rect = std::make_shared<RectSpriteLoader>(100, 100, 0, 0, 1, 0, 1);
+                auto rect = std::make_shared<RectSpriteLoader>(200, 200, 0, 0, 1, 0, 1);
 
                 background = std::make_shared<Sprite>(texture, rect);
             }
