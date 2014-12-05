@@ -31,17 +31,13 @@ public:
         virtual ~IFactory() = default;
     };
 
-    static std::shared_ptr<ResourceManager> instance();
-
-    virtual ~ResourceManager();
-
-    Resource createResource(const std::string& filename);
-
+    static Resource createResource(const std::string& filename);
     static void pushResourceFactory(std::shared_ptr<IFactory> factory);
     static void popResourceFactory();
 
 private:
-    ResourceManager();
+    ResourceManager() = default;
+    virtual ~ResourceManager() = default;
 
     static std::list<std::shared_ptr<IFactory>>& Register();
 };

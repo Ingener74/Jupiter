@@ -17,6 +17,13 @@ namespace jupiter
 
 struct Image
 {
+    /*
+     * Image()
+     * {
+     * }
+     *
+     */
+
     enum class Type
     {
         RGB, RGBA
