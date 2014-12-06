@@ -27,6 +27,9 @@ set(SOURCES
     src/ResourceShaderLoader.cpp
     src/SimpleShaderLoader.cpp
     src/Tools.cpp
+    
+    # Builders
+    src/Builders/SpriteBuilder.cpp
 )
 
 if(ANDROID)

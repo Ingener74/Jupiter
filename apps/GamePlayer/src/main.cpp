@@ -194,7 +194,9 @@ int main(int argc, char **argv)
     }
     catch (std::exception const & e)
     {
-        cerr << desc << endl << usage << endl << "Error: " << e.what() << endl;
+        cerr << desc << endl;
+        cerr << usage << endl;
+        cerr << "Error: " << e.what() << endl;
         return EXIT_FAILURE;
     }
 }
