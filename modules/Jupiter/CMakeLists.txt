@@ -32,6 +32,7 @@ set(SOURCES
     src/Builders/FileSpriteFactory.cpp
     src/Builders/ImageBuilder.cpp
     src/Builders/SpriteBuilder.cpp
+    src/Builders/PNGImageFactory.cpp
 )
 
 if(ANDROID)
