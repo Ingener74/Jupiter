@@ -6,7 +6,9 @@
  */
 
 #include <boost/spirit/include/qi.hpp>
+
 #include <Jupiter/detail/SpriteBuilder.h>
+#include <Jupiter/JupiterError.h>
 
 namespace jupiter
 {
@@ -32,7 +34,7 @@ Sprite SpriteBuilder::create(const std::string& spriteId)
     auto res = q::phrase_parse(
             begin(spriteId),
             end(spriteId),
-            *q::lexeme[+q::char_("a-zA-Z0-9_")],
+            *q::lexeme[+~q::char_(":")],
             q::char_(":"),
             phrases
     );
@@ -42,7 +44,9 @@ Sprite SpriteBuilder::create(const std::string& spriteId)
     for(auto i: phrases)
         cout << "  " << i << endl;
 
-    return Register()["sprite id"]->create(spriteId);
+    return phrases.size() == 1 ? Register()["file"]->create(spriteId) :
+           phrases.size() == 2 ? Register()[phrases[1]]->create(spriteId) :
+           throw JupiterError("bad sprite id " + spriteId + " must contain only one double point");
 }
 
 void SpriteBuilder::pushSpriteFactory(std::shared_ptr<Factory>)
