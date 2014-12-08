@@ -166,7 +166,7 @@ int main(int argc, char **argv)
                 o, width, height);
 
         ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
-        Image im("/home/pavel/prj/Jupiter/samples/Asteroids/resources/images/bg.png");
+        Image im(getGameLocation() + "/resources/images/bg.png");
         cout << "image " << im << endl;
 
         auto mainScene = make_shared<Scene>();
