@@ -40,6 +40,12 @@
 #include <Jupiter/Scene.h>
 #include <Jupiter/Image.h>
 
+#include <Jupiter/detail/SpriteBuilder.h>
+#include <Jupiter/detail/FileSpriteFactory.h>
+
+#include <Jupiter/detail/ImageBuilder.h>
+#include <Jupiter/detail/PNGImageFactory.h>
+
 #include <Jupiter/JupiterError.h>
 
 #ifdef ANDROID

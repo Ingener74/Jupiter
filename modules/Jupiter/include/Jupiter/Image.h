@@ -15,27 +15,26 @@
 namespace jupiter
 {
 
-struct Image
+class Image
 {
-    /*
-     * Image()
-     * {
-     * }
-     *
-     */
-
+public:
     enum class Type
     {
         RGB, RGBA
     };
-    int width, height;
-    Type type;
-//    std::shared_ptr<uint8_t> data;
+
+    Image(const std::string& fileName);
+    Image(int width = 0, int height = 0, Type = Type::RGB, std::vector<uint8_t> data = {});
+//    Image(Image&&);
+//    Image& operator=(Image&&);
+    virtual ~Image() = default;
+
+    int width = 0, height = 0;
+    Type type =  Type::RGB;
     std::vector<uint8_t> data;
 
     friend std::ostream& operator<<(std::ostream&, const Image&);
 };
-
 
 }  // namespace ndk_game
 

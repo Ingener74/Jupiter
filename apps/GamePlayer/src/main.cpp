@@ -165,6 +165,10 @@ int main(int argc, char **argv)
                 make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs),
                 o, width, height);
 
+        ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
+        Image im("/home/pavel/prj/Jupiter/samples/Asteroids/resources/images/bg.png");
+        cout << "image " << im << endl;
+
         auto mainScene = make_shared<Scene>();
 
         auto background = make_shared<BackGround>([](){ return getGameLocation(); });

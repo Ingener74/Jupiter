@@ -5,13 +5,12 @@
  *      Author: pavel
  */
 
-//#include <boost/spirit/include/qi.hpp>
-#include "SpriteBuilder.h"
+#include <boost/spirit/include/qi.hpp>
+
+#include <Jupiter/detail/SpriteBuilder.h>
+#include <Jupiter/JupiterError.h>
 
 namespace jupiter
-{
-
-namespace detail
 {
 
 using namespace std;
@@ -28,7 +27,26 @@ Sprite SpriteBuilder::create(const std::string& spriteId)
      *
      */
 
-    return Register()["sprite id"]->create(spriteId);
+    namespace q = boost::spirit::qi;
+
+    vector<string> phrases;
+
+    auto res = q::phrase_parse(
+            begin(spriteId),
+            end(spriteId),
+            *q::lexeme[+~q::char_(":")],
+            q::char_(":"),
+            phrases
+    );
+
+    cout << "res " << res << endl;
+
+    for(auto i: phrases)
+        cout << "  " << i << endl;
+
+    return phrases.size() == 1 ? Register()["file"]->create(spriteId) :
+           phrases.size() == 2 ? Register()[phrases[1]]->create(spriteId) :
+           throw JupiterError("bad sprite id " + spriteId + " must contain only one double point");
 }
 
 void SpriteBuilder::pushSpriteFactory(std::shared_ptr<Factory>)
@@ -41,11 +59,9 @@ void SpriteBuilder::popSpriteFactory()
 
 map<string, shared_ptr<SpriteBuilder::Factory>>& SpriteBuilder::Register()
 {
-    static map<string, shared_ptr<SpriteBuilder::Factory>> reg;
+    static map<string, shared_ptr<Factory>> reg;
     return reg;
 }
-
-}  // namespace detail
 
 } /* namespace jupiter */
 

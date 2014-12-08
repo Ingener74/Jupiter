@@ -9,7 +9,7 @@
 #include <Jupiter/Sprite.h>
 #include <Jupiter/JupiterError.h>
 
-#include "../Builders/SpriteBuilder.h"
+#include <Jupiter/detail/SpriteBuilder.h>
 
 namespace jupiter
 {
@@ -17,7 +17,7 @@ namespace jupiter
 using namespace std;
 
 Sprite::Sprite(const std::string& sprite) :
-        Sprite(detail::SpriteBuilder::create(sprite))
+        Sprite(SpriteBuilder::create(sprite))
 {
 }
 
