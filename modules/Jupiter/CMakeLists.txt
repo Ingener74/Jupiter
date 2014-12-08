@@ -29,6 +29,8 @@ set(SOURCES
     src/Tools.cpp
     
     # Builders
+    src/Builders/FileSpriteFactory.cpp
+    src/Builders/ImageBuilder.cpp
     src/Builders/SpriteBuilder.cpp
 )
 

@@ -16,14 +16,11 @@
 namespace jupiter
 {
 
-namespace detail
-{
-
-using namespace std;
-
 class SpriteBuilder
 {
 public:
+    friend class Sprite;
+
     class Factory
     {
     public:
@@ -34,19 +31,18 @@ public:
         Factory() = default;
     };
 
-    static Sprite create(const std::string& spriteId);
-
     static void pushSpriteFactory(std::shared_ptr<Factory>);
     static void popSpriteFactory();
 
 private:
-    static map<string, shared_ptr<Factory>>& Register();
+    static Sprite create(const std::string& spriteId);
+
+    static std::map<std::string, std::shared_ptr<Factory>>& Register();
 
     SpriteBuilder() = default;
     virtual ~SpriteBuilder() = default;
 };
 
-}
 }
 
 #endif /* SPRITEBUILDER_H_ */
