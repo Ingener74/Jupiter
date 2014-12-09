@@ -30,7 +30,12 @@
 #include <Jupiter/Jupiter.h>
 #include <Ganymede/Ganimede.h>
 
-#include "TempAsteroidsControllers/BackGround.h"
+/*
+ * Old game controller
+ */
+#include <BackGround.h>
+#include <BattleShip.h>
+#include <Life.h>
 
 using namespace std;
 using namespace glm;
@@ -166,12 +171,27 @@ int main(int argc, char **argv)
                 o, width, height);
 
         ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
+        ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
         Image im(getGameLocation() + "/resources/images/bg.png");
         cout << "image " << im << endl;
 
         auto mainScene = make_shared<Scene>();
 
-        auto background = make_shared<BackGround>([](){ return getGameLocation(); });
+        map<string, std::shared_ptr<Scene>> gameScenes;
+        gameScenes["Main"] = mainScene;
+
+        auto getGameLoc = [](){ return getGameLocation(); };
+        auto getScene = [&](const string& sceneName){ return gameScenes[sceneName]; };
+        auto setScene = [=](std::shared_ptr<Scene> scene){ engine->setCurrentScene(scene); };
+
+        auto dummySE = make_shared<DummySoundEngine>();
+
+
+        auto background = make_shared<BackGround>(getGameLoc);
+
+        auto life = make_shared<Life>(width, height);
+
+        auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, getGameLoc, getScene, setScene);
 
         mainScene->gameObject.push_back(background);
 

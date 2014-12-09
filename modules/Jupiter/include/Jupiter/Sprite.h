@@ -32,7 +32,9 @@ public:
     virtual std::shared_ptr<Texture> getTexture() const;
     virtual const float* getVertex() const;
     virtual uint32_t getVertexCount() const;
+
     virtual const glm::mat4& getModelMatrix() const;
+    virtual void setModelMatrix(const glm::mat4&);
 
     virtual ISpriteLoader::SpriteType getDrawType() const;
 

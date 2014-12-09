@@ -27,7 +27,7 @@ Sprite::Sprite(shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> sprit
         _type(spriteLoader ? spriteLoader->getSpriteType() : throw JupiterError("bad sprite type"))
 {
     auto p = spriteLoader->getVertexes();
-    _vertex = {p, p + _vertexCount};
+    _vertex = {p, p + _vertexCount * 5};
 }
 
 std::shared_ptr<Texture> Sprite::getTexture() const
@@ -50,10 +50,14 @@ const glm::mat4& Sprite::getModelMatrix() const
     return _modelMatrix;
 }
 
+void jupiter::Sprite::setModelMatrix(const glm::mat4& m)
+{
+    _modelMatrix = m;
+}
+
 ISpriteLoader::SpriteType Sprite::getDrawType() const
 {
     return _type;
 }
 
 } /* namespace ndk_game */
-

@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <sstream>
+
 #include <boost/spirit/include/qi.hpp>
 
 #include <Jupiter/detail/SpriteBuilder.h>
@@ -15,7 +17,7 @@ namespace jupiter
 
 using namespace std;
 
-Sprite SpriteBuilder::create(const std::string& spriteId)
+Sprite SpriteBuilder::create(const string& spriteId)
 {
     /*
      * process sprite Id
@@ -46,15 +48,16 @@ Sprite SpriteBuilder::create(const std::string& spriteId)
 
     return phrases.size() == 1 ? Register()["file"]->create(spriteId) :
            phrases.size() == 2 ? Register()[phrases[1]]->create(spriteId) :
-           throw JupiterError("bad sprite id " + spriteId + " must contain only one double point");
+           throw JupiterError("bad sprite id " + spriteId + " must contain only one double point " +
+                   [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
 }
 
-void SpriteBuilder::pushSpriteFactory(std::shared_ptr<Factory>)
+void SpriteBuilder::addFactory(const string& spriteType, shared_ptr<Factory> factory)
 {
-}
+    if(Register()[spriteType])
+        cerr << "warning: already have factory for that type " << spriteType << endl;
 
-void SpriteBuilder::popSpriteFactory()
-{
+    Register()[spriteType] = factory;
 }
 
 map<string, shared_ptr<SpriteBuilder::Factory>>& SpriteBuilder::Register()

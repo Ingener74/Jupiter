@@ -31,8 +31,7 @@ public:
         Factory() = default;
     };
 
-    static void pushSpriteFactory(std::shared_ptr<Factory>);
-    static void popSpriteFactory();
+    static void addFactory(const std::string& spriteType, std::shared_ptr<Factory>);
 
 private:
     static Sprite create(const std::string& spriteId);
