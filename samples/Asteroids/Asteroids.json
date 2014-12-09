@@ -2,7 +2,7 @@
     "name":"Asteroids",
     "resolution":{
         "width":800,
-        "height":600
+        "height":480
     },
     "texture_dir":"resources/images",
     "scripts_dir":"resources/scripts",

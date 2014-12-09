@@ -24,14 +24,14 @@ namespace jupiter
 class FileBuffer: public streambuf
 {
 public:
-    FileBuffer(const string& fileName)
+    FileBuffer(const string& fileName): _fileName(fileName)
     {
-        shared_ptr<FILE> f(fopen(fileName.c_str(), "rb"), [](FILE* df)
+        shared_ptr<FILE> f(fopen(_fileName.c_str(), "rb"), [](FILE* df)
         {
             if(df)
                 fclose(df);
         });
-        if (!f) throw JupiterError("can't open file " + fileName);
+        if (!f) throw JupiterError("can't open file " + _fileName);
 
         fseek(f.get(), 0, SEEK_END);
         auto size = ftell(f.get());
@@ -46,10 +46,11 @@ public:
     }
     virtual ~FileBuffer() // = default;
     {
-        cout << __PRETTY_FUNCTION__ << endl;
+        cout << __PRETTY_FUNCTION__ << " " << _fileName << endl;
     }
 
 private:
+    string _fileName;
     vector<char> _buffer;
 };
 

@@ -5,6 +5,10 @@
  *      Author: ingener
  */
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <Rock.h>
 #include <Bullet.h>
 //#include <Explosion.h>
@@ -15,36 +19,39 @@ using namespace std;
 
 int Rock::rocks = 0;
 
-std::list<Rock::Ptr> Rock::createRock(int screenWidth,
-        int screenHeight,
-        std::shared_ptr<ISoundEngine> soundEngine,
+list<Rock::Ptr> Rock::createRock(int screenWidth, int screenHeight,
+        shared_ptr<ISoundEngine> soundEngine,
         glm::vec3 pos,
+        GameTools tools,
         bool second)
 {
-    std::list<Rock::Ptr> rocks_;
+    list<Rock::Ptr> rocks_;
     if (second)
     {
         int n = 5 + 5 * (float(rand()) / RAND_MAX);
 
         while (--n)
         {
-            rocks_.push_back(shared_ptr<Rock>(new Rock(
-                    screenWidth, screenHeight, soundEngine, pos, second)));
+            rocks_.push_back(shared_ptr<Rock>(new Rock(screenWidth, screenHeight, soundEngine, pos, tools, second)));
         }
     }
     else
     {
-        rocks_.push_back(shared_ptr<Rock>(new Rock(
-                screenWidth, screenHeight, soundEngine, pos, second)));
+        rocks_.push_back(shared_ptr<Rock>(new Rock(screenWidth, screenHeight, soundEngine, pos, tools, second)));
     }
     return rocks_;
 }
 
 Rock::Rock(int sw, int sh,
-        std::shared_ptr<ISoundEngine> soundEngine,
+        shared_ptr<ISoundEngine> soundEngine,
         glm::vec3 pos,
-        bool second):_second(second), _screenWidth(sw),
-                _screenHeight(sh), _soundEngine(soundEngine)
+        GameTools tools,
+        bool second):
+                _second(second),
+                _screenWidth(sw),
+                _screenHeight(sh),
+                _soundEngine(soundEngine),
+                _tools(tools)
 {
 
     rocks++;
@@ -83,8 +90,13 @@ Rock::Rock(int sw, int sh,
         p[4] = .5f + .45f * sin(r0);
     }
 
+    auto rockTexLoader = make_shared<jupiter::FileTextureLoader>(
+            _tools.gameLocation() + "/resources/images/rocks1.png");
+
+    auto rockTexture = jupiter::Texture::create(rockTexLoader);
+
     _rock = make_shared<Sprite>(
-            Game::instance()->getTexture("images/rocks1.png"),
+            rockTexture,
             make_shared<SimpleSpriteLoader>(rV, l + 2, ISpriteLoader::SpriteType::TriangleFan)
             );
 
@@ -107,7 +119,7 @@ Rock::Rock(int sw, int sh,
         _vel = vec3(vel * cos(_angle), vel * sin(_angle), 0.f);
     }
 
-    _rock->getModelMatrix() = translate(mat4(), _pos);
+    _rock->setModelMatrix(translate(mat4(), _pos));
 
     _rockRect = Rect(-t0, -t0, t0, t0);
 
@@ -118,7 +130,7 @@ Rock::~Rock()
     cout << "Rock::~Rock()" << endl;
 }
 
-void Rock::update(double elapsed) throw (runtime_error)
+void Rock::update(double elapsed)
 {
     _pos = _pos + _vel * float(elapsed);
 
@@ -131,46 +143,48 @@ void Rock::update(double elapsed) throw (runtime_error)
 
     m = rotate(m, _angle, vec3(0.f, 0.f, 1.f));
 
-    _rock->getModelMatrix() = m;
+    _rock->setModelMatrix(m);
 }
 
-list<std::shared_ptr<Sprite>> Rock::getSprites() const throw ()
+list<shared_ptr<Sprite>> Rock::getSprites() const
 {
     return {_rock};
 }
 
-string Rock::getName() const throw ()
+string Rock::getName() const
 {
     return "Rock";
 }
 
-void Rock::collision(std::shared_ptr<IGameObject> obj) throw (runtime_error)
+void Rock::collision(shared_ptr<IGameObject> obj)
 {
     if(obj->getName() != "Bullet")
         return;
 
     if((_rockRect + _pos) || dynamic_cast<Bullet*>(obj.get())->getRect()){
 
-        auto game = Game::instance();
+//        auto game = Game::instance();
 
         if (!--rocks)
-            game->getEngine()->setCurrentScene(game->getScene("Win"));
+            _tools.setScene(_tools.getScene("Win"));
+//            game->getEngine()->setCurrentScene(game->getScene("Win"));
 
-        Log() << "I am crash " << rocks;
+        cout << "I am crash " << rocks << endl;
 
         _soundEngine->loadSound("sounds/explosion.mp3")->play();
 
         if (!_second){
-            auto ls = createRock(_screenWidth, _screenHeight, _soundEngine, _pos, true);
+            auto ls = createRock(_screenWidth, _screenHeight, _soundEngine, _pos, _tools, true);
             for (auto sp : ls)
-                game->getScene("Main")->gameObject.push_front(sp);
+                _tools.setScene(_tools.getScene("Main"));
+//                game->getScene("Main")->gameObject.push_front(sp);
         }
 
         _crash = true;
     }
 }
 
-bool Rock::removeMe() const throw ()
+bool Rock::removeMe() const
 {
     return _crash;
 }

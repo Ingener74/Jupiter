@@ -35,11 +35,16 @@ public:
     static void pushResourceFactory(std::shared_ptr<IFactory> factory);
     static void popResourceFactory();
 
+    static std::string pathPrefix();
+    static void setPathPrefix(const std::string& pathPrefix);
+
 private:
     ResourceManager() = default;
     virtual ~ResourceManager() = default;
 
     static std::list<std::shared_ptr<IFactory>>& Register();
+
+    static std::string& PathPrefix();
 };
 
 } /* namespace jupiter */

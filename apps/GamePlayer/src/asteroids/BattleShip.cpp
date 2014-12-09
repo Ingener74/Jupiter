@@ -19,21 +19,19 @@ using namespace jupiter;
 
 #define EPS 0.00001f
 
-BattleShip::BattleShip(int screenWidth, int screenHeight, Life::Ptr life,
+BattleShip::BattleShip(int screenWidth, int screenHeight,
+        Life::Ptr life,
         std::shared_ptr<ISoundEngine> se,
-        std::function<std::string()> gameLocation,
-        std::function<std::shared_ptr<jupiter::Scene>(std::string)> getScene,
-        std::function<void(std::shared_ptr<jupiter::Scene>)> sceneSelector):
+        GameTools tools):
         _screenWidth(screenWidth), _screenHeight(screenHeight),
-        _soundEngine(se), _lifeObj(life),
-        _gameLocation(gameLocation),
-        _getScene(getScene),
-        _setScene(sceneSelector)
+        _soundEngine(se),
+        _lifeObj(life),
+        _tools(tools)
 {
     float shipSize = screenWidth * 0.1f;
 
     auto shipTexLoader = std::make_shared<jupiter::FileTextureLoader>(
-            gameLocation() + "/resources/images/ship.png");
+            _tools.gameLocation() + "/resources/images/ship.png");
 
     auto shipTexture = jupiter::Texture::create(shipTexLoader);
 
@@ -115,8 +113,8 @@ void BattleShip::fire()
     {
 //        auto game = Game::instance();
 
-        _getScene("Main")->gameObject.push_front(make_shared<Bullet>(
-                _screenWidth, _screenHeight, _pos.x, _pos.y, _angle, _gameLocation));
+        _tools.getScene("Main")->gameObject.push_front(make_shared<Bullet>(
+                _screenWidth, _screenHeight, _pos.x, _pos.y, _angle, _tools.gameLocation));
 
 //        game->getScene("Main")->gameObject.push_front(
 //                make_shared<Bullet>(
@@ -156,7 +154,7 @@ void BattleShip::collision(shared_ptr<IGameObject> o)
             if (--_life <= 0)
             {
                 cout << "Battle ship fail" << endl;
-                _setScene(_getScene("Fail"));
+                _tools.setScene(_tools.getScene("Fail"));
 //                game->getEngine()->setCurrentScene(game->getScene("Fail"));
             }
             _lifeObj->setLife(_life);

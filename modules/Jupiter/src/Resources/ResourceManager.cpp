@@ -37,4 +37,21 @@ list<shared_ptr<ResourceManager::IFactory>>& ResourceManager::Register()
 	return factoryStack;
 }
 
+string jupiter::ResourceManager::pathPrefix()
+{
+    return PathPrefix();
+}
+
+void jupiter::ResourceManager::setPathPrefix( const string& pathPrefix )
+{
+    PathPrefix() = pathPrefix;
+}
+
+string& jupiter::ResourceManager::PathPrefix()
+{
+    static string pathPrefix;
+    return pathPrefix;
+}
+
 } /* namespace jupiter */
+

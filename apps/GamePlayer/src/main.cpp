@@ -33,6 +33,7 @@
 /*
  * Old game controller
  */
+#include <Tools.h>
 #include <BackGround.h>
 #include <BattleShip.h>
 #include <Life.h>
@@ -180,18 +181,20 @@ int main(int argc, char **argv)
         map<string, std::shared_ptr<Scene>> gameScenes;
         gameScenes["Main"] = mainScene;
 
-        auto getGameLoc = [](){ return getGameLocation(); };
-        auto getScene = [&](const string& sceneName){ return gameScenes[sceneName]; };
-        auto setScene = [=](std::shared_ptr<Scene> scene){ engine->setCurrentScene(scene); };
+        auto tools = GameTools{
+            [](){ return getGameLocation(); },
+            [&](const string& sceneName){ return gameScenes[sceneName]; },
+            [=](std::shared_ptr<Scene> scene){ engine->setCurrentScene(scene); }
+        };
 
         auto dummySE = make_shared<DummySoundEngine>();
 
 
-        auto background = make_shared<BackGround>(getGameLoc);
+        auto background = make_shared<BackGround>(tools);
 
-        auto life = make_shared<Life>(width, height, getGameLoc);
+        auto life = make_shared<Life>(width, height, tools);
 
-        auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, getGameLoc, getScene, setScene);
+        auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
 
         mainScene->gameObject.push_back(background);
 

@@ -8,8 +8,10 @@
 #ifndef BATTLESHIP_H_
 #define BATTLESHIP_H_
 
-#include <Jupiter/DrawEngine.h>
 #include <Life.h>
+#include <Tools.h>
+
+#include <Jupiter/Jupiter.h>
 
 class BattleShip: public jupiter::IGameObject
 {
@@ -19,9 +21,7 @@ public:
     BattleShip(int screenWidth, int screenHeight,
             Life::Ptr,
             std::shared_ptr<jupiter::ISoundEngine>,
-            std::function<std::string()> gameLocation,
-            std::function<std::shared_ptr<jupiter::Scene>(std::string)> getScene,
-            std::function<void(std::shared_ptr<jupiter::Scene>)> sceneSelector);
+            GameTools);
 
     virtual ~BattleShip();
 
@@ -62,9 +62,7 @@ private:
     std::shared_ptr<jupiter::ISoundEngine> _soundEngine;
     Life::Ptr _lifeObj;
 
-    std::function<std::string()> _gameLocation;
-    std::function<std::shared_ptr<jupiter::Scene>(std::string)> _getScene;
-    std::function<void(std::shared_ptr<jupiter::Scene>)> _setScene;
+    GameTools _tools;
 };
 
 #endif /* BATTLESHIP_H_ */

@@ -12,11 +12,12 @@
 #include <functional>
 
 #include <Jupiter/Jupiter.h>
+#include <Tools.h>
 
 class BackGround: public jupiter::IGameObject
 {
 public:
-    BackGround(std::function<std::string()>);
+    BackGround(GameTools);
     virtual ~BackGround() = default;
 
     virtual void update(double elapsed);

@@ -15,7 +15,7 @@ using namespace jupiter;
 using namespace glm;
 using namespace std;
 
-Life::Life(int sw, int sh, std::function<std::string()> gameLocation): _gameLocation(gameLocation)
+Life::Life(int sw, int sh, GameTools tools): _tools(tools)
 {
     _w = sw * 0.1f;
     _x = 0 /*sw/2 - w/2*/;
@@ -71,7 +71,7 @@ void Life::newLife()
     }
 
     auto lifeTexLoader = std::make_shared<jupiter::FileTextureLoader>(
-            _gameLocation() + "/resources/" + lifeTex);
+            _tools.gameLocation() + "/resources/" + lifeTex);
 
     auto lifeTexture = jupiter::Texture::create(lifeTexLoader);
 

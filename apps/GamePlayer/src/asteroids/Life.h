@@ -9,13 +9,14 @@
 #define LIFE_H_
 
 #include <Jupiter/Jupiter.h>
+#include <Tools.h>
 
 class Life: public jupiter::IGameObject
 {
 public:
     using Ptr = std::shared_ptr<Life>;
 
-    Life(int screenWidth, int screenHeight, std::function<std::string()> gameLocation);
+    Life(int screenWidth, int screenHeight, GameTools);
     virtual ~Life();
 
     virtual void update(double elapsed);
@@ -31,7 +32,7 @@ private:
     int _l = 3;
     void newLife();
 
-    std::function<std::string()> _gameLocation;
+    GameTools _tools;
 };
 
 #endif /* LIFE_H_ */

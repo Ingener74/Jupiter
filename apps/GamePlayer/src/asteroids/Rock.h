@@ -9,35 +9,35 @@
 #define ROCK_H_
 
 #include <Jupiter/Jupiter.h>
+#include <Tools.h>
 
 class Rock: public jupiter::IGameObject
 {
 public:
     using Ptr = std::shared_ptr<Rock>;
 
-    static std::list<Rock::Ptr> createRock(int screenWidth, int screenHeight,
+    static std::list<Rock::Ptr> createRock( int screenWidth, int screenHeight,
             std::shared_ptr<jupiter::ISoundEngine> soundEngine,
             glm::vec3 pos,
-            bool second = false);
+            GameTools,
+            bool second = false );
 
     virtual ~Rock();
 
-    virtual void update(double elapsed) ;
-    virtual std::list<std::shared_ptr<jupiter::Sprite>> getSprites() const ;
-    virtual std::string getName() const ;
+    virtual void update( double elapsed );
+    virtual std::list<std::shared_ptr<jupiter::Sprite>> getSprites() const;
+    virtual std::string getName() const;
 
-    virtual void collision(std::shared_ptr<IGameObject>) ;
-    virtual bool removeMe() const ;
+    virtual void collision( std::shared_ptr<IGameObject> );
+    virtual bool removeMe() const;
 
     virtual jupiter::Rect getRect() const;
 
     static void reset();
 
 private:
-    Rock(int screenWidth, int screenHeight,
-            std::shared_ptr<jupiter::ISoundEngine> soundEngine,
-            glm::vec3 pos,
-            bool second);
+    Rock( int screenWidth, int screenHeight, std::shared_ptr<jupiter::ISoundEngine> soundEngine, glm::vec3 pos, GameTools,
+            bool second );
 
 //    android_app* _app;
     bool _second = false;
@@ -54,6 +54,8 @@ private:
 
     static int rocks;
     std::shared_ptr<jupiter::ISoundEngine> _soundEngine;
+
+    GameTools _tools;
 };
 
 #endif /* ROCK_H_ */
