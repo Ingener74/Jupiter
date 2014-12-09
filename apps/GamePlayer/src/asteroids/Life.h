@@ -15,7 +15,7 @@ class Life: public jupiter::IGameObject
 public:
     using Ptr = std::shared_ptr<Life>;
 
-    Life(int screenWidth, int screenHeight);
+    Life(int screenWidth, int screenHeight, std::function<std::string()> gameLocation);
     virtual ~Life();
 
     virtual void update(double elapsed);
@@ -30,6 +30,8 @@ private:
     float _w = 0.f, _x = 0.f, _y = 0.f;
     int _l = 3;
     void newLife();
+
+    std::function<std::string()> _gameLocation;
 };
 
 #endif /* LIFE_H_ */

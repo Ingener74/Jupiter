@@ -5,13 +5,17 @@
  *      Author: ingener
  */
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <Life.h>
 
 using namespace jupiter;
 using namespace glm;
 using namespace std;
 
-Life::Life(int sw, int sh)
+Life::Life(int sw, int sh, std::function<std::string()> gameLocation): _gameLocation(gameLocation)
 {
     _w = sw * 0.1f;
     _x = 0 /*sw/2 - w/2*/;
@@ -24,23 +28,23 @@ Life::~Life()
 {
 }
 
-void Life::update(double elapsed) throw (std::runtime_error)
+void Life::update(double elapsed)
 {
 }
 
-std::list<ndk_game::Sprite::Ptr> Life::getSprites() const throw ()
+std::list<std::shared_ptr<Sprite>> Life::getSprites() const
 {
     return {_life};
 }
 
-std::string Life::getName() const throw ()
+std::string Life::getName() const
 {
     return "Life";
 }
 
 void Life::setLife(int int1)
 {
-    Log() << "set life = " << int1;
+    cout << "set life = " << int1 << endl;
 
     _l = int1;
     newLife();
@@ -48,7 +52,7 @@ void Life::setLife(int int1)
 
 void Life::newLife()
 {
-    auto game = Game::instance();
+//    auto game = Game::instance();
 
     string lifeTex;
     switch (_l)
@@ -66,10 +70,15 @@ void Life::newLife()
             lifeTex = "images/life/life3.png";
     }
 
+    auto lifeTexLoader = std::make_shared<jupiter::FileTextureLoader>(
+            _gameLocation() + "/resources/" + lifeTex);
+
+    auto lifeTexture = jupiter::Texture::create(lifeTexLoader);
+
     _life = std::make_shared<Sprite>(
-            game->getTexture(lifeTex),
+            lifeTexture,
             std::make_shared<RectSpriteLoader>(_w, _w, 10, 0, 1, 1, 0)
             );
 
-    _life->getModelMatrix() = translate(mat4(), vec3(_x, _y, 0.f));
+    _life->setModelMatrix(translate(mat4(), vec3(_x, _y, 0.f)));
 }

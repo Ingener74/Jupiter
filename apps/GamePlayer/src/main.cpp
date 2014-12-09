@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 
         auto background = make_shared<BackGround>(getGameLoc);
 
-        auto life = make_shared<Life>(width, height);
+        auto life = make_shared<Life>(width, height, getGameLoc);
 
         auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, getGameLoc, getScene, setScene);
 
