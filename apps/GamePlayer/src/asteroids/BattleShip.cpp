@@ -30,8 +30,7 @@ BattleShip::BattleShip(int screenWidth, int screenHeight,
 {
     float shipSize = screenWidth * 0.1f;
 
-    auto shipTexLoader = std::make_shared<jupiter::FileTextureLoader>(
-            _tools.gameLocation() + "/resources/images/ship.png");
+    auto shipTexLoader = std::make_shared<jupiter::FileTextureLoader>("resources/images/ship.png");
 
     auto shipTexture = jupiter::Texture::create(shipTexLoader);
 
@@ -114,7 +113,7 @@ void BattleShip::fire()
 //        auto game = Game::instance();
 
         _tools.getScene("Main")->gameObject.push_front(make_shared<Bullet>(
-                _screenWidth, _screenHeight, _pos.x, _pos.y, _angle, _tools.gameLocation));
+                _screenWidth, _screenHeight, _pos.x, _pos.y, _angle));
 
 //        game->getScene("Main")->gameObject.push_front(
 //                make_shared<Bullet>(

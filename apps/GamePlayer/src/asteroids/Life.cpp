@@ -70,8 +70,7 @@ void Life::newLife()
             lifeTex = "images/life/life3.png";
     }
 
-    auto lifeTexLoader = std::make_shared<jupiter::FileTextureLoader>(
-            _tools.gameLocation() + "/resources/" + lifeTex);
+    auto lifeTexLoader = std::make_shared<jupiter::FileTextureLoader>("resources/" + lifeTex);
 
     auto lifeTexture = jupiter::Texture::create(lifeTexLoader);
 

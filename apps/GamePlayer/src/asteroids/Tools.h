@@ -15,7 +15,6 @@
 
 struct GameTools
 {
-    std::function<std::string()>                                     gameLocation;
     std::function<std::shared_ptr<jupiter::Scene>( std::string )>    getScene;
     std::function<void( std::shared_ptr<jupiter::Scene> )>           setScene;
 };

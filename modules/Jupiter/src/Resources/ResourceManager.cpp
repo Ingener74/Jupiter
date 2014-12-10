@@ -16,9 +16,11 @@ using namespace std;
 ResourceManager::Resource ResourceManager::createResource(const string& filename)
 {
     auto reg = Register();
+
     if(reg.empty())
         throw JupiterError("have no resource factories");
-	return reg.back()->createResource(filename);
+
+    return reg.back()->createResource(pathPrefix() + "/" + filename);
 }
 
 void ResourceManager::pushResourceFactory(shared_ptr<IFactory> factory)

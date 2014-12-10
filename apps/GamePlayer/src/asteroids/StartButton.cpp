@@ -5,35 +5,43 @@
  *      Author: ingener
  */
 
-#include <Game/StartButton.h>
-#include <Game/Game.h>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-using namespace ndk_game;
+#include <StartButton.h>
+
+using namespace jupiter;
 using namespace std;
 using namespace glm;
 
-StartButton::StartButton(int w, int h) :
-        _fadeOut(0)
+StartButton::StartButton(int w, int h, GameTools tools) :
+        _fadeOut(0), _tools(tools)
 {
-    float startButtonW = w * 0.6, startButtonH = h * 0.2;
+//    float startButtonW = w * 0.6, startButtonH = h * 0.2;
+    float startButtonW = 10, startButtonH = 10;
 
-    auto game = Game::instance();
+//    auto game = Game::instance();
 
-    _sb1 = make_shared<Sprite>(
-            game->getTexture("images/start.png"),
-            make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65)
-            );
+//    /home/pavel/prj/Jupiter/samples/Asteroids
 
-    _sb2 = make_shared<Sprite>(
-            game->getTexture("images/start_pushed.png"),
-            make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65)
-            );
+    auto startTexLoader = make_shared<FileTextureLoader>("resources/images/start.png");
+    auto startTex = Texture::create(startTexLoader);
+
+    _sb1 = make_shared<Sprite>(startTex,
+            make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65));
+
+    auto startPushedTexLoader = make_shared<FileTextureLoader>("resources/images/start_pushed.png");
+    auto startPushedTex = Texture::create(startPushedTexLoader);
+
+    _sb2 = make_shared<Sprite>(startPushedTex,
+            make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65));
 
     vec3 v(0.f, h * 0.2f, 0.f);
     auto m = translate(mat4(), v);
 
-    _sb1->getModelMatrix() = m;
-    _sb2->getModelMatrix() = m;
+    _sb1->setModelMatrix(m);
+    _sb2->setModelMatrix(m);
 
     _buttonRect = Rect(-startButtonW / 2, -startButtonH / 2, startButtonW / 2,
             startButtonH / 2) + v;
@@ -50,10 +58,10 @@ StartButton::StartButton(int w, int h) :
 
 StartButton::~StartButton()
 {
-    Log() << "StartButton::~StartButton()";
+    cout << "StartButton::~StartButton()" << endl;
 }
 
-void StartButton::update(double elapsed) throw (runtime_error)
+void StartButton::update(double elapsed)
 {
     if (_fadeOut >= 0)
     {
@@ -61,20 +69,21 @@ void StartButton::update(double elapsed) throw (runtime_error)
     }
     else if (_cur == _sb2) _cur = _sb1;
 }
-void StartButton::input(int x, int y) throw (runtime_error)
+void StartButton::input(int x, int y)
 {
     if (_buttonRect.isInside(x, y))
     {
         _cur = _sb2;
 
-        auto game = Game::instance();
+//        auto game = Game::instance();
+//        game->getEngine()->setCurrentScene(game->getScene("Main"));
 
-        game->getEngine()->setCurrentScene(game->getScene("Main"));
+        _tools.setScene(_tools.getScene("Main"));
 
         _fadeOut = 0.1f;
     }
 }
-list<Sprite::Ptr> StartButton::getSprites() const throw ()
+list<shared_ptr<Sprite>> StartButton::getSprites() const
 {
 #ifdef NDK_GAME_DEBUG
     return {_cur, _rect};
@@ -83,7 +92,7 @@ list<Sprite::Ptr> StartButton::getSprites() const throw ()
 #endif
 }
 
-string StartButton::getName() const throw ()
+string StartButton::getName() const
 {
     return "StartButton";
 }

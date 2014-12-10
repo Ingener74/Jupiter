@@ -90,8 +90,7 @@ Rock::Rock(int sw, int sh,
         p[4] = .5f + .45f * sin(r0);
     }
 
-    auto rockTexLoader = make_shared<jupiter::FileTextureLoader>(
-            _tools.gameLocation() + "/resources/images/rocks1.png");
+    auto rockTexLoader = make_shared<jupiter::FileTextureLoader>("resources/images/rocks1.png");
 
     auto rockTexture = jupiter::Texture::create(rockTexLoader);
 

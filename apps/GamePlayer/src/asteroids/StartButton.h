@@ -8,29 +8,31 @@
 #ifndef STARTBUTTON_H_
 #define STARTBUTTON_H_
 
-#include <Engine/Engine.h>
+#include <Jupiter/Jupiter.h>
+#include <Tools.h>
 
-class StartButton: public ndk_game::IGameObject
+class StartButton: public jupiter::IGameObject
 {
 public:
-    StartButton(int screenWidth, int screenHeight);
+    StartButton(int screenWidth, int screenHeight, GameTools);
     virtual ~StartButton();
 
-    virtual void update(double elapsed) throw (std::runtime_error);
-    virtual void input(int x, int y) throw (std::runtime_error);
-    virtual std::list<ndk_game::Sprite::Ptr> getSprites() const throw ();
-    virtual std::string getName() const throw ();
+    virtual void update(double elapsed);
+    virtual void input(int x, int y);
+    virtual std::list<std::shared_ptr<jupiter::Sprite>> getSprites() const;
+    virtual std::string getName() const;
 
 private:
-    ndk_game::Sprite::Ptr _sb1, _sb2, _cur;
+    std::shared_ptr<jupiter::Sprite> _sb1, _sb2, _cur;
 
 #ifdef NDK_GAME_DEBUG
-    ndk_game::Sprite::Ptr _rect;
+    jupiter::Sprite::Ptr _rect;
 #endif
 
-    ndk_game::Rect _buttonRect;
+    jupiter::Rect _buttonRect;
 
     double _fadeOut;
+    GameTools _tools;
 };
 
 #endif /* STARTBUTTON_H_ */

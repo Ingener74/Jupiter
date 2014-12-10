@@ -16,8 +16,7 @@ using namespace jupiter;
 using namespace glm;
 using namespace std;
 
-Bullet::Bullet(int sw, int sh, float x, float y, float angle,
-        std::function<std::string()> gameLocation):
+Bullet::Bullet(int sw, int sh, float x, float y, float angle):
         _angle(angle), _screenWidth(sw), _screenHeight(sh), _remove(false)
 {
     auto v = 500.f;
@@ -28,8 +27,7 @@ Bullet::Bullet(int sw, int sh, float x, float y, float angle,
 
 //    auto game = Game::instance();
 
-    auto bulletTexLoader = std::make_shared<jupiter::FileTextureLoader>(
-            gameLocation() + "/resources/images/bullet.png");
+    auto bulletTexLoader = std::make_shared<jupiter::FileTextureLoader>("resources/images/bullet.png");
 
     auto bulletTexture = Texture::create(bulletTexLoader);
 

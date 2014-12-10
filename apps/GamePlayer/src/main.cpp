@@ -37,6 +37,7 @@
 #include <BackGround.h>
 #include <BattleShip.h>
 #include <Life.h>
+#include <StartButton.h>
 
 using namespace std;
 using namespace glm;
@@ -65,21 +66,6 @@ string usage = ""
 /*
  * Code
  */
-string getGameLocation()
-{
-    return string(gameFileLocation.parent_path().c_str());
-}
-
-void createScene(const string& sceneName)
-{
-    cout << "create scene " << sceneName << endl;
-}
-
-void createSceneNumber(int i)
-{
-    cout << "create scene number " << i << endl;
-}
-
 void display(void)
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -120,20 +106,6 @@ int main(int argc, char **argv)
 
         if (!vm.count("game")) throw runtime_error("have no game file");
 
-        ResourceManager::pushResourceFactory(make_shared<FileResource>());
-
-        gameFileLocation = path(vm["game"].as<string>());
-
-        ganymede::State L;
-
-        property_tree::ptree pt;
-
-        auto file = ResourceManager::createResource(vm["game"].as<string>());
-        property_tree::json_parser::read_json(*file, pt);
-
-        width  = pt.get<int>("resolution.width");
-        height = pt.get<int>("resolution.height");
-
 //        L.load(*file);
 
 //        luaState = make_shared<State>(true);
@@ -148,6 +120,21 @@ int main(int argc, char **argv)
 //        y = (*luaState)[ "viewport" ][ "y" ];
 //        width = (*luaState)[ "viewport" ][ "width" ];
 //        height = (*luaState)[ "viewport" ][ "height" ];
+
+        ganymede::State L;
+
+        gameFileLocation = path(vm["game"].as<string>());
+
+        ResourceManager::setPathPrefix(gameFileLocation.parent_path().c_str());
+        ResourceManager::pushResourceFactory(make_shared<FileResource>());
+
+        auto file = ResourceManager::createResource(gameFileLocation.filename().c_str());
+
+        property_tree::ptree pt;
+        property_tree::json_parser::read_json(*file, pt);
+
+        width  = pt.get<int>("resolution.width");
+        height = pt.get<int>("resolution.height");
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -164,49 +151,62 @@ int main(int argc, char **argv)
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        string vs = "resources/shaders/vertex.shader" /*(*luaState)[ "program" ][ "vertex" ]*/,
-                fs = "resources/shaders/fragment.shader" /*(*luaState)[ "program" ][ "fragment" ]*/;
+        string vs = "resources/shaders/vertex.shader", fs = "resources/shaders/fragment.shader";
 
-        engine = make_shared<DrawEngine>(
-                make_shared<ResourceShaderLoader>(getGameLocation() + "/" + vs, getGameLocation() + "/" + fs),
-                o, width, height);
+        engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(vs, fs), o, width, height);
 
-        ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
-        ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
-        Image im(getGameLocation() + "/resources/images/bg.png");
-        cout << "image " << im << endl;
+//        ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
+//        ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
+//        Image im(getGameLocation() + "/resources/images/bg.png");
+//        cout << "image " << im << endl;
 
+        auto startScene = make_shared<Scene>();
         auto mainScene = make_shared<Scene>();
+        auto winScene = make_shared<Scene>();
+        auto failScene = make_shared<Scene>();
 
         map<string, std::shared_ptr<Scene>> gameScenes;
+        gameScenes["Start"] = startScene;
         gameScenes["Main"] = mainScene;
+        gameScenes["Win"] = winScene;
+        gameScenes["Fail"] = failScene;
 
         auto tools = GameTools{
-            [](){ return getGameLocation(); },
             [&](const string& sceneName){ return gameScenes[sceneName]; },
             [=](std::shared_ptr<Scene> scene){ engine->setCurrentScene(scene); }
         };
 
         auto dummySE = make_shared<DummySoundEngine>();
 
-
         auto background = make_shared<BackGround>(tools);
 
-        auto life = make_shared<Life>(width, height, tools);
+        {
+            /*
+             * Start scene
+             */
+            startScene->gameObject = {
+                    background,
+                    make_shared<StartButton>(width, height, tools)
+            };
+        }
 
-        auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
+        {
+            /*
+             * Main scene
+             */
+            auto life = make_shared<Life>(width, height, tools);
+            auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
 
-        mainScene->gameObject.push_back(background);
+            mainScene->gameObject = {background, battleShip, life};
+        }
 
-        engine->setCurrentScene(mainScene);
+        engine->setCurrentScene(startScene);
 
-        map<string, std::shared_ptr<IGameObject>> gameObjects;
-
-        gameObjects[background->getName()] = background;
-
-        cout << "game objects" << endl;
-        for(auto i: gameObjects)
-            cout << "game object " << i.first << endl;
+//        map<string, std::shared_ptr<IGameObject>> gameObjects;
+//        gameObjects[background->getName()] = background;
+//        cout << "game objects" << endl;
+//        for(auto i: gameObjects)
+//            cout << "game object " << i.first << endl;
 
         /*
          * auto gameBuilder = make_shader<LinuxGameBuilder>( vm["game"].as<string>() );

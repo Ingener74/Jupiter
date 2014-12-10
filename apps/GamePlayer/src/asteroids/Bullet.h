@@ -13,8 +13,7 @@
 class Bullet: public jupiter::IGameObject
 {
 public:
-    Bullet(int screenWidth, int screenHeight, float x, float y, float angle,
-            std::function<std::string()> gameLocation);
+    Bullet(int screenWidth, int screenHeight, float x, float y, float angle);
     virtual ~Bullet();
 
     virtual void update(double elapsed);

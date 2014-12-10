@@ -12,8 +12,7 @@ using namespace jupiter;
 
 BackGround::BackGround(GameTools tools)
 {
-    auto textureLoader = make_shared<FileTextureLoader>(
-            tools.gameLocation() + "/resources/images/bg.png");
+    auto textureLoader = make_shared<FileTextureLoader>("resources/images/bg.png");
 
     auto texture = Texture::create(textureLoader);
 
