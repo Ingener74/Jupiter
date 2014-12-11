@@ -14,8 +14,8 @@ namespace jupiter
 
 using namespace std;
 
-RectSpriteLoader::RectSpriteLoader(float w, float h, float z, float tx1,
-        float tx2, float ty1, float ty2): _type(ISpriteLoader::SpriteType::Triangles)
+RectSpriteLoader::RectSpriteLoader(float w, float h, float z, float tx1, float tx2, float ty1, float ty2) :
+        _type(ISpriteLoader::SpriteType::Triangles)
 {
     /*
      * 1                        2
@@ -32,22 +32,20 @@ RectSpriteLoader::RectSpriteLoader(float w, float h, float z, float tx1,
      * tx1 ty2                    tx2 ty2
      */
 
-    float data[] =
-    {
+    _data = {
             // 1 2 3
-            -w / 2, h / 2, z, tx1, ty1,
+            -w / 2,  h / 2, z, tx1, ty1,
             -w / 2, -h / 2, z, tx1, ty2,
-            w / 2, h / 2, z, tx2, ty1,
+             w / 2,  h / 2, z, tx2, ty1,
 
             // 4 3 2
-            w / 2, -h / 2, z, tx2, ty2,
-            w / 2, h / 2, z, tx2, ty1,
-            -w / 2, -h / 2, z, tx1, ty2, };
-
-    memcpy(_data, data, 6 * 5 * sizeof(float));
+             w / 2, -h / 2, z, tx2, ty2,
+             w / 2,  h / 2, z, tx2, ty1,
+            -w / 2, -h / 2, z, tx1, ty2,
+    };
 }
-RectSpriteLoader::RectSpriteLoader(Rect r, float z, float tx1, float tx2, float ty1,
-        float ty2): _type(ISpriteLoader::SpriteType::LineStrip)
+RectSpriteLoader::RectSpriteLoader(Rect r, float z, float tx1, float tx2, float ty1, float ty2) :
+        _type(ISpriteLoader::SpriteType::LineStrip)
 {
     /*
      * 1                        2
@@ -65,8 +63,7 @@ RectSpriteLoader::RectSpriteLoader(Rect r, float z, float tx1, float tx2, float 
      */
 
     float x1 = r.x1, x2 = r.x2, y1 = r.y1, y2 = r.y2;
-    float data[] =
-    {
+    _data = {
             // 1 2 3
             x1, y1, z, tx1, ty1,
             x2, y1, z, tx1, ty2,
@@ -77,24 +74,19 @@ RectSpriteLoader::RectSpriteLoader(Rect r, float z, float tx1, float tx2, float 
             x1, y2, z, tx2, ty1,
             x2, y1, z, tx1, ty2,
     };
-    memcpy(_data, data, 6 * 5 * sizeof(float));
 }
 
-RectSpriteLoader::~RectSpriteLoader()
+const float* RectSpriteLoader::getVertexes() const
 {
+    return _data.data();
 }
 
-const float* RectSpriteLoader::getVertexes() const throw ()
-{
-    return _data;
-}
-
-uint32_t RectSpriteLoader::getVertexCount() const throw ()
+uint32_t RectSpriteLoader::getVertexCount() const
 {
     return 6;
 }
 
-ISpriteLoader::SpriteType RectSpriteLoader::getSpriteType() const throw ()
+ISpriteLoader::SpriteType RectSpriteLoader::getSpriteType() const
 {
     return _type;
 }

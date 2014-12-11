@@ -17,7 +17,7 @@
 class BackGround: public jupiter::IGameObject
 {
 public:
-    BackGround(GameTools);
+    BackGround();
     virtual ~BackGround() = default;
 
     virtual void update(double elapsed);

@@ -19,32 +19,25 @@ StartButton::StartButton(int w, int h, GameTools tools) :
         _fadeOut(0), _tools(tools)
 {
 //    float startButtonW = w * 0.6, startButtonH = h * 0.2;
-    float startButtonW = 10, startButtonH = 10;
+    float startButtonW = 0.2, startButtonH = 0.2;
 
-//    auto game = Game::instance();
+//    Image im{"resources/images/start.png"};
+//    Sprite s{Texture{im}, im};
 
-//    /home/pavel/prj/Jupiter/samples/Asteroids
-
-    auto startTexLoader = make_shared<FileTextureLoader>("resources/images/start.png");
-    auto startTex = Texture::create(startTexLoader);
-
-    _sb1 = make_shared<Sprite>(startTex,
+    _sb1 = make_shared<Sprite>(Texture::create(make_shared<FileTextureLoader>("resources/images/start.png")),
             make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65));
 
-    auto startPushedTexLoader = make_shared<FileTextureLoader>("resources/images/start_pushed.png");
-    auto startPushedTex = Texture::create(startPushedTexLoader);
-
-    _sb2 = make_shared<Sprite>(startPushedTex,
+    _sb2 = make_shared<Sprite>(Texture::create(make_shared<FileTextureLoader>("resources/images/start_pushed.png")),
             make_shared<RectSpriteLoader>(startButtonW, startButtonH, 1, 0, 0.91, 0.95, 0.65));
 
-    vec3 v(0.f, h * 0.2f, 0.f);
-    auto m = translate(mat4(), v);
+//    vec3 v(0.f, h * 0.2f, 0.f);
+//    auto m = translate(mat4(), v);
 
-    _sb1->setModelMatrix(m);
-    _sb2->setModelMatrix(m);
+//    _sb1->setModelMatrix(m);
+//    _sb2->setModelMatrix(m);
 
-    _buttonRect = Rect(-startButtonW / 2, -startButtonH / 2, startButtonW / 2,
-            startButtonH / 2) + v;
+//    _buttonRect = Rect(-startButtonW / 2, -startButtonH / 2, startButtonW / 2,
+//            startButtonH / 2) + v;
 
 #ifdef NDK_GAME_DEBUG
     _rect = make_shared<Sprite>(

@@ -11,6 +11,15 @@
         "vertex":"vertex.shader",
         "fragment":"fragment.shader"
     },
+    "sprites":[
+        {
+            "texture":"",
+            "tx1":0,
+            "ty1":0,
+            "tx2":1,
+            "ty2":1
+        }
+    ],
     "game_objects": [
         {
             "name":"background",

@@ -71,6 +71,8 @@ void display(void)
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
+    engine->animateAll(1000.0 / 60.0);
+
     engine->draw();
 
     /*
@@ -141,6 +143,12 @@ int main(int argc, char **argv)
         glutInitWindowSize(width, height);
         glutCreateWindow("Jupiter game player");
 
+//        glEnable(GL_CULL_FACE);
+//        glEnable(GL_DEPTH_TEST);
+//
+//        glEnable(GL_BLEND);
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);
         glutIdleFunc(display);
@@ -150,6 +158,13 @@ int main(int argc, char **argv)
         glViewport(x, y, width, height);
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
+
+//        cout <<
+//                o[0][0] << " " << o[0][1] << " " << o[0][2] << " " << o[0][3] << " " <<
+//                o[1][0] << " " << o[1][1] << " " << o[1][2] << " " << o[1][3] << " " <<
+//                o[2][0] << " " << o[2][1] << " " << o[2][2] << " " << o[2][3] << " " <<
+//                o[3][0] << " " << o[3][1] << " " << o[3][2] << " " << o[3][3] << " " <<
+//                endl;
 
         string vs = "resources/shaders/vertex.shader", fs = "resources/shaders/fragment.shader";
 
@@ -178,7 +193,7 @@ int main(int argc, char **argv)
 
         auto dummySE = make_shared<DummySoundEngine>();
 
-        auto background = make_shared<BackGround>(tools);
+        auto background = make_shared<BackGround>();
 
         {
             /*
