@@ -44,6 +44,7 @@
 #include <GasButton.h>
 #include <LeftButton.h>
 #include <RightButton.h>
+#include <WinAgain.h>
 
 using namespace std;
 using namespace glm;
@@ -263,8 +264,10 @@ int main(int argc, char **argv)
             /*
              * Win scene
              */
+            auto winButton = make_shared<WinAgain>(width);
             gameScenes["Win"]->gameObject = {
-                    background
+                    background,
+                    winButton
             };
         }
 
