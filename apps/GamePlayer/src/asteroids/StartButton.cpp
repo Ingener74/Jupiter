@@ -34,8 +34,8 @@ StartButton::StartButton(int w, int h, GameTools tools) :
 //    _sb1->setModelMatrix(m);
 //    _sb2->setModelMatrix(m);
 
-//    _buttonRect = Rect(-startButtonW / 2, -startButtonH / 2, startButtonW / 2,
-//            startButtonH / 2) + v;
+    _buttonRect = Rect(-startButtonW / 2, -startButtonH / 2, startButtonW / 2,
+            startButtonH / 2)/* + v*/;
 
 #ifdef NDK_GAME_DEBUG
     _rect = make_shared<Sprite>(
@@ -65,9 +65,6 @@ void StartButton::input(int x, int y)
     if (_buttonRect.isInside(x, y))
     {
         _cur = _sb2;
-
-//        auto game = Game::instance();
-//        game->getEngine()->setCurrentScene(game->getScene("Main"));
 
         _tools.setScene(_tools.getScene("Main"));
 

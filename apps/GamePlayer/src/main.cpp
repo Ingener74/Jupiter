@@ -87,6 +87,27 @@ void reshape(int w, int h)
     glViewport(0, 0, w, h);
 }
 
+void mouse(int button, int action, int x, int y)
+{
+//    static map<int, string> buttons{
+//        {GLUT_LEFT_BUTTON,   "GLUT_LEFT_BUTTON"},
+//        {GLUT_MIDDLE_BUTTON, "GLUT_MIDDLE_BUTTON"},
+//        {GLUT_RIGHT_BUTTON,  "GLUT_RIGHT_BUTTON"},
+//    };
+//    static map<int, string> actions{
+//        {GLUT_DOWN, "GLUT_DOWN"},
+//        {GLUT_UP,   "GLUT_UP"}
+//    };
+//    cout << buttons[button] << " " << actions[action] << " " << x << " x " << y << endl;
+
+    engine->inputToAll(x, y);
+}
+
+void mouseMove( int x, int y )
+{
+//    cout << x << " x " << y << endl;
+}
+
 int main(int argc, char **argv)
 {
     options_description desc("General description");
@@ -152,14 +173,16 @@ int main(int argc, char **argv)
         glutCreateWindow("Jupiter game player");
 
 //        glEnable(GL_CULL_FACE);
-//        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
 //
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);
         glutIdleFunc(display);
+        glutMouseFunc(mouse);
+        glutMotionFunc(mouseMove);
 
         if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
 
