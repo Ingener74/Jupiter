@@ -26,7 +26,7 @@ WinAgain::WinAgain(int screenWidth)
             );
 
     _pushed = make_shared<Sprite>(
-            Texture::create(make_shared<FileTextureLoader>("resources/win_again_pushed.png")),
+            Texture::create(make_shared<FileTextureLoader>("resources/images/win_again_pushed.png")),
             make_shared<RectSpriteLoader>(winButtonW, winButtonH, 1, 0.05, 0.95, 0.95, 0.52)
             );
 
