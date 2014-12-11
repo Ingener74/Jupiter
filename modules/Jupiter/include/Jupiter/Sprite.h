@@ -46,6 +46,12 @@ private:
     uint32_t _vertexCount = 0;
     glm::mat4 _modelMatrix;
     ISpriteLoader::SpriteType _type = ISpriteLoader::SpriteType::Triangles;
+
+    /*
+     * new
+     *
+     * std::shared_ptr<SpriteImpl> _impl
+     */
 };
 
 } /* namespace ndk_game */
