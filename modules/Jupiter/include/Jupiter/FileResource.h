@@ -14,7 +14,7 @@
 namespace jupiter
 {
 
-class FileResource: public ResourceManager::IFactory
+class FileResource: public ResourceManager::Factory
 {
 public:
     FileResource() = default;

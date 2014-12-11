@@ -5,10 +5,13 @@
  *      Author: ingener
  */
 
-#include <Game/FireButton.h>
-#include <Game/Game.h>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-using namespace ndk_game;
+#include <FireButton.h>
+
+using namespace jupiter;
 using namespace glm;
 using namespace std;
 
@@ -18,23 +21,19 @@ FireButton::FireButton(int sw, int sh, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
             x = sw/2 - w/2,
             y = sh/2 - w/2;
 
-    auto game = Game::instance();
-
     _norm = make_shared<Sprite>(
-            game->getTexture("images/fire.png"),
+            Texture::create(make_shared<FileTextureLoader>("resources/images/fire.png")),
             make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
 
-    auto m = _norm->getModelMatrix();
-    m = translate(m, vec3(x, y, 0.f));
-
-    _norm->getModelMatrix() = m;
+    auto m = translate(_norm->getModelMatrix(), vec3{x, y, 0.f});
+    _norm->setModelMatrix(m);
 
     _pushed = make_shared<Sprite>(
-            game->getTexture("images/fire_pushed.png"),
+            Texture::create(make_shared<FileTextureLoader>("resources/images/fire_pushed.png")),
             make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
-    _pushed->getModelMatrix() = m;
+    _pushed->setModelMatrix(m);
 
     float xt = x - 2, yt = y - 2;
     _buttonRect = Rect(xt - w/2, yt - w/2, xt + w/2, yt + w/2);
@@ -51,10 +50,10 @@ FireButton::FireButton(int sw, int sh, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 
 FireButton::~FireButton()
 {
-    Log() << "FireButton::~FireButton()";
+    cout << "FireButton::~FireButton()" << endl;
 }
 
-void FireButton::update(double elapsed) throw (runtime_error)
+void FireButton::update(double elapsed)
 {
     if (_fadeOut >= 0)
     {
@@ -63,7 +62,7 @@ void FireButton::update(double elapsed) throw (runtime_error)
     else if (_cur == _pushed) _cur = _norm;
 }
 
-void FireButton::input(int x, int y) throw (runtime_error)
+void FireButton::input(int x, int y)
 {
     if (_buttonRect.isInside(x, y))
     {
@@ -76,7 +75,7 @@ void FireButton::input(int x, int y) throw (runtime_error)
     }
 }
 
-list<ndk_game::Sprite::Ptr> FireButton::getSprites() const throw ()
+list<shared_ptr<jupiter::Sprite>> FireButton::getSprites() const
 {
 #ifdef NDK_GAME_DEBUG
     return {_cur, _rect};
@@ -85,7 +84,7 @@ list<ndk_game::Sprite::Ptr> FireButton::getSprites() const throw ()
 #endif
 }
 
-string FireButton::getName() const throw ()
+string FireButton::getName() const
 {
     return "FireButton";
 }

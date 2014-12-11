@@ -8,28 +8,28 @@
 #ifndef RIGHTBUTTON_H_
 #define RIGHTBUTTON_H_
 
-#include <Engine/Engine.h>
-#include <Game/BattleShip.h>
+#include <Jupiter/Jupiter.h>
+#include <BattleShip.h>
 
-class RightButton: public ndk_game::IGameObject
+class RightButton: public jupiter::IGameObject
 {
 public:
     RightButton(int screenWidth, int screenHeight, BattleShip::Ptr);
     virtual ~RightButton();
 
-    virtual void update(double elapsed) throw (std::runtime_error);
-    virtual void input(int x, int y) throw (std::runtime_error);
-    virtual std::list<ndk_game::Sprite::Ptr> getSprites() const throw ();
-    virtual std::string getName() const throw ();
+    virtual void update(double elapsed) ;
+    virtual void input(int x, int y) ;
+    virtual std::list<std::shared_ptr<jupiter::Sprite>> getSprites() const ;
+    virtual std::string getName() const ;
 
 private:
-    ndk_game::Sprite::Ptr _norm, _pushed, _cur;
+    std::shared_ptr<jupiter::Sprite> _norm, _pushed, _cur;
 
-#ifdef NDK_GAME_DEBUG
-    ndk_game::Sprite::Ptr _rect;
+#ifdef jupiter_DEBUG
+    jupiter::Sprite::Ptr _rect;
 #endif
 
-    ndk_game::Rect _buttonRect;
+    jupiter::Rect _buttonRect;
 
     BattleShip::Ptr _bs;
 

@@ -5,10 +5,13 @@
  *      Author: ingener
  */
 
-#include <Game/RightButton.h>
-#include <Game/Game.h>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-using namespace ndk_game;
+#include <RightButton.h>
+
+using namespace jupiter;
 using namespace glm;
 using namespace std;
 
@@ -16,19 +19,19 @@ RightButton::RightButton(int screenWidth, int screenHeight, BattleShip::Ptr bs):
 {
     float w = screenWidth * 0.18f, x = screenWidth/2 - w/2, y = -screenHeight/2 + w/2;
 
-    auto game = Game::instance();
-
     _norm = make_shared<Sprite>(
-            game->getTexture("images/right.png"),
+            Texture::create(make_shared<FileTextureLoader>("resources/images/right.png")),
             make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
-    _norm->getModelMatrix() = translate(_norm->getModelMatrix(), vec3(x, y, 0.f));
+
+    auto m = translate(_norm->getModelMatrix(), vec3{x, y, 0.f});
+    _norm->setModelMatrix(m);
 
     _pushed = make_shared<Sprite>(
-            game->getTexture("images/right_pushed.png"),
+            Texture::create(make_shared<FileTextureLoader>("resources/images/right_pushed.png")),
             make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
-    _pushed->getModelMatrix() = translate(_pushed->getModelMatrix(), vec3(x, y, 0.f));
+    _pushed->setModelMatrix(m);
 
     float xt = x - 2, yt = y - 2;
     _buttonRect = Rect(xt - w/2, yt - w/2, xt + w/2, yt + w/2);
@@ -45,10 +48,10 @@ RightButton::RightButton(int screenWidth, int screenHeight, BattleShip::Ptr bs):
 
 RightButton::~RightButton()
 {
-    Log() << "RightButton::~RightButton()";
+    cout << "RightButton::~RightButton()" << endl;
 }
 
-void RightButton::update(double elapsed) throw (runtime_error)
+void RightButton::update(double elapsed)
 {
     if (_fadeOut >= 0)
     {
@@ -57,7 +60,7 @@ void RightButton::update(double elapsed) throw (runtime_error)
     else if (_cur == _pushed) _cur = _norm;
 }
 
-void RightButton::input(int x, int y) throw (runtime_error)
+void RightButton::input(int x, int y)
 {
     if (_buttonRect.isInside(x, y))
     {
@@ -70,7 +73,7 @@ void RightButton::input(int x, int y) throw (runtime_error)
     }
 }
 
-list<ndk_game::Sprite::Ptr> RightButton::getSprites() const throw ()
+list<shared_ptr<Sprite>> RightButton::getSprites() const
 {
 #ifdef NDK_GAME_DEBUG
     return {_cur, _rect};
@@ -79,7 +82,7 @@ list<ndk_game::Sprite::Ptr> RightButton::getSprites() const throw ()
 #endif
 }
 
-string RightButton::getName() const throw ()
+string RightButton::getName() const
 {
     return "RightButton";
 }

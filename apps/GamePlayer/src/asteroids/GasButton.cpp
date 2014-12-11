@@ -5,36 +5,41 @@
  *      Author: ingener
  */
 
-#include <Game/GasButton.h>
-#include <Game/Game.h>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-using namespace ndk_game;
+#include <GasButton.h>
+
+using namespace jupiter;
+using namespace std;
+using namespace glm;
 
 GasButton::GasButton(int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs(bs), _fadeOut(0)
 {
     float w = screenWidth * 0.18f, x = -screenWidth/2 + w/2, y = screenHeight/2 - w/2;
 
-    auto game = Game::instance();
-
-    _norm = std::make_shared<Sprite>(
-            game->getTexture("images/gas.png"),
-            std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
+    _norm = make_shared<Sprite>(
+            Texture::create(make_shared<FileTextureLoader>("resources/images/gas.png")),
+            make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
-    _norm->getModelMatrix() = glm::translate(_norm->getModelMatrix(), glm::vec3(x, y, 0.f));
 
-    _pushed = std::make_shared<Sprite>(
-            game->getTexture("images/gas_pushed.png"),
-            std::make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
+    auto m = translate(_norm->getModelMatrix(), vec3{x, y, 0.f});
+    _norm->setModelMatrix(m);
+
+    _pushed = make_shared<Sprite>(
+            Texture::create(make_shared<FileTextureLoader>("resources/images/gas_pushed.png")),
+            make_shared<RectSpriteLoader>(w, w, 10, 0, 1, 1, 0)
             );
-    _pushed->getModelMatrix() = glm::translate(_pushed->getModelMatrix(), glm::vec3(x, y, 0.f));
+    _pushed->setModelMatrix(m);
 
     float xt = x - 2, yt = y - 2;
     _buttonRect = Rect(xt - w/2, yt - w/2, xt + w/2, yt + w/2);
 
 #ifdef NDK_GAME_DEBUG
-    _rect = std::make_shared<Sprite>(
+    _rect = make_shared<Sprite>(
             game->getTexture("images/white.png"),
-            std::make_shared<RectSpriteLoader>(_buttonRect, 11, 0, 1, 0, 1)
+            make_shared<RectSpriteLoader>(_buttonRect, 11, 0, 1, 0, 1)
             );
 #endif
 
@@ -43,10 +48,10 @@ GasButton::GasButton(int screenWidth, int screenHeight, BattleShip::Ptr bs): _bs
 
 GasButton::~GasButton()
 {
-    Log() << "GasButton::~GasButton()";
+    cout << "GasButton::~GasButton()" << endl;
 }
 
-void GasButton::update(double elapsed) throw (std::runtime_error)
+void GasButton::update(double elapsed)
 {
     if (_fadeOut >= 0)
     {
@@ -55,20 +60,20 @@ void GasButton::update(double elapsed) throw (std::runtime_error)
     else if (_cur == _pushed) _cur = _norm;
 }
 
-void GasButton::input(int x, int y) throw (std::runtime_error)
+void GasButton::input(int x, int y)
 {
     if (_buttonRect.isInside(x, y))
     {
         _cur = _pushed;
 
-        if (!_bs) throw std::runtime_error("battle ship is null");
+        if (!_bs) throw runtime_error("battle ship is null");
         _bs->gas();
 
         _fadeOut = 0.1f;
     }
 }
 
-std::list<ndk_game::Sprite::Ptr> GasButton::getSprites() const throw ()
+list<shared_ptr<Sprite>> GasButton::getSprites() const
 {
 #ifdef NDK_GAME_DEBUG
     return {_cur, _rect};
@@ -77,7 +82,7 @@ std::list<ndk_game::Sprite::Ptr> GasButton::getSprites() const throw ()
 #endif
 }
 
-std::string GasButton::getName() const throw ()
+string GasButton::getName() const
 {
     return "GasButton";
 }

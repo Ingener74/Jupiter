@@ -15,10 +15,10 @@ set(SOURCES
     src/asteroids/Rock.cpp
     src/asteroids/StartButton.cpp
     src/asteroids/GameAgain.cpp
-    # src/asteroids/FireButton.cpp
-    # src/asteroids/GasButton.cpp
-    # src/asteroids/LeftButton.cpp
-    # src/asteroids/RightButton.cpp
+    src/asteroids/FireButton.cpp
+    src/asteroids/GasButton.cpp
+    src/asteroids/LeftButton.cpp
+    src/asteroids/RightButton.cpp
     # src/asteroids/WinAgain.cpp
 )
 

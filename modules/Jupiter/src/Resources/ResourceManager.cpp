@@ -23,19 +23,14 @@ ResourceManager::Resource ResourceManager::createResource(const string& filename
     return reg.back()->createResource(pathPrefix() + "/" + filename);
 }
 
-void ResourceManager::pushResourceFactory(shared_ptr<IFactory> factory)
+void ResourceManager::setFactory(shared_ptr<Factory> factory)
 {
     Register().push_back(factory);
 }
 
-void ResourceManager::popResourceFactory()
+list<shared_ptr<ResourceManager::Factory>>& ResourceManager::Register()
 {
-	Register().pop_back();
-}
-
-list<shared_ptr<ResourceManager::IFactory>>& ResourceManager::Register()
-{
-	static list<shared_ptr<IFactory>> factoryStack;
+	static list<shared_ptr<Factory>> factoryStack;
 	return factoryStack;
 }
 

@@ -13,7 +13,7 @@
 
 namespace jupiter {
 
-class FstreamResource: public ResourceManager::IFactory
+class FstreamResource: public ResourceManager::Factory
 {
 public:
     FstreamResource() = default;

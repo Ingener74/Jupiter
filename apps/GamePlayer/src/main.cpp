@@ -40,6 +40,10 @@
 #include <StartButton.h>
 #include <Rock.h>
 #include <GameAgain.h>
+#include <FireButton.h>
+#include <GasButton.h>
+#include <LeftButton.h>
+#include <RightButton.h>
 
 using namespace std;
 using namespace glm;
@@ -155,7 +159,7 @@ int main(int argc, char **argv)
              * Jupiter internal settings
              */
             ResourceManager::setPathPrefix(gameFileLocation.parent_path().c_str());
-            ResourceManager::pushResourceFactory(make_shared<FileResource>());
+            ResourceManager::setFactory(make_shared<FileResource>());
 
             ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
             ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
@@ -236,14 +240,18 @@ int main(int argc, char **argv)
             auto rock2 = Rock::createRock(width, height, dummySE, vec3{}, tools);
             auto rock3 = Rock::createRock(width, height, dummySE, vec3{}, tools);
 
-//            ms->gameObject.push_back(make_shared<FireButton>(w, h, bs));
-//            ms->gameObject.push_back(make_shared<GasButton>(w, h, bs));
-//            ms->gameObject.push_back(make_shared<RightButton>(w, h, bs));
-//            ms->gameObject.push_back(make_shared<LeftButton>(w, h, bs));
+            auto fireButton = make_shared<FireButton>(width, height, battleShip);
+            auto gasButton = make_shared<GasButton>(width, height, battleShip);
+            auto rightButton = make_shared<RightButton>(width, height, battleShip);
+            auto leftButton = make_shared<LeftButton>(width, height, battleShip);
 
             gameScenes["Main"]->gameObject = {
                     background,
                     battleShip,
+                    fireButton,
+                    gasButton,
+                    rightButton,
+                    leftButton,
                     rock1.front(),
                     rock2.front(),
                     rock3.front(),
