@@ -38,6 +38,8 @@
 #include <BattleShip.h>
 #include <Life.h>
 #include <StartButton.h>
+#include <Rock.h>
+#include <GameAgain.h>
 
 using namespace std;
 using namespace glm;
@@ -71,7 +73,7 @@ void display(void)
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
-    engine->animateAll(1000.0 / 60.0);
+    engine->animateAll(30.0 / 1000.0);
 
     engine->draw();
 
@@ -197,16 +199,11 @@ int main(int argc, char **argv)
 //        Image im(getGameLocation() + "/resources/images/bg.png");
 //        cout << "image " << im << endl;
 
-        auto startScene = make_shared<Scene>();
-        auto mainScene = make_shared<Scene>();
-        auto winScene = make_shared<Scene>();
-        auto failScene = make_shared<Scene>();
-
         map<string, std::shared_ptr<Scene>> gameScenes;
-        gameScenes["Start"] = startScene;
-        gameScenes["Main"] = mainScene;
-        gameScenes["Win"] = winScene;
-        gameScenes["Fail"] = failScene;
+        gameScenes["Start"] = make_shared<Scene>();
+        gameScenes["Main"]  = make_shared<Scene>();
+        gameScenes["Win"]   = make_shared<Scene>();
+        gameScenes["Fail"]  = make_shared<Scene>();
 
         auto tools = GameTools{
             [&](const string& sceneName){ return gameScenes[sceneName]; },
@@ -221,7 +218,7 @@ int main(int argc, char **argv)
             /*
              * Start scene
              */
-            startScene->gameObject = {
+            gameScenes["Start"]->gameObject = {
                     background,
                     make_shared<StartButton>(width, height, tools)
             };
@@ -234,23 +231,53 @@ int main(int argc, char **argv)
             auto life = make_shared<Life>(width, height, tools);
             auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
 
-            mainScene->gameObject = {background, battleShip, life};
+            Rock::reset();
+            auto rock1 = Rock::createRock(width, height, dummySE, vec3{}, tools);
+            auto rock2 = Rock::createRock(width, height, dummySE, vec3{}, tools);
+            auto rock3 = Rock::createRock(width, height, dummySE, vec3{}, tools);
+
+//            ms->gameObject.push_back(make_shared<FireButton>(w, h, bs));
+//            ms->gameObject.push_back(make_shared<GasButton>(w, h, bs));
+//            ms->gameObject.push_back(make_shared<RightButton>(w, h, bs));
+//            ms->gameObject.push_back(make_shared<LeftButton>(w, h, bs));
+
+            gameScenes["Main"]->gameObject = {
+                    background,
+                    battleShip,
+                    rock1.front(),
+                    rock2.front(),
+                    rock3.front(),
+                    life,
+            };
         }
 
-        engine->setCurrentScene(startScene);
+        {
+            /*
+             * Win scene
+             */
+            gameScenes["Win"]->gameObject = {
+                    background
+            };
+        }
 
-//        map<string, std::shared_ptr<IGameObject>> gameObjects;
-//        gameObjects[background->getName()] = background;
-//        cout << "game objects" << endl;
-//        for(auto i: gameObjects)
-//            cout << "game object " << i.first << endl;
+        {
+            /*
+             * Lose scene
+             */
+            auto failButton = make_shared<GameAgain>(width);
+            gameScenes["Fail"]->gameObject = {
+                    background,
+                    failButton
+            };
+        }
+
+        engine->setCurrentScene(gameScenes["Start"]);
 
         /*
          * auto gameBuilder = make_shader<LinuxGameBuilder>( vm["game"].as<string>() );
          *
          * auto game = gameBuilder->createGame();
          */
-
 
         glutMainLoop();
 
