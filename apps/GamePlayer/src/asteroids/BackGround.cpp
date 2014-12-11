@@ -20,7 +20,7 @@ BackGround::BackGround()//: background("resources/images/bg.png")
     auto textureLoader = make_shared<FileTextureLoader>("resources/images/bg.png");
 
     auto texture = Texture::create(textureLoader);
-    auto rect = make_shared<RectSpriteLoader>(1, 1, 0, 0, 1, 0, 1);
+    auto rect = make_shared<RectSpriteLoader>(800, 800, 0, 0, 1, 0, 1);
 
     background = make_shared<Sprite>(texture, rect);
 }

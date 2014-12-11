@@ -127,8 +127,16 @@ int main(int argc, char **argv)
 
         gameFileLocation = path(vm["game"].as<string>());
 
-        ResourceManager::setPathPrefix(gameFileLocation.parent_path().c_str());
-        ResourceManager::pushResourceFactory(make_shared<FileResource>());
+        {
+            /*
+             * Jupiter internal settings
+             */
+            ResourceManager::setPathPrefix(gameFileLocation.parent_path().c_str());
+            ResourceManager::pushResourceFactory(make_shared<FileResource>());
+
+            ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
+            ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
+        }
 
         auto file = ResourceManager::createResource(gameFileLocation.filename().c_str());
 
@@ -159,19 +167,10 @@ int main(int argc, char **argv)
 
         auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-//        cout <<
-//                o[0][0] << " " << o[0][1] << " " << o[0][2] << " " << o[0][3] << " " <<
-//                o[1][0] << " " << o[1][1] << " " << o[1][2] << " " << o[1][3] << " " <<
-//                o[2][0] << " " << o[2][1] << " " << o[2][2] << " " << o[2][3] << " " <<
-//                o[3][0] << " " << o[3][1] << " " << o[3][2] << " " << o[3][3] << " " <<
-//                endl;
-
         string vs = "resources/shaders/vertex.shader", fs = "resources/shaders/fragment.shader";
 
         engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(vs, fs), o, width, height);
 
-//        ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
-//        ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
 //        Image im(getGameLocation() + "/resources/images/bg.png");
 //        cout << "image " << im << endl;
 

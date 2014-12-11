@@ -26,7 +26,8 @@ namespace jupiter
 
 using namespace std;
 
-DrawEngine::DrawEngine(shared_ptr<IShaderLoader> sl, const glm::mat4& ortho, int screenW, int screenH)
+DrawEngine::DrawEngine(shared_ptr<IShaderLoader> sl, const glm::mat4& ortho, int sw, int sh) :
+        _ortho(ortho), _screenWidth(sw), _screenHeight(sh)
 {
     _program = createProgram(sl->getVertexShader(), sl->getFragmentShader());
 
@@ -80,13 +81,6 @@ void DrawEngine::draw()
 
         glm::mat4 mvp = _ortho * s->getModelMatrix();
 
-//        cout <<
-//                mvp[0][0] << " " << mvp[0][1] << " " << mvp[0][2] << " " << mvp[0][3] << " " <<
-//                mvp[1][0] << " " << mvp[1][1] << " " << mvp[1][2] << " " << mvp[1][3] << " " <<
-//                mvp[2][0] << " " << mvp[2][1] << " " << mvp[2][2] << " " << mvp[2][3] << " " <<
-//                mvp[3][0] << " " << mvp[3][1] << " " << mvp[3][2] << " " << mvp[3][3] << " " <<
-//                endl;
-
         glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
 
         GLenum drawType;
@@ -122,7 +116,7 @@ void DrawEngine::inputToAll(int x, int y)
     {
         if (!gameObj) throw JupiterError("input to all invalid game object");
 
-        gameObj->input(x - _sW / 2, _sH / 2 - y);
+        gameObj->input(x - _screenWidth / 2, _screenHeight / 2 - y);
     }
 }
 

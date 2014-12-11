@@ -25,7 +25,7 @@ class IShaderLoader;
 class DrawEngine
 {
 public:
-    DrawEngine(std::shared_ptr<IShaderLoader>, const glm::mat4& Ortho, int screenW, int screenH);
+    DrawEngine(std::shared_ptr<IShaderLoader>, const glm::mat4& Ortho, int screenWidth, int screenHeight);
     virtual ~DrawEngine();
 
     virtual void setCurrentScene(std::shared_ptr<Scene>);
@@ -39,7 +39,7 @@ protected:
     GLuint _uMVP = 0, _aPOS = 0, _aTEX = 0, _uTEX = 0;
 
     glm::mat4 _ortho;
-    int _sW = 0, _sH = 0;
+    int _screenWidth = 0, _screenHeight = 0;
 
     std::shared_ptr<Scene> _currentScene;
 
