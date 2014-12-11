@@ -19,7 +19,7 @@ set(SOURCES
     src/asteroids/GasButton.cpp
     src/asteroids/LeftButton.cpp
     src/asteroids/RightButton.cpp
-    # src/asteroids/WinAgain.cpp
+    src/asteroids/WinAgain.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

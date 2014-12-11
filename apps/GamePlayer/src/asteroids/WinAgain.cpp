@@ -5,30 +5,32 @@
  *      Author: ingener
  */
 
-#include <Game/WinAgain.h>
-#include <Game/Rock.h>
-#include <Game/Game.h>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-using namespace ndk_game;
+#include <WinAgain.h>
+#include <Rock.h>
+
+using namespace jupiter;
 using namespace std;
 using namespace glm;
 
-WinAgain::WinAgain(android_app * app, int screenWidth)
+WinAgain::WinAgain(int screenWidth)
 {
     float winButtonW = screenWidth * 0.8, winButtonH = screenWidth * 0.4;
 
     _norm = make_shared<Sprite>(
-            Texture::create(make_shared<AssetTextureLoader>(app, "images/win_again.png")),
+            Texture::create(make_shared<FileTextureLoader>("resources/images/win_again.png")),
             make_shared<RectSpriteLoader>(winButtonW, winButtonH, 1, 0.05, 0.95, 0.95, 0.52)
             );
 
     _pushed = make_shared<Sprite>(
-            Texture::create(make_shared<AssetTextureLoader>(app, "images/win_again_pushed.png")),
+            Texture::create(make_shared<FileTextureLoader>("resources/win_again_pushed.png")),
             make_shared<RectSpriteLoader>(winButtonW, winButtonH, 1, 0.05, 0.95, 0.95, 0.52)
             );
 
-    _pushed->getModelMatrix() = glm::translate(_pushed->getModelMatrix(),
-            glm::vec3(2.f, -2.f, 0.f));
+    _pushed->setModelMatrix(translate(_pushed->getModelMatrix(), vec3{2.f, -2.f, 0.f}));
 
     _buttonRect = Rect(-winButtonW / 2, -winButtonH / 2, winButtonW / 2,
             winButtonH / 2);
@@ -45,10 +47,10 @@ WinAgain::WinAgain(android_app * app, int screenWidth)
 
 WinAgain::~WinAgain()
 {
-    Log() << "WinAgain::~WinAgain()";
+    cout << "WinAgain::~WinAgain()" << endl;
 }
 
-void WinAgain::update(double elapsed) throw (std::runtime_error)
+void WinAgain::update(double elapsed)
 {
     if (_fadeOut >= 0)
     {
@@ -57,23 +59,23 @@ void WinAgain::update(double elapsed) throw (std::runtime_error)
     else if (_cur == _pushed) _cur = _norm;
 }
 
-void WinAgain::input(int x, int y) throw (std::runtime_error)
+void WinAgain::input(int x, int y)
 {
     if (_buttonRect.isInside(x, y))
     {
         _cur = _pushed;
 
-        auto game = Game::instance();
+//        auto game = Game::instance();
 
         Rock::reset();
-        game->newGame();
-        game->getEngine()->setCurrentScene(game->getScene("Main"));
+//        game->newGame();
+//        game->getEngine()->setCurrentScene(game->getScene("Main"));
 
         _fadeOut = 0.1f;
     }
 }
 
-std::list<ndk_game::Sprite::Ptr> WinAgain::getSprites() const throw ()
+list<shared_ptr<Sprite>> WinAgain::getSprites() const
 {
 #ifdef NDK_GAME_DEBUG
     return {_cur, _rect};
@@ -82,7 +84,7 @@ std::list<ndk_game::Sprite::Ptr> WinAgain::getSprites() const throw ()
 #endif
 }
 
-std::string WinAgain::getName() const throw ()
+string WinAgain::getName() const
 {
     return "YouWinAndTryAgain";
 }
