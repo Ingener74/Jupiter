@@ -136,23 +136,6 @@ int main(int argc, char **argv)
 
         if (!vm.count("game")) throw runtime_error("have no game file");
 
-//        L.load(*file);
-
-//        luaState = make_shared<State>(true);
-//
-//		(*luaState)["getGameLocation"] = &getGameLocation;
-//		(*luaState)["createScene"] = &createScene;
-//		(*luaState)["createSceneNumber"] = &createSceneNumber;
-//
-//        luaState->Load(vm[ "game" ].as<string>());
-//
-//        x = (*luaState)[ "viewport" ][ "x" ];
-//        y = (*luaState)[ "viewport" ][ "y" ];
-//        width = (*luaState)[ "viewport" ][ "width" ];
-//        height = (*luaState)[ "viewport" ][ "height" ];
-
-        ganymede::State L;
-
         gameFileLocation = path(vm["game"].as<string>());
 
         {
@@ -165,6 +148,10 @@ int main(int argc, char **argv)
             ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
             ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
         }
+
+        auto script = ResourceManager::createResource("Asteroids.lua");
+        ganymede::State L;
+        L.load(*script);
 
         auto file = ResourceManager::createResource(gameFileLocation.filename().c_str());
 
@@ -179,7 +166,6 @@ int main(int argc, char **argv)
         glutInitWindowSize(width, height);
         glutCreateWindow("Jupiter game player");
 
-//        glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
 //
         glEnable(GL_BLEND);
@@ -219,15 +205,13 @@ int main(int argc, char **argv)
 
         auto background = make_shared<BackGround>();
 
-        {
-            /*
-             * Start scene
-             */
-            gameScenes["Start"]->gameObject = {
-                    background,
-                    make_shared<StartButton>(width, height, tools)
-            };
-        }
+        /*
+         * Start scene
+         */
+        gameScenes["Start"]->gameObject = {
+                background,
+                make_shared<StartButton>(width, height, tools)
+        };
 
         /*
          * Main scene
@@ -263,27 +247,23 @@ int main(int argc, char **argv)
         };
         newGame();
 
-        {
-            /*
-             * Win scene
-             */
-            auto winButton = make_shared<WinAgain>(width, tools, newGame);
-            gameScenes["Win"]->gameObject = {
-                    background,
-                    winButton
-            };
-        }
+        /*
+         * Win scene
+         */
+        auto winButton = make_shared<WinAgain>(width, tools, newGame);
+        gameScenes["Win"]->gameObject = {
+                background,
+                winButton
+        };
 
-        {
-            /*
-             * Lose scene
-             */
-            auto failButton = make_shared<GameAgain>(width, tools, newGame);
-            gameScenes["Fail"]->gameObject = {
-                    background,
-                    failButton
-            };
-        }
+        /*
+         * Lose scene
+         */
+        auto failButton = make_shared<GameAgain>(width, tools, newGame);
+        gameScenes["Fail"]->gameObject = {
+                background,
+                failButton
+        };
 
         engine->setCurrentScene(gameScenes["Start"]);
 
