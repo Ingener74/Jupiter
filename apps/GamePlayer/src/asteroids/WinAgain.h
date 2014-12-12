@@ -9,17 +9,18 @@
 #define WINAGAIN_H_
 
 #include <Jupiter/Jupiter.h>
+#include <Tools.h>
 
 class WinAgain: public jupiter::IGameObject
 {
 public:
-    WinAgain(int screenWidth);
+    WinAgain(int screenWidth, GameTools, std::function<void()> newGame);
     virtual ~WinAgain();
 
-    virtual void update(double elapsed) ;
-    virtual void input(int x, int y) ;
-    virtual std::list<std::shared_ptr<jupiter::Sprite>> getSprites() const ;
-    virtual std::string getName() const ;
+    virtual void update(double elapsed);
+    virtual void input(int x, int y);
+    virtual std::list<std::shared_ptr<jupiter::Sprite>> getSprites() const;
+    virtual std::string getName() const;
 
 private:
     std::shared_ptr<jupiter::Sprite> _norm, _pushed, _cur;
@@ -31,6 +32,8 @@ private:
     jupiter::Rect _buttonRect;
 
     double _fadeOut = 0.0;
+    std::function<void()> _newGame;
+    GameTools _tools;
 };
 
 #endif /* WINAGAIN_H_ */

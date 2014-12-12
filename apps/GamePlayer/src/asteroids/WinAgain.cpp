@@ -16,7 +16,7 @@ using namespace jupiter;
 using namespace std;
 using namespace glm;
 
-WinAgain::WinAgain(int screenWidth)
+WinAgain::WinAgain(int screenWidth, GameTools tools, std::function<void()> newGame): _newGame(newGame), _tools(tools)
 {
     float winButtonW = screenWidth * 0.8, winButtonH = screenWidth * 0.4;
 
@@ -65,9 +65,11 @@ void WinAgain::input(int x, int y)
     {
         _cur = _pushed;
 
-//        auto game = Game::instance();
-
         Rock::reset();
+
+        _newGame();
+        _tools.setScene(_tools.getScene("Main"));
+
 //        game->newGame();
 //        game->getEngine()->setCurrentScene(game->getScene("Main"));
 

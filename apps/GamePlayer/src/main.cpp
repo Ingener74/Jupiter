@@ -229,10 +229,12 @@ int main(int argc, char **argv)
             };
         }
 
+        /*
+         * Main scene
+         */
+
+        auto newGame = [&]()
         {
-            /*
-             * Main scene
-             */
             auto life = make_shared<Life>(width, height, tools);
             auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
 
@@ -258,13 +260,14 @@ int main(int argc, char **argv)
                     rock3.front(),
                     life,
             };
-        }
+        };
+        newGame();
 
         {
             /*
              * Win scene
              */
-            auto winButton = make_shared<WinAgain>(width);
+            auto winButton = make_shared<WinAgain>(width, tools, newGame);
             gameScenes["Win"]->gameObject = {
                     background,
                     winButton
@@ -275,7 +278,7 @@ int main(int argc, char **argv)
             /*
              * Lose scene
              */
-            auto failButton = make_shared<GameAgain>(width);
+            auto failButton = make_shared<GameAgain>(width, tools, newGame);
             gameScenes["Fail"]->gameObject = {
                     background,
                     failButton
