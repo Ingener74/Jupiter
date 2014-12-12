@@ -1,6 +1,6 @@
 %module Jupiter
 %{
-    #include "Jupiter.h"
+    #include "/home/pavel/prj/Jupiter/modules/Jupiter/include/Jupiter/Jupiter.h"
 %}
 
-%include "Jupiter.h"
+%include "/home/pavel/prj/Jupiter/modules/Jupiter/include/Jupiter/Jupiter.h"

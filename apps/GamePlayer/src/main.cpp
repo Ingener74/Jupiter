@@ -96,15 +96,15 @@ void reshape(int w, int h)
 
 void mouse(int button, int action, int x, int y)
 {
-//    static map<int, string> buttons{
-//        {GLUT_LEFT_BUTTON,   "GLUT_LEFT_BUTTON"},
-//        {GLUT_MIDDLE_BUTTON, "GLUT_MIDDLE_BUTTON"},
-//        {GLUT_RIGHT_BUTTON,  "GLUT_RIGHT_BUTTON"},
-//    };
-//    static map<int, string> actions{
-//        {GLUT_DOWN, "GLUT_DOWN"},
-//        {GLUT_UP,   "GLUT_UP"}
-//    };
+    static map<int, string> buttons{
+        {GLUT_LEFT_BUTTON,   "GLUT_LEFT_BUTTON"},
+        {GLUT_MIDDLE_BUTTON, "GLUT_MIDDLE_BUTTON"},
+        {GLUT_RIGHT_BUTTON,  "GLUT_RIGHT_BUTTON"},
+    };
+    static map<int, string> actions{
+        {GLUT_DOWN, "GLUT_DOWN"},
+        {GLUT_UP,   "GLUT_UP"}
+    };
 //    cout << buttons[button] << " " << actions[action] << " " << x << " x " << y << endl;
 
     engine->inputToAll(x, y);
