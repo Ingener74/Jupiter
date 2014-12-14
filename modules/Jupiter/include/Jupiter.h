@@ -8,6 +8,11 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
+#include <Jupiter/facade/Game.h>
+#include <Jupiter/facade/Sprite.h>
+#include <Jupiter/facade/Node.h>
+#include <Jupiter/facade/Controller.h>
+
 #include <Jupiter/DrawEngine.h>
 #include <Jupiter/IGameObject.h>
 
@@ -24,7 +29,6 @@
 #include <Jupiter/DummyTextureLoader.h>
 #include <Jupiter/FileTextureLoader.h>
 
-#include <Jupiter/Sprite.h>
 #include <Jupiter/ISpriteLoader.h>
 #include <Jupiter/SimpleSpriteLoader.h>
 #include <Jupiter/RectSpriteLoader.h>
@@ -39,7 +43,6 @@
 #include <Jupiter/Rect.h>
 #include <Jupiter/Scene.h>
 #include <Jupiter/Image.h>
-
 #include <Jupiter/detail/SpriteBuilder.h>
 #include <Jupiter/detail/FileSpriteFactory.h>
 

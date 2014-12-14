@@ -23,17 +23,22 @@ set(SOURCES
     src/Resources/ResourceManager.cpp
     src/Resources/FStreamResource.cpp
     src/Resources/FileResource.cpp
-    # Common
-    src/ResourceShaderLoader.cpp
-    src/SimpleShaderLoader.cpp
-    src/Tools.cpp
-    
     # Builders
     src/Builders/FileSpriteFactory.cpp
     src/Builders/ImageBuilder.cpp
     src/Builders/SpriteBuilder.cpp
     src/Builders/PNGImageFactory.cpp
     src/Builders/ImageSpriteBuilder.cpp
+    # Common
+    src/ResourceShaderLoader.cpp
+    src/SimpleShaderLoader.cpp
+    src/Tools.cpp
+    src/Game.cpp
+    
+    src/Controller.cpp
+    src/Node.cpp
+    src/SpriteImpl.cpp
+    src/TextureImpl.cpp
 )
 
 if(ANDROID)

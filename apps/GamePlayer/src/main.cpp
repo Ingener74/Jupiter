@@ -27,7 +27,7 @@
 
 //#include <selene.h>
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Ganymede/Ganimede.h>
 
 /*
@@ -55,6 +55,8 @@ using namespace boost::program_options;
 
 using namespace ganymede;
 using namespace jupiter;
+
+Game game;
 
 path gameFileLocation;
 
@@ -86,6 +88,8 @@ void display(void)
      * game->getEngine()->draw();
      */
 
+    game.draw();
+
     glutSwapBuffers();
 }
 
@@ -108,11 +112,15 @@ void mouse(int button, int action, int x, int y)
 //    cout << buttons[button] << " " << actions[action] << " " << x << " x " << y << endl;
 
     engine->inputToAll(x, y);
+
+    game.input();
 }
 
 void mouseMove( int x, int y )
 {
 //    cout << x << " x " << y << endl;
+
+    game.input();
 }
 
 int main(int argc, char **argv)
@@ -135,6 +143,51 @@ int main(int argc, char **argv)
         }
 
         if (!vm.count("game")) throw runtime_error("have no game file");
+
+        auto backGroundNode = Node{{}, {{"background", {"images/background.png"}}}};
+
+        auto gameNodes = Node{
+            {},
+            {},
+            {
+                    {"Start",
+                            {
+                                    {},
+                                    {},
+                                    {{"background", backGroundNode}}
+                            }
+                    },
+                    {"Main",
+                            {
+                                    {},
+                                    {},
+                                    {{"background", backGroundNode}}
+                            }
+                    },
+                    {"Win",
+                            {
+                                    {},
+                                    {},
+                                    {
+                                            {"background", backGroundNode},
+                                            {"winAgain", {{}, {{"WinAgain", {"resources/images/win_again.png"}}}, {}}}
+                                    }
+                            }
+                    },
+                    {"Fail",
+                            {
+                                    {},
+                                    {},
+                                    {
+                                            {"background", backGroundNode},
+                                            {"failAgain", {{}, {{"FailAgain", {"resources/images/fail_again.png"}}}, {}}}
+                                    }
+                            }
+                    }
+            }
+        };
+
+        game = Game(vm["game"].as<string>());
 
         gameFileLocation = path(vm["game"].as<string>());
 

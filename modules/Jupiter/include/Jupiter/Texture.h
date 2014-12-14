@@ -14,21 +14,15 @@
 namespace jupiter
 {
 
-class TextureLoader;
+class TextureImpl;
 
 class Texture
 {
 public:
-    static std::shared_ptr<Texture> create(std::shared_ptr<TextureLoader>);
-    virtual ~Texture();
-
-    virtual void bind();
+    Texture(const std::string& texture);
 
 private:
-    Texture();
-
-    GLuint _textureID;
-    GLenum _type;
+    std::shared_ptr<TextureImpl> _impl;
 };
 
 } /* namespace ndk_game */

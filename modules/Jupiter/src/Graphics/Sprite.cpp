@@ -6,7 +6,7 @@
  */
 
 #include <map>
-#include <Jupiter/Sprite.h>
+#include <Jupiter/facade/Sprite.h>
 #include <Jupiter/JupiterError.h>
 
 #include <Jupiter/detail/SpriteBuilder.h>
@@ -58,6 +58,157 @@ void jupiter::Sprite::setModelMatrix(const glm::mat4& m)
 ISpriteLoader::SpriteType Sprite::getDrawType() const
 {
     return _type;
+}
+
+float jupiter::Sprite::getRotationX() const
+{
+}
+
+float jupiter::Sprite::getRotationY() const
+{
+}
+
+float jupiter::Sprite::getRotationZ() const
+{
+}
+
+Sprite& jupiter::Sprite::setRotation( float x, float y, float z )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setRotationX( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setRotationY( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setRotationZ( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::rotate( float x, float y, float z )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::rotateX( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::rotateY( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::rotateZ( float float1 )
+{
+    return *this;
+}
+
+float jupiter::Sprite::getPositionX() const
+{
+}
+
+float jupiter::Sprite::getPositionY() const
+{
+}
+
+float jupiter::Sprite::getPositionZ() const
+{
+}
+
+Sprite& jupiter::Sprite::setPosition( float x, float y, float z )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setPositionX( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setPositionY( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setPositionZ( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::translate( float x, float y, float z )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::translateX( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::translateY( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::translateZ( float float1 )
+{
+    return *this;
+}
+
+float jupiter::Sprite::getScaleX() const
+{
+}
+
+float jupiter::Sprite::getScaleY() const
+{
+}
+
+Sprite& jupiter::Sprite::setScale( float x, float y )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setScaleX( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::setScaleY( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::scale( float x, float y )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::scaleX( float float1 )
+{
+    return *this;
+}
+
+Sprite& jupiter::Sprite::scaleY( float float1 )
+{
+    return *this;
+}
+
+bool jupiter::Sprite::isVisible() const
+{
+}
+
+Sprite& jupiter::Sprite::setVisible( bool bool1 )
+{
+    return *this;
 }
 
 } /* namespace ndk_game */
