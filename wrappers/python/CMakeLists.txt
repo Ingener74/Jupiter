@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 2.8.11)
+
+find_package(SWIG)
+include(${SWIG_USE_FILE})
+
+find_package(PythonLibs)
+include_directories(${PYTHON_INCLUDE_PATH})
+
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+
+SET(CMAKE_SWIG_FLAGS "")
+
+SET_SOURCE_FILES_PROPERTIES(Jupiter.i PROPERTIES CPLUSPLUS ON)
+SET_SOURCE_FILES_PROPERTIES(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall")
+SWIG_ADD_MODULE(Jupiter python Jupiter.i Jupiter_wrap.cxx)
+SWIG_LINK_LIBRARIES(Jupiter ${PYTHON_LIBRARIES})

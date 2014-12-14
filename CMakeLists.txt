@@ -67,3 +67,9 @@ add_subdirectory(modules)
 
 add_subdirectory(samples)
 
+option(WITH_WRAPPERS "Wrapper" OFF)
+
+if(WITH_WRAPPERS)
+    add_subdirectory(wrappers)
+endif()
+

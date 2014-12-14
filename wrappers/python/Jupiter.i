@@ -1,6 +1,14 @@
+
 %module Jupiter
 %{
-    #include "/home/pavel/prj/Jupiter/modules/Jupiter/include/Jupiter/Jupiter.h"
+    #include <../../modules/Jupiter/include/Jupiter/facade/Controller.h>
+    #include <../../modules/Jupiter/include/Jupiter/facade/Game.h>
+    #include <../../modules/Jupiter/include/Jupiter/facade/Node.h>
+    #include <../../modules/Jupiter/include/Jupiter/facade/Sprite.h>
 %}
 
-%include "/home/pavel/prj/Jupiter/modules/Jupiter/include/Jupiter/Jupiter.h"
+%include <../../modules/Jupiter/include/Jupiter/facade/Controller.h>
+%include <../../modules/Jupiter/include/Jupiter/facade/Game.h>
+%include <../../modules/Jupiter/include/Jupiter/facade/Node.h>
+%include <../../modules/Jupiter/include/Jupiter/facade/Sprite.h>
+
