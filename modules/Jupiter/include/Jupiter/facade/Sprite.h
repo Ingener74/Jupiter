@@ -25,29 +25,6 @@ class SpriteImpl;
 class Sprite
 {
 public:
-    Sprite() = default;
-    Sprite(std::shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader);
-    virtual ~Sprite() = default;
-
-    virtual std::shared_ptr<Texture> getTexture() const;
-    virtual const float* getVertex() const;
-    virtual uint32_t getVertexCount() const;
-
-    virtual const glm::mat4& getModelMatrix() const;
-    virtual void setModelMatrix(const glm::mat4&);
-
-    virtual ISpriteLoader::SpriteType getDrawType() const;
-
-private:
-    std::shared_ptr<Texture> _texture;
-
-    std::vector<float> _vertex;
-
-    uint32_t _vertexCount = 0;
-    glm::mat4 _modelMatrix;
-    ISpriteLoader::SpriteType _type = ISpriteLoader::SpriteType::Triangles;
-
-public:
     Sprite(const std::string& sprite);
 
     float getRotationX()const;

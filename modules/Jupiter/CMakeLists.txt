@@ -4,18 +4,6 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
-    # Graphics
-    src/Graphics/FileTextureLoader.cpp
-    src/Graphics/DummyTextureLoader.cpp
-    src/Graphics/Image.cpp
-    src/Graphics/Rect.cpp
-    src/Graphics/RectSpriteLoader.cpp
-    src/Graphics/Scene.cpp
-    src/Graphics/SimpleSpriteLoader.cpp
-    src/Graphics/Sprite.cpp
-    src/Graphics/Texture.cpp
-    src/Graphics/TextureLoader.cpp
-    src/Graphics/DrawEngine.cpp
     # Sound
     src/Sound/DummySound.cpp
     src/Sound/DummySoundEngine.cpp
@@ -35,10 +23,24 @@ set(SOURCES
     src/Tools.cpp
     src/Game.cpp
     
+    # Factories
+    src/Factories/ImageTextureFactory.cpp
+    
     src/Controller.cpp
     src/Node.cpp
     src/SpriteImpl.cpp
     src/TextureImpl.cpp
+    
+    # Graphics
+    src/Graphics/Image.cpp
+    src/Graphics/Rect.cpp
+    src/Graphics/RectSpriteLoader.cpp
+    src/Graphics/Scene.cpp
+    src/Graphics/SimpleSpriteLoader.cpp
+    src/Graphics/Sprite.cpp
+    src/Graphics/Texture.cpp
+    src/Graphics/TextureLoader.cpp
+    src/Graphics/DrawEngine.cpp
 )
 
 if(ANDROID)

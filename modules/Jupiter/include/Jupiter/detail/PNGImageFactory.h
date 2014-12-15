@@ -22,7 +22,7 @@ public:
     PNGImageFactory();
     virtual ~PNGImageFactory();
 
-    virtual Image create(const std::string& fileName);
+    virtual std::shared_ptr<ImageImpl> create(const std::string& fileName);
 
 private:
     ResourceManager::Resource file;

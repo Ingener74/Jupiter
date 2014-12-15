@@ -11,8 +11,8 @@
 #include <map>
 #include <string>
 
-#include <Jupiter/Controller.h>
-#include <Jupiter/Sprite.h>
+#include <Jupiter/facade/Controller.h>
+#include <Jupiter/facade/Sprite.h>
 
 namespace jupiter
 {

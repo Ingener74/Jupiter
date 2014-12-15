@@ -8,7 +8,7 @@
 #ifndef ROCK_H_
 #define ROCK_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Tools.h>
 
 class Rock: public jupiter::IGameObject

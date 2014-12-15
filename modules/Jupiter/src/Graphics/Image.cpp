@@ -6,9 +6,12 @@
  */
 
 #include <string>
-#include <Jupiter/Image.h>
 
+#include "../ImageImpl.h"
 #include <Jupiter/detail/ImageBuilder.h>
+#include <Jupiter/JupiterError.h>
+
+#include <Jupiter/Image.h>
 
 namespace jupiter
 {
@@ -16,34 +19,33 @@ namespace jupiter
 using namespace std;
 
 Image::Image(const std::string& fileName) :
-        Image(ImageBuilder::create(fileName))
+        _impl(ImageBuilder::create(fileName))
 {
 }
 
-Image::Image(int width, int height, Type type, std::vector<uint8_t> data) :
-        width(width), height(height), type(type), data(data)
+int Image::getWidth() const
 {
+    return _impl ? _impl->width : throw JupiterError("invalid image");
 }
 
-//Image::Image(Image&& rr)
-//{
-//    *this = rr;
-//}
-//
-//Image& Image::operator =(Image&& rr)
-//{
-//    width = move(rr.width);
-//    height = move(rr.height);
-//    type = move(rr.type);
-//    data = move(rr.data);
-//    return *this;
-//}
+int Image::getHeight() const
+{
+    return _impl ? _impl->height : throw JupiterError("invalid image");
+}
+
+const uint8_t* Image::getData() const
+{
+    return _impl ? _impl->data.data() : throw JupiterError("invalid image");
+}
+
+Image::Type Image::getType() const
+{
+    return _impl ? _impl->type : throw JupiterError("invalid image");
+}
 
 ostream& operator <<(ostream& out, const Image& r)
 {
-    return out << "Image: " << r.width << " x " << r.height << ", "
-            << (r.type == Image::Type::RGB ? string("RGB") : string("RGBA"));
+    return out << "Image: " << *r._impl;
 }
 
 }  // namespace jupiter
-

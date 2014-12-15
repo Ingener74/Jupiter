@@ -12,13 +12,10 @@ namespace jupiter
 
 SpriteImpl::SpriteImpl()
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 SpriteImpl::~SpriteImpl()
 {
-    // TODO Auto-generated destructor stub
 }
 
 } /* namespace jupiter */

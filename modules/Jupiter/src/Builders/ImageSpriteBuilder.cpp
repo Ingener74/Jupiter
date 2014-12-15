@@ -18,10 +18,9 @@ ImageSpriteBuilder::~ImageSpriteBuilder()
 {
 }
 
-Sprite ImageSpriteBuilder::create( const std::string& spriteId )
+std::shared_ptr<SpriteImpl> ImageSpriteBuilder::create( const std::string& spriteId )
 {
-    auto temp = Sprite{};
-
+//    auto temp = Sprite{};
     return {};
 }
 

@@ -19,7 +19,7 @@ public:
     FileSpriteFactory();
     virtual ~FileSpriteFactory();
 
-    virtual Sprite create(const std::string& spriteId);
+    virtual std::shared_ptr<SpriteImpl> create(const std::string& spriteId);
 };
 
 } /* namespace jupiter */

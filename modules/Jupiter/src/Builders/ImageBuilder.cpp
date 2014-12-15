@@ -17,25 +17,38 @@ using namespace std;
 
 void ImageBuilder::addFactory(const string& extension, shared_ptr<Factory> factory)
 {
-    if (Register()[extension])
+    if (factoryRegister()[extension])
         cerr << "warning: already have factory for that externsion " << extension << endl;
-    Register()[extension] = factory;
+    factoryRegister()[extension] = factory;
 }
 
-Image ImageBuilder::create(const string& fileName)
+shared_ptr<ImageImpl> ImageBuilder::create(const string& fileName)
 {
+    auto imageImpl = imageRegister()[fileName];
+    if(imageImpl)
+        return imageImpl;
+
     auto ext = getFileExtention(fileName);
-    auto factory = Register()[ext];
+    auto factory = factoryRegister()[ext];
 
     if(!factory)
         throw JupiterError("have no factories for that file extension " + ext);
 
-    return factory->create(fileName);
+    auto imImpl = factory->create(fileName);
+    imageRegister()[fileName] = imImpl;
+
+    return imImpl;
 }
 
-map<string, shared_ptr<ImageBuilder::Factory> >& ImageBuilder::Register()
+map<string, shared_ptr<ImageBuilder::Factory> >& ImageBuilder::factoryRegister()
 {
     static map<string, shared_ptr<ImageBuilder::Factory> > reg;
+    return reg;
+}
+
+map<string, shared_ptr<ImageImpl> >& ImageBuilder::imageRegister()
+{
+    static map<string, shared_ptr<ImageImpl> > reg;
     return reg;
 }
 

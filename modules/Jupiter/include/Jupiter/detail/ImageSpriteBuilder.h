@@ -8,7 +8,7 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_IMAGESPRITEBUILDER_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_IMAGESPRITEBUILDER_H_
 
-#include <Jupiter/Sprite.h>
+#include <Jupiter/facade/Sprite.h>
 #include <Jupiter/detail/SpriteBuilder.h>
 
 namespace jupiter
@@ -20,7 +20,7 @@ public:
     ImageSpriteBuilder();
     virtual ~ImageSpriteBuilder();
 
-    virtual Sprite create(const std::string& spriteId);
+    virtual std::shared_ptr<SpriteImpl> create(const std::string& spriteId);
 };
 
 }  // namespace jupiter

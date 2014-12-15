@@ -28,10 +28,14 @@ public:
 
     static std::shared_ptr<TextureImpl> create( const std::string& texture );
 
-    static void addFactory(std::string& type, std::shared_ptr<Factory>);
+    static void addFactory(const std::string& type, std::shared_ptr<Factory>);
 
 private:
-    static std::map<std::string, std::shared_ptr<Factory>>& Register();
+    TextureBuilder() = delete;
+    virtual ~TextureBuilder() = delete;
+
+    static std::map<std::string, std::shared_ptr<Factory>>& factoryRegister();
+    static std::map<std::string, std::shared_ptr<TextureImpl>>& textureRegister();
 };
 
 } /* namespace jupiter */

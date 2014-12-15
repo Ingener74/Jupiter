@@ -8,7 +8,7 @@
 #ifndef GAMEAGAIN_H_
 #define GAMEAGAIN_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Tools.h>
 
 class GameAgain: public jupiter::IGameObject

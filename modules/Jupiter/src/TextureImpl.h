@@ -8,12 +8,16 @@
 #ifndef MODULES_JUPITER_SRC_TEXTUREIMPL_H_
 #define MODULES_JUPITER_SRC_TEXTUREIMPL_H_
 
+#include <GL/glew.h>
+
 namespace jupiter
 {
 
 class TextureImpl
 {
 public:
+    friend class Texture;
+
     TextureImpl(GLuint _textureID = 0, GLenum _type = 0);
     virtual ~TextureImpl();
 

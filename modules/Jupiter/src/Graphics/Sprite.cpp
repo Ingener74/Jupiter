@@ -17,7 +17,7 @@ namespace jupiter
 using namespace std;
 
 Sprite::Sprite(const std::string& sprite) :
-        Sprite(SpriteBuilder::create(sprite))
+        _impl(SpriteBuilder::create(sprite))
 {
 }
 

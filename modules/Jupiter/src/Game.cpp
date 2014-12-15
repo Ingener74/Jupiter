@@ -5,10 +5,15 @@
  *      Author: ingener
  */
 
-#include <Jupiter/Game.h>
+#include <Jupiter/facade/Game.h>
+#include <Jupiter/detail/TextureBuilder.h>
+
+#include "Factories/ImageTextureFactory.h"
 
 namespace jupiter
 {
+
+using namespace std;
 
 Game::Game()
 {
@@ -16,6 +21,7 @@ Game::Game()
 
 Game::Game( const std::string& gameFile )
 {
+    TextureBuilder::addFactory("file", make_shared<ImageTextureFactory>());
 }
 
 Game::~Game()

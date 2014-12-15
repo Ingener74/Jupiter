@@ -18,7 +18,7 @@ FileSpriteFactory::~FileSpriteFactory()
 {
 }
 
-Sprite FileSpriteFactory::create(const std::string& spriteId)
+std::shared_ptr<SpriteImpl> FileSpriteFactory::create(const std::string& spriteId)
 {
 //    auto sprite = {};
     return {};

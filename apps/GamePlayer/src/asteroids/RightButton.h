@@ -8,7 +8,7 @@
 #ifndef RIGHTBUTTON_H_
 #define RIGHTBUTTON_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <BattleShip.h>
 
 class RightButton: public jupiter::IGameObject

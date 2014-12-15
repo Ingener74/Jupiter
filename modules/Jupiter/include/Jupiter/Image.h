@@ -11,9 +11,12 @@
 #include <cstdint>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 namespace jupiter
 {
+
+class ImageImpl;
 
 class Image
 {
@@ -24,16 +27,19 @@ public:
     };
 
     Image(const std::string& fileName);
-    Image(int width = 0, int height = 0, Type = Type::RGB, std::vector<uint8_t> data = {});
-//    Image(Image&&);
-//    Image& operator=(Image&&);
+
+    Image() = default;
     virtual ~Image() = default;
 
-    int width = 0, height = 0;
-    Type type =  Type::RGB;
-    std::vector<uint8_t> data;
+    int getWidth() const;
+    int getHeight() const;
+    const uint8_t* getData() const;
+    Type getType() const;
 
     friend std::ostream& operator<<(std::ostream&, const Image&);
+
+private:
+    std::shared_ptr<ImageImpl> _impl;
 };
 
 }  // namespace ndk_game

@@ -17,7 +17,7 @@ namespace jupiter
 
 using namespace std;
 
-Sprite SpriteBuilder::create(const string& spriteId)
+std::shared_ptr<SpriteImpl> SpriteBuilder::create(const string& spriteId)
 {
     /*
      * process sprite Id
@@ -25,6 +25,7 @@ Sprite SpriteBuilder::create(const string& spriteId)
      * format
      * file:{/concrete/file1.png, /concrete/file2.png} - default
      * camera:{0, 1, 2, ...}
+     * json:{name}
      * ...
      *
      */
@@ -41,26 +42,30 @@ Sprite SpriteBuilder::create(const string& spriteId)
             phrases
     );
 
+
     cout << "res " << res << endl;
 
     for(auto i: phrases)
         cout << "  " << i << endl;
 
-    return phrases.size() == 1 ? Register()["file"]->create(spriteId) :
-           phrases.size() == 2 ? Register()[phrases[1]]->create(spriteId) :
-           throw JupiterError("bad sprite id " + spriteId + " must contain only one double point " +
-                   [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
+    if(phrases.empty() || phrases.size() > 2)
+        throw JupiterError("bad sprite id " + spriteId + " must contain only one double point " +
+                           [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
+
+    string type = phrases.size() > 1 ? "file" : phrases.front(), parameter = phrases.back();
+
+    return factoryRegister()[type]->create(parameter);
 }
 
 void SpriteBuilder::addFactory(const string& spriteType, shared_ptr<Factory> factory)
 {
-    if(Register()[spriteType])
+    if(factoryRegister()[spriteType])
         cerr << "warning: already have factory for that type " << spriteType << endl;
 
-    Register()[spriteType] = factory;
+    factoryRegister()[spriteType] = factory;
 }
 
-map<string, shared_ptr<SpriteBuilder::Factory>>& SpriteBuilder::Register()
+map<string, shared_ptr<SpriteBuilder::Factory>>& SpriteBuilder::factoryRegister()
 {
     static map<string, shared_ptr<Factory>> reg;
     return reg;

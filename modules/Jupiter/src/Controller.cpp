@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Jupiter/Controller.h>
+#include <Jupiter/facade/Controller.h>
 
 namespace jupiter
 {

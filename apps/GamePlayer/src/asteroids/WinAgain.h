@@ -8,7 +8,7 @@
 #ifndef WINAGAIN_H_
 #define WINAGAIN_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Tools.h>
 
 class WinAgain: public jupiter::IGameObject

@@ -11,7 +11,7 @@
 #include <list>
 #include <functional>
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Tools.h>
 
 class BackGround: public jupiter::IGameObject

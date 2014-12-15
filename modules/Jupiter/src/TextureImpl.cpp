@@ -5,6 +5,8 @@
  *      Author: ingener
  */
 
+#include <Jupiter/Tools.h>
+
 #include "TextureImpl.h"
 
 namespace jupiter
@@ -16,6 +18,8 @@ TextureImpl::TextureImpl( GLuint textureID, GLenum type ): _textureID(textureID)
 
 TextureImpl::~TextureImpl()
 {
+    glDeleteTextures(1, &_textureID);
+    Tools::glError();
 }
 
 } /* namespace jupiter */

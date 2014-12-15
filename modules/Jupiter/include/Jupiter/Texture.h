@@ -21,6 +21,8 @@ class Texture
 public:
     Texture(const std::string& texture);
 
+    void bind();
+
 private:
     std::shared_ptr<TextureImpl> _impl;
 };

@@ -5,7 +5,7 @@
  *      Author: ingener
  */
 
-#include <Jupiter/Node.h>
+#include <Jupiter/facade/Node.h>
 
 namespace jupiter
 {
