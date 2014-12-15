@@ -25,6 +25,11 @@ class SpriteImpl;
 class Sprite
 {
 public:
+    enum class Type
+    {
+        Triangles, TriangleFan, TriangleStrip, LineStrip
+    };
+
     Sprite(const std::string& sprite);
 
     float getRotationX()const;

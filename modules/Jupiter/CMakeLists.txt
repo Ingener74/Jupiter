@@ -16,7 +16,6 @@ set(SOURCES
     src/Builders/ImageBuilder.cpp
     src/Builders/SpriteBuilder.cpp
     src/Builders/PNGImageFactory.cpp
-    src/Builders/ImageSpriteBuilder.cpp
     # Common
     src/ResourceShaderLoader.cpp
     src/SimpleShaderLoader.cpp

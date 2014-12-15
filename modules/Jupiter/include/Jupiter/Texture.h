@@ -19,6 +19,7 @@ class TextureImpl;
 class Texture
 {
 public:
+    Texture() = default;
     Texture(const std::string& texture);
 
     void bind();

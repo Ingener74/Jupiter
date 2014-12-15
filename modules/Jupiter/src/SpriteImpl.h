@@ -13,6 +13,7 @@
 #include <glm/glm.hpp>
 
 #include <Jupiter/Texture.h>
+#include <Jupiter/facade/Sprite.h>
 
 namespace jupiter
 {
@@ -42,7 +43,7 @@ public:
 
     uint32_t _vertexCount = 0;
     glm::mat4 _modelMatrix;
-    ISpriteLoader::SpriteType _type = ISpriteLoader::SpriteType::Triangles;
+    Sprite::Type _type = Sprite::Type::TriangleStrip;
 };
 
 } /* namespace jupiter */
