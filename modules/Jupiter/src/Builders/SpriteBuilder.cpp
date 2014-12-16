@@ -30,6 +30,10 @@ std::shared_ptr<SpriteImpl> SpriteBuilder::create(const string& spriteId)
      *
      */
 
+    auto sprtImpl = spriteRegister()[spriteId];
+    if(sprtImpl)
+        return sprtImpl;
+
     namespace q = boost::spirit::qi;
 
     vector<string> phrases;
@@ -54,7 +58,11 @@ std::shared_ptr<SpriteImpl> SpriteBuilder::create(const string& spriteId)
 
     string type = phrases.size() > 1 ? "file" : phrases.front(), parameter = phrases.back();
 
-    return factoryRegister()[type]->create(parameter);
+    auto spriteImpl = factoryRegister()[type]->create(parameter);
+
+    spriteRegister()[spriteId] = spriteImpl;
+
+    return spriteImpl;
 }
 
 void SpriteBuilder::addFactory(const string& spriteType, shared_ptr<Factory> factory)
@@ -65,9 +73,15 @@ void SpriteBuilder::addFactory(const string& spriteType, shared_ptr<Factory> fac
     factoryRegister()[spriteType] = factory;
 }
 
-map<string, shared_ptr<SpriteBuilder::Factory>>& SpriteBuilder::factoryRegister()
+SpriteBuilder::FactoriesMap& SpriteBuilder::factoryRegister()
 {
-    static map<string, shared_ptr<Factory>> reg;
+    static FactoriesMap reg;
+    return reg;
+}
+
+SpriteBuilder::SpritesMap& SpriteBuilder::spriteRegister()
+{
+    static SpritesMap reg;
     return reg;
 }
 

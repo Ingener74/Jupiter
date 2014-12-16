@@ -32,7 +32,11 @@ public:
 private:
     static std::shared_ptr<SpriteImpl> create(const std::string& spriteId);
 
-    static std::map<std::string, std::shared_ptr<Factory>>& factoryRegister();
+    using FactoriesMap = std::map<std::string, std::shared_ptr<Factory>>;
+    using SpritesMap = std::map<std::string, std::shared_ptr<SpriteImpl>>;
+
+    static FactoriesMap& factoryRegister();
+    static SpritesMap&   spriteRegister();
 
     SpriteBuilder() = default;
     virtual ~SpriteBuilder() = default;
