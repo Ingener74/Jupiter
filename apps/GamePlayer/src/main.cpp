@@ -33,18 +33,18 @@
 /*
  * Old game controller
  */
-#include <Tools.h>
-#include <BackGround.h>
-#include <BattleShip.h>
-#include <Life.h>
-#include <StartButton.h>
-#include <Rock.h>
-#include <GameAgain.h>
-#include <FireButton.h>
-#include <GasButton.h>
-#include <LeftButton.h>
-#include <RightButton.h>
-#include <WinAgain.h>
+//#include <Tools.h>
+//#include <BackGround.h>
+//#include <BattleShip.h>
+//#include <Life.h>
+//#include <StartButton.h>
+//#include <Rock.h>
+//#include <GameAgain.h>
+//#include <FireButton.h>
+//#include <GasButton.h>
+//#include <LeftButton.h>
+//#include <RightButton.h>
+//#include <WinAgain.h>
 
 /*
  * New game controllers
@@ -165,9 +165,10 @@ int height = 0;
 //std::shared_ptr<State> luaState;
 std::shared_ptr<DrawEngine> engine;
 
-string usage = ""
-        "Usage  : ./GamePlayer -g <path-to-game>\n"
-        "Example: ./GamePlayer -g ~/games/Asteroids/Asteroids.lua";
+string usage = R"(
+Usage  : ./GamePlayer -g <path-to-game>
+Example: ./GamePlayer -g ~/games/Asteroids/Asteroids.lua
+)";
 
 /*
  * Code
@@ -241,48 +242,48 @@ int main(int argc, char **argv)
 
         if (!vm.count("game")) throw runtime_error("have no game file");
 
-        auto backGroundNode = Node{{}, {{"background", {"images/background.png"}}}};
-
-        auto gameNodes = Node{
-            {},
-            {},
-            {
-                    {"Start",
-                            {
-                                    {},
-                                    {},
-                                    {{"background", backGroundNode}}
-                            }
-                    },
-                    {"Main",
-                            {
-                                    {},
-                                    {},
-                                    {{"background", backGroundNode}}
-                            }
-                    },
-                    {"Win",
-                            {
-                                    {},
-                                    {},
-                                    {
-                                            {"background", backGroundNode},
-                                            {"winAgain", {{}, {{"WinAgain", {"resources/images/win_again.png"}}}, {}}}
-                                    }
-                            }
-                    },
-                    {"Fail",
-                            {
-                                    {},
-                                    {},
-                                    {
-                                            {"background", backGroundNode},
-                                            {"failAgain", {{}, {{"FailAgain", {"resources/images/fail_again.png"}}}, {}}}
-                                    }
-                            }
-                    }
-            }
-        };
+//        auto backGroundNode = Node{{}, {{"background", {"images/background.png"}}}};
+//
+//        auto gameNodes = Node{
+//            {},
+//            {},
+//            {
+//                    {"Start",
+//                            {
+//                                    {},
+//                                    {},
+//                                    {{"background", backGroundNode}}
+//                            }
+//                    },
+//                    {"Main",
+//                            {
+//                                    {},
+//                                    {},
+//                                    {{"background", backGroundNode}}
+//                            }
+//                    },
+//                    {"Win",
+//                            {
+//                                    {},
+//                                    {},
+//                                    {
+//                                            {"background", backGroundNode},
+//                                            {"winAgain", {{}, {{"WinAgain", {"resources/images/win_again.png"}}}, {}}}
+//                                    }
+//                            }
+//                    },
+//                    {"Fail",
+//                            {
+//                                    {},
+//                                    {},
+//                                    {
+//                                            {"background", backGroundNode},
+//                                            {"failAgain", {{}, {{"FailAgain", {"resources/images/fail_again.png"}}}, {}}}
+//                                    }
+//                            }
+//                    }
+//            }
+//        };
 
         game = Game(vm["game"].as<string>());
 
@@ -311,6 +312,15 @@ int main(int argc, char **argv)
         width  = pt.get<int>("resolution.width");
         height = pt.get<int>("resolution.height");
 
+        {
+            auto sprites = pt.get_child("sprites");
+
+            for ( auto i : sprites )
+            {
+                cout << i.first << " " << i.second.get<string>("texture") << endl;
+            }
+        }
+
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
@@ -337,85 +347,81 @@ int main(int argc, char **argv)
 
         engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(vs, fs), o, width, height);
 
-//        Image im(getGameLocation() + "/resources/images/bg.png");
-//        cout << "image " << im << endl;
-
-        map<string, std::shared_ptr<Scene>> gameScenes;
-        gameScenes["Start"] = make_shared<Scene>();
-        gameScenes["Main"]  = make_shared<Scene>();
-        gameScenes["Win"]   = make_shared<Scene>();
-        gameScenes["Fail"]  = make_shared<Scene>();
-
-        auto tools = GameTools{
-            [&](const string& sceneName){ return gameScenes[sceneName]; },
-            [=](std::shared_ptr<Scene> scene){ engine->setCurrentScene(scene); }
-        };
-
-        auto dummySE = make_shared<DummySoundEngine>();
-
-        auto background = make_shared<BackGround>();
+//        map<string, std::shared_ptr<Scene>> gameScenes;
+//        gameScenes["Start"] = make_shared<Scene>();
+//        gameScenes["Main"]  = make_shared<Scene>();
+//        gameScenes["Win"]   = make_shared<Scene>();
+//        gameScenes["Fail"]  = make_shared<Scene>();
+//
+//        auto tools = GameTools{
+//            [&](const string& sceneName){ return gameScenes[sceneName]; },
+//            [=](std::shared_ptr<Scene> scene){ engine->setCurrentScene(scene); }
+//        };
+//
+//        auto dummySE = make_shared<DummySoundEngine>();
+//        auto background = make_shared<BackGround>();
 
         /*
          * Start scene
          */
-        gameScenes["Start"]->gameObject = {
-                background,
-                make_shared<StartButton>(width, height, tools)
-        };
+//        gameScenes["Start"]->gameObject = {
+//                background,
+//                make_shared<StartButton>(width, height, tools)
+//        };
 
         /*
          * Main scene
          */
 
-        auto newGame = [&]()
-        {
-            auto life = make_shared<Life>(width, height, tools);
-            auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
-
-            Rock::reset();
-            auto rock1 = Rock::createRock(width, height, dummySE, vec3{}, tools);
-            auto rock2 = Rock::createRock(width, height, dummySE, vec3{}, tools);
-            auto rock3 = Rock::createRock(width, height, dummySE, vec3{}, tools);
-
-            auto fireButton = make_shared<FireButton>(width, height, battleShip);
-            auto gasButton = make_shared<GasButton>(width, height, battleShip);
-            auto rightButton = make_shared<RightButton>(width, height, battleShip);
-            auto leftButton = make_shared<LeftButton>(width, height, battleShip);
-
-            gameScenes["Main"]->gameObject = {
-                    background,
-                    battleShip,
-                    fireButton,
-                    gasButton,
-                    rightButton,
-                    leftButton,
-                    rock1.front(),
-                    rock2.front(),
-                    rock3.front(),
-                    life,
-            };
-        };
-        newGame();
+//        auto newGame = [&]()
+//        {
+//            auto life = make_shared<Life>(width, height, tools);
+//            auto battleShip = make_shared<BattleShip>(width, height, life, dummySE, tools);
+//
+//            Rock::reset();
+//            auto rock1 = Rock::createRock(width, height, dummySE, vec3{}, tools);
+//            auto rock2 = Rock::createRock(width, height, dummySE, vec3{}, tools);
+//            auto rock3 = Rock::createRock(width, height, dummySE, vec3{}, tools);
+//
+//            auto fireButton = make_shared<FireButton>(width, height, battleShip);
+//            auto gasButton = make_shared<GasButton>(width, height, battleShip);
+//            auto rightButton = make_shared<RightButton>(width, height, battleShip);
+//            auto leftButton = make_shared<LeftButton>(width, height, battleShip);
+//
+//            gameScenes["Main"]->gameObject = {
+//                    background,
+//                    battleShip,
+//                    fireButton,
+//                    gasButton,
+//                    rightButton,
+//                    leftButton,
+//                    rock1.front(),
+//                    rock2.front(),
+//                    rock3.front(),
+//                    life,
+//            };
+//        };
+//        newGame();
 
         /*
          * Win scene
          */
-        auto winButton = make_shared<WinAgain>(width, tools, newGame);
-        gameScenes["Win"]->gameObject = {
-                background,
-                winButton
-        };
+//        auto winButton = make_shared<WinAgain>(width, tools, newGame);
+//        gameScenes["Win"]->gameObject = {
+//                background,
+//                winButton
+//        };
 
         /*
          * Lose scene
          */
-        auto failButton = make_shared<GameAgain>(width, tools, newGame);
-        gameScenes["Fail"]->gameObject = {
-                background,
-                failButton
-        };
+//        auto failButton = make_shared<GameAgain>(width, tools, newGame);
+//        gameScenes["Fail"]->gameObject = {
+//                background,
+//                failButton
+//        };
 
-        engine->setCurrentScene(gameScenes["Start"]);
+//        engine->setCurrentScene(gameScenes["Start"]);
 
         /*
          * auto gameBuilder = make_shader<LinuxGameBuilder>( vm["game"].as<string>() );
