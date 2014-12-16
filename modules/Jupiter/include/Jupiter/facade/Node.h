@@ -21,6 +21,7 @@ class Node
 {
 public:
     Node(Controller = {}, std::map<std::string, Sprite> sprites = {}, std::map<std::string, Node> nodes = {});
+    Node(const std::string& nodeName);
     virtual ~Node();
 };
 

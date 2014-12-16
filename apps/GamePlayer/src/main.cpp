@@ -46,15 +46,112 @@
 #include <RightButton.h>
 #include <WinAgain.h>
 
+/*
+ * New game controllers
+ */
+
 using namespace std;
 using namespace glm;
-//using namespace sel;
 using namespace boost;
 using namespace boost::filesystem;
 using namespace boost::program_options;
 
 using namespace ganymede;
 using namespace jupiter;
+
+/*
+ * node:backGround
+ *   sprite:background.png
+ *   controller:background.lua
+ *
+ * node:Start
+ *   node:backGround
+ *   node:StartButton
+ *     sprite:start-button.png
+ *     controller:start-button.lua
+ *
+ * node:Main
+ *   node:backGround
+ *   node:fireButton
+ *     sprite:fire-button.png
+ *     controller:fire-button.lua
+ *   node:gasButton
+ *     sprite:gas-button.png
+ *     controller:gas-button.lua
+ *   node:leftButton
+ *     sprite:left-button.png
+ *     controller:left-button.lua
+ *   node:rightButton
+ *     sprite:right-button.png
+ *     controller:right-button.lua
+ *   node:life
+ *     sprite:life-1.png
+ *     sprite:life-2.png
+ *     sprite:life-3.png
+ *     controller:life.lua
+ *   node:battleShip
+ *     sprite:ship.png
+ *     sprite:fire.png
+ *     controller:battle-ship.lua
+ *   node:bigRock1
+ *     sprite:rock.png
+ *     controller:big-rock.lua
+ *   node:bigRock2
+ *     sprite:rock.png
+ *     controller:big-rock.lua
+ *   node:bigRock3
+ *     sprite:rock.png
+ *     controller:big-rock.lua
+ *   node:smallRock1
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock2
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock3
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock4
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock5
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock6
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock7
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock8
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock9
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock10
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock11
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *   node:smallRock12
+ *     sprite:rock.png
+ *     controller:small-rock.lua
+ *
+ * node:Win
+ *   node:backGround
+ *   node:playAfterWin
+ *     sprite:play-after-win.png
+ *     controller:after-win.lua
+ *
+ * node:Fail
+ *   node:backGround
+ *   node:playAfterFail
+ *     sprite:play-after-fail.png
+ *     controller:after-fail.lua
+ *
+ */
 
 Game game;
 

@@ -16,11 +16,6 @@ namespace jupiter
 
 using namespace std;
 
-//Sprite::Sprite(const std::string& sprite) :
-//        _impl(SpriteBuilder::create(sprite))
-//{
-//}
-//
 //Sprite::Sprite(shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader) :
 //        _texture(texture ? texture : throw JupiterError("invalid texture")),
 //        _vertexCount(spriteLoader ? spriteLoader->getVertexCount() : throw JupiterError("bad vertex count")),
@@ -50,7 +45,7 @@ using namespace std;
 //    return _modelMatrix;
 //}
 //
-//void jupiter::Sprite::setModelMatrix(const glm::mat4& m)
+//void Sprite::setModelMatrix(const glm::mat4& m)
 //{
 //    _modelMatrix = m;
 //}
@@ -60,153 +55,167 @@ using namespace std;
 //    return _type;
 //}
 
-float jupiter::Sprite::getRotationX() const
+Sprite::Sprite(const std::string& sprite) :
+        _impl(SpriteBuilder::create(sprite))
 {
 }
 
-float jupiter::Sprite::getRotationY() const
+float Sprite::getRotationX() const
 {
+    return 0.f;
 }
 
-float jupiter::Sprite::getRotationZ() const
+float Sprite::getRotationY() const
 {
+    return 0.f;
 }
 
-Sprite& jupiter::Sprite::setRotation( float x, float y, float z )
+float Sprite::getRotationZ() const
 {
-    return *this;
+    return 0.f;
 }
 
-Sprite& jupiter::Sprite::setRotationX( float float1 )
-{
-    return *this;
-}
-
-Sprite& jupiter::Sprite::setRotationY( float float1 )
+Sprite& Sprite::setRotation(float x, float y, float z)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::setRotationZ( float float1 )
+Sprite& Sprite::setRotationX(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::rotate( float x, float y, float z )
+Sprite& Sprite::setRotationY(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::rotateX( float float1 )
+Sprite& Sprite::setRotationZ(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::rotateY( float float1 )
+Sprite& Sprite::rotate(float x, float y, float z)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::rotateZ( float float1 )
+Sprite& Sprite::rotateX(float float1)
 {
     return *this;
 }
 
-float jupiter::Sprite::getPositionX() const
-{
-}
-
-float jupiter::Sprite::getPositionY() const
-{
-}
-
-float jupiter::Sprite::getPositionZ() const
-{
-}
-
-Sprite& jupiter::Sprite::setPosition( float x, float y, float z )
+Sprite& Sprite::rotateY(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::setPositionX( float float1 )
+Sprite& Sprite::rotateZ(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::setPositionY( float float1 )
+float Sprite::getPositionX() const
+{
+    return 0.f;
+}
+
+float Sprite::getPositionY() const
+{
+    return 0.f;
+}
+
+float Sprite::getPositionZ() const
+{
+    return 0.f;
+}
+
+Sprite& Sprite::setPosition(float x, float y, float z)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::setPositionZ( float float1 )
+Sprite& Sprite::setPositionX(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::translate( float x, float y, float z )
+Sprite& Sprite::setPositionY(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::translateX( float float1 )
+Sprite& Sprite::setPositionZ(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::translateY( float float1 )
+Sprite& Sprite::translate(float x, float y, float z)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::translateZ( float float1 )
+Sprite& Sprite::translateX(float float1)
 {
     return *this;
 }
 
-float jupiter::Sprite::getScaleX() const
-{
-}
-
-float jupiter::Sprite::getScaleY() const
-{
-}
-
-Sprite& jupiter::Sprite::setScale( float x, float y )
+Sprite& Sprite::translateY(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::setScaleX( float float1 )
+Sprite& Sprite::translateZ(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::setScaleY( float float1 )
+float Sprite::getScaleX() const
+{
+    return 0.f;
+}
+
+float Sprite::getScaleY() const
+{
+    return 0.f;
+}
+
+Sprite& Sprite::setScale(float x, float y)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::scale( float x, float y )
+Sprite& Sprite::setScaleX(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::scaleX( float float1 )
+Sprite& Sprite::setScaleY(float float1)
 {
     return *this;
 }
 
-Sprite& jupiter::Sprite::scaleY( float float1 )
+Sprite& Sprite::scale(float x, float y)
 {
     return *this;
 }
 
-bool jupiter::Sprite::isVisible() const
+Sprite& Sprite::scaleX(float float1)
 {
+    return *this;
 }
 
-Sprite& jupiter::Sprite::setVisible( bool bool1 )
+Sprite& Sprite::scaleY(float float1)
+{
+    return *this;
+}
+
+bool Sprite::isVisible() const
+{
+    return 0.f;
+}
+
+Sprite& Sprite::setVisible(bool bool1)
 {
     return *this;
 }

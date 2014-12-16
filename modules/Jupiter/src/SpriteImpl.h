@@ -13,6 +13,7 @@
 #include <glm/glm.hpp>
 
 #include <Jupiter/Texture.h>
+#include <Jupiter/Shape.h>
 #include <Jupiter/facade/Sprite.h>
 
 namespace jupiter
@@ -24,10 +25,8 @@ public:
     SpriteImpl();
     virtual ~SpriteImpl();
 
-//        Sprite() = default;
-//    Sprite(std::shared_ptr<Texture> texture, std::shared_ptr<ISpriteLoader> spriteLoader);
-//    virtual ~Sprite() = default;
-//
+    SpriteImpl(const Texture&, const Shape&, const glm::mat4& model);
+
 //    virtual std::shared_ptr<Texture> getTexture() const;
 //    virtual const float* getVertex() const;
 //    virtual uint32_t getVertexCount() const;
@@ -37,13 +36,10 @@ public:
 //
 //    virtual ISpriteLoader::SpriteType getDrawType() const;
 
+private:
     Texture _texture;
-
-    std::vector<float> _vertex;
-
-    uint32_t _vertexCount = 0;
+    Shape _shape;
     glm::mat4 _modelMatrix;
-    Sprite::Type _type = Sprite::Type::TriangleStrip;
 };
 
 } /* namespace jupiter */
