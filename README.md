@@ -9,7 +9,7 @@
 1.2. install other dependencies
 
 ```
-sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev
+sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev swig2.0 swig2.0-doc swig2.0-examples
 ```
 
 1.3. libpng 
