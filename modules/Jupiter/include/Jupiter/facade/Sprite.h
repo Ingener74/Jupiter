@@ -9,10 +9,9 @@
 #define SPRITE_H_
 
 #ifndef SWIG
-    #include <memory>
-#endif
-
+#include <memory>
 #include <Jupiter/JupiterError.h>
+#endif
 #include <Jupiter/facade/Node.h>
 
 namespace jupiter

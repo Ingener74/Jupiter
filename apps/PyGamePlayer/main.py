@@ -7,6 +7,11 @@ from OpenGL.GLUT import *
 import sys
 import math
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/wrappers/python')))
+import Jupiter as j
+
+game = []
+
 def init ():
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glClearDepth(1.0)
@@ -18,6 +23,10 @@ def reshape ( width, height ):
 
 def display ():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    
+    global game
+    game.draw()
+    
     glutSwapBuffers()
 
 def keyPressed (*args):
@@ -38,6 +47,12 @@ def main():
     glutIdleFunc(animate)
     glutReshapeFunc(reshape)
     glutKeyboardFunc(keyPressed)
+    
+    global game
+    game = j.Game("/home/ingener/workspace/Jupiter/samples/Asteroids/Asteroids.json")
+    
+    s = j.Sprite("test.png")
+    
     init()
     
     glutMainLoop()
@@ -45,5 +60,7 @@ def main():
 if __name__ == '__main__':
     try:
         main()
+    except j.JupiterError as e:
+        print e.what()
     except Exception as e:
         print str(e)

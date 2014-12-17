@@ -31,6 +31,7 @@ set(SOURCES
     src/SpriteImpl.cpp
     src/TextureImpl.cpp
     src/ImageImpl.cpp
+    src/Shape.cpp
     
     # Graphics
     src/Graphics/Image.cpp
