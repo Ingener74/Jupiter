@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include <vector>
 #include <iostream>
 
 #define GLM_FORCE_RADIANS

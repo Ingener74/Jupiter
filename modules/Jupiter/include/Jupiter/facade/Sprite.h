@@ -8,18 +8,13 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include <cstdint>
-#include <memory>
-#include <vector>
-
-#include <glm/glm.hpp>
-
-#include <Jupiter/ISpriteLoader.h>
+#ifndef SWIG
+    #include <memory>
+#endif
 
 namespace jupiter
 {
 
-class Texture;
 class SpriteImpl;
 
 class Sprite
@@ -69,8 +64,10 @@ public:
     bool isVisible() const;
     Sprite& setVisible(bool);
 
+#ifndef SWIG
 private:
     std::shared_ptr<SpriteImpl> _impl;
+#endif
 };
 
 } /* namespace ndk_game */

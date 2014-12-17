@@ -6,6 +6,8 @@
  */
 
 #include <map>
+#include <iostream>
+
 #include <Jupiter/facade/Sprite.h>
 #include <Jupiter/JupiterError.h>
 
@@ -58,6 +60,7 @@ using namespace std;
 Sprite::Sprite(const std::string& sprite) :
         _impl(SpriteBuilder::create(sprite))
 {
+    cout << __PRETTY_FUNCTION__ << " " << sprite << endl;
 }
 
 float Sprite::getRotationX() const

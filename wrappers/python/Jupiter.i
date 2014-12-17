@@ -1,14 +1,15 @@
 
 %module Jupiter
 %{
-    #include <../../modules/Jupiter/include/Jupiter/facade/Controller.h>
-    #include <../../modules/Jupiter/include/Jupiter/facade/Game.h>
-    #include <../../modules/Jupiter/include/Jupiter/facade/Node.h>
-    #include <../../modules/Jupiter/include/Jupiter/facade/Sprite.h>
+
+#include <Jupiter/Shape.h>
+#include <Jupiter/facade/Sprite.h>
+using namespace jupiter;
+
 %}
 
-%include <../../modules/Jupiter/include/Jupiter/facade/Controller.h>
-%include <../../modules/Jupiter/include/Jupiter/facade/Game.h>
-%include <../../modules/Jupiter/include/Jupiter/facade/Node.h>
-%include <../../modules/Jupiter/include/Jupiter/facade/Sprite.h>
+%include "std_string.i"
+%include "std_vector.i"
 
+%include <Jupiter/facade/Sprite.h>
+%include <Jupiter/Shape.h>
