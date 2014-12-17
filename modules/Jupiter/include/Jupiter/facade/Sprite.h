@@ -12,15 +12,18 @@
     #include <memory>
 #endif
 
+#include <Jupiter/JupiterError.h>
+#include <Jupiter/facade/Node.h>
+
 namespace jupiter
 {
 
 class SpriteImpl;
 
-class Sprite
+class Sprite: public Node
 {
 public:
-    Sprite(const std::string& sprite);
+    Sprite(const std::string& sprite) throw (JupiterError);
 
     float getRotationX()const;
     float getRotationY()const;

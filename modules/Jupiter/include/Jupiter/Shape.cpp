@@ -10,7 +10,8 @@
 namespace jupiter
 {
 
-Shape::Shape(const std::vector<float>& data)
+jupiter::Shape::Shape(const std::vector<float>& data, Type type) :
+        _data(data), _type(type)
 {
 }
 

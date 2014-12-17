@@ -15,6 +15,8 @@
 
 #include <glm/glm.hpp>
 
+#include <Jupiter/facade/Node.h>
+
 namespace jupiter
 {
 
@@ -29,6 +31,7 @@ public:
     virtual ~DrawEngine();
 
     virtual void setCurrentScene(std::shared_ptr<Scene>);
+    virtual void setRootNode(const Node&);
     virtual void draw();
     virtual void inputToAll(int x, int y);
     virtual void animateAll(double elapsedMs);
@@ -42,6 +45,8 @@ protected:
     int _screenWidth = 0, _screenHeight = 0;
 
     std::shared_ptr<Scene> _currentScene;
+
+    Node _rootNode;
 
     static GLuint createProgram(std::string vertexShader, std::string fragmentShader);
     static GLuint createShader(GLenum shaderType, std::string source);

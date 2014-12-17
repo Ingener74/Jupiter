@@ -8,7 +8,9 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_GAME_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_GAME_H_
 
+#ifndef SWIG
 #include <string>
+#endif
 
 namespace jupiter
 {

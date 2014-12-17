@@ -10,12 +10,22 @@
 namespace jupiter
 {
 
-Node::Node( Controller controller, std::map<std::string, Sprite> sprites, std::map<std::string, Node> nodes )
+jupiter::Node::Node(const Controller&, std::map<std::string, Node> nodes)
 {
 }
 
-Node::~Node()
+jupiter::Node::Node(const std::string& nodeName)
 {
+}
+
+bool jupiter::Node::operator <(const Node& r)
+{
+    return _model[0][0] < r._model[0][0];
+}
+
+bool jupiter::Node::operator >(const Node& r)
+{
+    return _model[0][0] > r._model[0][0];
 }
 
 } /* namespace jupiter */

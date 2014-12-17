@@ -25,7 +25,7 @@ public:
     };
 
     Shape() = default;
-    Shape(const std::vector<float>& data);
+    Shape(const std::vector<float>& data, Type);
     virtual ~Shape() = default;
 
     int32_t vertexCount() const;
@@ -37,8 +37,8 @@ public:
 private:
     std::vector<float> _data; // {{{x, y, z}, {tx, ty}}, ...} size = _vertexCount * 5
     Type _type = Type::TriangleStrip;
-    static const int DATA_IN_ONE_VERTEX = 5;
 
+    static const int DATA_IN_ONE_VERTEX = 5;
 #endif
 };
 

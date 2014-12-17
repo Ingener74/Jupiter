@@ -57,7 +57,7 @@ using namespace std;
 //    return _type;
 //}
 
-Sprite::Sprite(const std::string& sprite) :
+Sprite::Sprite(const std::string& sprite) throw (JupiterError) :
         _impl(SpriteBuilder::create(sprite))
 {
     cout << __PRETTY_FUNCTION__ << " " << sprite << endl;

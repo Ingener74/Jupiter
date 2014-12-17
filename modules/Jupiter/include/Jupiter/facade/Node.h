@@ -8,11 +8,14 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 
+#ifndef SWIG
 #include <map>
 #include <string>
 
+#include <glm/glm.hpp>
+
 #include <Jupiter/facade/Controller.h>
-#include <Jupiter/facade/Sprite.h>
+#endif
 
 namespace jupiter
 {
@@ -20,9 +23,20 @@ namespace jupiter
 class Node
 {
 public:
-    Node(Controller = {}, std::map<std::string, Sprite> sprites = {}, std::map<std::string, Node> nodes = {});
-    Node(const std::string& nodeName);
-    virtual ~Node();
+#ifndef SWIG
+    Node(const Controller&, std::map<std::string, Node> nodes);
+#endif
+    Node(const std::string& nodeName = {});
+    virtual ~Node() = default;
+
+    bool operator<(const Node&);
+    bool operator>(const Node&);
+
+#ifndef SWIG
+private:
+    glm::mat4 _model;
+    std::map<std::string, Node> _nodes;
+#endif
 };
 
 } /* namespace jupiter */

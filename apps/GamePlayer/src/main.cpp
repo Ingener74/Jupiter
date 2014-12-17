@@ -298,6 +298,8 @@ int main(int argc, char **argv)
 
             ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
             ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
+
+            SpriteBuilder::addFactory("file", make_shared<FileSpriteFactory>());
         }
 
         auto script = ResourceManager::createResource("Asteroids.lua");
@@ -346,6 +348,8 @@ int main(int argc, char **argv)
         string vs = "resources/shaders/vertex.shader", fs = "resources/shaders/fragment.shader";
 
         engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(vs, fs), o, width, height);
+
+        Sprite s{"resources/images/bg.png"};
 
 //        map<string, std::shared_ptr<Scene>> gameScenes;
 //        gameScenes["Start"] = make_shared<Scene>();

@@ -46,19 +46,17 @@ std::shared_ptr<SpriteImpl> SpriteBuilder::create(const string& spriteId)
             phrases
     );
 
-
-    cout << "res " << res << endl;
-
-    for(auto i: phrases)
-        cout << "  " << i << endl;
-
     if(phrases.empty() || phrases.size() > 2)
         throw JupiterError("bad sprite id " + spriteId + " must contain only one double point " +
                            [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
 
-    string type = phrases.size() > 1 ? "file" : phrases.front(), parameter = phrases.back();
+    string type = phrases.size() > 1 ? phrases.front() : "file", parameter = phrases.back();
 
-    auto spriteImpl = factoryRegister()[type]->create(parameter);
+    auto factory = factoryRegister()[type];
+    if(!factory)
+        throw JupiterError("has no factory for sprite type " + type);
+
+    auto spriteImpl = factory->create(parameter);
 
     spriteRegister()[spriteId] = spriteImpl;
 

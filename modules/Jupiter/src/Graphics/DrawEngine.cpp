@@ -209,5 +209,8 @@ GLuint DrawEngine::createShader(GLenum shaderType, string source)
             "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
 }
 
-}  // namespace jupiter
+void DrawEngine::setRootNode(const Node&)
+{
+}
 
+}  // namespace jupiter

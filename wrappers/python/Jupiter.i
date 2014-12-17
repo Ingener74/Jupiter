@@ -4,6 +4,7 @@
 
 #include <Jupiter/Shape.h>
 #include <Jupiter/facade/Sprite.h>
+#include <Jupiter/facade/Game.h>
 using namespace jupiter;
 
 %}
@@ -12,4 +13,5 @@ using namespace jupiter;
 %include "std_vector.i"
 
 %include <Jupiter/facade/Sprite.h>
-%include <Jupiter/Shape.h>
+%include <Jupiter/JupiterError.h>
+%include <Jupiter/facade/Game.h>
