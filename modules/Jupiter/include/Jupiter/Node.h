@@ -18,6 +18,8 @@
 namespace jupiter
 {
 
+class NodeVisitor;
+
 class Node
 {
 public:
@@ -69,6 +71,8 @@ public:
 
     bool isVisible() const;
     Node& setVisible(bool);
+
+    Node& accept(const NodeVisitor&);
 
 private:
     glm::mat4 _model;

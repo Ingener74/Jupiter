@@ -196,5 +196,10 @@ Node& Node::setVisible(bool bool1)
     return *this;
 }
 
+Node& Node::accept(const NodeVisitor&)
+{
+    return *this;
+}
+
 } /* namespace jupiter */
 

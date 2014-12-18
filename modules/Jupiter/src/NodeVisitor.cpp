@@ -12,13 +12,20 @@ namespace jupiter
 
 NodeVisitor::NodeVisitor()
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 NodeVisitor::~NodeVisitor()
 {
-    // TODO Auto-generated destructor stub
+}
+
+NodeVisitor& NodeVisitor::visit(const Node&)
+{
+    return *this;
+}
+
+NodeVisitor& NodeVisitor::visit(const Sprite&)
+{
+    return *this;
 }
 
 } /* namespace jupiter */

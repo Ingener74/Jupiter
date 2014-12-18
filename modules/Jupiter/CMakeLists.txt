@@ -32,6 +32,8 @@ set(SOURCES
     src/TextureImpl.cpp
     src/ImageImpl.cpp
     src/Shape.cpp
+    src/NodeVisitor.cpp
+    src/RenderVisitor.cpp
     
     # Graphics
     src/Graphics/Image.cpp

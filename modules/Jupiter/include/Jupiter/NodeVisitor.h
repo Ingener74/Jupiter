@@ -11,13 +11,17 @@
 namespace jupiter
 {
 
+class Node;
+class Sprite;
+
 class NodeVisitor
 {
 public:
     NodeVisitor();
     virtual ~NodeVisitor();
 
-
+    NodeVisitor& visit(const Node&);
+    NodeVisitor& visit(const Sprite&);
 };
 
 } /* namespace jupiter */
