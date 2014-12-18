@@ -8,7 +8,7 @@
 #ifndef IMAGETEXTUREBUILDER_H_
 #define IMAGETEXTUREBUILDER_H_
 
-#include <Jupiter/detail/TextureBuilder.h>
+#include <Jupiter/TextureBuilder.h>
 
 namespace jupiter
 {

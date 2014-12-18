@@ -15,7 +15,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Jupiter/facade/Node.h>
+#include <Jupiter/Node.h>
 
 namespace jupiter
 {

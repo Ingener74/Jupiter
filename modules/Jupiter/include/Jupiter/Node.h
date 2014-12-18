@@ -13,7 +13,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Jupiter/facade/Controller.h>
+#include <Jupiter/Controller.h>
 
 namespace jupiter
 {

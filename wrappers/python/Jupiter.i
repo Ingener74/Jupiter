@@ -2,10 +2,10 @@
 %module Jupiter
 %{
 
-#include <Jupiter/facade/Game.h>
-#include <Jupiter/facade/Sprite.h>
-#include <Jupiter/facade/Node.h>
-#include <Jupiter/facade/Controller.h>
+#include <Jupiter/Game.h>
+#include <Jupiter/Sprite.h>
+#include <Jupiter/Node.h>
+#include <Jupiter/Controller.h>
 #include <Jupiter/Image.h>
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/Texture.h>

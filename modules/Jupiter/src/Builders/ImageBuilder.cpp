@@ -7,7 +7,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 
-#include <Jupiter/detail/ImageBuilder.h>
+#include <Jupiter/ImageBuilder.h>
 #include <Jupiter/JupiterError.h>
 
 namespace jupiter

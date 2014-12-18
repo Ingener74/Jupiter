@@ -8,10 +8,10 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
-#include <Jupiter/facade/Game.h>
-#include <Jupiter/facade/Sprite.h>
-#include <Jupiter/facade/Node.h>
-#include <Jupiter/facade/Controller.h>
+#include <Jupiter/Game.h>
+#include <Jupiter/Sprite.h>
+#include <Jupiter/Node.h>
+#include <Jupiter/Controller.h>
 #include <Jupiter/Image.h>
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/Texture.h>
@@ -44,11 +44,11 @@
 #include <Jupiter/Tools.h>
 #include <Jupiter/Rect.h>
 #include <Jupiter/Scene.h>
-#include <Jupiter/detail/SpriteBuilder.h>
-#include <Jupiter/detail/FileSpriteFactory.h>
+#include <Jupiter/SpriteBuilder.h>
+#include <Jupiter/FileSpriteFactory.h>
 
-#include <Jupiter/detail/ImageBuilder.h>
-#include <Jupiter/detail/PNGImageFactory.h>
+#include <Jupiter/ImageBuilder.h>
+#include <Jupiter/PNGImageFactory.h>
 
 #ifdef ANDROID
 	#include <Jupiter/SLESSound.h>

@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-#include <Jupiter/facade/Sprite.h>
+#include <Jupiter/Sprite.h>
 
 namespace jupiter
 {

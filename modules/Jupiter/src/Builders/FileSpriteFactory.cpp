@@ -9,7 +9,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Jupiter/detail/FileSpriteFactory.h>
+#include <Jupiter/FileSpriteFactory.h>
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/Texture.h>
 #include <Jupiter/Shape.h>
@@ -30,7 +30,7 @@ FileSpriteFactory::~FileSpriteFactory()
 
 std::shared_ptr<SpriteImpl> FileSpriteFactory::create(const std::string& spriteId)
 {
-    throw JupiterError{"i can't now build sprite impl"};
+//    throw JupiterError{"i can't now build sprite impl"};
 
     Texture   t{spriteId};
     Shape     s{};

@@ -9,7 +9,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 
-#include <Jupiter/detail/TextureBuilder.h>
+#include <Jupiter/TextureBuilder.h>
 #include <Jupiter/JupiterError.h>
 
 namespace jupiter
@@ -31,18 +31,17 @@ shared_ptr<TextureImpl> TextureBuilder::create( const string& texture )
             phrases
     );
 
-    cout << __PRETTY_FUNCTION__ << " res " << res << endl;
-
-    for(auto i: phrases)
-        cout << "  " << i << endl;
-
     string type = phrases.size() > 1 ? phrases.front() : "file", parameter = phrases.back();
 
     return phrases.size() < 3 ? factoryRegister()[type]->create(parameter) :
            throw JupiterError("bad texture " +
                    [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
 
-    return factoryRegister()[ type ]->create(parameter);
+    auto factory = factoryRegister()[type];
+    if(!factory)
+        throw JupiterError("have no factory for type " + type);
+
+    return factory->create(parameter);
 }
 
 void TextureBuilder::addFactory(const std::string& type, std::shared_ptr<Factory> factory )

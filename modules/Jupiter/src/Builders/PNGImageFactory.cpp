@@ -6,7 +6,7 @@
  */
 
 #include <Jupiter/JupiterError.h>
-#include <Jupiter/detail/PNGImageFactory.h>
+#include <Jupiter/PNGImageFactory.h>
 #include "../ImageImpl.h"
 
 namespace jupiter

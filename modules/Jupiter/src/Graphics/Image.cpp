@@ -8,7 +8,7 @@
 #include <string>
 
 #include "../ImageImpl.h"
-#include <Jupiter/detail/ImageBuilder.h>
+#include <Jupiter/ImageBuilder.h>
 #include <Jupiter/JupiterError.h>
 
 #include <Jupiter/Image.h>

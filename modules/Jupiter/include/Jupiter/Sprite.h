@@ -10,7 +10,7 @@
 
 #include <memory>
 #include <Jupiter/JupiterError.h>
-#include <Jupiter/facade/Node.h>
+#include <Jupiter/Node.h>
 
 namespace jupiter
 {

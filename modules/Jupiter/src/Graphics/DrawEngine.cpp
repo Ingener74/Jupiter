@@ -16,7 +16,7 @@
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/DrawEngine.h>
 #include <Jupiter/Tools.h>
-#include <Jupiter/facade/Sprite.h>
+#include <Jupiter/Sprite.h>
 #include <Jupiter/IShaderLoader.h>
 #include <Jupiter/IGameObject.h>
 #include <Jupiter/Scene.h>

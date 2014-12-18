@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include <Jupiter/facade/Node.h>
+#include <Jupiter/Node.h>
 
 namespace jupiter
 {
@@ -16,17 +16,14 @@ using namespace std;
 
 Node::Node(const Controller&, std::map<std::string, Node> nodes)
 {
-    cout << __PRETTY_FUNCTION__ << endl;
 }
 
 Node::Node(const std::string& nodeName)
 {
-    cout << __PRETTY_FUNCTION__ << endl;
 }
 
 Node::~Node()
 {
-    cout << __PRETTY_FUNCTION__ << endl;
 }
 
 bool Node::operator <(const Node& r)

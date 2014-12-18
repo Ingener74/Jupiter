@@ -11,7 +11,7 @@
 #include <png.h>
 
 #include <Jupiter/ResourceManager.h>
-#include <Jupiter/detail/ImageBuilder.h>
+#include <Jupiter/ImageBuilder.h>
 
 namespace jupiter
 {

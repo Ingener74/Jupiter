@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include <Jupiter/facade/Controller.h>
+#include <Jupiter/Controller.h>
 
 namespace jupiter
 {

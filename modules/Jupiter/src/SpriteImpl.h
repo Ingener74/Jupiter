@@ -14,7 +14,7 @@
 
 #include <Jupiter/Texture.h>
 #include <Jupiter/Shape.h>
-#include <Jupiter/facade/Sprite.h>
+#include <Jupiter/Sprite.h>
 
 namespace jupiter
 {
@@ -23,9 +23,9 @@ class SpriteImpl
 {
 public:
     SpriteImpl();
+    SpriteImpl(const Texture&, const Shape&, const glm::mat4& model);
     virtual ~SpriteImpl();
 
-    SpriteImpl(const Texture&, const Shape&, const glm::mat4& model);
 
 //    virtual std::shared_ptr<Texture> getTexture() const;
 //    virtual const float* getVertex() const;

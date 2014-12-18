@@ -7,12 +7,12 @@
 
 #include <boost/filesystem.hpp>
 
-#include <Jupiter/facade/Game.h>
-#include <Jupiter/detail/TextureBuilder.h>
+#include <Jupiter/Game.h>
+#include <Jupiter/TextureBuilder.h>
 #include <Jupiter/ResourceManager.h>
 #include <Jupiter/FileResource.h>
-#include <Jupiter/detail/FileSpriteFactory.h>
-#include <Jupiter/detail/PNGImageFactory.h>
+#include <Jupiter/FileSpriteFactory.h>
+#include <Jupiter/PNGImageFactory.h>
 
 #include "Factories/ImageTextureFactory.h"
 

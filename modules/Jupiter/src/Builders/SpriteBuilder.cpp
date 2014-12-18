@@ -9,7 +9,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 
-#include <Jupiter/detail/SpriteBuilder.h>
+#include <Jupiter/SpriteBuilder.h>
 #include <Jupiter/JupiterError.h>
 
 namespace jupiter

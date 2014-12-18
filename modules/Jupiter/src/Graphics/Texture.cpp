@@ -8,7 +8,7 @@
 #include <Jupiter/Tools.h>
 #include <Jupiter/TextureLoader.h>
 #include <Jupiter/Texture.h>
-#include <Jupiter/detail/TextureBuilder.h>
+#include <Jupiter/TextureBuilder.h>
 
 #include "../TextureImpl.h"
 
