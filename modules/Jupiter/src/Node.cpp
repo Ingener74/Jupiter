@@ -7,12 +7,18 @@
 
 #include <iostream>
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <Jupiter/Node.h>
 
 namespace jupiter
 {
 
 using namespace std;
+using namespace glm;
 
 Node::Node(const Controller&, std::map<std::string, Node> nodes)
 {
@@ -28,12 +34,12 @@ Node::~Node()
 
 bool Node::operator <(const Node& r)
 {
-    return _model[0][0] < r._model[0][0];
+    return _model[3].z < r._model[3].z;
 }
 
 bool Node::operator >(const Node& r)
 {
-    return _model[0][0] > r._model[0][0];
+    return _model[3].z > r._model[3].z;
 }
 
 float Node::getRotationX() const
@@ -93,56 +99,66 @@ Node& Node::rotateZ(float float1)
 
 float Node::getPositionX() const
 {
-    return 0.f;
+    return _model[3].x;
 }
 
 float Node::getPositionY() const
 {
-    return 0.f;
+    return _model[3].y;
 }
 
 float Node::getPositionZ() const
 {
-    return 0.f;
+    return _model[3].z;
 }
 
 Node& Node::setPosition(float x, float y, float z)
 {
+    _model[3].x = x;
+    _model[3].y = y;
+    _model[3].z = z;
     return *this;
 }
 
-Node& Node::setPositionX(float float1)
+Node& Node::setPositionX(float x)
 {
+    _model[3].x = x;
     return *this;
 }
 
-Node& Node::setPositionY(float float1)
+Node& Node::setPositionY(float y)
 {
+    _model[3].y = y;
     return *this;
 }
 
-Node& Node::setPositionZ(float float1)
+Node& Node::setPositionZ(float z)
 {
+    _model[3].z = z;
     return *this;
 }
 
 Node& Node::translate(float x, float y, float z)
 {
+    _model = glm::translate(_model, vec3{x, y, z});
     return *this;
 }
 
-Node& Node::translateX(float float1)
+Node& Node::translateX(float x)
 {
+    _model = glm::translate(_model, vec3{x, 0.f, 0.f});
     return *this;
 }
 
-Node& Node::translateY(float float1)
+Node& Node::translateY(float y)
 {
+    _model = glm::translate(_model, vec3{0.f, y, 0.f});
     return *this;
 }
 
-Node& Node::translateZ(float float1)
+Node& Node::translateZ(float z)
 {
+    _model = glm::translate(_model, vec3{0.f, 0.f, z});
     return *this;
 }
 

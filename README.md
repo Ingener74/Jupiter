@@ -25,6 +25,20 @@ make
 sudo make install
 ```
 
+1.4. Box2D
+
+download last version of Box2D
+
+```
+7z x Box2D
+cd Box2D/Box2D
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make
+sudo make install
+```
+
 2. build
 
 ```

@@ -221,26 +221,8 @@ void mouseMove( int x, int y )
     game.input();
 }
 
-void print_mat4(const mat4& m)
-{
-    cout <<
-            setw(12) << m[0][0] << "  " << setw(12) << m[0][1] << "  " << setw(12) << m[0][2] << "  " << setw(12) << m[0][3] << "  " << endl <<
-            setw(12) << m[1][0] << "  " << setw(12) << m[1][1] << "  " << setw(12) << m[1][2] << "  " << setw(12) << m[1][3] << "  " << endl <<
-            setw(12) << m[2][0] << "  " << setw(12) << m[2][1] << "  " << setw(12) << m[2][2] << "  " << setw(12) << m[2][3] << "  " << endl <<
-            setw(12) << m[3][0] << "  " << setw(12) << m[3][1] << "  " << setw(12) << m[3][2] << "  " << setw(12) << m[3][3] << "  " << endl;
-}
-
 int main(int argc, char **argv)
 {
-    mat4 m1;
-    print_mat4(m1);
-    print_mat4(translate(m1, vec3{100.f, 0.f, 0.f}));
-    cout << " " << endl;
-    print_mat4(translate(m1, vec3{0.f, 100.f, 0.f}));
-    cout << " " << endl;
-    print_mat4(translate(m1, vec3{0.f, 0.f, 100.f}));
-    cout << " " << endl;
-
     options_description desc("General description");
     try
     {
