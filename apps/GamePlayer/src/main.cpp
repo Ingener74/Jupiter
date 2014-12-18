@@ -289,19 +289,6 @@ int main(int argc, char **argv)
 
         gameFileLocation = path(vm["game"].as<string>());
 
-        {
-            /*
-             * Jupiter internal settings
-             */
-            ResourceManager::setPathPrefix(gameFileLocation.parent_path().c_str());
-            ResourceManager::setFactory(make_shared<FileResource>());
-
-            ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
-            ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
-
-            SpriteBuilder::addFactory("file", make_shared<FileSpriteFactory>());
-        }
-
         auto script = ResourceManager::createResource("Asteroids.lua");
         ganymede::State L;
         L.load(*script);

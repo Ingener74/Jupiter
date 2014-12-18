@@ -52,11 +52,11 @@ def main():
     glutKeyboardFunc(keyPressed)
     
     global game
-    game = j.Game("/home/ingener/workspace/Jupiter/samples/Asteroids/Asteroids.json")
+    game = j.Game("/home/pavel/prj/Jupiter/samples/Asteroids/Asteroids.json")
     
     c = j.Controller()
     
-    s = j.Sprite("test.png")
+    s = j.Sprite("resources/images/bg.png")
     
     init()
     
