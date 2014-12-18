@@ -23,9 +23,8 @@ class SpriteImpl
 {
 public:
     SpriteImpl();
-    SpriteImpl(const Texture&, const Shape&, const glm::mat4& model);
+    SpriteImpl( const Texture&, const Shape& );
     virtual ~SpriteImpl();
-
 
 //    virtual std::shared_ptr<Texture> getTexture() const;
 //    virtual const float* getVertex() const;
@@ -39,7 +38,6 @@ public:
 private:
     Texture _texture;
     Shape _shape;
-    glm::mat4 _modelMatrix;
 };
 
 } /* namespace jupiter */

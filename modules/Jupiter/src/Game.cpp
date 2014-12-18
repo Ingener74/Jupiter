@@ -13,6 +13,7 @@
 #include <Jupiter/FileResource.h>
 #include <Jupiter/FileSpriteFactory.h>
 #include <Jupiter/PNGImageFactory.h>
+#include <Jupiter/JupiterError.h>
 
 #include "Factories/ImageTextureFactory.h"
 
@@ -48,12 +49,10 @@ Game::~Game()
 
 void Game::draw()
 {
-    cout << __PRETTY_FUNCTION__ << endl;
 }
 
 void Game::input()
 {
-    cout << __PRETTY_FUNCTION__ << endl;
 }
 
 } /* namespace jupiter */

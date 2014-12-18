@@ -35,6 +35,11 @@ def keyPressed (*args):
 
 def animate():
     glutPostRedisplay ()
+    
+def mouse( button, state, x, y ):
+    
+    global game
+    game.input()
 
 def main():
     
@@ -50,13 +55,15 @@ def main():
     glutIdleFunc(animate)
     glutReshapeFunc(reshape)
     glutKeyboardFunc(keyPressed)
+    glutMouseFunc(mouse)
     
     global game
-    game = j.Game("/home/pavel/prj/Jupiter/samples/Asteroids/Asteroids.json")
+    game = j.Game("../../samples/Asteroids/Asteroids.json")
     
     c = j.Controller()
     
     s = j.Sprite("resources/images/bg.png")
+    s.translateX(1.0)
     
     init()
     

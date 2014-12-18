@@ -72,10 +72,14 @@ public:
     bool isVisible() const;
     Node& setVisible(bool);
 
-    Node& accept(const NodeVisitor&);
+    Node& accept(NodeVisitor&);
+
+    std::map<std::string, Node>& getNodes();
+    const Controller& getController() const;
 
 private:
     glm::mat4 _model;
+    Controller _controller;
     std::map<std::string, Node> _nodes;
 };
 

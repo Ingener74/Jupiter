@@ -18,12 +18,12 @@ NodeVisitor::~NodeVisitor()
 {
 }
 
-NodeVisitor& NodeVisitor::visit(const Node&)
+NodeVisitor& NodeVisitor::visit(Node&)
 {
     return *this;
 }
 
-NodeVisitor& NodeVisitor::visit(const Sprite&)
+NodeVisitor& NodeVisitor::visit(Sprite&)
 {
     return *this;
 }

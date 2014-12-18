@@ -221,8 +221,21 @@ void mouseMove( int x, int y )
     game.input();
 }
 
+ostream& operator<<(ostream& out, const mat4& m){
+    return out <<
+            setw(10) << m[0].x << setw(10) << m[0].y << setw(10) << m[0].z << setw(10) << m[0].w << endl <<
+            setw(10) << m[1].x << setw(10) << m[1].y << setw(10) << m[1].z << setw(10) << m[1].w << endl <<
+            setw(10) << m[2].x << setw(10) << m[2].y << setw(10) << m[2].z << setw(10) << m[2].w << endl <<
+            setw(10) << m[3].x << setw(10) << m[3].y << setw(10) << m[3].z << setw(10) << m[3].w;
+}
+
 int main(int argc, char **argv)
 {
+    mat4 m1;
+    cout << scale(m1, vec3{10.f, 1.f, 1.f}) << endl << endl;
+    cout << scale(m1, vec3{1.f, 10.f, 1.f}) << endl << endl;
+    cout << scale(m1, vec3{1.f, 1.f, 10.f}) << endl << endl;
+
     options_description desc("General description");
     try
     {

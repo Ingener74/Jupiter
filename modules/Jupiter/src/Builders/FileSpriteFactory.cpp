@@ -34,9 +34,8 @@ std::shared_ptr<SpriteImpl> FileSpriteFactory::create(const std::string& spriteI
 
     Texture   t{spriteId};
     Shape     s{};
-    glm::mat4 m;
 
-    return make_shared<SpriteImpl>(t, s, m);
+    return make_shared<SpriteImpl>(t, s);
 }
 
 } /* namespace jupiter */

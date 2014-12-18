@@ -14,8 +14,8 @@ SpriteImpl::SpriteImpl()
 {
 }
 
-SpriteImpl::SpriteImpl(const Texture& texture, const Shape& shape, const glm::mat4& model) :
-        _texture(texture), _shape(shape), _modelMatrix(model)
+SpriteImpl::SpriteImpl( const Texture& texture, const Shape& shape ) :
+        _texture(texture), _shape(shape)
 {
 }
 

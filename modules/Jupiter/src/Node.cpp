@@ -13,6 +13,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <Jupiter/Node.h>
+#include <Jupiter/NodeVisitor.h>
 
 namespace jupiter
 {
@@ -20,7 +21,7 @@ namespace jupiter
 using namespace std;
 using namespace glm;
 
-Node::Node(const Controller&, std::map<std::string, Node> nodes)
+Node::Node(const Controller& controller, std::map<std::string, Node> nodes): _controller(controller), _nodes(nodes)
 {
 }
 
@@ -62,17 +63,17 @@ Node& Node::setRotation(float x, float y, float z)
     return *this;
 }
 
-Node& Node::setRotationX(float float1)
+Node& Node::setRotationX(float x)
 {
     return *this;
 }
 
-Node& Node::setRotationY(float float1)
+Node& Node::setRotationY(float y)
 {
     return *this;
 }
 
-Node& Node::setRotationZ(float float1)
+Node& Node::setRotationZ(float z)
 {
     return *this;
 }
@@ -164,41 +165,48 @@ Node& Node::translateZ(float z)
 
 float Node::getScaleX() const
 {
-    return 1.f;
+    return _model[0].x;
 }
 
 float Node::getScaleY() const
 {
-    return 1.f;
+    return _model[1].y;
 }
 
 Node& Node::setScale(float x, float y)
 {
+    _model[0].x = x;
+    _model[1].y = y;
     return *this;
 }
 
-Node& Node::setScaleX(float float1)
+Node& Node::setScaleX(float x)
 {
+    _model[0].x = x;
     return *this;
 }
 
-Node& Node::setScaleY(float float1)
+Node& Node::setScaleY(float y)
 {
+    _model[1].y = y;
     return *this;
 }
 
 Node& Node::scale(float x, float y)
 {
+    _model = glm::scale(_model, vec3{x, y, 0.f});
     return *this;
 }
 
-Node& Node::scaleX(float float1)
+Node& Node::scaleX(float x)
 {
+    _model = glm::scale(_model, vec3{x, 0.f, 0.f});
     return *this;
 }
 
-Node& Node::scaleY(float float1)
+Node& Node::scaleY(float y)
 {
+    _model = glm::scale(_model, vec3{0.f, y, 0.f});
     return *this;
 }
 
@@ -212,10 +220,20 @@ Node& Node::setVisible(bool bool1)
     return *this;
 }
 
-Node& Node::accept(const NodeVisitor&)
+Node& Node::accept(NodeVisitor& nv)
 {
+    nv.visit(*this);
     return *this;
 }
 
-} /* namespace jupiter */
+std::map<std::string, Node>& jupiter::Node::getNodes()
+{
+    return _nodes;
+}
 
+const Controller& jupiter::Node::getController() const
+{
+    return _controller;
+}
+
+} /* namespace jupiter */

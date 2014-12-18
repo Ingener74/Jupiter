@@ -6,6 +6,8 @@
  */
 
 #include <Jupiter/RenderVisitor.h>
+#include <Jupiter/Node.h>
+#include <Jupiter/Sprite.h>
 
 namespace jupiter
 {
@@ -18,13 +20,34 @@ RenderVisitor::~RenderVisitor()
 {
 }
 
-RenderVisitor& RenderVisitor::visit(const Node&)
+RenderVisitor& RenderVisitor::visit( Node& node )
 {
+    if ( node.isVisible() )
+        for ( auto &i : node.getNodes() )
+            visit(i.second);
     return *this;
 }
 
-RenderVisitor& RenderVisitor::visit(const Sprite&)
+RenderVisitor& RenderVisitor::visit( Sprite& sprite )
 {
+    /*
+     * draw sprite
+     */
+
+//    sprite._impl->
+
+    /*
+     * texture -> bind
+     *
+     * draw shape with program
+     *
+     */
+
+
+
+    if ( sprite.isVisible() )
+        for ( auto i : sprite.getNodes() )
+            visit(i.second);
     return *this;
 }
 

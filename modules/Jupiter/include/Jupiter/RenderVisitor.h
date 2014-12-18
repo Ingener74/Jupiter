@@ -13,16 +13,14 @@
 namespace jupiter
 {
 
-class Node;
-
 class RenderVisitor: public NodeVisitor
 {
 public:
     RenderVisitor();
     virtual ~RenderVisitor();
 
-    RenderVisitor& visit(const Node&);
-    RenderVisitor& visit(const Sprite&);
+    virtual RenderVisitor& visit(Node&);
+    virtual RenderVisitor& visit(Sprite&);
 };
 
 } /* namespace jupiter */
