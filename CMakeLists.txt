@@ -31,6 +31,9 @@ find_package(GLUT REQUIRED)
 # find GLEW
 find_package(GLEW REQUIRED)
 
+# find Box2D
+# find_package(Box2D REQUIRED)
+
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
