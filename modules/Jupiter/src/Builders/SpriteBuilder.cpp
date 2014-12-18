@@ -9,7 +9,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 
-#include <Jupiter/detail/SpriteBuilder.h>
+#include <Jupiter/SpriteBuilder.h>
 #include <Jupiter/JupiterError.h>
 
 namespace jupiter
@@ -17,7 +17,7 @@ namespace jupiter
 
 using namespace std;
 
-Sprite SpriteBuilder::create(const string& spriteId)
+std::shared_ptr<SpriteImpl> SpriteBuilder::create(const string& spriteId)
 {
     /*
      * process sprite Id
@@ -25,9 +25,14 @@ Sprite SpriteBuilder::create(const string& spriteId)
      * format
      * file:{/concrete/file1.png, /concrete/file2.png} - default
      * camera:{0, 1, 2, ...}
+     * json:{name}
      * ...
      *
      */
+
+    auto sprtImpl = spriteRegister()[spriteId];
+    if(sprtImpl)
+        return sprtImpl;
 
     namespace q = boost::spirit::qi;
 
@@ -41,28 +46,40 @@ Sprite SpriteBuilder::create(const string& spriteId)
             phrases
     );
 
-    cout << "res " << res << endl;
+    if(phrases.empty() || phrases.size() > 2)
+        throw JupiterError("bad sprite id " + spriteId + " must contain only one double point " +
+                           [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
 
-    for(auto i: phrases)
-        cout << "  " << i << endl;
+    string type = phrases.size() > 1 ? phrases.front() : "file", parameter = phrases.back();
 
-    return phrases.size() == 1 ? Register()["file"]->create(spriteId) :
-           phrases.size() == 2 ? Register()[phrases[1]]->create(spriteId) :
-           throw JupiterError("bad sprite id " + spriteId + " must contain only one double point " +
-                   [&](){ stringstream s; for(auto i: phrases) s << i << ", "; return s.str(); }());
+    auto factory = factoryRegister()[type];
+    if(!factory)
+        throw JupiterError("has no factory for sprite type " + type);
+
+    auto spriteImpl = factory->create(parameter);
+
+    spriteRegister()[spriteId] = spriteImpl;
+
+    return spriteImpl;
 }
 
 void SpriteBuilder::addFactory(const string& spriteType, shared_ptr<Factory> factory)
 {
-    if(Register()[spriteType])
+    if(factoryRegister()[spriteType])
         cerr << "warning: already have factory for that type " << spriteType << endl;
 
-    Register()[spriteType] = factory;
+    factoryRegister()[spriteType] = factory;
 }
 
-map<string, shared_ptr<SpriteBuilder::Factory>>& SpriteBuilder::Register()
+SpriteBuilder::FactoriesMap& SpriteBuilder::factoryRegister()
 {
-    static map<string, shared_ptr<Factory>> reg;
+    static FactoriesMap reg;
+    return reg;
+}
+
+SpriteBuilder::SpritesMap& SpriteBuilder::spriteRegister()
+{
+    static SpritesMap reg;
     return reg;
 }
 

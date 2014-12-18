@@ -8,7 +8,7 @@
 #ifndef STARTBUTTON_H_
 #define STARTBUTTON_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Tools.h>
 
 class StartButton: public jupiter::IGameObject

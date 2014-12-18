@@ -8,7 +8,7 @@
 #ifndef GASBUTTON_H_
 #define GASBUTTON_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <BattleShip.h>
 
 class GasButton: public jupiter::IGameObject

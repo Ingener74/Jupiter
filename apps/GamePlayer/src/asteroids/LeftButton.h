@@ -8,7 +8,7 @@
 #ifndef LEFTBUTTON_H_
 #define LEFTBUTTON_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <BattleShip.h>
 
 class LeftButton: public jupiter::IGameObject

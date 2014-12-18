@@ -8,7 +8,7 @@
 #ifndef FILESPRITEFACTORY_H_
 #define FILESPRITEFACTORY_H_
 
-#include <Jupiter/detail/SpriteBuilder.h>
+#include <Jupiter/SpriteBuilder.h>
 
 namespace jupiter
 {
@@ -19,7 +19,7 @@ public:
     FileSpriteFactory();
     virtual ~FileSpriteFactory();
 
-    virtual Sprite create(const std::string& spriteId);
+    virtual std::shared_ptr<SpriteImpl> create(const std::string& spriteId);
 };
 
 } /* namespace jupiter */

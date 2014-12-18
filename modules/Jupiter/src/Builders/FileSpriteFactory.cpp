@@ -5,10 +5,20 @@
  *      Author: pavel
  */
 
-#include <Jupiter/detail/FileSpriteFactory.h>
+#include <memory>
+
+#include <glm/glm.hpp>
+
+#include <Jupiter/FileSpriteFactory.h>
+#include <Jupiter/JupiterError.h>
+#include <Jupiter/Texture.h>
+#include <Jupiter/Shape.h>
+#include "../SpriteImpl.h"
 
 namespace jupiter
 {
+
+using namespace std;
 
 FileSpriteFactory::FileSpriteFactory()
 {
@@ -18,10 +28,14 @@ FileSpriteFactory::~FileSpriteFactory()
 {
 }
 
-Sprite FileSpriteFactory::create(const std::string& spriteId)
+std::shared_ptr<SpriteImpl> FileSpriteFactory::create(const std::string& spriteId)
 {
-//    auto sprite = {};
-    return {};
+//    throw JupiterError{"i can't now build sprite impl"};
+
+    Texture   t{spriteId};
+    Shape     s{};
+
+    return make_shared<SpriteImpl>(t, s);
 }
 
 } /* namespace jupiter */

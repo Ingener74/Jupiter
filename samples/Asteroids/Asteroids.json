@@ -13,7 +13,14 @@
     },
     "sprites":[
         {
-            "texture":"",
+            "texture":"bg.png",
+            "tx1":0,
+            "ty1":0,
+            "tx2":1,
+            "ty2":1
+        },
+        {
+            "texture":"start-button.png",
             "tx1":0,
             "ty1":0,
             "tx2":1,

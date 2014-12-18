@@ -11,7 +11,7 @@
 #include <png.h>
 
 #include <Jupiter/ResourceManager.h>
-#include <Jupiter/detail/ImageBuilder.h>
+#include <Jupiter/ImageBuilder.h>
 
 namespace jupiter
 {
@@ -22,7 +22,7 @@ public:
     PNGImageFactory();
     virtual ~PNGImageFactory();
 
-    virtual Image create(const std::string& fileName);
+    virtual std::shared_ptr<ImageImpl> create(const std::string& fileName);
 
 private:
     ResourceManager::Resource file;

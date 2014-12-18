@@ -25,20 +25,16 @@ public:
     class Factory
     {
     public:
-        virtual ~Factory() = default;
-
-        virtual Image create(const std::string& fileName) = 0;
-
-    protected:
-        Factory() = default;
+        virtual std::shared_ptr<ImageImpl> create(const std::string& fileName) = 0;
     };
 
     static void addFactory(const std::string& extension, std::shared_ptr<Factory>);
 
 private:
-    static Image create(const std::string& fileName);
+    static std::shared_ptr<ImageImpl> create(const std::string& fileName);
 
-    static std::map<std::string, std::shared_ptr<Factory>>& Register();
+    static std::map<std::string, std::shared_ptr<Factory>>& factoryRegister();
+    static std::map<std::string, std::shared_ptr<ImageImpl>>& imageRegister();
 
     static std::string getFileExtention(const std::string& fileName);
 

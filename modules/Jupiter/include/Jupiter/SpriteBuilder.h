@@ -24,19 +24,19 @@ public:
     class Factory
     {
     public:
-        virtual Sprite create(const std::string& spriteId) = 0;
-        virtual ~Factory() = default;
-
-    protected:
-        Factory() = default;
+        virtual std::shared_ptr<SpriteImpl> create(const std::string& spriteId) = 0;
     };
 
     static void addFactory(const std::string& spriteType, std::shared_ptr<Factory>);
 
 private:
-    static Sprite create(const std::string& spriteId);
+    static std::shared_ptr<SpriteImpl> create(const std::string& spriteId);
 
-    static std::map<std::string, std::shared_ptr<Factory>>& Register();
+    using FactoriesMap = std::map<std::string, std::shared_ptr<Factory>>;
+    using SpritesMap = std::map<std::string, std::shared_ptr<SpriteImpl>>;
+
+    static FactoriesMap& factoryRegister();
+    static SpritesMap&   spriteRegister();
 
     SpriteBuilder() = default;
     virtual ~SpriteBuilder() = default;

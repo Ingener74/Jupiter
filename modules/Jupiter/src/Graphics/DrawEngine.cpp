@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include <vector>
 #include <iostream>
 
 #define GLM_FORCE_RADIANS
@@ -64,48 +65,48 @@ void DrawEngine::draw()
 
     glActiveTexture(GL_TEXTURE0);
 
-    for (auto s : sprites)
-    {
-        if (!s->getTexture()) throw JupiterError("empty texture");
-        s->getTexture()->bind();
-
-        glUniform1i(_uTEX, 0);
-        glEnableVertexAttribArray(_aPOS);
-        glEnableVertexAttribArray(_aTEX);
-
-        const GLfloat * spriteVertex = s->getVertex();
-        uint32_t spriteVertexCount = s->getVertexCount();
-
-        glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
-        glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
-
-        glm::mat4 mvp = _ortho * s->getModelMatrix();
-
-        glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-        GLenum drawType;
-        switch (s->getDrawType())
-        {
-        case ISpriteLoader::SpriteType::Triangles:
-            drawType = GL_TRIANGLES;
-            break;
-        case ISpriteLoader::SpriteType::TriangleFan:
-            drawType = GL_TRIANGLE_FAN;
-            break;
-        case ISpriteLoader::SpriteType::TriangleStrip:
-            drawType = GL_TRIANGLE_STRIP;
-            break;
-        case ISpriteLoader::SpriteType::LineStrip:
-            drawType = GL_LINE_STRIP;
-            break;
-        default:
-            break;
-        }
-        glDrawArrays(drawType, 0, spriteVertexCount);
-
-        glDisableVertexAttribArray(_aPOS);
-        glDisableVertexAttribArray(_aTEX);
-    }
+//    for (auto s : sprites)
+//    {
+//        if (!s->getTexture()) throw JupiterError("empty texture");
+//        s->getTexture()->bind();
+//
+//        glUniform1i(_uTEX, 0);
+//        glEnableVertexAttribArray(_aPOS);
+//        glEnableVertexAttribArray(_aTEX);
+//
+//        const GLfloat * spriteVertex = s->getVertex();
+//        uint32_t spriteVertexCount = s->getVertexCount();
+//
+//        glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
+//        glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
+//
+//        glm::mat4 mvp = _ortho * s->getModelMatrix();
+//
+//        glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+//
+//        GLenum drawType;
+//        switch (s->getDrawType())
+//        {
+//        case ISpriteLoader::SpriteType::Triangles:
+//            drawType = GL_TRIANGLES;
+//            break;
+//        case ISpriteLoader::SpriteType::TriangleFan:
+//            drawType = GL_TRIANGLE_FAN;
+//            break;
+//        case ISpriteLoader::SpriteType::TriangleStrip:
+//            drawType = GL_TRIANGLE_STRIP;
+//            break;
+//        case ISpriteLoader::SpriteType::LineStrip:
+//            drawType = GL_LINE_STRIP;
+//            break;
+//        default:
+//            break;
+//        }
+//        glDrawArrays(drawType, 0, spriteVertexCount);
+//
+//        glDisableVertexAttribArray(_aPOS);
+//        glDisableVertexAttribArray(_aTEX);
+//    }
 
     glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(_ortho));
 }
@@ -208,5 +209,8 @@ GLuint DrawEngine::createShader(GLenum shaderType, string source)
             "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
 }
 
-}  // namespace jupiter
+void DrawEngine::setRootNode(const Node&)
+{
+}
 
+}  // namespace jupiter

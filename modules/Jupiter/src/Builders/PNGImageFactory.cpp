@@ -6,7 +6,8 @@
  */
 
 #include <Jupiter/JupiterError.h>
-#include <Jupiter/detail/PNGImageFactory.h>
+#include <Jupiter/PNGImageFactory.h>
+#include "../ImageImpl.h"
 
 namespace jupiter
 {
@@ -21,7 +22,7 @@ PNGImageFactory::~PNGImageFactory()
 {
 }
 
-Image PNGImageFactory::create(const std::string& fileName)
+std::shared_ptr<ImageImpl> PNGImageFactory::create(const std::string& fileName)
 {
     file = ResourceManager::createResource(fileName);
 
@@ -124,7 +125,7 @@ Image PNGImageFactory::create(const std::string& fileName)
     uint8_t* p = imageBuffer.get();
     int s = w * h * (res_type == Image::Type::RGBA ? 4 : 3);
 
-    return {w, h, res_type, {p, p + s}};
+    return make_shared<ImageImpl>(w, h, res_type, vector<uint8_t>{p, p + s});
 }
 
 void PNGImageFactory::pngRwCallback(png_structp pngStruct, png_bytep data, png_size_t size)

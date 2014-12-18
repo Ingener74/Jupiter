@@ -11,6 +11,4 @@ else()
     
     add_subdirectory(GamePlayer)
     
-    add_subdirectory(LuaParseTest)
-    
 endif()

@@ -8,7 +8,7 @@
 #ifndef LIFE_H_
 #define LIFE_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <Tools.h>
 
 class Life: public jupiter::IGameObject

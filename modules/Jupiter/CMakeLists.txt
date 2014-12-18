@@ -4,9 +4,38 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
+    # Sound
+    src/Sound/DummySound.cpp
+    src/Sound/DummySoundEngine.cpp
+    # Resources
+    src/Resources/ResourceManager.cpp
+    src/Resources/FStreamResource.cpp
+    src/Resources/FileResource.cpp
+    # Builders
+    src/Builders/FileSpriteFactory.cpp
+    src/Builders/ImageBuilder.cpp
+    src/Builders/SpriteBuilder.cpp
+    src/Builders/PNGImageFactory.cpp
+    src/Builders/TextureBuilder.cpp
+    # Common
+    src/ResourceShaderLoader.cpp
+    src/SimpleShaderLoader.cpp
+    src/Tools.cpp
+    src/Game.cpp
+    
+    # Factories
+    src/Factories/ImageTextureFactory.cpp
+    
+    src/Controller.cpp
+    src/Node.cpp
+    src/SpriteImpl.cpp
+    src/TextureImpl.cpp
+    src/ImageImpl.cpp
+    src/Shape.cpp
+    src/NodeVisitor.cpp
+    src/RenderVisitor.cpp
+    
     # Graphics
-    src/Graphics/FileTextureLoader.cpp
-    src/Graphics/DummyTextureLoader.cpp
     src/Graphics/Image.cpp
     src/Graphics/Rect.cpp
     src/Graphics/RectSpriteLoader.cpp
@@ -16,24 +45,6 @@ set(SOURCES
     src/Graphics/Texture.cpp
     src/Graphics/TextureLoader.cpp
     src/Graphics/DrawEngine.cpp
-    # Sound
-    src/Sound/DummySound.cpp
-    src/Sound/DummySoundEngine.cpp
-    # Resources
-    src/Resources/ResourceManager.cpp
-    src/Resources/FStreamResource.cpp
-    src/Resources/FileResource.cpp
-    # Common
-    src/ResourceShaderLoader.cpp
-    src/SimpleShaderLoader.cpp
-    src/Tools.cpp
-    
-    # Builders
-    src/Builders/FileSpriteFactory.cpp
-    src/Builders/ImageBuilder.cpp
-    src/Builders/SpriteBuilder.cpp
-    src/Builders/PNGImageFactory.cpp
-    src/Builders/ImageSpriteBuilder.cpp
 )
 
 if(ANDROID)
@@ -59,6 +70,8 @@ else()
     set(LIBS ${LIBS}
     )
 endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 

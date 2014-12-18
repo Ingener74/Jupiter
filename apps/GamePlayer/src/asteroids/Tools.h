@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 #include <functional>
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 
 struct GameTools
 {

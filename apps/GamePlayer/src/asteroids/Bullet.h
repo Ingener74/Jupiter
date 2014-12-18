@@ -8,7 +8,7 @@
 #ifndef BULLET_H_
 #define BULLET_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 
 class Bullet: public jupiter::IGameObject
 {

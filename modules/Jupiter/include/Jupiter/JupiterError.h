@@ -8,18 +8,26 @@
 #ifndef JUPITERERROR_H_
 #define JUPITERERROR_H_
 
+#ifndef SWIG
+
 #include <execinfo.h>
 #include <stdlib.h>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 
+#endif
+
 namespace jupiter
 {
+
+#ifndef SWIG
 
 #define THROW_JUPITER_ERROR(message) \
     throw JupiterError(std::string(__FILE__) + ":" std::string(__LINE__) + ": " + \
             std::string(__PRETTY_FUNCTION__) + ": " + message)
+
+#endif
 
 class JupiterError: public std::runtime_error
 {
@@ -33,6 +41,8 @@ public:
     {
     }
 
+#ifndef SWIG
+protected:
     static std::string backtrace()
     {
 #ifndef ANDROID
@@ -55,6 +65,7 @@ public:
         return res.str();
 #endif
     }
+#endif
 };
 
 }  // namespace jupiter

@@ -8,7 +8,7 @@
 #ifndef FIREBUTTON_H_
 #define FIREBUTTON_H_
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 #include <BattleShip.h>
 
 class FireButton: public jupiter::IGameObject

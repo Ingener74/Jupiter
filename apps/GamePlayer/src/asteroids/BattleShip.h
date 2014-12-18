@@ -11,7 +11,7 @@
 #include <Life.h>
 #include <Tools.h>
 
-#include <Jupiter/Jupiter.h>
+#include <Jupiter.h>
 
 class BattleShip: public jupiter::IGameObject
 {

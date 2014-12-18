@@ -31,7 +31,7 @@ FileTextureLoader::~FileTextureLoader()
 
 Image FileTextureLoader::load()
 {
-    Image result;
+    ImageImpl result;
 
     png_byte lHeader[8];
     png_structp lPngPtr = nullptr;
