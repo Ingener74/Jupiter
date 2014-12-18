@@ -151,6 +151,9 @@ using namespace jupiter;
  *     sprite:play-after-fail.png
  *     controller:after-fail.lua
  *
+ *
+ *
+ * preload/caching images in before node in tree
  */
 
 Game game;
