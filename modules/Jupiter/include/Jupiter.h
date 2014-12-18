@@ -12,6 +12,9 @@
 #include <Jupiter/facade/Sprite.h>
 #include <Jupiter/facade/Node.h>
 #include <Jupiter/facade/Controller.h>
+#include <Jupiter/Image.h>
+#include <Jupiter/JupiterError.h>
+#include <Jupiter/Texture.h>
 
 #include <Jupiter/DrawEngine.h>
 #include <Jupiter/IGameObject.h>
@@ -24,7 +27,6 @@
 #include <Jupiter/SimpleShaderLoader.h>
 #include <Jupiter/ResourceShaderLoader.h>
 
-#include <Jupiter/Texture.h>
 #include <Jupiter/TextureLoader.h>
 #include <Jupiter/DummyTextureLoader.h>
 #include <Jupiter/FileTextureLoader.h>
@@ -42,14 +44,11 @@
 #include <Jupiter/Tools.h>
 #include <Jupiter/Rect.h>
 #include <Jupiter/Scene.h>
-#include <Jupiter/Image.h>
 #include <Jupiter/detail/SpriteBuilder.h>
 #include <Jupiter/detail/FileSpriteFactory.h>
 
 #include <Jupiter/detail/ImageBuilder.h>
 #include <Jupiter/detail/PNGImageFactory.h>
-
-#include <Jupiter/JupiterError.h>
 
 #ifdef ANDROID
 	#include <Jupiter/SLESSound.h>

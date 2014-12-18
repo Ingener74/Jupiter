@@ -37,6 +37,9 @@ def animate():
     glutPostRedisplay ()
 
 def main():
+    
+    print "Jupiter Python Game Player"
+    
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(800, 600)
@@ -50,6 +53,8 @@ def main():
     
     global game
     game = j.Game("/home/ingener/workspace/Jupiter/samples/Asteroids/Asteroids.json")
+    
+    c = j.Controller()
     
     s = j.Sprite("test.png")
     

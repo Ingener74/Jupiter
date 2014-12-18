@@ -5,10 +5,14 @@
  *      Author: ingener
  */
 
+#include <iostream>
+
 #include <Jupiter/facade/Controller.h>
 
 namespace jupiter
 {
+
+using namespace std;
 
 Controller::Controller()
 {

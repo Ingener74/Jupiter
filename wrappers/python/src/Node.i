@@ -1,28 +1,9 @@
-/*
- * Node.h
- *
- *  Created on: Dec 13, 2014
- *      Author: ingener
- */
 
-#ifndef MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
-#define MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
+namespace jupiter {
 
-#include <map>
-#include <string>
-
-#include <glm/glm.hpp>
-
-#include <Jupiter/facade/Controller.h>
-
-namespace jupiter
-{
-
-class Node
-{
+class Node {
 public:
-    Node(const Controller&, std::map<std::string, Node> nodes);
-    Node(const std::string& nodeName = {});
+    Node(const std::string& nodeName);
     virtual ~Node();
 
     bool operator<(const Node&);
@@ -69,12 +50,6 @@ public:
 
     bool isVisible() const;
     Node& setVisible(bool);
-
-private:
-    glm::mat4 _model;
-    std::map<std::string, Node> _nodes;
 };
 
-} /* namespace jupiter */
-
-#endif /* MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_ */
+}
