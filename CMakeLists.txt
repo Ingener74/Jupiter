@@ -32,7 +32,7 @@ find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
 
 # find Box2D
-# find_package(Box2D REQUIRED)
+find_package(Box2D REQUIRED)
 
 include_directories(
     ${Qt5Widgets_INCLUDES}
@@ -48,6 +48,8 @@ include_directories(
     ${GLUT_INCLUDE_DIR}
 
     ${GLEW_INCLUDE_DIRS}
+    
+    ${BOX2D_INCLUDE_DIR}
     
     3rdparty/Selene/include
     
