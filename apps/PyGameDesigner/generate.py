@@ -3,6 +3,6 @@
 
 import subprocess
 
-subprocess.Popen(['pyside-rcc', '../GameDesigner/res/GameDesigner.qrc', '-o', 'GameDesigner_rc.py'])
+subprocess.Popen(['pyside-rcc', 'res/GameDesigner.qrc', '-o', 'GameDesigner_rc.py'])
 
-subprocess.Popen(['pyside-uic', '../GameDesigner/ui/main.ui', '-o', 'main_editor_window.py'])
+subprocess.Popen(['pyside-uic', 'ui/main.ui', '-o', 'main_editor_window.py'])
