@@ -18,14 +18,12 @@ NodeVisitor::~NodeVisitor()
 {
 }
 
-NodeVisitor& NodeVisitor::visit(Node&)
+void NodeVisitor::visit(Node&)
 {
-    return *this;
 }
 
-NodeVisitor& NodeVisitor::visit(Sprite&)
+void NodeVisitor::visit(Sprite&)
 {
-    return *this;
 }
 
 } /* namespace jupiter */

@@ -31,4 +31,9 @@ const Shape& Sprite::getShape() const
     return _shape;
 }
 
+const ShaderProgram& Sprite::getProgram() const
+{
+    return _program;
+}
+
 } /* namespace ndk_game */

@@ -20,15 +20,14 @@ RenderVisitor::~RenderVisitor()
 {
 }
 
-RenderVisitor& RenderVisitor::visit(Node& node)
+void RenderVisitor::visit(Node& node)
 {
     if (node.isVisible())
         for (auto &i : node.getNodes())
             visit(i.second);
-    return *this;
 }
 
-RenderVisitor& RenderVisitor::visit(Sprite& sprite)
+void RenderVisitor::visit(Sprite& sprite)
 {
     /*
      * draw sprite
@@ -43,10 +42,11 @@ RenderVisitor& RenderVisitor::visit(Sprite& sprite)
          *
          */
 
+        sprite.getProgram().use();
+
         for (auto i : sprite.getNodes())
             visit(i.second);
     }
-    return *this;
 }
 
 } /* namespace jupiter */

@@ -72,8 +72,8 @@ def main():
     s = j.Sprite("resources/images/bg.png")
     s.translateX(1.0)
     
-    print s.getTexture()#.bind()
-    print s.getController()#.update(60.0 / 1000.0)
+    print s.getTexture().bind()
+    print s.getController().update(60.0 / 1000.0)
     
     init()
     

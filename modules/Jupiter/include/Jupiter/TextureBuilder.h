@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <cstdint>
 
 namespace jupiter
 {
@@ -24,6 +25,8 @@ public:
     {
     public:
         virtual std::shared_ptr<TextureImpl> create( const std::string& texture ) = 0;
+
+        static ulong upperPowerOfTwo(ulong);
     };
 
     static std::shared_ptr<TextureImpl> create( const std::string& texture );

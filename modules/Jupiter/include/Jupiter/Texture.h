@@ -24,6 +24,9 @@ public:
 
     void bind() const;
 
+    int getWidth() const;
+    int getHeight() const;
+
 private:
     std::shared_ptr<TextureImpl> _impl;
 };

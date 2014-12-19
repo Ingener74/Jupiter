@@ -31,6 +31,7 @@ set(SOURCES
     src/Shape.cpp
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
+    src/ShaderProgram.cpp
     
     # Graphics
     src/Graphics/Image.cpp

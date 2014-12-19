@@ -20,8 +20,8 @@ public:
     NodeVisitor();
     virtual ~NodeVisitor();
 
-    virtual NodeVisitor& visit(Node&);
-    virtual NodeVisitor& visit(Sprite&);
+    virtual void visit(Node&);
+    virtual void visit(Sprite&);
 };
 
 } /* namespace jupiter */

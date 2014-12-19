@@ -28,4 +28,15 @@ void Texture::bind() const
     Tools::glError();
 }
 
+int Texture::getWidth() const
+{
+    return _impl->getWidth();
+}
+
+int Texture::getHeight() const
+{
+    return _impl->getHeight();
+}
+
 } /* namespace ndk_game */
+

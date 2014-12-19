@@ -18,12 +18,17 @@ class TextureImpl
 public:
     friend class Texture;
 
-    TextureImpl(GLuint _textureID = 0, GLenum _type = 0);
+    TextureImpl(GLuint _textureID = 0, GLenum _type = 0, uint32_t width = 0, uint32_t height = 0);
     virtual ~TextureImpl();
+
+    virtual uint32_t getWidth() const;
+    virtual uint32_t getHeight() const;
 
 private:
     GLuint _textureID = 0;
     GLenum _type = 0;
+    uint32_t _width = 0;
+    uint32_t _height = 0;
 };
 
 } /* namespace jupiter */

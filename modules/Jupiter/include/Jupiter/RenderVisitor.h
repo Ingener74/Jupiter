@@ -19,8 +19,8 @@ public:
     RenderVisitor();
     virtual ~RenderVisitor();
 
-    virtual RenderVisitor& visit(Node&);
-    virtual RenderVisitor& visit(Sprite&);
+    virtual void visit(Node&);
+    virtual void visit(Sprite&);
 };
 
 } /* namespace jupiter */

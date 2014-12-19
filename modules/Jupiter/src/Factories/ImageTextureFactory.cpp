@@ -37,10 +37,15 @@ std::shared_ptr<TextureImpl> ImageTextureFactory::create(const std::string& text
 
     auto type = im.getType() == Image::Type::RGBA ? GL_RGBA : GL_RGB;
 
-    glTexImage2D(GL_TEXTURE_2D, 0, type, im.getWidth(), im.getHeight(), 0, type, GL_UNSIGNED_BYTE, im.getData());
+    auto wp2 = upperPowerOfTwo(im.getWidth()), hp2 = upperPowerOfTwo(im.getHeight());
+
+    glTexImage2D(GL_TEXTURE_2D, 0, type, wp2, hp2, 0, type, GL_UNSIGNED_BYTE, im.getData());
     Tools::glError();
 
-    return make_shared<TextureImpl>(textureId, type);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im.getWidth(), im.getHeight(), GL_UNSIGNED_BYTE, type, im.getData());
+    Tools::glError();
+
+    return make_shared<TextureImpl>(textureId, type, wp2, hp2);
 }
 
 } /* namespace jupiter */
