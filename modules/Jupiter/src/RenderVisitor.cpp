@@ -20,34 +20,32 @@ RenderVisitor::~RenderVisitor()
 {
 }
 
-RenderVisitor& RenderVisitor::visit( Node& node )
+RenderVisitor& RenderVisitor::visit(Node& node)
 {
-    if ( node.isVisible() )
-        for ( auto &i : node.getNodes() )
+    if (node.isVisible())
+        for (auto &i : node.getNodes())
             visit(i.second);
     return *this;
 }
 
-RenderVisitor& RenderVisitor::visit( Sprite& sprite )
+RenderVisitor& RenderVisitor::visit(Sprite& sprite)
 {
     /*
      * draw sprite
      */
 
-//    sprite._impl->
+    if (sprite.isVisible())
+    {
+        sprite.getTexture().bind();
 
-    /*
-     * texture -> bind
-     *
-     * draw shape with program
-     *
-     */
+        /*
+         * draw shape with program
+         *
+         */
 
-
-
-    if ( sprite.isVisible() )
-        for ( auto i : sprite.getNodes() )
+        for (auto i : sprite.getNodes())
             visit(i.second);
+    }
     return *this;
 }
 

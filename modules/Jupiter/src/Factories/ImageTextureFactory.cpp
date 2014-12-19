@@ -18,14 +18,6 @@ namespace jupiter
 
 using namespace std;
 
-ImageTextureFactory::ImageTextureFactory()
-{
-}
-
-ImageTextureFactory::~ImageTextureFactory()
-{
-}
-
 std::shared_ptr<TextureImpl> ImageTextureFactory::create(const std::string& texture)
 {
     Image im{texture};

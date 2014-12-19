@@ -11,7 +11,6 @@
 #include <Jupiter/TextureBuilder.h>
 #include <Jupiter/ResourceManager.h>
 #include <Jupiter/FileResource.h>
-#include <Jupiter/FileSpriteFactory.h>
 #include <Jupiter/PNGImageFactory.h>
 #include <Jupiter/JupiterError.h>
 
@@ -37,8 +36,6 @@ Game::Game( const std::string& gameFile )
 
     ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
     ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
-
-    SpriteBuilder::addFactory("file", make_shared<FileSpriteFactory>());
 
     cout << __PRETTY_FUNCTION__ << " import " << gameFile << endl;
 }

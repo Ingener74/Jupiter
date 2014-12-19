@@ -10,6 +10,13 @@ import math
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/wrappers/python')))
 import Jupiter as j
 
+class BackGround(j.Controller):
+    def __init__(self):
+        j.Controller.__init__(self)
+        
+    def update(self, elapsedTime):
+        pass
+
 game = []
 
 def init ():
@@ -64,6 +71,9 @@ def main():
     
     s = j.Sprite("resources/images/bg.png")
     s.translateX(1.0)
+    
+    print s.getTexture()#.bind()
+    print s.getController()#.update(60.0 / 1000.0)
     
     init()
     

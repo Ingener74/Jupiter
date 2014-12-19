@@ -50,6 +50,10 @@ public:
 
     bool isVisible() const;
     Node& setVisible(bool);
+
+    Controller& getController();
+    
+    %extend{ Controller& getCtrl(){ return (*$self).getController(); } }
 };
 
 }

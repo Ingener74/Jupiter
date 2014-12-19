@@ -17,12 +17,12 @@ namespace jupiter
 
 using namespace std;
 
-
-Texture::Texture( const std::string& texture ): _impl(TextureBuilder::create(texture))
+Texture::Texture(const std::string& texture) :
+        _impl(TextureBuilder::create(texture))
 {
 }
 
-void Texture::bind()
+void Texture::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, _impl->_textureID);
     Tools::glError();

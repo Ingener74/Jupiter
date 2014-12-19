@@ -11,16 +11,24 @@
 #include <Jupiter/Sprite.h>
 #include <Jupiter/JupiterError.h>
 
-#include <Jupiter/SpriteBuilder.h>
-
 namespace jupiter
 {
 
 using namespace std;
 
 Sprite::Sprite(const std::string& sprite) throw (JupiterError) :
-        _impl(SpriteBuilder::create(sprite))
+        _texture(sprite), _shape(sprite)
 {
+}
+
+const Texture& Sprite::getTexture() const
+{
+    return _texture;
+}
+
+const Shape& Sprite::getShape() const
+{
+    return _shape;
 }
 
 } /* namespace ndk_game */

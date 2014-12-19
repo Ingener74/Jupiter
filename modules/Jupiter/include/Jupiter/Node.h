@@ -75,7 +75,7 @@ public:
     Node& accept(NodeVisitor&);
 
     std::map<std::string, Node>& getNodes();
-    const Controller& getController() const;
+    Controller& getController();
 
 private:
     glm::mat4 _model;

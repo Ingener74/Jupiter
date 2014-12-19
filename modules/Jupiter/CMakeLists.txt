@@ -12,9 +12,7 @@ set(SOURCES
     src/Resources/FStreamResource.cpp
     src/Resources/FileResource.cpp
     # Builders
-    src/Builders/FileSpriteFactory.cpp
     src/Builders/ImageBuilder.cpp
-    src/Builders/SpriteBuilder.cpp
     src/Builders/PNGImageFactory.cpp
     src/Builders/TextureBuilder.cpp
     # Common
@@ -28,7 +26,6 @@ set(SOURCES
     
     src/Controller.cpp
     src/Node.cpp
-    src/SpriteImpl.cpp
     src/TextureImpl.cpp
     src/ImageImpl.cpp
     src/Shape.cpp

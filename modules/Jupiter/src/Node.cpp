@@ -226,12 +226,12 @@ Node& Node::accept(NodeVisitor& nv)
     return *this;
 }
 
-std::map<std::string, Node>& jupiter::Node::getNodes()
+std::map<std::string, Node>& Node::getNodes()
 {
     return _nodes;
 }
 
-const Controller& jupiter::Node::getController() const
+Controller& Node::getController()
 {
     return _controller;
 }

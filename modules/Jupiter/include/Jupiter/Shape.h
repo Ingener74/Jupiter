@@ -8,10 +8,9 @@
 #ifndef SHAPE_H_
 #define SHAPE_H_
 
-#ifndef SWIG
+#include <string>
 #include <vector>
 #include <cstdint>
-#endif
 
 namespace jupiter
 {
@@ -25,6 +24,7 @@ public:
     };
 
     Shape() = default;
+    Shape(const std::string&);
     Shape(const std::vector<float>& data, Type);
     virtual ~Shape() = default;
 
@@ -32,14 +32,11 @@ public:
     const float* vertexData() const;
     Type type() const;
 
-#ifndef SWIG
-
 private:
     std::vector<float> _data; // {{{x, y, z}, {tx, ty}}, ...} size = _vertexCount * 5
     Type _type = Type::TriangleStrip;
 
     static const int DATA_IN_ONE_VERTEX = 5;
-#endif
 };
 
 } /* namespace jupiter */

@@ -44,8 +44,6 @@
 #include <Jupiter/Tools.h>
 #include <Jupiter/Rect.h>
 #include <Jupiter/Scene.h>
-#include <Jupiter/SpriteBuilder.h>
-#include <Jupiter/FileSpriteFactory.h>
 
 #include <Jupiter/ImageBuilder.h>
 #include <Jupiter/PNGImageFactory.h>

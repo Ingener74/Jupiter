@@ -10,7 +10,11 @@
 namespace jupiter
 {
 
-jupiter::Shape::Shape(const std::vector<float>& data, Type type) :
+Shape::Shape(const std::string& allocator)
+{
+}
+
+Shape::Shape(const std::vector<float>& data, Type type) :
         _data(data), _type(type)
 {
 }

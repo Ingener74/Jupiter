@@ -16,8 +16,8 @@ namespace jupiter
 class ImageTextureFactory: public TextureBuilder::Factory
 {
 public:
-    ImageTextureFactory();
-    virtual ~ImageTextureFactory();
+    ImageTextureFactory() = default;
+    virtual ~ImageTextureFactory() = default;
 
     virtual std::shared_ptr<TextureImpl> create(const std::string& texture);
 };

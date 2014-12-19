@@ -11,19 +11,23 @@
 #include <memory>
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/Node.h>
+#include <Jupiter/Texture.h>
+#include <Jupiter/Shape.h>
 
 namespace jupiter
 {
-
-class SpriteImpl;
 
 class Sprite: public Node
 {
 public:
     Sprite(const std::string& sprite) throw (JupiterError);
 
+    const Texture& getTexture() const;
+    const Shape& getShape() const;
+
 private:
-    std::shared_ptr<SpriteImpl> _impl;
+    Texture _texture;
+    Shape _shape;
 };
 
 } /* namespace ndk_game */

@@ -22,7 +22,7 @@ public:
     Texture() = default;
     Texture(const std::string& texture);
 
-    void bind();
+    void bind() const;
 
 private:
     std::shared_ptr<TextureImpl> _impl;
