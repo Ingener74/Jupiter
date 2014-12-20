@@ -8,6 +8,8 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
+#include <Jupiter/LinuxPlatform.h>
+
 #include <Jupiter/Game.h>
 #include <Jupiter/Sprite.h>
 #include <Jupiter/Node.h>

@@ -19,12 +19,12 @@ namespace jupiter
 {
 
 class NodeVisitor;
+class NodeImpl;
 
 class Node
 {
 public:
     Node();
-    Node(const Controller&, std::map<std::string, Node> nodes);
     Node(const std::string& node);
     virtual ~Node();
 
@@ -82,9 +82,7 @@ public:
     Controller& getController();
 
 private:
-    glm::mat4 _model;
-    Controller _controller;
-    std::map<std::string, Node> _nodes;
+    std::shared_ptr<NodeImpl> _impl;
 };
 
 } /* namespace jupiter */

@@ -59,14 +59,17 @@ protected:
 
         string type = phrases.size() > 1 ? phrases.front() : "file", parameter = phrases.back();
 
-        return phrases.size() < 3 ? factoryRegister()[type]->create(parameter) : throw JupiterError(""
+        auto factory = factoryRegister()[type];
+        if(!factory)
+            throw JupiterError("have not factory for type " + type + " creating " + product);
+
+        return phrases.size() < 3 ? factory->create(parameter) : throw JupiterError(""
                 "bad product " + product);
 
-        auto factory = factoryRegister()[type];
-        if (!factory)
-            throw JupiterError("have no factory for type " + type);
-
-        return factory->create(parameter);
+//        auto factory = factoryRegister()[type];
+//        if (!factory)
+//            throw JupiterError("have no factory for type " + type);
+//        return factory->create(parameter);
     }
 
     using FactoryMap = std::map<std::string, std::shared_ptr<Factory>>;

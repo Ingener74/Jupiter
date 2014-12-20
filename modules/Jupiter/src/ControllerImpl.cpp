@@ -12,13 +12,10 @@ namespace jupiter
 
 ControllerImpl::ControllerImpl()
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 ControllerImpl::~ControllerImpl()
 {
-    // TODO Auto-generated destructor stub
 }
 
 } /* namespace jupiter */

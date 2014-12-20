@@ -27,30 +27,15 @@ namespace jupiter
 using namespace std;
 using namespace glm;
 
-Game::Game(): Game("fake")
+Game::Game()
 {
 }
 
-Game::Game( const std::string& gameFile )
+Game::Game(const std::string& gameFile) :
+        _impl(Builder<Game, GameImpl>::create(boost::filesystem::path(gameFile).filename().c_str()))
 {
-    boost::filesystem::path game{gameFile};
-
-    TextureBuilder::addFactory("file", make_shared<ImageTextureFactory>());
-
-    ResourceManager::setPathPrefix(game.parent_path().c_str());
-    ResourceManager::setFactory(make_shared<FileResource>());
-
-    ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
-    ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
-
-    Builder<Shader, ShaderImpl>::addFactory("file", make_shared<FileShaderFactory>());
-
-    Builder<Controller, ControllerImpl>::addFactory("c++", make_shared<CPPControllerFactory>());
-
-    _rootNode = {"root"};
-
     int width = 100, height = 100;
-    _render = { ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100) };
+    _render = {ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
 }
 
 Game::~Game()
@@ -59,7 +44,10 @@ Game::~Game()
 
 void Game::draw()
 {
-    _render.visit(_rootNode);
+    if (_impl)
+        _render.visit(_impl->getRootNode());
+    else
+        throw JupiterError("game impl is invalid");
 }
 
 void Game::input()
@@ -68,12 +56,12 @@ void Game::input()
 
 int32_t Game::width() const
 {
-    return 100;
+    return _impl ? _impl->getWidth() : throw JupiterError("game impl is invalid");
 }
 
 int32_t Game::height() const
 {
-    return 100;
+    return _impl ? _impl->getHeight() : throw JupiterError("game impl is invalid");
 }
 
 } /* namespace jupiter */

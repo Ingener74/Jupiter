@@ -17,6 +17,7 @@
 
 #include <Jupiter/RenderVisitor.h>
 #include <Jupiter/Node.h>
+#include <Jupiter/GameImpl.h>
 
 namespace jupiter
 {
@@ -36,8 +37,8 @@ public:
     int32_t height() const;
 
 private:
-    Node _rootNode;
     RenderVisitor _render;
+    std::shared_ptr<GameImpl> _impl;
 };
 
 } /* namespace jupiter */

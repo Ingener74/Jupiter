@@ -16,6 +16,19 @@ class ControllerImpl
 public:
     ControllerImpl();
     virtual ~ControllerImpl();
+
+    virtual void onVisibleChanged(bool isVisible) = 0;
+
+    virtual void onMove(float x, float y, float z) = 0;
+    virtual void onPositionChanged(float x, float y, float z) = 0;
+
+    virtual void onScale(float x, float y, float z) = 0;
+    virtual void onScaleChanged(float x, float y, float z) = 0;
+
+    virtual void onRotate(float x, float y, float z) = 0;
+    virtual void onRotationChanged(float x, float y, float z) = 0;
+
+    virtual void update(double elapsedTime) = 0;
 };
 
 } /* namespace jupiter */

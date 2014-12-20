@@ -5,6 +5,9 @@ project(${PROJECT_NAME})
 
 set(SOURCES
     # Sound
+    
+    src/LinuxPlatform.cpp
+    
     src/Sound/DummySound.cpp
     src/Sound/DummySoundEngine.cpp
 
@@ -13,6 +16,8 @@ set(SOURCES
     
     src/Tools.cpp
     src/Game.cpp
+    src/GameImpl.cpp
+    src/JSONGameFactory.cpp
     
     src/Graphics/Texture.cpp
     src/TextureImpl.cpp
@@ -25,6 +30,9 @@ set(SOURCES
     src/Builders/PNGImageFactory.cpp
     
     src/Node.cpp
+    src/NodeImpl.cpp
+    src/JSONNodeFactory.cpp
+    
     src/Shape.cpp
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
@@ -38,6 +46,8 @@ set(SOURCES
     src/CPPControllerFactory.cpp
     
     src/Graphics/Sprite.cpp
+    
+    src/JsonGameHolder.cpp
     
     # Old
     src/Graphics/Rect.cpp
