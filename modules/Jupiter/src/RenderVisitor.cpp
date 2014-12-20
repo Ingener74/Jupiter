@@ -16,6 +16,10 @@ RenderVisitor::RenderVisitor()
 {
 }
 
+RenderVisitor::RenderVisitor(const glm::mat4& ortho): _ortho(ortho)
+{
+}
+
 RenderVisitor::~RenderVisitor()
 {
 }
@@ -35,6 +39,8 @@ void RenderVisitor::visit(Sprite& sprite)
 
     if (sprite.isVisible())
     {
+        sprite.getProgram().use();
+
         sprite.getTexture().bind();
 
         /*
@@ -42,7 +48,6 @@ void RenderVisitor::visit(Sprite& sprite)
          *
          */
 
-        sprite.getProgram().use();
 
         for (auto i : sprite.getNodes())
             visit(i.second);

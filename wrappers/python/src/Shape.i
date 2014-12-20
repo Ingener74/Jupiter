@@ -16,7 +16,6 @@ public:
     virtual ~Shape();
 
     int32_t vertexCount() const;
-    const float* vertexData() const;
     Type type() const;
 };
 

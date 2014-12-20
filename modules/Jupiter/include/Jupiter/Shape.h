@@ -24,16 +24,29 @@ public:
     };
 
     Shape() = default;
-    Shape(const std::string&);
-    Shape(const std::vector<float>& data, Type);
+    Shape( const std::string& );
+    Shape( const std::vector<float>& data, Type );
     virtual ~Shape() = default;
 
     int32_t vertexCount() const;
-    const float* vertexData() const;
     Type type() const;
 
+    bool hasCoordinates() const;
+    int8_t coordinatesSize() const;
+    const float* coordinatesData() const;
+
+    bool hasTextureCoordinates() const;
+    int8_t textureCoordinatesSize() const;
+    const float* textureCoordinatesData() const;
+
+    bool hasColor() const;
+    int8_t colorSize() const;
+    const float* colorData() const;
+
+    int8_t getStride() const;
+
 private:
-    std::vector<float> _data; // {{{x, y, z}, {tx, ty}}, ...} size = _vertexCount * 5
+    std::vector<float> _data;
     Type _type = Type::TriangleStrip;
 
     static const int DATA_IN_ONE_VERTEX = 5;

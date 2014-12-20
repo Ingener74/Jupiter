@@ -14,12 +14,18 @@
 #include <Jupiter/PNGImageFactory.h>
 #include <Jupiter/JupiterError.h>
 
+#include <Jupiter/FileShaderFactory.h>
+#include <Jupiter/CPPControllerFactory.h>
+
 #include "Factories/ImageTextureFactory.h"
+
+#include <Jupiter/Node.h>
 
 namespace jupiter
 {
 
 using namespace std;
+using namespace glm;
 
 Game::Game(): Game("fake")
 {
@@ -37,7 +43,14 @@ Game::Game( const std::string& gameFile )
     ImageBuilder::addFactory("png", make_shared<PNGImageFactory>());
     ImageBuilder::addFactory("PNG", make_shared<PNGImageFactory>());
 
-    cout << __PRETTY_FUNCTION__ << " import " << gameFile << endl;
+    Builder<Shader, ShaderImpl>::addFactory("file", make_shared<FileShaderFactory>());
+
+    Builder<Controller, ControllerImpl>::addFactory("c++", make_shared<CPPControllerFactory>());
+
+    _rootNode = {"root"};
+
+    int width = 100, height = 100;
+    _render = { ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100) };
 }
 
 Game::~Game()
@@ -46,10 +59,21 @@ Game::~Game()
 
 void Game::draw()
 {
+    _render.visit(_rootNode);
 }
 
 void Game::input()
 {
+}
+
+int32_t Game::width() const
+{
+    return 100;
+}
+
+int32_t Game::height() const
+{
+    return 100;
 }
 
 } /* namespace jupiter */

@@ -17,7 +17,7 @@ namespace jupiter
 using namespace std;
 
 Sprite::Sprite(const std::string& sprite) throw (JupiterError) :
-        _texture(sprite), _shape(sprite)
+        Node(sprite), _texture(sprite), _shape(sprite), _program(sprite)
 {
 }
 
@@ -31,7 +31,7 @@ const Shape& Sprite::getShape() const
     return _shape;
 }
 
-const ShaderProgram& Sprite::getProgram() const
+const Shader& Sprite::getProgram() const
 {
     return _program;
 }

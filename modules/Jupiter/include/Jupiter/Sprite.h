@@ -11,9 +11,9 @@
 #include <memory>
 #include <Jupiter/JupiterError.h>
 #include <Jupiter/Node.h>
+#include <Jupiter/Shader.h>
 #include <Jupiter/Texture.h>
 #include <Jupiter/Shape.h>
-#include <Jupiter/ShaderProgram.h>
 
 namespace jupiter
 {
@@ -25,12 +25,12 @@ public:
 
     const Texture& getTexture() const;
     const Shape& getShape() const;
-    const ShaderProgram& getProgram() const;
+    const Shader& getProgram() const;
 
 private:
     Texture _texture;
     Shape _shape;
-    ShaderProgram _program;
+    Shader _program;
 };
 
 } /* namespace ndk_game */

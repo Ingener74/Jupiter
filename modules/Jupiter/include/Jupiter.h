@@ -20,16 +20,11 @@
 #include <Jupiter/IGameObject.h>
 
 #include <Jupiter/ResourceManager.h>
-#include <Jupiter/FStreamResource.h>
 #include <Jupiter/FileResource.h>
 
 #include <Jupiter/IShaderLoader.h>
 #include <Jupiter/SimpleShaderLoader.h>
 #include <Jupiter/ResourceShaderLoader.h>
-
-#include <Jupiter/TextureLoader.h>
-#include <Jupiter/DummyTextureLoader.h>
-#include <Jupiter/FileTextureLoader.h>
 
 #include <Jupiter/ISpriteLoader.h>
 #include <Jupiter/SimpleSpriteLoader.h>

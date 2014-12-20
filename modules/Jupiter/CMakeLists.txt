@@ -7,42 +7,46 @@ set(SOURCES
     # Sound
     src/Sound/DummySound.cpp
     src/Sound/DummySoundEngine.cpp
-    # Resources
-    src/Resources/ResourceManager.cpp
-    src/Resources/FStreamResource.cpp
-    src/Resources/FileResource.cpp
-    # Builders
-    src/Builders/ImageBuilder.cpp
-    src/Builders/PNGImageFactory.cpp
-    src/Builders/TextureBuilder.cpp
-    # Common
-    src/ResourceShaderLoader.cpp
-    src/SimpleShaderLoader.cpp
+
+    src/ResourceManager.cpp
+    src/FileResource.cpp
+    
     src/Tools.cpp
     src/Game.cpp
     
-    # Factories
+    src/Graphics/Texture.cpp
+    src/TextureImpl.cpp
+    src/Builders/TextureBuilder.cpp
     src/Factories/ImageTextureFactory.cpp
     
-    src/Controller.cpp
-    src/Node.cpp
-    src/TextureImpl.cpp
+    src/Graphics/Image.cpp
     src/ImageImpl.cpp
+    src/Builders/ImageBuilder.cpp
+    src/Builders/PNGImageFactory.cpp
+    
+    src/Node.cpp
     src/Shape.cpp
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
-    src/ShaderProgram.cpp
     
-    # Graphics
-    src/Graphics/Image.cpp
+    src/Shader.cpp
+    src/ShaderImpl.cpp
+    src/FileShaderFactory.cpp
+    
+    src/Controller.cpp
+    src/ControllerImpl.cpp
+    src/CPPControllerFactory.cpp
+    
+    src/Graphics/Sprite.cpp
+    
+    # Old
     src/Graphics/Rect.cpp
     src/Graphics/RectSpriteLoader.cpp
     src/Graphics/Scene.cpp
     src/Graphics/SimpleSpriteLoader.cpp
-    src/Graphics/Sprite.cpp
-    src/Graphics/Texture.cpp
-    src/Graphics/TextureLoader.cpp
     src/Graphics/DrawEngine.cpp
+    src/ResourceShaderLoader.cpp
+    src/SimpleShaderLoader.cpp
 )
 
 if(ANDROID)
@@ -60,6 +64,7 @@ add_library(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
     ${PNG_LIBRARIES}
+    ${Boost_LIBRARIES}
 )
 if(ANDROID)
     set(LIBS ${LIBS}

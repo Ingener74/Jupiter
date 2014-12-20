@@ -23,12 +23,16 @@ class NodeVisitor;
 class Node
 {
 public:
+    Node();
     Node(const Controller&, std::map<std::string, Node> nodes);
-    Node(const std::string& nodeName = {});
+    Node(const std::string& node);
     virtual ~Node();
 
     bool operator<(const Node&);
     bool operator>(const Node&);
+    Node& operator[](const std::string& nodeName);
+
+    void addNode(const std::string& name, Node);
 
     float getRotationX()const;
     float getRotationY()const;

@@ -21,11 +21,15 @@ namespace jupiter
 using namespace std;
 using namespace glm;
 
-Node::Node(const Controller& controller, std::map<std::string, Node> nodes): _controller(controller), _nodes(nodes)
+Node::Node()
 {
 }
 
-Node::Node(const std::string& nodeName)
+Node::Node(const Controller& controller, map<string, Node> nodes): _controller(controller), _nodes(nodes)
+{
+}
+
+Node::Node(const string& node): _controller(node)
 {
 }
 
@@ -41,6 +45,16 @@ bool Node::operator <(const Node& r)
 bool Node::operator >(const Node& r)
 {
     return _model[3].z > r._model[3].z;
+}
+
+Node& Node::operator [](const std::string& nodeName)
+{
+    return _nodes[nodeName];
+}
+
+void Node::addNode(const std::string& name, Node node)
+{
+    _nodes[name] = node;
 }
 
 float Node::getRotationX() const
@@ -215,8 +229,9 @@ bool Node::isVisible() const
     return true;
 }
 
-Node& Node::setVisible(bool bool1)
+Node& Node::setVisible(bool isVisible)
 {
+    _controller.onVisibleChanged(isVisible);
     return *this;
 }
 
@@ -226,7 +241,7 @@ Node& Node::accept(NodeVisitor& nv)
     return *this;
 }
 
-std::map<std::string, Node>& Node::getNodes()
+map<string, Node>& Node::getNodes()
 {
     return _nodes;
 }
@@ -237,3 +252,4 @@ Controller& Node::getController()
 }
 
 } /* namespace jupiter */
+

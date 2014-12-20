@@ -10,6 +10,14 @@
 
 #include <string>
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <Jupiter/RenderVisitor.h>
+#include <Jupiter/Node.h>
+
 namespace jupiter
 {
 
@@ -23,6 +31,13 @@ public:
     void draw();
 
     void input();
+
+    int32_t width() const;
+    int32_t height() const;
+
+private:
+    Node _rootNode;
+    RenderVisitor _render;
 };
 
 } /* namespace jupiter */

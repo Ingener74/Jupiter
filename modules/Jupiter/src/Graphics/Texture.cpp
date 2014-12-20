@@ -6,7 +6,6 @@
  */
 
 #include <Jupiter/Tools.h>
-#include <Jupiter/TextureLoader.h>
 #include <Jupiter/Texture.h>
 #include <Jupiter/TextureBuilder.h>
 

@@ -9,20 +9,26 @@
 #define SHADERPROGRAM_H_
 
 #include <string>
+#include <memory>
+
+#include <GL/glew.h>
 
 namespace jupiter
 {
 
-class ShaderProgram
+class ShaderImpl;
+
+class Shader
 {
 public:
-    ShaderProgram();
-    ShaderProgram(const std::string& program);
-    virtual ~ShaderProgram();
+    Shader();
+    Shader(const std::string& program);
+    virtual ~Shader();
 
     void use() const;
 
 private:
+    std::shared_ptr<ShaderImpl> _impl;
 };
 
 } /* namespace jupiter */

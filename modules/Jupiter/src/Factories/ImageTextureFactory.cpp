@@ -39,10 +39,10 @@ std::shared_ptr<TextureImpl> ImageTextureFactory::create(const std::string& text
 
     auto wp2 = upperPowerOfTwo(im.getWidth()), hp2 = upperPowerOfTwo(im.getHeight());
 
-    glTexImage2D(GL_TEXTURE_2D, 0, type, wp2, hp2, 0, type, GL_UNSIGNED_BYTE, im.getData());
+    glTexImage2D(GL_TEXTURE_2D, 0, type, wp2, hp2, 0, type, GL_UNSIGNED_BYTE, nullptr);
     Tools::glError();
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im.getWidth(), im.getHeight(), GL_UNSIGNED_BYTE, type, im.getData());
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im.getWidth(), im.getHeight(), type, GL_UNSIGNED_BYTE, im.getData());
     Tools::glError();
 
     return make_shared<TextureImpl>(textureId, type, wp2, hp2);

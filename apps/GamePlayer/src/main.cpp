@@ -60,113 +60,16 @@ using namespace ganymede;
 using namespace jupiter;
 
 /*
- * node:backGround
- *   sprite:background.png
- *   controller:background.lua
+ * -- preload/caching images in before node in tree
  *
- * node:Start
- *   node:backGround
- *   node:StartButton
- *     sprite:start-button.png
- *     controller:start-button.lua
+ * -- sound
  *
- * node:Main
- *   node:backGround
- *   node:fireButton
- *     sprite:fire-button.png
- *     controller:fire-button.lua
- *   node:gasButton
- *     sprite:gas-button.png
- *     controller:gas-button.lua
- *   node:leftButton
- *     sprite:left-button.png
- *     controller:left-button.lua
- *   node:rightButton
- *     sprite:right-button.png
- *     controller:right-button.lua
- *   node:life
- *     sprite:life-1.png
- *     sprite:life-2.png
- *     sprite:life-3.png
- *     controller:life.lua
- *   node:battleShip
- *     sprite:ship.png
- *     sprite:fire.png
- *     controller:battle-ship.lua
- *   node:bigRock1
- *     sprite:rock.png
- *     controller:big-rock.lua
- *   node:bigRock2
- *     sprite:rock.png
- *     controller:big-rock.lua
- *   node:bigRock3
- *     sprite:rock.png
- *     controller:big-rock.lua
- *   node:smallRock1
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock2
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock3
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock4
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock5
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock6
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock7
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock8
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock9
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock10
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock11
- *     sprite:rock.png
- *     controller:small-rock.lua
- *   node:smallRock12
- *     sprite:rock.png
- *     controller:small-rock.lua
+ * -- animation node
  *
- * node:Win
- *   node:backGround
- *   node:playAfterWin
- *     sprite:play-after-win.png
- *     controller:after-win.lua
- *
- * node:Fail
- *   node:backGround
- *   node:playAfterFail
- *     sprite:play-after-fail.png
- *     controller:after-fail.lua
- *
- *
- *
- * preload/caching images in before node in tree
+ * -- text node
  */
 
 Game game;
-
-path gameFileLocation;
-
-int x = 0;
-int y = 0;
-int width = 0;
-int height = 0;
-
-//std::shared_ptr<State> luaState;
-std::shared_ptr<DrawEngine> engine;
 
 string usage = R"(
 Usage  : ./GamePlayer -g <path-to-game>
@@ -180,14 +83,6 @@ void display(void)
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.f, 0.f, 0.f, 1.f);
-
-    engine->animateAll(30.0 / 1000.0);
-
-    engine->draw();
-
-    /*
-     * game->getEngine()->draw();
-     */
 
     game.draw();
 
@@ -212,33 +107,16 @@ void mouse(int button, int action, int x, int y)
     };
 //    cout << buttons[button] << " " << actions[action] << " " << x << " x " << y << endl;
 
-    engine->inputToAll(x, y);
-
     game.input();
 }
 
 void mouseMove( int x, int y )
 {
-//    cout << x << " x " << y << endl;
-
     game.input();
-}
-
-ostream& operator<<(ostream& out, const mat4& m){
-    return out <<
-            setw(10) << m[0].x << setw(10) << m[0].y << setw(10) << m[0].z << setw(10) << m[0].w << endl <<
-            setw(10) << m[1].x << setw(10) << m[1].y << setw(10) << m[1].z << setw(10) << m[1].w << endl <<
-            setw(10) << m[2].x << setw(10) << m[2].y << setw(10) << m[2].z << setw(10) << m[2].w << endl <<
-            setw(10) << m[3].x << setw(10) << m[3].y << setw(10) << m[3].z << setw(10) << m[3].w;
 }
 
 int main(int argc, char **argv)
 {
-    mat4 m1;
-    cout << scale(m1, vec3{10.f, 1.f, 1.f}) << endl << endl;
-    cout << scale(m1, vec3{1.f, 10.f, 1.f}) << endl << endl;
-    cout << scale(m1, vec3{1.f, 1.f, 10.f}) << endl << endl;
-
     options_description desc("General description");
     try
     {
@@ -258,77 +136,16 @@ int main(int argc, char **argv)
 
         if (!vm.count("game")) throw runtime_error("have no game file");
 
-//        auto backGroundNode = Node{{}, {{"background", {"images/background.png"}}}};
-//
-//        auto gameNodes = Node{
-//            {},
-//            {},
-//            {
-//                    {"Start",
-//                            {
-//                                    {},
-//                                    {},
-//                                    {{"background", backGroundNode}}
-//                            }
-//                    },
-//                    {"Main",
-//                            {
-//                                    {},
-//                                    {},
-//                                    {{"background", backGroundNode}}
-//                            }
-//                    },
-//                    {"Win",
-//                            {
-//                                    {},
-//                                    {},
-//                                    {
-//                                            {"background", backGroundNode},
-//                                            {"winAgain", {{}, {{"WinAgain", {"resources/images/win_again.png"}}}, {}}}
-//                                    }
-//                            }
-//                    },
-//                    {"Fail",
-//                            {
-//                                    {},
-//                                    {},
-//                                    {
-//                                            {"background", backGroundNode},
-//                                            {"failAgain", {{}, {{"FailAgain", {"resources/images/fail_again.png"}}}, {}}}
-//                                    }
-//                            }
-//                    }
-//            }
-//        };
-
-        game = Game(vm["game"].as<string>());
-
-        gameFileLocation = path(vm["game"].as<string>());
-
-        auto script = ResourceManager::createResource("Asteroids.lua");
-        ganymede::State L;
-        L.load(*script);
-
-        auto file = ResourceManager::createResource(gameFileLocation.filename().c_str());
-
-        property_tree::ptree pt;
-        property_tree::json_parser::read_json(*file, pt);
-
-        width  = pt.get<int>("resolution.width");
-        height = pt.get<int>("resolution.height");
-
-        {
-            auto sprites = pt.get_child("sprites");
-
-            for ( auto i : sprites )
-            {
-                cout << i.first << " " << i.second.get<string>("texture") << endl;
-            }
-        }
+//        gameFileLocation = path(vm["game"].as<string>());
+//        auto file = ResourceManager::createResource(gameFileLocation.filename().c_str());
+//        property_tree::ptree pt;
+//        property_tree::json_parser::read_json(*file, pt);
+//        width  = pt.get<int>("resolution.width");
+//        height = pt.get<int>("resolution.height");
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-        glutInitWindowSize(width, height);
+        glutInitWindowSize(800, 480);
         glutCreateWindow("Jupiter game player");
 
         glEnable(GL_DEPTH_TEST);
@@ -344,15 +161,18 @@ int main(int argc, char **argv)
 
         if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
 
-        glViewport(x, y, width, height);
+        game = Game(vm["game"].as<string>());
 
-        auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
+//        auto script = ResourceManager::createResource("Asteroids.lua");
+//        ganymede::State L;
+//        L.load(*script);
 
-        string vs = "resources/shaders/vertex.shader", fs = "resources/shaders/fragment.shader";
+        glViewport(0, 0, game.width(), game.height());
 
-        engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(vs, fs), o, width, height);
+//        auto o = ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100);
 
-        Sprite s{"resources/images/bg.png"};
+//        string vs = "resources/shaders/vertex.shader", fs = "resources/shaders/fragment.shader";
+//        engine = make_shared<DrawEngine>(make_shared<ResourceShaderLoader>(vs, fs), o, width, height);
 
 //        map<string, std::shared_ptr<Scene>> gameScenes;
 //        gameScenes["Start"] = make_shared<Scene>();

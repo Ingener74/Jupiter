@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <Jupiter/Controller.h>
+#include <Jupiter/Node.h>
 
 namespace jupiter
 {
@@ -18,12 +19,33 @@ Controller::Controller()
 {
 }
 
+Controller::Controller(const std::string& controller)
+{
+}
+
 Controller::~Controller()
 {
 }
 
-void Controller::update( double elapsedTime )
+void Controller::onVisibleChanged(bool isVisible)
+{
+}
+
+void Controller::onMove(float x, float y, float z)
+{
+}
+
+void Controller::onScaleChanged(float x, float y, float z)
+{
+}
+
+void Controller::onRotate(float x, float y, float z)
+{
+}
+
+void Controller::update(double elapsedTime)
 {
 }
 
 } /* namespace jupiter */
+
