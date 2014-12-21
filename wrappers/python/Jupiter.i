@@ -2,6 +2,7 @@
 %module(directors="1") Jupiter
 %{
 
+#include <Jupiter/LinuxPlatform.h>
 #include <Jupiter/Game.h>
 #include <Jupiter/Sprite.h>
 #include <Jupiter/Node.h>
@@ -19,6 +20,7 @@ using namespace jupiter;
 
 %feature("director") Controller;
 
+%include "src/LinuxPlatform.i"
 %include "src/Game.i"
 %include "src/Node.i"
 %include "src/Sprite.i"

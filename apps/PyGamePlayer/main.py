@@ -64,8 +64,12 @@ def main():
     glutKeyboardFunc(keyPressed)
     glutMouseFunc(mouse)
     
+    gameFile = "../../samples/Asteroids/Asteroids.json"
+    
+    j.LinuxPlatform(gameFile)
+    
     global game
-    game = j.Game("../../samples/Asteroids/Asteroids.json")
+    game = j.Game(gameFile)
     
     c = j.Controller()
     

@@ -8,6 +8,8 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_JSONNODEFACTORY_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_JSONNODEFACTORY_H_
 
+#include <boost/property_tree/ptree.hpp>
+
 #include <Jupiter/Builder.h>
 #include <Jupiter/Node.h>
 
