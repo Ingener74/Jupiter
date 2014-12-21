@@ -21,6 +21,9 @@ public:
     virtual ~JSONNodeFactory();
 
     virtual ProductImplPtr create(const std::string&);
+
+private:
+    static const boost::property_tree::ptree& findNode(boost::property_tree::ptree& pt, const std::string& name);
 };
 
 } /* namespace jupiter */
