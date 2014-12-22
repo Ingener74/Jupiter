@@ -34,4 +34,8 @@ JsonGameHolder::JsonGameHolder()
 {
 }
 
+const boost::property_tree::ptree& jupiter::JsonGameHolder::findNode(const std::string& type, const std::string& name)
+{
+}
+
 } /* namespace jupiter */

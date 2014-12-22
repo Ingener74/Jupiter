@@ -34,6 +34,17 @@ find_package(GLEW REQUIRED)
 # find Box2D
 find_package(Box2D REQUIRED)
 
+# fine GTest
+add_subdirectory(3rdparty/gtest-1.7.0)
+enable_testing()
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+#find_package(GTest REQUIRED)
+#include_directories(${GTEST_INCLUDE_DIRS})
+
+# add_executable(foo foo.cc)
+# target_link_libraries(foo ${GTEST_BOTH_LIBRARIES})
+# add_test(AllTestsInFoo foo)
+
 include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}

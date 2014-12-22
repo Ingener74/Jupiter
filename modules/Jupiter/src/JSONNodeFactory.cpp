@@ -94,8 +94,4 @@ JSONNodeFactory::ProductImplPtr JSONNodeFactory::create(const std::string& nodeN
     return make_shared<NodeImpl>(name, isVisible, model, controller, nodes_);
 }
 
-const boost::property_tree::ptree& JSONNodeFactory::findNode(boost::property_tree::ptree& pt, const std::string& name)
-{
-}
-
 } /* namespace jupiter */
