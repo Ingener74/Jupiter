@@ -22,11 +22,12 @@ public:
     void setGame(const boost::property_tree::ptree&);
     const boost::property_tree::ptree& getGame()const;
 
+    const boost::property_tree::ptree& findNode(const std::string& type, const std::string& name);
+
 private:
     JsonGameHolder();
 
     boost::property_tree::ptree _pt;
-    const boost::property_tree::ptree& findNode(const std::string& type, const std::string& name);
 };
 
 } /* namespace jupiter */

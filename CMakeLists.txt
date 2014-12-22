@@ -9,13 +9,6 @@ add_subdirectory(3rdparty)
 # include modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
 
-# find Qt5
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Core    REQUIRED)
-find_package(Qt5OpenGL  REQUIRED)
-
 # find boost
 find_package(Boost 1.53.0 REQUIRED system thread filesystem program_options)
 
@@ -34,22 +27,12 @@ find_package(GLEW REQUIRED)
 # find Box2D
 find_package(Box2D REQUIRED)
 
-# fine GTest
+# find GTest
 add_subdirectory(3rdparty/gtest-1.7.0)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-#find_package(GTest REQUIRED)
-#include_directories(${GTEST_INCLUDE_DIRS})
-
-# add_executable(foo foo.cc)
-# target_link_libraries(foo ${GTEST_BOTH_LIBRARIES})
-# add_test(AllTestsInFoo foo)
 
 include_directories(
-    ${Qt5Widgets_INCLUDES}
-    ${Qt5Core_INCLUDES}
-    ${Qt5OpenGL_INCLUDES}
-    
     ${Boost_INCLUDE_DIRS}
     
     ${PNG_INCLUDE_DIRS}
@@ -68,14 +51,7 @@ include_directories(
     modules/Ganymede/include
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS} ${Qt5OpenGL_EXECUTABLE_COMPILE_FLAGS}")
-
-add_definitions(
-    -std=c++11
-    ${Qt5Widgets_DEFINITIONS}
-    ${Qt5Core_DEFINITIONS}
-    ${Qt5OpenGL_DEFINITIONS}
-)
+add_definitions(-std=c++11)
 
 add_subdirectory(apps)
 

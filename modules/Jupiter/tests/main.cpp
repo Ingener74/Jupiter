@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <string>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
@@ -12,6 +14,7 @@
 
 #include <gtest/gtest.h>
 
+using namespace std;
 using namespace jupiter;
 
 TEST(TestCase1, Test1){
@@ -24,7 +27,7 @@ TEST(TestCase1, Test1){
 
     EXPECT_EQ(1, 1);
 
-//    JsonGameHolder::instance()->find
+    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
+    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
 }
-
 
