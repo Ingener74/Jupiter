@@ -17,17 +17,27 @@
 using namespace std;
 using namespace jupiter;
 
-TEST(TestCase1, Test1){
+TEST(TestCase1, Test1)
+{
+    using namespace boost::property_tree;
+    using namespace boost::property_tree::json_parser;
 
-    boost::property_tree::ptree pt;
+    ptree pt;
 
-    EXPECT_THROW(boost::property_tree::json_parser::read_json("../../Asteroids.json", pt), std::exception);
+    read_json("/home/pavel/prj/Jupiter/samples/Asteroids/Asteroids.json", pt);
 
     JsonGameHolder::instance()->setGame(pt);
 
-    EXPECT_EQ(1, 1);
-
     auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
     EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
+
+//    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
+//    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
+//
+//    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
+//    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
+//
+//    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
+//    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
 }
 
