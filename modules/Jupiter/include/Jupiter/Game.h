@@ -22,6 +22,17 @@
 namespace jupiter
 {
 
+class GameArgs
+{
+public:
+    GameArgs()
+    {
+    }
+    virtual ~GameArgs()
+    {
+    }
+};
+
 class Game
 {
 public:
@@ -29,16 +40,22 @@ public:
     Game(const std::string& gameFile);
     virtual ~Game();
 
-    void draw();
+    virtual void draw();
 
-    void input();
+    virtual void input();
 
-    int32_t width() const;
-    int32_t height() const;
+    virtual int32_t width() const;
+    virtual int32_t height() const;
 
 private:
     RenderVisitor _render;
     std::shared_ptr<GameImpl> _impl;
+};
+
+class JsonGame{
+public:
+    JsonGame();
+    virtual ~JsonGame() = default;
 };
 
 } /* namespace jupiter */
