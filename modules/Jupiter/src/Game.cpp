@@ -29,10 +29,13 @@ using namespace glm;
 
 Game::Game()
 {
+//    int width = 100, height = 100;
+//    render = {ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
 }
 
 template<typename T>
-class Store{
+class Store
+{
 public:
     Store() = delete;
     virtual ~Store() = delete;
@@ -54,49 +57,27 @@ private:
     }
 };
 
-Game::Game(const std::string& name) :
-        impl(Store<GameImpl>::get(name))
-{
-}
-
-Game::Game(const std::string& name, std::shared_ptr<GameImpl> impl): impl(impl)
-{
-    Store<GameImpl>::put(name, impl);
-
-    int width = 100, height = 100;
-    render = {ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
-}
-
 Game::~Game()
 {
 }
 
 void Game::draw()
 {
-    if (impl)
-        render.visit(impl->getRootNode());
-    else
-        throw JupiterError("game impl is invalid");
+    render.visit(*node);
 }
 
 void Game::input()
 {
 }
 
-int32_t Game::width() const
+int32_t Game::getWidth() const
 {
-    if (impl)
-        return impl->getWidth();
-    else
-        throw JupiterError("game impl is invalid");
+    return width;
 }
 
-int32_t Game::height() const
+int32_t Game::getHeight() const
 {
-    if (impl)
-        return impl->getHeight();
-    else
-        throw JupiterError("game impl is invalid");
+    return height;
 }
 
 } /* namespace jupiter */

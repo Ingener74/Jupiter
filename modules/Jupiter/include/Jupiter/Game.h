@@ -17,7 +17,6 @@
 
 #include <Jupiter/RenderVisitor.h>
 #include <Jupiter/Node.h>
-#include <Jupiter/GameImpl.h>
 
 namespace jupiter
 {
@@ -26,42 +25,40 @@ class Game
 {
 public:
     Game();
-    Game(const std::string& name);
-    Game(const std::string& name, std::shared_ptr<GameImpl>);
     virtual ~Game();
 
     virtual void draw();
 
     virtual void input();
 
-    virtual int32_t width() const;
-    virtual int32_t height() const;
+    virtual int32_t getWidth() const;
+    virtual int32_t getHeight() const;
 
 private:
     RenderVisitor render;
-    std::shared_ptr<GameImpl> impl;
+    std::shared_ptr<Node> node;
+    int32_t width = 0;
+    int32_t height = 0;
 };
 
-class JsonGameImpl: public GameImpl
+class JsonGame: public Game
 {
 public:
-    JsonGameImpl(const std::string& gameFile) :
-            GameImpl({}, 0, 0)
+    JsonGame(const std::string& gameFile)
     {
     }
-    virtual ~JsonGameImpl()
+    virtual ~JsonGame()
     {
     }
 };
 
-class DirectGameImpl: public GameImpl
+class DirectGame: public Game
 {
 public:
-    DirectGameImpl(Node node) :
-        GameImpl({}, 0, 0)
+    DirectGame(Node node)
     {
     }
-    virtual ~DirectGameImpl()
+    virtual ~DirectGame()
     {
     }
 };

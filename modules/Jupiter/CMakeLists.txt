@@ -16,7 +16,6 @@ set(SOURCES
     
     src/Tools.cpp
     src/Game.cpp
-    src/GameImpl.cpp
     src/JSONGameFactory.cpp
     
     src/Graphics/Texture.cpp
