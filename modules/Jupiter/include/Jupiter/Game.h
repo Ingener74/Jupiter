@@ -22,22 +22,12 @@
 namespace jupiter
 {
 
-class GameArgs
-{
-public:
-    GameArgs()
-    {
-    }
-    virtual ~GameArgs()
-    {
-    }
-};
-
 class Game
 {
 public:
     Game();
-    Game(const std::string& gameFile);
+    Game(const std::string& name);
+    Game(const std::string& name, std::shared_ptr<GameImpl>);
     virtual ~Game();
 
     virtual void draw();
@@ -48,14 +38,32 @@ public:
     virtual int32_t height() const;
 
 private:
-    RenderVisitor _render;
-    std::shared_ptr<GameImpl> _impl;
+    RenderVisitor render;
+    std::shared_ptr<GameImpl> impl;
 };
 
-class JsonGame{
+class JsonGameImpl: public GameImpl
+{
 public:
-    JsonGame();
-    virtual ~JsonGame() = default;
+    JsonGameImpl(const std::string& gameFile) :
+            GameImpl({}, 0, 0)
+    {
+    }
+    virtual ~JsonGameImpl()
+    {
+    }
+};
+
+class DirectGameImpl: public GameImpl
+{
+public:
+    DirectGameImpl(Node node) :
+        GameImpl({}, 0, 0)
+    {
+    }
+    virtual ~DirectGameImpl()
+    {
+    }
 };
 
 } /* namespace jupiter */
