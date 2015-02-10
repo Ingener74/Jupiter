@@ -33,37 +33,13 @@ Game::Game()
 //    render = {ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
 }
 
-template<typename T>
-class Store
-{
-public:
-    Store() = delete;
-    virtual ~Store() = delete;
-
-    static void put(const string& name, shared_ptr<T> impl)
-    {
-        Register()[name] = impl;
-    }
-    static shared_ptr<T> get(const string& name)
-    {
-        return Register()[name];
-    }
-private:
-    using Reg = map<string, shared_ptr<T>>;
-    static Reg& Register()
-    {
-        static Reg reg;
-        return reg;
-    }
-};
-
 Game::~Game()
 {
 }
 
 void Game::draw()
 {
-    render.visit(*node);
+    render.visit(node);
 }
 
 void Game::input()

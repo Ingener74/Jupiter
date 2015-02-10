@@ -69,7 +69,7 @@ using namespace jupiter;
  * -- text node
  */
 
-Game game;
+std::shared_ptr<Game> game;
 
 string usage = R"(
 Usage  : ./GamePlayer -g <path-to-game>
@@ -84,7 +84,7 @@ void display(void)
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
-    game.draw();
+    game->draw();
 
     glutSwapBuffers();
 }
@@ -106,12 +106,12 @@ void mouse(int button, int action, int x, int y)
         {GLUT_UP,   "GLUT_UP"}
     };
 
-    game.input();
+    game->input();
 }
 
 void mouseMove( int x, int y )
 {
-    game.input();
+    game->input();
 }
 
 int main(int argc, char **argv)
@@ -156,10 +156,10 @@ int main(int argc, char **argv)
         auto gameFileName = vm["game"].as<string>();
 
         LinuxPlatform lp{gameFileName};
-        game = {"game", make_shared<JsonGameImpl>(gameFileName)};
+        game = make_shared<JsonGame>(gameFileName);
 
-        glutReshapeWindow(game.width(), game.height());
-        glViewport(0, 0, game.width(), game.height());
+        glutReshapeWindow(game->getWidth(), game->getHeight());
+        glViewport(0, 0, game->getWidth(), game->getHeight());
 
         glutMainLoop();
 

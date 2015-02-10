@@ -16,25 +16,25 @@ namespace jupiter
 
 using namespace std;
 
-Texture::Texture(const std::string& texture) :
-        _impl(TextureBuilder::create(texture))
-{
-}
+//Texture::Texture(const std::string& texture) :
+//        _impl(TextureBuilder::create(texture))
+//{
+//}
 
 void Texture::bind() const
 {
-    glBindTexture(GL_TEXTURE_2D, _impl->_textureID);
+    glBindTexture(GL_TEXTURE_2D, _textureID);
     Tools::glError();
 }
 
 int Texture::getWidth() const
 {
-    return _impl->getWidth();
+    return _width;
 }
 
 int Texture::getHeight() const
 {
-    return _impl->getHeight();
+    return _height;
 }
 
 } /* namespace ndk_game */

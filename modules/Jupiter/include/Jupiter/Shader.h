@@ -21,14 +21,13 @@ class ShaderImpl;
 class Shader
 {
 public:
-    Shader();
-    Shader(const std::string& program);
-    virtual ~Shader();
+    Shader() = default;
+    virtual ~Shader() = default;
 
-    void use() const;
+    virtual void use() const;
 
 private:
-    std::shared_ptr<ShaderImpl> _impl;
+    GLuint _program = 0;
 };
 
 } /* namespace jupiter */

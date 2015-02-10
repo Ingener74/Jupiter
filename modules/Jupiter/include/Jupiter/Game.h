@@ -36,7 +36,7 @@ public:
 
 private:
     RenderVisitor render;
-    std::shared_ptr<Node> node;
+    Node* node = nullptr;
     int32_t width = 0;
     int32_t height = 0;
 };
@@ -55,7 +55,7 @@ public:
 class DirectGame: public Game
 {
 public:
-    DirectGame(Node node)
+    DirectGame(Node* node)
     {
     }
     virtual ~DirectGame()

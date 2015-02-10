@@ -6,6 +6,8 @@ project(${PROJECT_NAME})
 set(SOURCES
     # Sound
     
+    src/Aware.cpp
+    
     src/LinuxPlatform.cpp
     
     src/Sound/DummySound.cpp
@@ -16,37 +18,37 @@ set(SOURCES
     
     src/Tools.cpp
     src/Game.cpp
-    src/JSONGameFactory.cpp
+#    src/JSONGameFactory.cpp
     
     src/Graphics/Texture.cpp
-    src/TextureImpl.cpp
-    src/Builders/TextureBuilder.cpp
-    src/Factories/ImageTextureFactory.cpp
+#    src/TextureImpl.cpp
+#    src/Builders/TextureBuilder.cpp
+#    src/Factories/ImageTextureFactory.cpp
     
     src/Graphics/Image.cpp
-    src/ImageImpl.cpp
-    src/Builders/ImageBuilder.cpp
-    src/Builders/PNGImageFactory.cpp
+#    src/ImageImpl.cpp
+#    src/Builders/ImageBuilder.cpp
+#    src/Builders/PNGImageFactory.cpp
     
     src/Node.cpp
-    src/NodeImpl.cpp
-    src/JSONNodeFactory.cpp
+#    src/NodeImpl.cpp
+#    src/JSONNodeFactory.cpp
     
     src/Shape.cpp
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
     
     src/Shader.cpp
-    src/ShaderImpl.cpp
-    src/FileShaderFactory.cpp
+#    src/ShaderImpl.cpp
+#    src/FileShaderFactory.cpp
     
     src/Controller.cpp
-    src/ControllerImpl.cpp
-    src/CPPControllerFactory.cpp
+#    src/ControllerImpl.cpp
+#    src/CPPControllerFactory.cpp
     
     src/Graphics/Sprite.cpp
     
-    src/JsonGameHolder.cpp
+#    src/JsonGameHolder.cpp
     
     # Old
     src/Graphics/Rect.cpp

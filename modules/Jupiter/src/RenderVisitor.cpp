@@ -24,33 +24,36 @@ RenderVisitor::~RenderVisitor()
 {
 }
 
-void RenderVisitor::visit(Node& node)
+void jupiter::RenderVisitor::visit(Node* node)
 {
-    if (node.isVisible())
-        for (auto &i : node.getNodes())
-            visit(i.second);
+    if(!node)
+        throw JupiterError("Render visitor: node is nullptr");
+
+    if (node->isVisible())
+        for(auto it = node->begin(); it != node->end(); ++it)
+            visit(it->node);
 }
 
-void RenderVisitor::visit(Sprite& sprite)
+void jupiter::RenderVisitor::visit(Sprite* sprite)
 {
+    if(!sprite)
+        throw JupiterError("Render visitor: sprite is nullptr");
     /*
      * draw sprite
      */
 
-    if (sprite.isVisible())
+    if (sprite->isVisible())
     {
-        sprite.getProgram().use();
+        sprite->getProgram()->use();
 
-        sprite.getTexture().bind();
+        sprite->getTexture().bind();
 
         /*
          * draw shape with program
-         *
          */
 
-
-        for (auto i : sprite.getNodes())
-            visit(i.second);
+        for(auto it = sprite->begin(); it != sprite->end(); ++it)
+            visit(it->node);
     }
 }
 

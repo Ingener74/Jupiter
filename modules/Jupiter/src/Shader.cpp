@@ -12,23 +12,9 @@
 namespace jupiter
 {
 
-Shader::Shader()
-{
-}
-
-Shader::Shader(const std::string& program) :
-        _impl(Builder<Shader, ShaderImpl>::create(program))
-{
-}
-
-Shader::~Shader()
-{
-}
-
 void Shader::use() const
 {
-    if (_impl)
-        _impl->use();
+    glUseProgram(_program);
 }
 
 } /* namespace jupiter */

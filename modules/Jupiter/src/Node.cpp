@@ -12,11 +12,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <Jupiter/Builder.h>
-
-#include <Jupiter/NodeVisitor.h>
-#include <Jupiter/NodeImpl.h>
-#include <Jupiter/Node.h>
+#include "Jupiter/NodeVisitor.h"
+#include "Jupiter/NodeImpl.h"
+#include "Jupiter/Node.h"
 
 namespace jupiter
 {
@@ -26,34 +24,43 @@ using namespace glm;
 
 Node::Node()
 {
-}
-
-Node::Node(const string& node): _impl(Builder<Node, NodeImpl>::create(node))
-{
+    Aware::add(this);
 }
 
 Node::~Node()
 {
+    Aware::remove(this);
+    if (_controller)
+        delete _controller;
+    for (auto& i : _nodes)
+        delete i.node;
 }
 
-bool Node::operator <(const Node& r)
+bool Node::NodePtr::operator <(const NodePtr& r) const
 {
-    return _impl->getModel()[3].z < r._impl->getModel()[3].z;
+    return node->_model[3].z < r.node->_model[3].z;
 }
 
-bool Node::operator >(const Node& r)
+bool Node::NodePtr::operator >(const NodePtr& r) const
 {
-    return _impl->getModel()[3].z > r._impl->getModel()[3].z;
+    return node->_model[3].z > r.node->_model[3].z;
 }
 
-Node& Node::operator [](const std::string& nodeName)
+void Node::addNode(Node* node)
 {
-    return _impl->getNodes()[nodeName];
+    if(!node)
+        throw JupiterError("Node add nullptr node");
+    _nodes.insert(NodePtr{node});
 }
 
-void Node::addNode(const std::string& name, Node node)
+set<Node::NodePtr>::iterator Node::begin()
 {
-    _impl->getNodes()[name] = node;
+    return _nodes.begin();
+}
+
+set<Node::NodePtr>::iterator Node::end()
+{
+    return _nodes.end();
 }
 
 float Node::getRotationX() const
@@ -71,210 +78,206 @@ float Node::getRotationZ() const
     return 0.f;
 }
 
-Node& Node::setRotation(float x, float y, float z)
+Node* Node::setRotation(float x, float y, float z)
 {
-    _impl->getController().onRotate(x, y, z);
-    return *this;
+    if(_controller)
+        _controller->onRotate(x, y, z);
+    return this;
 }
 
-Node& Node::setRotationX(float x)
+Node* Node::setRotationX(float x)
 {
-    _impl->getController().onRotate(x, 0, 0);
-    return *this;
+    if (_controller)
+        _controller->onRotate(x, 0, 0);
+    return this;
 }
 
-Node& Node::setRotationY(float y)
+Node* Node::setRotationY(float y)
 {
-    _impl->getController().onRotate(0, y, 0);
-    return *this;
+    if (_controller)
+        _controller->onRotate(0, y, 0);
+    return this;
 }
 
-Node& Node::setRotationZ(float z)
+Node* Node::setRotationZ(float z)
 {
-    _impl->getController().onRotate(0, 0, z);
-    return *this;
+    if (_controller)
+        _controller->onRotate(0, 0, z);
+    return this;
 }
 
-Node& Node::rotate(float x, float y, float z)
+Node* Node::rotate(float x, float y, float z)
 {
-    _impl->getController().onRotate(x, y, z);
-    return *this;
+    if (_controller)
+        _controller->onRotate(x, y, z);
+    return this;
 }
 
-Node& Node::rotateX(float x)
+Node* Node::rotateX(float x)
 {
-    _impl->getController().onRotate(x, 0, 0);
-    return *this;
+    if (_controller)
+        _controller->onRotate(x, 0, 0);
+    return this;
 }
 
-Node& Node::rotateY(float y)
+Node* Node::rotateY(float y)
 {
-    _impl->getController().onRotate(0, y, 0);
-    return *this;
+    if (_controller)
+        _controller->onRotate(0, y, 0);
+    return this;
 }
 
-Node& Node::rotateZ(float z)
+Node* Node::rotateZ(float z)
 {
-    _impl->getController().onRotate(0, 0, z);
-    return *this;
+    if (_controller)
+        _controller->onRotate(0, 0, z);
+    return this;
 }
 
 float Node::getPositionX() const
 {
-    return _impl->getModel()[3].x;
+    return _model[3].x;
 }
 
 float Node::getPositionY() const
 {
-    return _impl->getModel()[3].y;
+    return _model[3].y;
 }
 
 float Node::getPositionZ() const
 {
-    return _impl->getModel()[3].z;
+    return _model[3].z;
 }
 
-Node& Node::setPosition(float x, float y, float z)
+Node* Node::setPosition(float x, float y, float z)
 {
-    auto m = _impl->getModel();
-    m[3].x = x;
-    m[3].y = y;
-    m[3].z = z;
-    _impl->setModel(m);
-    return *this;
+    _model[3].x = x;
+    _model[3].y = y;
+    _model[3].z = z;
+    return this;
 }
 
-Node& Node::setPositionX(float x)
+Node* Node::setPositionX(float x)
 {
-    auto m = _impl->getModel();
-    m[3].x = x;
-    _impl->setModel(m);
-    return *this;
+    _model[3].x = x;
+    return this;
 }
 
-Node& Node::setPositionY(float y)
+Node* Node::setPositionY(float y)
 {
-    auto m = _impl->getModel();
-    m[3].y = y;
-    _impl->setModel(m);
-    return *this;
+    _model[3].y = y;
+    return this;
 }
 
-Node& Node::setPositionZ(float z)
+Node* Node::setPositionZ(float z)
 {
-    auto m = _impl->getModel();
-    m[3].z = z;
-    _impl->setModel(m);
-    return *this;
+    _model[3].z = z;
+    return this;
 }
 
-Node& Node::translate(float x, float y, float z)
+Node* Node::translate(float x, float y, float z)
 {
-    _impl->setModel(glm::translate(_impl->getModel(), vec3{x, y, z}));
-    _impl->getController().onMove(x, y, z);
-    return *this;
+    _model = glm::translate(_model, vec3{x, y, z});
+    if (_controller)
+        _controller->onMove(x, y, z);
+    return this;
 }
 
-Node& Node::translateX(float x)
+Node* Node::translateX(float x)
 {
-    _impl->setModel(glm::translate(_impl->getModel(), vec3{x, 0.f, 0.f}));
-    _impl->getController().onMove(x, 0, 0);
-    return *this;
+    _model = glm::translate(_model, vec3{x, 0.f, 0.f});
+    if (_controller)
+        _controller->onMove(x, 0, 0);
+    return this;
 }
 
-Node& Node::translateY(float y)
+Node* Node::translateY(float y)
 {
-    _impl->setModel(glm::translate(_impl->getModel(), vec3{0.f, y, 0.f}));
-    _impl->getController().onMove(0, y, 0);
-    return *this;
+    _model = glm::translate(_model, vec3{0.f, y, 0.f});
+    if (_controller)
+        _controller->onMove(0, y, 0);
+    return this;
 }
 
-Node& Node::translateZ(float z)
+Node* Node::translateZ(float z)
 {
-    _impl->setModel(glm::translate(_impl->getModel(), vec3{0.f, 0.f, z}));
-    _impl->getController().onMove(0, 0, z);
-    return *this;
+    _model = glm::translate(_model, vec3{0.f, 0.f, z});
+    if (_controller)
+        _controller->onMove(0, 0, z);
+    return this;
 }
 
 float Node::getScaleX() const
 {
-    return _impl->getModel()[0].x;
+    return _model[0].x;
 }
 
 float Node::getScaleY() const
 {
-    return _impl->getModel()[1].y;
+    return _model[1].y;
 }
 
-Node& Node::setScale(float x, float y)
+Node* Node::setScale(float x, float y)
 {
-    auto m = _impl->getModel();
-    m[0].x = x;
-    m[1].y = y;
-    _impl->setModel(m);
-    return *this;
+    _model[0].x = x;
+    _model[1].y = y;
+    return this;
 }
 
-Node& Node::setScaleX(float x)
+Node* Node::setScaleX(float x)
 {
-    auto m = _impl->getModel();
-    m[0].x = x;
-    _impl->setModel(m);
-    return *this;
+    _model[0].x = x;
+    return this;
 }
 
-Node& Node::setScaleY(float y)
+Node* Node::setScaleY(float y)
 {
-    auto m = _impl->getModel();
-    m[1].y = y;
-    _impl->setModel(m);
-    return *this;
+    _model[1].y = y;
+    return this;
 }
 
-Node& Node::scale(float x, float y)
+Node* Node::scale(float x, float y)
 {
-    _impl->setModel(glm::scale(_impl->getModel(), vec3{x, y, 0.f}));
-    return *this;
+    _model = glm::scale(_model, vec3{x, y, 0.f});
+    return this;
 }
 
-Node& Node::scaleX(float x)
+Node* Node::scaleX(float x)
 {
-    _impl->setModel(glm::scale(_impl->getModel(), vec3{x, 0.f, 0.f}));
-    return *this;
+    _model = glm::scale(_model, vec3{x, 0.f, 0.f});
+    return this;
 }
 
-Node& Node::scaleY(float y)
+Node* Node::scaleY(float y)
 {
-    _impl->setModel(glm::scale(_impl->getModel(), vec3{0.f, y, 0.f}));
-    return *this;
+    _model = glm::scale(_model, vec3{0.f, y, 0.f});
+    return this;
 }
 
 bool Node::isVisible() const
 {
-    return _impl->isVisible();
+    return _isVisible;
 }
 
-Node& Node::setVisible(bool isVisible)
+Node* Node::setVisible(bool isVisible)
 {
-    _impl->setVisible(isVisible);
-    _impl->getController().onVisibleChanged(isVisible);
-    return *this;
+    _isVisible = isVisible;
+    if (_controller)
+        _controller->onVisibleChanged(isVisible);
+    return this;
 }
 
-Node& Node::accept(NodeVisitor& nv)
+Node* Node::accept(NodeVisitor* nv)
 {
-    nv.visit(*this);
-    return *this;
+    if (!nv)
+        throw JupiterError("Node: visitor is nullptr");
+    nv->visit(this);
+    return this;
 }
 
-map<string, Node>& Node::getNodes()
+Controller* Node::getController()
 {
-    return _impl->getNodes();
-}
-
-Controller& Node::getController()
-{
-    return _impl->getController();
+    return _controller;
 }
 
 } /* namespace jupiter */

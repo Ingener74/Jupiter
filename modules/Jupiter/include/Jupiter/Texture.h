@@ -20,7 +20,8 @@ class Texture
 {
 public:
     Texture() = default;
-    Texture(const std::string& texture);
+//    Texture(const std::string& texture);
+    virtual ~Texture() = default;
 
     void bind() const;
 
@@ -28,7 +29,10 @@ public:
     int getHeight() const;
 
 private:
-    std::shared_ptr<TextureImpl> _impl;
+    GLuint _textureID = 0;
+    GLenum _type = 0;
+    uint32_t _width = 0;
+    uint32_t _height = 0;
 };
 
 } /* namespace ndk_game */

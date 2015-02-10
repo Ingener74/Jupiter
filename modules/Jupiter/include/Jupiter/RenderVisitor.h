@@ -25,8 +25,8 @@ public:
     RenderVisitor(const glm::mat4& ortho);
     virtual ~RenderVisitor();
 
-    virtual void visit(Node&);
-    virtual void visit(Sprite&);
+    virtual void visit(Node*);
+    virtual void visit(Sprite*);
 
 private:
     glm::mat4 _ortho;

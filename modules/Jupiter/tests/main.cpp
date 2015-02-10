@@ -26,10 +26,10 @@ TEST(TestCase1, Test1)
 
     read_json("/home/pavel/prj/Jupiter/samples/Asteroids/Asteroids.json", pt);
 
-    JsonGameHolder::instance()->setGame(pt);
-
-    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
-    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
+//    JsonGameHolder::instance()->setGame(pt);
+//
+//    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
+//    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
 
 //    auto rootNode = JsonGameHolder::instance()->findNode("node", "root");
 //    EXPECT_STREQ("root", rootNode.get<string>("name").c_str());
