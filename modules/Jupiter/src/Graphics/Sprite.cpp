@@ -16,12 +16,7 @@ namespace jupiter
 
 using namespace std;
 
-//Sprite::Sprite(const std::string& sprite) throw (JupiterError) :
-//        Node(/*sprite*/), _texture(sprite), _shape(sprite), _program(sprite)
-//{
-//}
-
-const Texture& Sprite::getTexture() const
+Texture* Sprite::getTexture() const
 {
     return _texture;
 }

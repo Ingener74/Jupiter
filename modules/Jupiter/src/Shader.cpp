@@ -5,9 +5,8 @@
  *      Author: pavel
  */
 
-#include <Jupiter/Shader.h>
-#include <Jupiter/ShaderImpl.h>
-#include <Jupiter/Builder.h>
+#include "Jupiter/Shader.h"
+#include "Jupiter/Builder.h"
 
 namespace jupiter
 {

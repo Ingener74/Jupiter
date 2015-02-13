@@ -30,9 +30,9 @@ public:
     std::shared_ptr<Shader> getProgram() const;
 
 private:
-    Texture _texture;
-    Shape _shape;
-    std::shared_ptr<Shader> _program;
+    Texture* _texture = nullptr;
+    Shape* _shape = nullptr;
+    Shader* _program = nullptr;
 };
 
 } /* namespace ndk_game */

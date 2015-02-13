@@ -31,7 +31,6 @@ set(SOURCES
 #    src/Builders/PNGImageFactory.cpp
     
     src/Node.cpp
-#    src/NodeImpl.cpp
 #    src/JSONNodeFactory.cpp
     
     src/Shape.cpp

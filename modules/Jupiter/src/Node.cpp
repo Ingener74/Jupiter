@@ -13,7 +13,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Jupiter/NodeVisitor.h"
-#include "Jupiter/NodeImpl.h"
 #include "Jupiter/Node.h"
 
 namespace jupiter

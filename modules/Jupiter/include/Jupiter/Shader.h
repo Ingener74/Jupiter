@@ -16,8 +16,6 @@
 namespace jupiter
 {
 
-class ShaderImpl;
-
 class Shader
 {
 public:
