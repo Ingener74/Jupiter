@@ -5,50 +5,49 @@
  *      Author: pavel
  */
 
-#include <iostream>
-
 #include "Jupiter/Aware.h"
 
-namespace jupiter
-{
+namespace jupiter {
 
 using namespace std;
 
-Aware::Object::Object(const string& name): name(name)
-{
+Aware::Object::Object(const string& name) :
+    name(name) {
 }
 
-void Aware::Object::setName(const string& name)
-{
+void Aware::Object::setName(const string& name) {
     Object::name = name;
 }
 
-const string& Aware::Object::getName() const
-{
+const string& Aware::Object::getName() const {
     return name;
 }
 
-void Aware::add(Object* so)
-{
-    if (so->getName().empty())
+void Aware::add(Object* o) {
+    if (o->getName().empty())
         throw JupiterError("Aware object name is empty");
 
-    auto res = Register().insert({so->getName(), so});
+    auto res = Register().insert( { o->getName(), { false, o } });
 
     if (!res.second)
         throw JupiterError("Aware already have " + res.first->first);
     else
-        cout << "added " << so->getName() << endl;
+        cout << "added " << o->getName() << endl;
 }
 
-void Aware::remove(Object* so)
-{
+void Aware::remove(Object* so) {
     Register().erase(so->getName());
     cout << "removed " << so->getName() << ", " << Register().size() << endl;
 }
 
-Aware::Reg& Aware::Register()
-{
+void Aware::release() {
+    auto reg = Register();
+    for (auto it = reg.begin(); it != reg.end(); ++it)
+        if (it->second.first)
+            delete it->second.second;
+}
+
+Aware::Reg& Aware::Register() {
     static Reg reg;
     return reg;
 }

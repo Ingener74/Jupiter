@@ -7,7 +7,7 @@
 1.1. install other dependencies
 
 ```
-sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev swig2.0 swig2.0-doc swig2.0-examples
+sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev
 ```
 
 1.2. libpng 
@@ -20,7 +20,7 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make
-sudo make install
+make && sudo make install
 ```
 
 1.3. Box2D
@@ -34,7 +34,18 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make
-sudo make install
+make && sudo make install
+```
+
+1.4. SWIG 3
+download last version of SWIG 3
+```
+tar xf swig-<version>.tar.xf
+cd <swig-directory>
+mkdir build
+cd build
+cmake ..
+make && sudo make install
 ```
 
 2. build
