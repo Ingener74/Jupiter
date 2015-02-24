@@ -1,5 +1,5 @@
 
-%module(directors="1") Jupiter
+%module(directors="1") LuaJupiter
 %{
 
 #include <Jupiter/LinuxPlatform.h>

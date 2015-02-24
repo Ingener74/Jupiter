@@ -29,6 +29,7 @@ set(LIBS
     ${GLEW_LIBRARIES}
     ${GLUT_LIBRARIES}
     ${Boost_LIBRARIES}
+    ${PNG_LIBRARIES}
     
     lua
     Ganymede

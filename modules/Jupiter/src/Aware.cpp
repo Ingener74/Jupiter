@@ -24,15 +24,7 @@ const string& Aware::Object::getName() const {
 }
 
 void Aware::add(Object* o) {
-    if (o->getName().empty())
-        throw JupiterError("Aware object name is empty");
-
-    auto res = Register().insert( { o->getName(), { false, o } });
-
-    if (!res.second)
-        throw JupiterError("Aware already have " + res.first->first);
-    else
-        cout << "added " << o->getName() << endl;
+    add(o, false);
 }
 
 void Aware::remove(Object* so) {
@@ -52,4 +44,17 @@ Aware::Reg& Aware::Register() {
     return reg;
 }
 
+void Aware::add(Object* o, Created c) {
+    if (o->getName().empty())
+        throw JupiterError("Aware object name is empty");
+
+    auto res = Register().insert( { o->getName(), { c, o } });
+
+    if (!res.second)
+        throw JupiterError("Aware already have " + res.first->first);
+    else
+        cout << "added " << o->getName() << endl;
+}
+
 } /* namespace jupiter */
+

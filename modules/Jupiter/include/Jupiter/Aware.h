@@ -39,14 +39,10 @@ public:
     static void remove(Object*);
 
     template<typename T, typename ... Args>
-    static T* create(const std::string& name, Args&&... args) {
+    static T* create(Args&&... args) {
         T* o = new T(std::forward<Args>(args)...);
 
-        auto res = Register().insert( { name, { true, o } });
-        if (!res.second)
-            throw JupiterError("Aware already have " + res.first->first);
-        else
-            std::cout << "added " << o->getName() << std::endl;
+        add(o, true);
 
         return o;
     }
@@ -65,6 +61,8 @@ private:
     using Created = bool;
     using Reg = std::map<std::string, std::pair<Created, Object*>>;
     static Reg& Register();
+
+    static void add(Object*, Created);
 };
 
 } /* namespace jupiter */
