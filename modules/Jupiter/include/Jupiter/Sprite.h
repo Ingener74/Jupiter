@@ -9,11 +9,11 @@
 #define SPRITE_H_
 
 #include <memory>
-#include <Jupiter/JupiterError.h>
-#include <Jupiter/Node.h>
-#include <Jupiter/Shader.h>
-#include <Jupiter/Texture.h>
-#include <Jupiter/Shape.h>
+#include "Jupiter/JupiterError.h"
+#include "Jupiter/Node.h"
+#include "Jupiter/Shader.h"
+#include "Jupiter/Texture.h"
+#include "Jupiter/Shape.h"
 
 namespace jupiter
 {
@@ -21,13 +21,12 @@ namespace jupiter
 class Sprite: public Node
 {
 public:
-//    Sprite(const std::string& sprite) throw (JupiterError);
     Sprite() = default;
     virtual ~Sprite() = default;
 
-    const Texture& getTexture() const;
-    const Shape& getShape() const;
-    std::shared_ptr<Shader> getProgram() const;
+    Texture* getTexture() const;
+    Shape* getShape() const;
+    Shader* getProgram() const;
 
 private:
     Texture* _texture = nullptr;

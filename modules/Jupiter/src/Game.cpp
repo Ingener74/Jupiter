@@ -11,11 +11,11 @@
 #include <Jupiter/TextureBuilder.h>
 #include <Jupiter/ResourceManager.h>
 #include <Jupiter/FileResource.h>
-#include <Jupiter/PNGImageFactory.h>
+//#include <Jupiter/PNGImageFactory.h>
 #include <Jupiter/JupiterError.h>
 
-#include <Jupiter/FileShaderFactory.h>
-#include <Jupiter/CPPControllerFactory.h>
+//#include <Jupiter/FileShaderFactory.h>
+//#include <Jupiter/CPPControllerFactory.h>
 
 #include "Factories/ImageTextureFactory.h"
 

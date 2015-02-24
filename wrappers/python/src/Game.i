@@ -7,9 +7,12 @@ public:
     Game();
     virtual ~Game();
 
-    void draw();
+    virtual void draw();
 
-    void input();
+    virtual void input();
+
+    virtual int32_t getWidth() const;
+    virtual int32_t getHeight() const;
 };
 
 }

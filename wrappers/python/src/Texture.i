@@ -5,10 +5,13 @@ namespace jupiter
 class Texture
 {
 public:
-    Texture();
-    Texture(const std::string& texture);
+    Texture() = default;
+    virtual ~Texture() = default;
 
     void bind() const;
+
+    int getWidth() const;
+    int getHeight() const;
 };
 
 }

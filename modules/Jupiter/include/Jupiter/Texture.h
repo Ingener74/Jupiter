@@ -20,7 +20,6 @@ class Texture
 {
 public:
     Texture() = default;
-//    Texture(const std::string& texture);
     virtual ~Texture() = default;
 
     void bind() const;

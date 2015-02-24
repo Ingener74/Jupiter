@@ -18,13 +18,12 @@ namespace jupiter
 class Shape
 {
 public:
-    enum class Type
+    enum Type
     {
-        Triangles, TriangleFan, TriangleStrip, LineStrip
+        TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, LINE_STRIP
     };
 
     Shape() = default;
-    Shape( const std::string& );
     Shape( const std::vector<float>& data, Type );
     virtual ~Shape() = default;
 
@@ -47,7 +46,7 @@ public:
 
 private:
     std::vector<float> _data;
-    Type _type = Type::TriangleStrip;
+    Type _type = Type::TRIANGLE_STRIP;
 
     static const int DATA_IN_ONE_VERTEX = 5;
 };

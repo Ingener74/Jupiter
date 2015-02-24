@@ -7,9 +7,7 @@ public:
     Node();
     virtual ~Node();
 
-    void addNode(std::shared_ptr<Node>);
-    std::set<NodePtr>::iterator begin();
-    std::set<NodePtr>::iterator end();
+    void addNode(Node*);
 
     float getRotationX() const;
     float getRotationY() const;

@@ -11,11 +11,6 @@
 namespace jupiter
 {
 
-Shape::Shape(const std::string& shape)
-{
-    throw JupiterError("not implemented");
-}
-
 Shape::Shape(const std::vector<float>& data, Type type) :
         _data(data), _type(type)
 {

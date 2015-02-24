@@ -46,7 +46,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite)
     {
         sprite->getProgram()->use();
 
-        sprite->getTexture().bind();
+        sprite->getTexture()->bind();
 
         /*
          * draw shape with program

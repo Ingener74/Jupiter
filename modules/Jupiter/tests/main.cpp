@@ -13,7 +13,7 @@
 #include <gtest/gtest.h>
 
 using namespace std;
-using namespace jupiter;
+//using namespace jupiter;
 
 TEST(TestCase1, Test1) {
     using namespace boost::property_tree;

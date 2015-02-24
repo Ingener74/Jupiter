@@ -8,8 +8,8 @@
 #include <map>
 #include <iostream>
 
-#include <Jupiter/Sprite.h>
-#include <Jupiter/JupiterError.h>
+#include "Jupiter/Sprite.h"
+#include "Jupiter/JupiterError.h"
 
 namespace jupiter
 {
@@ -21,12 +21,12 @@ Texture* Sprite::getTexture() const
     return _texture;
 }
 
-const Shape& Sprite::getShape() const
+Shape* Sprite::getShape() const
 {
     return _shape;
 }
 
-shared_ptr<Shader> Sprite::getProgram() const
+Shader* Sprite::getProgram() const
 {
     return _program;
 }

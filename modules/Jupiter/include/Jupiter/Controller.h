@@ -19,7 +19,6 @@ class Controller
 {
 public:
     Controller();
-    Controller(const std::string& controller);
     virtual ~Controller();
 
     virtual void onVisibleChanged(bool isVisible);
@@ -34,9 +33,6 @@ public:
     virtual void onRotationChanged(float x, float y, float z);
 
     virtual void update(double elapsedTime);
-
-private:
-    std::shared_ptr<ControllerImpl> _impl;
 };
 
 } /* namespace jupiter */
