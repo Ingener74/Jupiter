@@ -21,14 +21,14 @@ namespace jupiter
 using namespace std;
 using namespace glm;
 
-Node::Node()
+Node::Node(const std::string& name): Object(name)
 {
-    Aware::add(this);
+    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
 }
 
 Node::~Node()
 {
-    Aware::remove(this);
+    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
     if (_controller)
         delete _controller;
     for (auto& i : _nodes)

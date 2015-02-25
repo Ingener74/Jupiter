@@ -11,8 +11,8 @@ public:
 
     virtual void input();
 
-    virtual int32_t getWidth() const;
-    virtual int32_t getHeight() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
 };
 
 }

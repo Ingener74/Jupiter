@@ -4,7 +4,7 @@ namespace jupiter {
 class Node
 {
 public:
-    Node();
+    Node(const std::string& name);
     virtual ~Node();
 
     void addNode(Node*);

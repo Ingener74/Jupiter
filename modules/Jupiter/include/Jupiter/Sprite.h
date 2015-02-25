@@ -15,13 +15,11 @@
 #include "Jupiter/Texture.h"
 #include "Jupiter/Shape.h"
 
-namespace jupiter
-{
+namespace jupiter {
 
-class Sprite: public Node
-{
+class Sprite: public Node {
 public:
-    Sprite() = default;
+    Sprite(const std::string& name);
     virtual ~Sprite() = default;
 
     Texture* getTexture() const;

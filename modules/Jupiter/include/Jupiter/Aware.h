@@ -17,30 +17,31 @@
 
 namespace jupiter {
 
+class Object {
+public:
+    Object(const std::string& name = { });
+    virtual ~Object();
+
+    virtual void setName(const std::string& name);
+    virtual const std::string& getName() const;
+
+private:
+    std::string name;
+};
+
 class Aware // In honor of the film's "Virus" 1999
 {
 public:
-    class Object {
-    public:
-        Object(const std::string& name = { });
-        virtual ~Object() = default;
-
-        virtual void setName(const std::string& name);
-        virtual const std::string& getName() const;
-
-    private:
-        std::string name;
-    };
-
     Aware() = delete;
     virtual ~Aware() = delete;
 
     static void add(Object*);
     static void remove(Object*);
+    static size_t objectsCount();
 
     template<typename T, typename ... Args>
-    static T* create(Args&&... args) {
-        T* o = new T(std::forward<Args>(args)...);
+    static T* create(Args... args) {
+        T* o = new T(args...);
 
         add(o, true);
 
@@ -49,7 +50,7 @@ public:
 
     template<typename T>
     static T* get(const std::string& name) {
-        auto r = dynamic_cast<T*>(Register() [ name ]);
+        auto r = dynamic_cast<T*>(Register() [ name ].second);
         if (!r)
             throw JupiterError("Aware can't cast " + name);
         return r;

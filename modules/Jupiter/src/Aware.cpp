@@ -11,15 +11,20 @@ namespace jupiter {
 
 using namespace std;
 
-Aware::Object::Object(const string& name) :
+Object::Object(const string& name) :
     name(name) {
+    std::cout << __PRETTY_FUNCTION__ << " " << name << " created" << std::endl;
 }
 
-void Aware::Object::setName(const string& name) {
+Object::~Object() {
+    std::cout << __PRETTY_FUNCTION__ << " " << name << " deleted" << std::endl;
+}
+
+void Object::setName(const string& name) {
     Object::name = name;
 }
 
-const string& Aware::Object::getName() const {
+const string& Object::getName() const {
     return name;
 }
 
@@ -44,6 +49,9 @@ Aware::Reg& Aware::Register() {
     return reg;
 }
 
+size_t Aware::objectsCount() {
+}
+
 void Aware::add(Object* o, Created c) {
     if (o->getName().empty())
         throw JupiterError("Aware object name is empty");
@@ -57,4 +65,3 @@ void Aware::add(Object* o, Created c) {
 }
 
 } /* namespace jupiter */
-

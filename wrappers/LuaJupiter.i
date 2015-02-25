@@ -28,3 +28,4 @@ using namespace jupiter;
 %include "src/JupiterError.i"
 %include "src/Shape.i"
 %include "src/Texture.i"
+%include "src/Aware.i"

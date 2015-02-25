@@ -54,7 +54,7 @@ set(SOURCES
     src/Graphics/RectSpriteLoader.cpp
     src/Graphics/Scene.cpp
     src/Graphics/SimpleSpriteLoader.cpp
-    src/Graphics/DrawEngine.cpp
+    # src/Graphics/DrawEngine.cpp
     src/ResourceShaderLoader.cpp
     src/SimpleShaderLoader.cpp
 )

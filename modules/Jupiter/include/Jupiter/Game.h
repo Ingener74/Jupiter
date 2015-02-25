@@ -31,14 +31,14 @@ public:
 
     virtual void input();
 
-    virtual int32_t getWidth() const;
-    virtual int32_t getHeight() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
 
 private:
     RenderVisitor render;
     Node* node = nullptr;
-    int32_t width = 0;
-    int32_t height = 0;
+    int width = 0;
+    int height = 0;
 };
 
 class JsonGame: public Game

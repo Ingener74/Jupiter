@@ -22,7 +22,7 @@ namespace jupiter
 class NodeVisitor;
 class NodeImpl;
 
-class Node: public Aware::Object
+class Node: public Object
 {
 public:
     struct NodePtr
@@ -38,7 +38,7 @@ public:
         bool operator>(const NodePtr&) const;
     };
 
-    Node();
+    Node(const std::string& name);
     virtual ~Node();
 
     void addNode(Node*);
