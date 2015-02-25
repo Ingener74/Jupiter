@@ -32,18 +32,16 @@ private:
 class Aware // In honor of the film's "Virus" 1999
 {
 public:
+    friend class Object;
+
     Aware() = delete;
     virtual ~Aware() = delete;
-
-    static void add(Object*);
-    static void remove(Object*);
-    static size_t objectsCount();
 
     template<typename T, typename ... Args>
     static T* create(Args... args) {
         T* o = new T(args...);
 
-        add(o, true);
+        setCreated(o);
 
         return o;
     }
@@ -56,14 +54,18 @@ public:
         return r;
     }
 
+    static size_t objectsCount();
     static void release();
 
 private:
     using Created = bool;
-    using Reg = std::map<std::string, std::pair<Created, Object*>>;
+    using AwareObject = std::pair<Created, Object*>;
+    using Reg = std::map<std::string, AwareObject>;
     static Reg& Register();
 
-    static void add(Object*, Created);
+    static void add(Object*);
+    static void remove(Object*);
+    static void setCreated(Object*);
 };
 
 } /* namespace jupiter */

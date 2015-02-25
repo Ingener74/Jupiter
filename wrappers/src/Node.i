@@ -1,7 +1,7 @@
 
 namespace jupiter {
 
-class Node
+class Node: public Object
 {
 public:
     Node(const std::string& name);

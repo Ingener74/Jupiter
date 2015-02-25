@@ -13,11 +13,11 @@ using namespace std;
 
 Object::Object(const string& name) :
     name(name) {
-    std::cout << __PRETTY_FUNCTION__ << " " << name << " created" << std::endl;
+    Aware::add(this);
 }
 
 Object::~Object() {
-    std::cout << __PRETTY_FUNCTION__ << " " << name << " deleted" << std::endl;
+    Aware::remove(this);
 }
 
 void Object::setName(const string& name) {
@@ -28,13 +28,8 @@ const string& Object::getName() const {
     return name;
 }
 
-void Aware::add(Object* o) {
-    add(o, false);
-}
-
-void Aware::remove(Object* so) {
-    Register().erase(so->getName());
-    cout << "removed " << so->getName() << ", " << Register().size() << endl;
+size_t Aware::objectsCount() {
+    return Register().size();
 }
 
 void Aware::release() {
@@ -42,6 +37,7 @@ void Aware::release() {
     for (auto it = reg.begin(); it != reg.end(); ++it)
         if (it->second.first)
             delete it->second.second;
+    reg.clear();
 }
 
 Aware::Reg& Aware::Register() {
@@ -49,19 +45,22 @@ Aware::Reg& Aware::Register() {
     return reg;
 }
 
-size_t Aware::objectsCount() {
-}
-
-void Aware::add(Object* o, Created c) {
+void Aware::add(Object* o) {
     if (o->getName().empty())
         throw JupiterError("Aware object name is empty");
 
-    auto res = Register().insert( { o->getName(), { c, o } });
+    auto res = Register().insert( { o->getName(), { false, o } });
 
     if (!res.second)
         throw JupiterError("Aware already have " + res.first->first);
-    else
-        cout << "added " << o->getName() << endl;
+}
+
+void Aware::remove(Object* so) {
+    Register().erase(so->getName());
+}
+
+void Aware::setCreated(Object* o) {
+    Register().find(o->getName())->second.first = true;
 }
 
 } /* namespace jupiter */

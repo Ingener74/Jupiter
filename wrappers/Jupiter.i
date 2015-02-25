@@ -1,5 +1,13 @@
 
-%module(directors="1") LuaJupiter
+
+#if defined(SWIGPYTHON)
+    %module(directors="1") PyJupiter
+#elif defined(SWIGLUA)
+    %module(directors="1") LuaJupiter
+#else
+    #warning no tupemaps
+#endif
+
 %{
 
 #include <Jupiter/LinuxPlatform.h>
@@ -20,6 +28,7 @@ using namespace jupiter;
 
 %feature("director") Controller;
 
+%include "src/Aware.i"
 %include "src/LinuxPlatform.i"
 %include "src/Game.i"
 %include "src/Node.i"
@@ -28,4 +37,3 @@ using namespace jupiter;
 %include "src/JupiterError.i"
 %include "src/Shape.i"
 %include "src/Texture.i"
-%include "src/Aware.i"

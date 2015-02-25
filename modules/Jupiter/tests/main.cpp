@@ -12,17 +12,33 @@
 
 #include <gtest/gtest.h>
 
+#include "Jupiter.h"
+
 using namespace std;
-//using namespace jupiter;
+using namespace jupiter;
 
-TEST(TestCase1, Test1) {
-    using namespace boost::property_tree;
-    using namespace boost::property_tree::json_parser;
+class JupiterTest: public testing::Test {
+public:
+    void SetUp() {
+    }
 
-    ASSERT_EQ(1, 1);
+    void TearDown() {
+    }
+};
+
+TEST_F(JupiterTest, Aware) {
+    auto node = Aware::create<Node>("test");
+    ASSERT_EQ(Aware::objectsCount(), 1);
+
+    auto node1 = new Node("test2");
+    ASSERT_EQ(Aware::objectsCount(), 2);
+    ASSERT_EQ(Aware::get<Node>("test2"), node1);
+
+    delete node1;
+    ASSERT_EQ(Aware::objectsCount(), 1);
 }
 
-TEST(TestAware1, TestAdd) {
-    ASSERT_EQ(1, 1);
+TEST_F(JupiterTest, Node) {
+    ASSERT_EQ(Aware::get<Node>("test")->setPosition(100.0, 0.0, 0.0)->getPositionX(), 100.0);
 }
 
