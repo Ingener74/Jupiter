@@ -23,16 +23,15 @@ using namespace glm;
 
 Node::Node(const std::string& name): Object(name)
 {
-//    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
 }
 
 Node::~Node()
 {
-//    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
-    if (_controller)
-        delete _controller;
-    for (auto& i : _nodes)
-        delete i.node;
+//    TODO ???
+//    if (_controller)
+//        delete _controller;
+//    for (auto& i : _nodes)
+//        delete i.node;
 }
 
 bool Node::NodePtr::operator <(const NodePtr& r) const

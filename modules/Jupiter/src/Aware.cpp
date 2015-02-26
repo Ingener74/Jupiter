@@ -11,13 +11,17 @@ namespace jupiter {
 
 using namespace std;
 
+int Object::objects = 0;
+
 Object::Object(const string& name) :
     name(name) {
     Aware::add(this);
+    objects++;
 }
 
 Object::~Object() {
     Aware::remove(this);
+    objects--;
 }
 
 void Object::setName(const string& name) {
@@ -51,8 +55,13 @@ void Aware::add(Object* o) {
 
     auto res = Register().insert( { o->getName(), { false, o } });
 
-    if (!res.second)
-        throw JupiterError("Aware already have " + res.first->first);
+    if (!res.second) {
+        if (res.first->second.first) {
+            delete res.first->second.second;
+            res.first->second.first = false;
+        }
+        res.first->second.second = o;
+    }
 }
 
 void Aware::remove(Object* so) {
@@ -64,3 +73,4 @@ void Aware::setCreated(Object* o) {
 }
 
 } /* namespace jupiter */
+

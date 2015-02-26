@@ -5,21 +5,14 @@
  *      Author: Admin
  */
 
-#include <Jupiter/Tools.h>
-#include <Jupiter/Texture.h>
-#include <Jupiter/TextureBuilder.h>
-
-#include "../TextureImpl.h"
+#include "Jupiter/Tools.h"
+#include "Jupiter/Texture.h"
+#include "Jupiter/TextureBuilder.h"
 
 namespace jupiter
 {
 
 using namespace std;
-
-//Texture::Texture(const std::string& texture) :
-//        _impl(TextureBuilder::create(texture))
-//{
-//}
 
 void Texture::bind() const
 {

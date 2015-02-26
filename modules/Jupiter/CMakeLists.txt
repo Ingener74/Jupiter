@@ -4,59 +4,32 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
-    # Sound
-    
     src/Aware.cpp
-    
     src/LinuxPlatform.cpp
+    src/LinuxFileFactory.cpp
     
     src/Sound/DummySound.cpp
     src/Sound/DummySoundEngine.cpp
 
     src/ResourceManager.cpp
     src/FileResource.cpp
+    src/File.cpp
     
     src/Tools.cpp
     src/Game.cpp
-#    src/JSONGameFactory.cpp
-    
-    src/Graphics/Texture.cpp
-#    src/TextureImpl.cpp
-#    src/Builders/TextureBuilder.cpp
-#    src/Factories/ImageTextureFactory.cpp
-    
-    src/Graphics/Image.cpp
-#    src/ImageImpl.cpp
-#    src/Builders/ImageBuilder.cpp
-#    src/Builders/PNGImageFactory.cpp
-    
+    src/Texture.cpp
+
+    src/Image.cpp
+    src/PngImage.cpp
     src/Node.cpp
-#    src/JSONNodeFactory.cpp
     
     src/Shape.cpp
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
-    
+
     src/Shader.cpp
-#    src/ShaderImpl.cpp
-#    src/FileShaderFactory.cpp
-    
     src/Controller.cpp
-#    src/ControllerImpl.cpp
-#    src/CPPControllerFactory.cpp
-    
-    src/Graphics/Sprite.cpp
-    
-#    src/JsonGameHolder.cpp
-    
-    # Old
-    src/Graphics/Rect.cpp
-    src/Graphics/RectSpriteLoader.cpp
-    src/Graphics/Scene.cpp
-    src/Graphics/SimpleSpriteLoader.cpp
-    # src/Graphics/DrawEngine.cpp
-    src/ResourceShaderLoader.cpp
-    src/SimpleShaderLoader.cpp
+    src/Sprite.cpp
 )
 
 if(ANDROID)

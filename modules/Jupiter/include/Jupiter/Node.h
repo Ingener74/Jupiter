@@ -20,10 +20,8 @@ namespace jupiter
 {
 
 class NodeVisitor;
-class NodeImpl;
 
-class Node: public Object
-{
+class Node: public Object{
 public:
     struct NodePtr
     {

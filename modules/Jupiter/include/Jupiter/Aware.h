@@ -25,6 +25,8 @@ public:
     virtual void setName(const std::string& name);
     virtual const std::string& getName() const;
 
+    static int objects;
+
 private:
     std::string name;
 };
@@ -60,7 +62,9 @@ public:
 private:
     using Created = bool;
     using AwareObject = std::pair<Created, Object*>;
-    using Reg = std::map<std::string, AwareObject>;
+    using Name = std::string;
+    using Reg = std::map<Name, AwareObject>;
+
     static Reg& Register();
 
     static void add(Object*);

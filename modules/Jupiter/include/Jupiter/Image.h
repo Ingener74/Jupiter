@@ -13,33 +13,30 @@
 #include <vector>
 #include <memory>
 
-namespace jupiter
-{
+#include "Jupiter/Aware.h"
 
-class ImageImpl;
+namespace jupiter {
 
-class Image
-{
+class Image: public Object{
 public:
-    enum class Type
-    {
+    enum class Type {
         RGB, RGBA
     };
 
-    Image(const std::string& fileName);
-
-    Image() = default;
+    Image(const std::string& name);
     virtual ~Image() = default;
 
-    int getWidth() const;
-    int getHeight() const;
-    const uint8_t* getData() const;
-    Type getType() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual const uint8_t* getData() const;
+    virtual Type getType() const;
 
     friend std::ostream& operator<<(std::ostream&, const Image&);
 
-private:
-    std::shared_ptr<ImageImpl> _impl;
+protected:
+    int width = 0, height = 0;
+    Image::Type type = Image::Type::RGB;
+    std::vector<uint8_t> data;
 };
 
 }  // namespace ndk_game
