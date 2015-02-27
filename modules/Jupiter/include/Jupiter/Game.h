@@ -34,22 +34,11 @@ public:
     virtual int getWidth() const;
     virtual int getHeight() const;
 
-private:
+protected:
     RenderVisitor render;
     Node* node = nullptr;
     int width = 0;
     int height = 0;
-};
-
-class JsonGame: public Game
-{
-public:
-    JsonGame(const std::string& gameFile)
-    {
-    }
-    virtual ~JsonGame()
-    {
-    }
 };
 
 class DirectGame: public Game

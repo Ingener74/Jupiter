@@ -27,7 +27,7 @@ public:
 
     static int objects;
 
-private:
+protected:
     std::string name;
 };
 
@@ -40,7 +40,7 @@ public:
     virtual ~Aware() = delete;
 
     template<typename T, typename ... Args>
-    static T* create(Args... args) {
+    static T* create(Args ... args) {
         T* o = new T(args...);
 
         setCreated(o);
@@ -50,6 +50,9 @@ public:
 
     template<typename T>
     static T* get(const std::string& name) {
+        auto it = Register().find(name);
+        if (it == Register().end())
+            return nullptr;
         auto r = dynamic_cast<T*>(Register() [ name ].second);
         if (!r)
             throw JupiterError("Aware can't cast " + name);

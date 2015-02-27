@@ -14,24 +14,28 @@
                     "visible":true,
                     "sprites":[
                         {
-                            "name":"backGround",
-                            "visible":true,
-                            "texture":"resources/images/bg.png",
-                            "shader":{
-                                "vertex":"vertex.shader",
-                                "fragment":"fragment.shader"
-                            },
-                            "controller":"resources/scripts/background.lua"
+                            "sprite":{
+                                "name":"backGround",
+                                "visible":true,
+                                "texture":"resources/images/bg.png",
+                                "shader":{
+                                    "vertex":"vertex.shader",
+                                    "fragment":"fragment.shader"
+                                },
+                                "controller":"resources/scripts/background.lua"
+                            }
                         },
                         {
-                            "name":"start-button",
-                            "visible":true,
-                            "texture":"resources/images/start.png",
-                            "shader":{
-                                "vertex":"vertex.shader",
-                                "fragment":"fragment.shader"
-                            },
-                            "controller":"resources/scripts/start_button.lua"
+                            "sprite":{
+                                "name":"start-button",
+                                "visible":true,
+                                "texture":"resources/images/start.png",
+                                "shader":{
+                                    "vertex":"vertex.shader",
+                                    "fragment":"fragment.shader"
+                                },
+                                "controller":"resources/scripts/start_button.lua"
+                            }
                         }
                     ]
 	            }
@@ -42,14 +46,16 @@
                     "visible":false,
                     "sprites":[
                         {
-                            "name":"backGround",
-                            "visible":true,
-                            "texture":"resources/images/bg.png",
-                            "shader":{
-                                "vertex":"vertex.shader",
-                                "fragment":"fragment.shader"
-                            },
-                            "controller":"resources/scripts/background.lua"
+                            "sprite":{
+                                "name":"backGround",
+                                "visible":true,
+                                "texture":"resources/images/bg.png",
+                                "shader":{
+                                    "vertex":"vertex.shader",
+                                    "fragment":"fragment.shader"
+                                },
+                                "controller":"resources/scripts/background.lua"
+                            }
                         }
                     ]
                 }
@@ -60,24 +66,28 @@
                     "visible":false,
                     "sprites":[
                         {
-                            "name":"backGround",
-                            "visible":true,
-                            "texture":"resources/images/bg.png",
-                            "shader":{
-                                "vertex":"vertex.shader",
-                                "fragment":"fragment.shader"
-                            },
-                            "controller":"resources/scripts/background.lua"
+                            "sprite":{
+                                "name":"backGround",
+                                "visible":true,
+                                "texture":"resources/images/bg.png",
+                                "shader":{
+                                    "vertex":"vertex.shader",
+                                    "fragment":"fragment.shader"
+                                },
+                                "controller":"resources/scripts/background.lua"
+                            }
                         },
                         {
-                            "name":"winAgain",
-                            "visible":true,
-                            "texture":"win_again.png",
-                            "shader":{
-                                "vertex":"vertex.shader",
-                                "fragment":"fragment.shader"
-                            },
-                            "controller":"resources/scripts/winAgain.lua"
+                            "sprite":{
+                                "name":"winAgain",
+                                "visible":true,
+                                "texture":"win_again.png",
+                                "shader":{
+                                    "vertex":"vertex.shader",
+                                    "fragment":"fragment.shader"
+                                },
+                                "controller":"resources/scripts/winAgain.lua"
+                            }
                         }
                     ]
                 }
@@ -88,14 +98,16 @@
                     "visible":false,
                     "sprites":[
                         {
-                            "name":"backGround",
-                            "visible":true,
-                            "texture":"resources/images/bg.png",
-                            "shader":{
-                                "vertex":"vertex.shader",
-                                "fragment":"fragment.shader"
-                            },
-                            "controller":"resources/scripts/background.lua"
+                            "sprite":{
+                                "name":"backGround",
+                                "visible":true,
+                                "texture":"resources/images/bg.png",
+                                "shader":{
+                                    "vertex":"vertex.shader",
+                                    "fragment":"fragment.shader"
+                                },
+                                "controller":"resources/scripts/background.lua"
+                            }
                         }
                     ]
                 }

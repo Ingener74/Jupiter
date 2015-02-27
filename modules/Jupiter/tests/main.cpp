@@ -94,6 +94,10 @@ TEST(JupiterTest, Node) {
     ASSERT_EQ(Aware::get<Node>("test")->setPosition(100.0, 0.0, 0.0)->getPositionX(), 100.0);
 }
 
+TEST(JupiterTest, JsonGame_Test1){
+    unique_ptr<JsonGame> jsonGame(new JsonGame("Asteroids.json"));
+}
+
 TEST(JupiterTest, Aware_BalanceTest) {
     Aware::release();
     ASSERT_EQ(Object::objects, 0);

@@ -5,23 +5,21 @@ project(${PROJECT_NAME})
 
 set(SOURCES
     src/Aware.cpp
-    src/LinuxPlatform.cpp
+
+    src/File.cpp
     src/LinuxFileFactory.cpp
     
-    src/Sound/DummySound.cpp
-    src/Sound/DummySoundEngine.cpp
-
-    src/ResourceManager.cpp
-    src/FileResource.cpp
-    src/File.cpp
+    src/Game.cpp
+    src/JsonGame.cpp
     
     src/Tools.cpp
-    src/Game.cpp
     src/Texture.cpp
 
     src/Image.cpp
     src/PngImage.cpp
+    
     src/Node.cpp
+    src/JsonNode.cpp
     
     src/Shape.cpp
     src/NodeVisitor.cpp
@@ -34,9 +32,6 @@ set(SOURCES
 
 if(ANDROID)
     set(SOURCES ${SOURCES}
-        #src/AssetTextureLoader.cpp
-        #src/SLESSound.cpp
-        #src/SLESSoundEngine.cpp
     )
 else()
     set(SOURCES ${SOURCES}
@@ -62,7 +57,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 add_executable(Jupiter_test tests/main.cpp)
-target_link_libraries(Jupiter_test Jupiter gtest gtest_main)
+target_link_libraries(Jupiter_test Jupiter gtest gtest_main GL)
 add_test(AllTestsInJupiter Jupiter_test)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)

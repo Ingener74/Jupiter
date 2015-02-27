@@ -34,6 +34,8 @@ public:
 
         bool operator<(const NodePtr&) const;
         bool operator>(const NodePtr&) const;
+        bool operator==(const NodePtr&) const;
+        bool operator!=(const NodePtr&) const;
     };
 
     Node(const std::string& name);
@@ -89,12 +91,11 @@ public:
 
     Controller* getController();
 
-private:
-    std::string _name;
-    bool _isVisible = true;
-    glm::mat4 _model;
-    Controller* _controller = nullptr;
-    std::set<NodePtr> _nodes;
+protected:
+    bool visible = true;
+    glm::mat4 model;
+    Controller* controller = nullptr;
+    std::set<NodePtr> nodes;
 };
 
 } /* namespace jupiter */

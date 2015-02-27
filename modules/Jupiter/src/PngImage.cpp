@@ -49,7 +49,6 @@ PngImage::PngImage(const std::string& fileName) :
 
     int lDepth = 0, lColorType = 0;
 
-//    png_uint_32 lWidth, lHeight;
     png_uint_32 lWidth, lHeight;
 
     png_get_IHDR(lPngPtr, lInfoPtr, &lWidth, &lHeight, &lDepth, &lColorType, nullptr, nullptr, nullptr);
@@ -123,6 +122,8 @@ PngImage::PngImage(const std::string& fileName) :
     height = h;
     type = res_type;
     data = vector<uint8_t> { p, p + s };
+
+    file.reset();
 }
 
 PngImage::~PngImage() {

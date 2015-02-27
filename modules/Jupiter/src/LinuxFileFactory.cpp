@@ -42,7 +42,6 @@ public:
     }
     virtual ~FileBuffer()
     {
-//        cout << __PRETTY_FUNCTION__ << " " << _fileName << endl;
     }
 
 private:

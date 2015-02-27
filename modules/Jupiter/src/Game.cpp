@@ -9,8 +9,6 @@
 
 #include "Jupiter/Game.h"
 #include "Jupiter/TextureBuilder.h"
-#include "Jupiter/ResourceManager.h"
-#include "Jupiter/FileResource.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Node.h"
 
@@ -20,8 +18,6 @@ using namespace std;
 using namespace glm;
 
 Game::Game() {
-//    int width = 100, height = 100;
-//    render = {ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
 }
 
 Game::~Game() {

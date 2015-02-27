@@ -155,7 +155,6 @@ int main(int argc, char **argv)
 
         auto gameFileName = vm["game"].as<string>();
 
-        LinuxPlatform lp{gameFileName};
         game = make_shared<JsonGame>(gameFileName);
 
         glutReshapeWindow(game->getWidth(), game->getHeight());

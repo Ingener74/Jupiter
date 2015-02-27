@@ -13,8 +13,6 @@
 namespace jupiter
 {
 
-class ControllerImpl;
-
 class Controller
 {
 public:

@@ -27,38 +27,41 @@ Node::Node(const std::string& name): Object(name)
 
 Node::~Node()
 {
-//    TODO ???
-//    if (_controller)
-//        delete _controller;
-//    for (auto& i : _nodes)
-//        delete i.node;
 }
 
 bool Node::NodePtr::operator <(const NodePtr& r) const
 {
-    return node->_model[3].z < r.node->_model[3].z;
+    return node->model[3].z < r.node->model[3].z || node < r.node;
 }
 
 bool Node::NodePtr::operator >(const NodePtr& r) const
 {
-    return node->_model[3].z > r.node->_model[3].z;
+    return node->model[3].z > r.node->model[3].z || node > r.node;
+}
+
+bool Node::NodePtr::operator ==(const NodePtr& r) const {
+    return node == r.node;
+}
+
+bool Node::NodePtr::operator !=(const NodePtr& r) const {
+    return node != r.node;
 }
 
 void Node::addNode(Node* node)
 {
     if(!node)
         throw JupiterError("Node add nullptr node");
-    _nodes.insert(NodePtr{node});
+    nodes.insert(NodePtr{node});
 }
 
 set<Node::NodePtr>::iterator Node::begin()
 {
-    return _nodes.begin();
+    return nodes.begin();
 }
 
 set<Node::NodePtr>::iterator Node::end()
 {
-    return _nodes.end();
+    return nodes.end();
 }
 
 float Node::getRotationX() const
@@ -78,190 +81,190 @@ float Node::getRotationZ() const
 
 Node* Node::setRotation(float x, float y, float z)
 {
-    if(_controller)
-        _controller->onRotate(x, y, z);
+    if(controller)
+        controller->onRotate(x, y, z);
     return this;
 }
 
 Node* Node::setRotationX(float x)
 {
-    if (_controller)
-        _controller->onRotate(x, 0, 0);
+    if (controller)
+        controller->onRotate(x, 0, 0);
     return this;
 }
 
 Node* Node::setRotationY(float y)
 {
-    if (_controller)
-        _controller->onRotate(0, y, 0);
+    if (controller)
+        controller->onRotate(0, y, 0);
     return this;
 }
 
 Node* Node::setRotationZ(float z)
 {
-    if (_controller)
-        _controller->onRotate(0, 0, z);
+    if (controller)
+        controller->onRotate(0, 0, z);
     return this;
 }
 
 Node* Node::rotate(float x, float y, float z)
 {
-    if (_controller)
-        _controller->onRotate(x, y, z);
+    if (controller)
+        controller->onRotate(x, y, z);
     return this;
 }
 
 Node* Node::rotateX(float x)
 {
-    if (_controller)
-        _controller->onRotate(x, 0, 0);
+    if (controller)
+        controller->onRotate(x, 0, 0);
     return this;
 }
 
 Node* Node::rotateY(float y)
 {
-    if (_controller)
-        _controller->onRotate(0, y, 0);
+    if (controller)
+        controller->onRotate(0, y, 0);
     return this;
 }
 
 Node* Node::rotateZ(float z)
 {
-    if (_controller)
-        _controller->onRotate(0, 0, z);
+    if (controller)
+        controller->onRotate(0, 0, z);
     return this;
 }
 
 float Node::getPositionX() const
 {
-    return _model[3].x;
+    return model[3].x;
 }
 
 float Node::getPositionY() const
 {
-    return _model[3].y;
+    return model[3].y;
 }
 
 float Node::getPositionZ() const
 {
-    return _model[3].z;
+    return model[3].z;
 }
 
 Node* Node::setPosition(float x, float y, float z)
 {
-    _model[3].x = x;
-    _model[3].y = y;
-    _model[3].z = z;
+    model[3].x = x;
+    model[3].y = y;
+    model[3].z = z;
     return this;
 }
 
 Node* Node::setPositionX(float x)
 {
-    _model[3].x = x;
+    model[3].x = x;
     return this;
 }
 
 Node* Node::setPositionY(float y)
 {
-    _model[3].y = y;
+    model[3].y = y;
     return this;
 }
 
 Node* Node::setPositionZ(float z)
 {
-    _model[3].z = z;
+    model[3].z = z;
     return this;
 }
 
 Node* Node::translate(float x, float y, float z)
 {
-    _model = glm::translate(_model, vec3{x, y, z});
-    if (_controller)
-        _controller->onMove(x, y, z);
+    model = glm::translate(model, vec3{x, y, z});
+    if (controller)
+        controller->onMove(x, y, z);
     return this;
 }
 
 Node* Node::translateX(float x)
 {
-    _model = glm::translate(_model, vec3{x, 0.f, 0.f});
-    if (_controller)
-        _controller->onMove(x, 0, 0);
+    model = glm::translate(model, vec3{x, 0.f, 0.f});
+    if (controller)
+        controller->onMove(x, 0, 0);
     return this;
 }
 
 Node* Node::translateY(float y)
 {
-    _model = glm::translate(_model, vec3{0.f, y, 0.f});
-    if (_controller)
-        _controller->onMove(0, y, 0);
+    model = glm::translate(model, vec3{0.f, y, 0.f});
+    if (controller)
+        controller->onMove(0, y, 0);
     return this;
 }
 
 Node* Node::translateZ(float z)
 {
-    _model = glm::translate(_model, vec3{0.f, 0.f, z});
-    if (_controller)
-        _controller->onMove(0, 0, z);
+    model = glm::translate(model, vec3{0.f, 0.f, z});
+    if (controller)
+        controller->onMove(0, 0, z);
     return this;
 }
 
 float Node::getScaleX() const
 {
-    return _model[0].x;
+    return model[0].x;
 }
 
 float Node::getScaleY() const
 {
-    return _model[1].y;
+    return model[1].y;
 }
 
 Node* Node::setScale(float x, float y)
 {
-    _model[0].x = x;
-    _model[1].y = y;
+    model[0].x = x;
+    model[1].y = y;
     return this;
 }
 
 Node* Node::setScaleX(float x)
 {
-    _model[0].x = x;
+    model[0].x = x;
     return this;
 }
 
 Node* Node::setScaleY(float y)
 {
-    _model[1].y = y;
+    model[1].y = y;
     return this;
 }
 
 Node* Node::scale(float x, float y)
 {
-    _model = glm::scale(_model, vec3{x, y, 0.f});
+    model = glm::scale(model, vec3{x, y, 0.f});
     return this;
 }
 
 Node* Node::scaleX(float x)
 {
-    _model = glm::scale(_model, vec3{x, 0.f, 0.f});
+    model = glm::scale(model, vec3{x, 0.f, 0.f});
     return this;
 }
 
 Node* Node::scaleY(float y)
 {
-    _model = glm::scale(_model, vec3{0.f, y, 0.f});
+    model = glm::scale(model, vec3{0.f, y, 0.f});
     return this;
 }
 
 bool Node::isVisible() const
 {
-    return _isVisible;
+    return visible;
 }
 
 Node* Node::setVisible(bool isVisible)
 {
-    _isVisible = isVisible;
-    if (_controller)
-        _controller->onVisibleChanged(isVisible);
+    visible = isVisible;
+    if (controller)
+        controller->onVisibleChanged(isVisible);
     return this;
 }
 
@@ -275,7 +278,7 @@ Node* Node::accept(NodeVisitor* nv)
 
 Controller* Node::getController()
 {
-    return _controller;
+    return controller;
 }
 
 } /* namespace jupiter */

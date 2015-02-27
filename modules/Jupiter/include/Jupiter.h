@@ -8,11 +8,13 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
-#include "Jupiter/LinuxPlatform.h"
-
 #include "Jupiter/Game.h"
-#include "Jupiter/Sprite.h"
+#include "Jupiter/JsonGame.h"
+
 #include "Jupiter/Node.h"
+#include "Jupiter/JsonNode.h"
+
+#include "Jupiter/Sprite.h"
 #include "Jupiter/Controller.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/PngImage.h"
@@ -20,9 +22,6 @@
 #include "Jupiter/Texture.h"
 #include "Jupiter/File.h"
 #include "Jupiter/LinuxFileFactory.h"
-
-#include "Jupiter/ResourceManager.h"
-#include "Jupiter/FileResource.h"
 
 #include "Jupiter/IShaderLoader.h"
 #include "Jupiter/SimpleShaderLoader.h"
