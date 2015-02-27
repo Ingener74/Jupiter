@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 
+#include "Jupiter/JupiterError.h"
 #include "Jupiter/LinuxFileFactory.h"
 
 namespace jupiter {

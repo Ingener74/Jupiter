@@ -10,8 +10,6 @@
 
 #include <iostream>
 
-#include "Jupiter/Aware.h"
-
 namespace jupiter {
 
 class BufferFactory {

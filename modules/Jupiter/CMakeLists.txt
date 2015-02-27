@@ -22,12 +22,14 @@ set(SOURCES
     src/JsonNode.cpp
     
     src/Shape.cpp
+    src/Sprite.cpp
+    src/JsonSprite.cpp
+
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
 
     src/Shader.cpp
     src/Controller.cpp
-    src/Sprite.cpp
 )
 
 if(ANDROID)
