@@ -9,6 +9,8 @@
 
 %{
 
+#include "Jupiter/LinuxFileFactory.h"
+#include "Jupiter/File.h"
 #include "Jupiter/Game.h"
 #include "Jupiter/JsonGame.h"
 #include "Jupiter/Sprite.h"
@@ -28,6 +30,8 @@ using namespace jupiter;
 %feature("director") Controller;
 
 %include "src/Aware.i"
+%include "src/File.i"
+%include "src/LinuxFileFactory.i"
 %include "src/Game.i"
 %include "src/JsonGame.i"
 %include "src/Node.i"
