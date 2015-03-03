@@ -27,8 +27,8 @@ find_package(GLEW REQUIRED)
 # find Box2D
 find_package(Box2D REQUIRED)
 
-# find GTest
-add_subdirectory(3rdparty/gtest-1.7.0)
+# find GTest and GMock
+add_subdirectory(3rdparty/gmock-1.7.0)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
