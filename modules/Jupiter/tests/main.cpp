@@ -16,44 +16,41 @@ using namespace std;
 using namespace jupiter;
 using namespace boost::filesystem;
 
-//class JupiterTest: public testing::Test {
-//public:
-//    void SetUp() {
-//    }
-//
-//    void TearDown() {
-//    }
-//};
-
 TEST(JupiterTest, Aware) {
     auto node = Aware::create<Node>("test");
     ASSERT_EQ(Aware::objectsCount(), 1);
 
-    auto node1 = new Node("test2");
-    ASSERT_EQ(Aware::objectsCount(), 2);
-    ASSERT_EQ(Aware::get<Node>("test2"), node1);
+    {
+        unique_ptr<Node> node1{new Node("test2")};
+        ASSERT_EQ(Aware::objectsCount(), 2);
+        ASSERT_EQ(Aware::get<Node>("test2"), node1.get());
+    }
 
-    delete node1;
     ASSERT_EQ(Aware::objectsCount(), 1);
 }
 
+/**********************************************************************************************************************
+ *
+ * File tests
+ *
+ **********************************************************************************************************************/
 static const char* RESOURCES_IMAGES_BG_PNG = "resources/images/bg.png";
 static const char* RESOURCES_IMAGES_BULLET_PNG = "resources/images/bullet.png";
 
-TEST(JupiterTest, File_Test1) {
+TEST(FileTest, Test1) {
     EXPECT_THROW( {
         unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
     }, JupiterError);
 }
 
-TEST(JupiterTest, File_Test2) {
+TEST(FileTest, Test2) {
     File::setBufferFactory(new LinuxFileFactory);
     EXPECT_THROW({
         unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
     }, JupiterError);
 }
 
-TEST(JupiterTest, File_Test3) {
+TEST(FileTest, Test3) {
     File::setBufferFactory(new LinuxFileFactory);
     File::setBase("../samples/Asteroids");
     EXPECT_NO_THROW({
@@ -61,20 +58,25 @@ TEST(JupiterTest, File_Test3) {
     });
 }
 
-TEST(JupiterTest, File_Test4) {
+TEST(FileTest, Test4) {
     File::setBufferFactory();
     EXPECT_THROW( {
         unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
     }, JupiterError);
 }
 
-TEST(JupiterTest, File_Test5) {
+TEST(FileTest, Test5) {
     File::setBufferFactory(new LinuxFileFactory);
     EXPECT_NO_THROW({
         unique_ptr<File> file(new File(RESOURCES_IMAGES_BG_PNG));
     });
 }
 
+/**********************************************************************************************************************
+ *
+ * PngImage tests
+ *
+ **********************************************************************************************************************/
 TEST(JupiterTest, PngImage_Test1) {
     auto pngBackground = Aware::create<PngImage>(RESOURCES_IMAGES_BG_PNG);
     ASSERT_EQ(pngBackground->getWidth(), 1024);
@@ -91,12 +93,27 @@ TEST(JupiterTest, PngImage_Test2) {
     ASSERT_EQ(pngBullet->getName(), RESOURCES_IMAGES_BULLET_PNG);
 }
 
-TEST(JupiterTest, Node) {
-    ASSERT_EQ(Aware::get<Node>("test")->setPosition(100.0, 0.0, 0.0)->getPositionX(), 100.0);
-}
-
+/**********************************************************************************************************************
+ *
+ * PngImage tests
+ *
+ **********************************************************************************************************************/
 TEST(JupiterTest, JsonGame_Test1){
     unique_ptr<JsonGame> jsonGame(new JsonGame("Asteroids.json"));
+
+    ASSERT_EQ(jsonGame->getWidth(),  800);
+    ASSERT_EQ(jsonGame->getHeight(), 480);
+}
+
+/**********************************************************************************************************************
+ *
+ * Node tests
+ *
+ **********************************************************************************************************************/
+TEST(NodeTest, Test_setPositionX) {
+    auto n = Aware::get<Node>("test");
+    ASSERT_NE(n, nullptr);
+    ASSERT_EQ(n->setPosition(100.0, 0.0, 0.0)->getPositionX(), 100.0);
 }
 
 /**********************************************************************************************************************
@@ -104,12 +121,11 @@ TEST(JupiterTest, JsonGame_Test1){
  * Controller tests
  *
  **********************************************************************************************************************/
-class ControllerMock: public Controller {
+class MockController: public Controller {
 public:
     MOCK_METHOD1(onVisibleChanged, void(bool isVisible));
 
     MOCK_METHOD3(onMove, void(float x, float y, float z));
-
     MOCK_METHOD3(onPositionChanged, void(float x, float y, float z));
 
     MOCK_METHOD3(onScale, void (float x, float y, float z));
@@ -131,7 +147,7 @@ public:
     }
 
     Node n{"testController"};
-    ControllerMock c;
+    MockController c;
 };
 
 TEST_F(ControllerTest, Test_positionChangedX){
