@@ -59,7 +59,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 add_executable(Jupiter_test tests/main.cpp)
-target_link_libraries(Jupiter_test Jupiter gtest gtest_main GL)
+target_link_libraries(Jupiter_test Jupiter gtest gtest_main gmock GL)
 add_test(AllTestsInJupiter Jupiter_test)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)

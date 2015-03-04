@@ -20,12 +20,12 @@ JsonNode::JsonNode(const ptree& node) :
     visible = node.get<bool>("visible");
 
     /*
-    if (auto controller_ = node.get_optional<string>("controller")) {
-        auto controllerFile = controller_.get();
+     if (auto controller_ = node.get_optional<string>("controller")) {
+     auto controllerFile = controller_.get();
 
-        create lua or python controller
-    }
-    */
+     create lua or python controller
+     }
+     */
 
     if (auto nodes_ = node.get_child_optional("nodes")) {
         for (auto i : nodes_.get()) {

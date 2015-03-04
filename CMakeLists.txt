@@ -31,6 +31,7 @@ find_package(Box2D REQUIRED)
 add_subdirectory(3rdparty/gmock-1.7.0)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR})
 
 include_directories(
     ${Boost_INCLUDE_DIRS}

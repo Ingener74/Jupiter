@@ -7,9 +7,8 @@
 
 #include <iostream>
 
-#include <Jupiter/Node.h>
-#include <Jupiter/ControllerImpl.h>
-#include <Jupiter/Controller.h>
+#include "Jupiter/Node.h"
+#include "Jupiter/Controller.h"
 
 namespace jupiter
 {

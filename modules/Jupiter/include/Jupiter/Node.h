@@ -89,6 +89,7 @@ public:
 
     Node* accept(NodeVisitor*);
 
+    Node* setController(Controller*);
     Controller* getController();
 
 protected:
