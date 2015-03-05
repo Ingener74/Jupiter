@@ -19,7 +19,14 @@ Node* Node::accept(NodeVisitor* nv) {
     if (!nv)
         throw JupiterError("Node: visitor is nullptr");
 
-    nv->visit(this);
+    if (visible) {
+        nv->visit(this);
+
+        for (const auto& i : nodes) {
+            i.node->accept(nv);
+        }
+    }
+
     return this;
 }
 

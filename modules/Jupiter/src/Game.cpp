@@ -24,18 +24,10 @@ Game::~Game() {
 }
 
 void Game::draw() {
-    render.visit(node);
+    node->accept(&render);
 }
 
 void Game::input() {
-}
-
-int Game::getWidth() const {
-    return width;
-}
-
-int Game::getHeight() const {
-    return height;
 }
 
 } /* namespace jupiter */

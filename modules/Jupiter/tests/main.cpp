@@ -37,20 +37,20 @@ TEST(JupiterTest, Aware) {
 static const char* RESOURCES_IMAGES_BG_PNG = "resources/images/bg.png";
 static const char* RESOURCES_IMAGES_BULLET_PNG = "resources/images/bullet.png";
 
-TEST(FileTest, Test1) {
+TEST(JupiterTest, Test1) {
     EXPECT_THROW( {
         unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
     }, JupiterError);
 }
 
-TEST(FileTest, Test2) {
+TEST(JupiterTest, Test2) {
     File::setBufferFactory(new LinuxFileFactory);
     EXPECT_THROW({
         unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
     }, JupiterError);
 }
 
-TEST(FileTest, Test3) {
+TEST(JupiterTest, Test3) {
     File::setBufferFactory(new LinuxFileFactory);
     File::setBase("../samples/Asteroids");
     EXPECT_NO_THROW({
@@ -58,14 +58,14 @@ TEST(FileTest, Test3) {
     });
 }
 
-TEST(FileTest, Test4) {
+TEST(JupiterTest, Test4) {
     File::setBufferFactory();
     EXPECT_THROW( {
         unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
     }, JupiterError);
 }
 
-TEST(FileTest, Test5) {
+TEST(JupiterTest, Test5) {
     File::setBufferFactory(new LinuxFileFactory);
     EXPECT_NO_THROW({
         unique_ptr<File> file(new File(RESOURCES_IMAGES_BG_PNG));
@@ -110,7 +110,7 @@ TEST(JupiterTest, JsonGame_Test1){
  * Node tests
  *
  **********************************************************************************************************************/
-TEST(NodeTest, Test_setPositionX) {
+TEST(JupiterTest, Test_setPositionX) {
     auto n = Aware::get<Node>("test");
     ASSERT_NE(n, nullptr);
     ASSERT_EQ(n->setPosition(100.0, 0.0, 0.0)->getPositionX(), 100.0);

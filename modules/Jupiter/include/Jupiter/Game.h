@@ -15,14 +15,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <Jupiter/RenderVisitor.h>
-#include <Jupiter/Node.h>
+#include "Jupiter/RenderVisitor.h"
+#include "Jupiter/Node.h"
 
-namespace jupiter
-{
+namespace jupiter {
 
-class Game
-{
+class Game {
 public:
     Game();
     virtual ~Game();
@@ -34,6 +32,9 @@ public:
     virtual int getWidth() const;
     virtual int getHeight() const;
 
+    virtual void setRootNode(Node*);
+    const virtual Node* getRootNode() const;
+
 protected:
     RenderVisitor render;
     Node* node = nullptr;
@@ -41,16 +42,21 @@ protected:
     int height = 0;
 };
 
-class DirectGame: public Game
-{
-public:
-    DirectGame(Node* node)
-    {
-    }
-    virtual ~DirectGame()
-    {
-    }
-};
+inline int Game::getWidth() const {
+    return width;
+}
+
+inline int Game::getHeight() const {
+    return height;
+}
+
+inline void Game::setRootNode(Node* node) {
+    Game::node = node;
+}
+
+inline const Node* Game::getRootNode() const {
+    return node;
+}
 
 } /* namespace jupiter */
 

@@ -26,24 +26,10 @@ class NodeVisitor;
 
 class Node: public Object{
 public:
-    struct NodePtr
-    {
-        Node* node = nullptr;
-
-        NodePtr(Node* node);
-
-        bool operator <(const NodePtr& r) const;
-        bool operator >(const NodePtr& r) const;
-        bool operator ==(const NodePtr& r) const;
-        bool operator !=(const NodePtr& r) const;
-    };
-
     Node(const std::string& name);
     virtual ~Node();
 
     void addNode(Node* node);
-    std::set<Node::NodePtr>::iterator begin();
-    std::set<Node::NodePtr>::iterator end();
 
     float getRotationX() const;
     float getRotationY() const;
@@ -93,6 +79,18 @@ public:
     Controller* getController();
 
 protected:
+    struct NodePtr
+    {
+        Node* node = nullptr;
+
+        NodePtr(Node* node);
+
+        bool operator <(const NodePtr& r) const;
+        bool operator >(const NodePtr& r) const;
+        bool operator ==(const NodePtr& r) const;
+        bool operator !=(const NodePtr& r) const;
+    };
+
     bool visible = true;
     glm::mat4 model;
     Controller* controller = nullptr;
@@ -131,14 +129,6 @@ inline void Node::addNode(Node* node) {
         throw JupiterError("Node add nullptr node");
 
     nodes.insert(NodePtr { node });
-}
-
-inline std::set<Node::NodePtr>::iterator Node::begin() {
-    return nodes.begin();
-}
-
-inline std::set<Node::NodePtr>::iterator Node::end() {
-    return nodes.end();
 }
 
 inline float Node::getRotationX() const {

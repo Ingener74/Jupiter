@@ -5,12 +5,12 @@
  *      Author: pavel
  */
 
-#include <Jupiter/NodeVisitor.h>
+#include "Jupiter/NodeVisitor.h"
 
 namespace jupiter
 {
 
-using namespace std;
+//using namespace std;
 
 NodeVisitor::NodeVisitor()
 {

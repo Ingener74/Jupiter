@@ -15,11 +15,9 @@
 
 #include <Jupiter/NodeVisitor.h>
 
-namespace jupiter
-{
+namespace jupiter {
 
-class RenderVisitor: public NodeVisitor
-{
+class RenderVisitor: public NodeVisitor {
 public:
     RenderVisitor();
     RenderVisitor(const glm::mat4& ortho);
