@@ -13,6 +13,8 @@
 namespace jupiter
 {
 
+class Node;
+
 class Controller
 {
 public:
@@ -31,6 +33,9 @@ public:
     virtual void onRotationChanged(float x, float y, float z);
 
     virtual void update(double elapsedTime);
+
+private:
+    Node* node = nullptr;
 };
 
 } /* namespace jupiter */

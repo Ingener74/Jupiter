@@ -19,17 +19,19 @@
 #include "Jupiter/Controller.h"
 #include "Jupiter/Aware.h"
 
-namespace jupiter
-{
+namespace jupiter {
 
 class NodeVisitor;
 
-class Node: public Object{
+class Node: public Object {
 public:
     Node(const std::string& name);
     virtual ~Node();
 
     void addNode(Node* node);
+
+    template<typename T, typename ... Args>
+    void createNode(Args ... args);
 
     float getRotationX() const;
     float getRotationY() const;
@@ -79,11 +81,13 @@ public:
     Controller* getController();
 
 protected:
-    struct NodePtr
-    {
-        Node* node = nullptr;
+    struct NodePtr {
+        using Created = bool;
 
-        NodePtr(Node* node);
+        Node* node = nullptr;
+        Created created = false;
+
+        NodePtr(Node*, Created created = false);
 
         bool operator <(const NodePtr& r) const;
         bool operator >(const NodePtr& r) const;
@@ -95,10 +99,12 @@ protected:
     glm::mat4 model;
     Controller* controller = nullptr;
     std::set<NodePtr> nodes;
+
+    static int leakCheck;
 };
 
-inline Node::NodePtr::NodePtr(Node* node) :
-    node(node) {
+inline Node::NodePtr::NodePtr(Node* node, Created created) :
+    node(node), created(created) {
 }
 
 inline bool Node::NodePtr::operator <(const NodePtr& r) const {
@@ -119,9 +125,7 @@ inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
 
 inline Node::Node(const std::string& name) :
     Object(name) {
-}
-
-inline Node::~Node() {
+    ++leakCheck;
 }
 
 inline void Node::addNode(Node* node) {
@@ -129,6 +133,11 @@ inline void Node::addNode(Node* node) {
         throw JupiterError("Node add nullptr node");
 
     nodes.insert(NodePtr { node });
+}
+
+template<typename T, typename ... Args>
+inline void Node::createNode(Args ... args) {
+    nodes.insert(NodePtr { new T(args...), true });
 }
 
 inline float Node::getRotationX() const {
