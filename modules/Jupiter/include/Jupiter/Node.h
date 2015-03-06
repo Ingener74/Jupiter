@@ -30,9 +30,6 @@ public:
 
     void addNode(Node* node);
 
-    template<typename T, typename ... Args>
-    void createNode(Args ... args);
-
     float getRotationX() const;
     float getRotationY() const;
     float getRotationZ() const;
@@ -81,6 +78,9 @@ public:
     Controller* getController();
 
 protected:
+    template<typename T, typename ... Args>
+    void createNode(Args ... args);
+
     struct NodePtr {
         using Created = bool;
 
@@ -103,28 +103,8 @@ protected:
     static int leakCheck;
 };
 
-inline Node::NodePtr::NodePtr(Node* node, Created created) :
-    node(node), created(created) {
-}
-
-inline bool Node::NodePtr::operator <(const NodePtr& r) const {
-    return node->model [ 3 ].z < r.node->model [ 3 ].z || node < r.node;
-}
-
-inline bool Node::NodePtr::operator >(const NodePtr& r) const {
-    return node->model [ 3 ].z > r.node->model [ 3 ].z || node > r.node;
-}
-
-inline bool Node::NodePtr::operator ==(const NodePtr& r) const {
-    return node == r.node;
-}
-
-inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
-    return node != r.node;
-}
-
 inline Node::Node(const std::string& name) :
-    Object(name) {
+        Object(name) {
     ++leakCheck;
 }
 
@@ -133,11 +113,6 @@ inline void Node::addNode(Node* node) {
         throw JupiterError("Node add nullptr node");
 
     nodes.insert(NodePtr { node });
-}
-
-template<typename T, typename ... Args>
-inline void Node::createNode(Args ... args) {
-    nodes.insert(NodePtr { new T(args...), true });
 }
 
 inline float Node::getRotationX() const {
@@ -209,21 +184,21 @@ inline Node* Node::rotateZ(float z) {
 }
 
 inline float Node::getPositionX() const {
-    return model [ 3 ].x;
+    return model[3].x;
 }
 
 inline float Node::getPositionY() const {
-    return model [ 3 ].y;
+    return model[3].y;
 }
 
 inline float Node::getPositionZ() const {
-    return model [ 3 ].z;
+    return model[3].z;
 }
 
 inline Node* Node::setPosition(float x, float y, float z) {
-    model [ 3 ].x = x;
-    model [ 3 ].y = y;
-    model [ 3 ].z = z;
+    model[3].x = x;
+    model[3].y = y;
+    model[3].z = z;
     if (controller)
         controller->onPositionChanged(x, y, z);
 
@@ -231,7 +206,7 @@ inline Node* Node::setPosition(float x, float y, float z) {
 }
 
 inline Node* Node::setPositionX(float x) {
-    model [ 3 ].x = x;
+    model[3].x = x;
     if (controller)
         controller->onPositionChanged(x, 0.f, 0.f);
 
@@ -239,7 +214,7 @@ inline Node* Node::setPositionX(float x) {
 }
 
 inline Node* Node::setPositionY(float y) {
-    model [ 3 ].y = y;
+    model[3].y = y;
     if (controller)
         controller->onPositionChanged(0.f, y, 0.f);
 
@@ -247,7 +222,7 @@ inline Node* Node::setPositionY(float y) {
 }
 
 inline Node* Node::setPositionZ(float z) {
-    model [ 3 ].z = z;
+    model[3].z = z;
     if (controller)
         controller->onPositionChanged(0.f, 0.f, z);
 
@@ -287,26 +262,26 @@ inline Node* Node::translateZ(float z) {
 }
 
 inline float Node::getScaleX() const {
-    return model [ 0 ].x;
+    return model[0].x;
 }
 
 inline float Node::getScaleY() const {
-    return model [ 1 ].y;
+    return model[1].y;
 }
 
 inline Node* Node::setScale(float x, float y) {
-    model [ 0 ].x = x;
-    model [ 1 ].y = y;
+    model[0].x = x;
+    model[1].y = y;
     return this;
 }
 
 inline Node* Node::setScaleX(float x) {
-    model [ 0 ].x = x;
+    model[0].x = x;
     return this;
 }
 
 inline Node* Node::setScaleY(float y) {
-    model [ 1 ].y = y;
+    model[1].y = y;
     return this;
 }
 
@@ -344,6 +319,31 @@ inline Node* Node::setController(Controller* controller) {
 
 inline Controller* Node::getController() {
     return controller;
+}
+
+inline Node::NodePtr::NodePtr(Node* node, Created created) :
+        node(node), created(created) {
+}
+
+inline bool Node::NodePtr::operator <(const NodePtr& r) const {
+    return node->model[3].z < r.node->model[3].z || node < r.node;
+}
+
+inline bool Node::NodePtr::operator >(const NodePtr& r) const {
+    return node->model[3].z > r.node->model[3].z || node > r.node;
+}
+
+inline bool Node::NodePtr::operator ==(const NodePtr& r) const {
+    return node == r.node;
+}
+
+inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
+    return node != r.node;
+}
+
+template<typename T, typename ... Args>
+inline void Node::createNode(Args ... args) {
+    nodes.insert(NodePtr { new T(args...), true });
 }
 
 } /* namespace jupiter */
