@@ -16,6 +16,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <gtest/gtest_prod.h>
+
 #include "Jupiter/Controller.h"
 #include "Jupiter/Aware.h"
 
@@ -29,9 +31,6 @@ public:
     virtual ~Node();
 
     void addNode(Node* node);
-
-    template<typename T, typename ... Args>
-    void createNode(Args ... args);
 
     float getRotationX() const;
     float getRotationY() const;
@@ -81,6 +80,9 @@ public:
     Controller* getController();
 
 protected:
+    template<typename T, typename ... Args>
+    void createNode(Args... args);
+
     struct NodePtr {
         using Created = bool;
 
@@ -100,28 +102,9 @@ protected:
     Controller* controller = nullptr;
     std::set<NodePtr> nodes;
 
+    FRIEND_TEST(JupiterTest, Node_leak);
     static int leakCheck;
 };
-
-inline Node::NodePtr::NodePtr(Node* node, Created created) :
-    node(node), created(created) {
-}
-
-inline bool Node::NodePtr::operator <(const NodePtr& r) const {
-    return node->model [ 3 ].z < r.node->model [ 3 ].z || node < r.node;
-}
-
-inline bool Node::NodePtr::operator >(const NodePtr& r) const {
-    return node->model [ 3 ].z > r.node->model [ 3 ].z || node > r.node;
-}
-
-inline bool Node::NodePtr::operator ==(const NodePtr& r) const {
-    return node == r.node;
-}
-
-inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
-    return node != r.node;
-}
 
 inline Node::Node(const std::string& name) :
     Object(name) {
@@ -133,11 +116,6 @@ inline void Node::addNode(Node* node) {
         throw JupiterError("Node add nullptr node");
 
     nodes.insert(NodePtr { node });
-}
-
-template<typename T, typename ... Args>
-inline void Node::createNode(Args ... args) {
-    nodes.insert(NodePtr { new T(args...), true });
 }
 
 inline float Node::getRotationX() const {
@@ -344,6 +322,31 @@ inline Node* Node::setController(Controller* controller) {
 
 inline Controller* Node::getController() {
     return controller;
+}
+
+template<typename T, typename ... Args>
+inline void Node::createNode(Args ... args) {
+    nodes.insert(NodePtr { new T(args...), true });
+}
+
+inline Node::NodePtr::NodePtr(Node* node, Created created) :
+    node(node), created(created) {
+}
+
+inline bool Node::NodePtr::operator <(const NodePtr& r) const {
+    return node->model [ 3 ].z < r.node->model [ 3 ].z || node < r.node;
+}
+
+inline bool Node::NodePtr::operator >(const NodePtr& r) const {
+    return node->model [ 3 ].z > r.node->model [ 3 ].z || node > r.node;
+}
+
+inline bool Node::NodePtr::operator ==(const NodePtr& r) const {
+    return node == r.node;
+}
+
+inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
+    return node != r.node;
 }
 
 } /* namespace jupiter */

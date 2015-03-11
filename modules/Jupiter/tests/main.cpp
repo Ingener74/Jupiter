@@ -16,6 +16,10 @@ using namespace std;
 using namespace jupiter;
 using namespace boost::filesystem;
 
+//class JupiterTest: public ::testing::Test {
+//public:
+//};
+
 TEST(JupiterTest, Aware) {
     auto node = Aware::create<Node>("test");
     ASSERT_EQ(Aware::objectsCount(), 1);
@@ -280,3 +284,6 @@ TEST(JupiterTest, Aware_BalanceTest) {
     ASSERT_EQ(Object::objects, 0);
 }
 
+TEST(JupiterTest, Node_leak) {
+    EXPECT_EQ(0, Node::leakCheck);
+}
