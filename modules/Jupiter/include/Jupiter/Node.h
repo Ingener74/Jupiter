@@ -81,7 +81,7 @@ public:
 
 protected:
     template<typename T, typename ... Args>
-    void createNode(Args... args);
+    void createNode(Args ... args);
 
     struct NodePtr {
         using Created = bool;

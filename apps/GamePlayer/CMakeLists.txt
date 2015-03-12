@@ -30,8 +30,8 @@ set(LIBS
     ${GLUT_LIBRARIES}
     ${Boost_LIBRARIES}
     ${PNG_LIBRARIES}
+    ${LUA_LIBRARIES}
     
-    lua
     Ganymede
     Jupiter
 )

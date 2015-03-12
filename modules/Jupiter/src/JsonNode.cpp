@@ -15,7 +15,7 @@ using namespace std;
 using namespace boost::property_tree;
 
 JsonNode::JsonNode(const ptree& node) :
-    Node(node.get<std::string>("name")) {
+        Node(node.get<std::string>("name")) {
 
     visible = node.get<bool>("visible");
 

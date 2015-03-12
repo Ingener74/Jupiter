@@ -15,6 +15,6 @@ set(SOURCES
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 set(LIBS
-    lua
+    ${LUA_LIBRARIES}
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})

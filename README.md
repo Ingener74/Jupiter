@@ -7,7 +7,7 @@
 1.1. install other dependencies
 
 ```
-sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev
+sudo apt-get install libegl1-mesa-dev libglew1.10 libglew-dev freeglut3 freeglut3-dev libglm-dev libxmu6 libxmu-dev zlib1g-dev libpython-dev libpcre3 libpcre3-dev p7zip-full libxi-dev libreadline-dev 
 ```
 
 1.2. libpng 

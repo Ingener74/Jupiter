@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-include_directories(
-    3rdparty/lua/src
-)
-
-add_subdirectory(3rdparty)
+#add_subdirectory(3rdparty)
 
 # include modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
@@ -27,11 +23,12 @@ find_package(GLEW REQUIRED)
 # find Box2D
 find_package(Box2D REQUIRED)
 
+# find Lua
+find_package(Lua REQUIRED)
+
 # find GTest and GMock
 add_subdirectory(3rdparty/gmock-1.7.0)
 enable_testing()
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-include_directories(${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR})
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
@@ -45,6 +42,11 @@ include_directories(
     ${GLEW_INCLUDE_DIRS}
     
     ${BOX2D_INCLUDE_DIR}
+    
+    ${LUA_INCLUDE_DIR}
+    
+    ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}
+    ${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR}
     
     3rdparty/Selene/include
     
