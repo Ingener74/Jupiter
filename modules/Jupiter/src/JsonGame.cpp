@@ -30,7 +30,7 @@ JsonGame::JsonGame(const std::string& fileName) {
 
     ptree pt;
 
-    json_parser::read_json(file->file(), pt);
+    json_parser::read_json(file->stream(), pt);
 
     width = pt.get<int>("resolution.width");
     height = pt.get<int>("resolution.height");

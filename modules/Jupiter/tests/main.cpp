@@ -16,10 +16,6 @@ using namespace std;
 using namespace jupiter;
 using namespace boost::filesystem;
 
-//class JupiterTest: public ::testing::Test {
-//public:
-//};
-
 TEST(JupiterTest, Aware) {
     auto node = Aware::create<Node>("test");
     ASSERT_EQ(Aware::objectsCount(), 1);
@@ -43,14 +39,14 @@ static const char* RESOURCES_IMAGES_BULLET_PNG = "resources/images/bullet.png";
 
 TEST(JupiterTest, Test1) {
     EXPECT_THROW( {
-        unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
+        File file{RESOURCES_IMAGES_BG_PNG};
     }, JupiterError);
 }
 
 TEST(JupiterTest, Test2) {
     File::setBufferFactory(new LinuxFileFactory);
     EXPECT_THROW({
-        unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
+        File file{RESOURCES_IMAGES_BG_PNG};
     }, JupiterError);
 }
 
@@ -58,21 +54,21 @@ TEST(JupiterTest, Test3) {
     File::setBufferFactory(new LinuxFileFactory);
     File::setBase("../samples/Asteroids");
     EXPECT_NO_THROW({
-        unique_ptr<File> file(new File(RESOURCES_IMAGES_BG_PNG));
+        File file{RESOURCES_IMAGES_BG_PNG};
     });
 }
 
 TEST(JupiterTest, Test4) {
     File::setBufferFactory();
     EXPECT_THROW( {
-        unique_ptr<File> file{new File(RESOURCES_IMAGES_BG_PNG)};
+        File file{RESOURCES_IMAGES_BG_PNG};
     }, JupiterError);
 }
 
 TEST(JupiterTest, Test5) {
     File::setBufferFactory(new LinuxFileFactory);
     EXPECT_NO_THROW({
-        unique_ptr<File> file(new File(RESOURCES_IMAGES_BG_PNG));
+        File file{RESOURCES_IMAGES_BG_PNG};
     });
 }
 
@@ -82,19 +78,19 @@ TEST(JupiterTest, Test5) {
  *
  **********************************************************************************************************************/
 TEST(JupiterTest, PngImage_Test1) {
-    auto pngBackground = Aware::create<PngImage>(RESOURCES_IMAGES_BG_PNG);
-    ASSERT_EQ(pngBackground->getWidth(), 1024);
-    ASSERT_EQ(pngBackground->getHeight(), 1024);
-    ASSERT_EQ(pngBackground->getType(), Image::Type::RGB);
-    ASSERT_EQ(pngBackground->getName(), RESOURCES_IMAGES_BG_PNG);
+    PngImage pngBackground{RESOURCES_IMAGES_BG_PNG};
+    EXPECT_EQ(pngBackground.getWidth(), 1024);
+    EXPECT_EQ(pngBackground.getHeight(), 1024);
+    EXPECT_EQ(pngBackground.getType(), Image::Type::RGB);
+    EXPECT_EQ(pngBackground.getName(), RESOURCES_IMAGES_BG_PNG);
 }
 
 TEST(JupiterTest, PngImage_Test2) {
-    auto pngBullet = Aware::create<PngImage>(RESOURCES_IMAGES_BULLET_PNG);
-    ASSERT_EQ(pngBullet->getWidth(), 128);
-    ASSERT_EQ(pngBullet->getHeight(), 128);
-    ASSERT_EQ(pngBullet->getType(), Image::Type::RGBA);
-    ASSERT_EQ(pngBullet->getName(), RESOURCES_IMAGES_BULLET_PNG);
+    PngImage pngBullet{RESOURCES_IMAGES_BULLET_PNG};
+    EXPECT_EQ(pngBullet.getWidth(), 128);
+    EXPECT_EQ(pngBullet.getHeight(), 128);
+    EXPECT_EQ(pngBullet.getType(), Image::Type::RGBA);
+    EXPECT_EQ(pngBullet.getName(), RESOURCES_IMAGES_BULLET_PNG);
 }
 
 /**********************************************************************************************************************
@@ -103,10 +99,10 @@ TEST(JupiterTest, PngImage_Test2) {
  *
  **********************************************************************************************************************/
 TEST(JupiterTest, JsonGame_Test1){
-    unique_ptr<JsonGame> jsonGame(new JsonGame("Asteroids.json"));
+    JsonGame jsonGame{"Asteroids.json"};
 
-    ASSERT_EQ(jsonGame->getWidth(),  800);
-    ASSERT_EQ(jsonGame->getHeight(), 480);
+    EXPECT_EQ(jsonGame.getWidth(),  800);
+    EXPECT_EQ(jsonGame.getHeight(), 480);
 }
 
 /**********************************************************************************************************************
@@ -284,6 +280,6 @@ TEST(JupiterTest, Aware_BalanceTest) {
     ASSERT_EQ(Object::objects, 0);
 }
 
-TEST(JupiterTest, Node_leak) {
+TEST(JupiterTest, Node_LeakTest) {
     EXPECT_EQ(0, Node::leakCheck);
 }

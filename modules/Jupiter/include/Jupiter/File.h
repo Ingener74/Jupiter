@@ -18,12 +18,12 @@ public:
     virtual std::streambuf* create(const std::string& fileName) = 0;
 };
 
-class File{
+class File {
 public:
     File(const std::string& fileName);
     virtual ~File();
 
-    std::istream& file();
+    std::istream& stream();
 
     static void setBufferFactory(BufferFactory* = nullptr);
     static void setBase(const std::string& base);

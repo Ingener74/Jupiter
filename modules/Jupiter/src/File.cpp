@@ -23,7 +23,7 @@ File::~File() {
         delete buffer;
 }
 
-std::istream& File::file() {
+std::istream& File::stream() {
     return i;
 }
 

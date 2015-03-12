@@ -102,7 +102,7 @@ protected:
     Controller* controller = nullptr;
     std::set<NodePtr> nodes;
 
-    FRIEND_TEST(JupiterTest, Node_leak);
+public:
     static int leakCheck;
 };
 
