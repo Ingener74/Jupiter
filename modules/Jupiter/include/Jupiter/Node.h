@@ -16,16 +16,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <gtest/gtest_prod.h>
-
 #include "Jupiter/Controller.h"
-#include "Jupiter/Aware.h"
+#include "Jupiter/JupiterError.h"
 
 namespace jupiter {
 
 class NodeVisitor;
 
-class Node: public Object {
+class Node {
 public:
     Node(const std::string& name);
     virtual ~Node();
@@ -106,8 +104,7 @@ public:
     static int leakCheck;
 };
 
-inline Node::Node(const std::string& name) :
-    Object(name) {
+inline Node::Node(const std::string& name) {
     ++leakCheck;
 }
 

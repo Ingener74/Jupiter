@@ -36,7 +36,7 @@ public:
     const virtual Node* getRootNode() const;
 
 protected:
-    RenderVisitor render;
+    RenderVisitor* render = nullptr;
     Node* node = nullptr;
     int width = 0;
     int height = 0;

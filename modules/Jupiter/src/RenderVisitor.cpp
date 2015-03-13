@@ -42,3 +42,6 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 }
 
 } /* namespace jupiter */
+
+void jupiter::RenderVisitor::draw() {
+}

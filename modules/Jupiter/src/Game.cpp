@@ -24,7 +24,11 @@ Game::~Game() {
 }
 
 void Game::draw() {
-    node->accept(&render);
+    assert(nullptr != node);
+    assert(nullptr != render);
+
+    node->accept(render);
+    render->draw();
 }
 
 void Game::input() {

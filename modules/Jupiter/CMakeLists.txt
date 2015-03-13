@@ -4,8 +4,6 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
-    src/Aware.cpp
-
     src/File.cpp
     src/LinuxFileFactory.cpp
     

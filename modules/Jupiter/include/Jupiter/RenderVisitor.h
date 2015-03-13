@@ -26,6 +26,8 @@ public:
     virtual void visit(Node*);
     virtual void visit(Sprite*);
 
+    virtual void draw();
+
 private:
     glm::mat4 _ortho;
 };

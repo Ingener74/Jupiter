@@ -11,12 +11,10 @@
 #include <memory>
 #include <GL/glew.h>
 
-#include "Jupiter/Aware.h"
-
 namespace jupiter
 {
 
-class Texture: public Object
+class Texture
 {
 public:
     Texture() = default;

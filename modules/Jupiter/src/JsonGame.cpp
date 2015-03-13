@@ -34,14 +34,16 @@ JsonGame::JsonGame(const std::string& fileName) {
 
     width = pt.get<int>("resolution.width");
     height = pt.get<int>("resolution.height");
-    render = {ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
+    render = new RenderVisitor{ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
 
     auto rootNode = pt.get_child("node");
 
-    node = Aware::create<JsonNode>(rootNode);
+    node = new JsonNode(rootNode);
 }
 
 JsonGame::~JsonGame() {
+    delete render;
+    delete node;
 }
 
 } /* namespace jupiter */
