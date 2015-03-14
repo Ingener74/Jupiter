@@ -52,7 +52,6 @@
 
 using namespace std;
 using namespace glm;
-using namespace boost;
 using namespace boost::filesystem;
 using namespace boost::program_options;
 
@@ -69,7 +68,7 @@ using namespace jupiter;
  * -- text node
  */
 
-std::shared_ptr<Game> game;
+unique_ptr<Game> game;
 
 string usage = R"(
 Usage  : ./GamePlayer -g <path-to-game>
@@ -155,7 +154,10 @@ int main(int argc, char **argv)
 
         auto gameFileName = vm["game"].as<string>();
 
-        game = make_shared<JsonGame>(gameFileName);
+        File::setBufferFactory(new LinuxFileFactory);
+//        File::setBase()
+
+        game = unique_ptr<JsonGame>(new JsonGame(gameFileName));
 
         glutReshapeWindow(game->getWidth(), game->getHeight());
         glViewport(0, 0, game->getWidth(), game->getHeight());

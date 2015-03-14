@@ -1,13 +1,6 @@
-/*
- * Texture.cpp
- *
- *  Created on: 25 ��� 2014 �.
- *      Author: Admin
- */
 
 #include "Jupiter/Tools.h"
 #include "Jupiter/Texture.h"
-#include "Jupiter/TextureBuilder.h"
 
 namespace jupiter
 {

@@ -8,7 +8,6 @@
 #include <boost/filesystem.hpp>
 
 #include "Jupiter/Game.h"
-#include "Jupiter/TextureBuilder.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Node.h"
 

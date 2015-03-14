@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "Jupiter/Aware.h"
 #include "Jupiter/File.h"
+#include "Jupiter/JupiterError.h"
 #include "Jupiter/PngImage.h"
 
 namespace jupiter {
@@ -16,11 +16,11 @@ namespace jupiter {
 using namespace std;
 
 PngImage::PngImage(const std::string& fileName) :
-    Image(fileName) {
+        Image(fileName) {
 
     file.reset(new File(fileName));
 
-    png_byte lHeader [ 8 ];
+    png_byte lHeader[8];
     png_structp lPngPtr = nullptr;
     png_infop lInfoPtr = nullptr;
     png_bytep* lRowPtrs = nullptr;
@@ -94,7 +94,7 @@ PngImage::PngImage(const std::string& fileName) :
     if (lRowSize <= 0)
         throw std::runtime_error("some error 4");
 
-    auto imageBuffer = unique_ptr<png_byte []>(new png_byte [ lRowSize * lHeight ]);
+    auto imageBuffer = unique_ptr<png_byte[]>(new png_byte[lRowSize * lHeight]);
 
     /**
      * TODO rename errors
@@ -102,16 +102,16 @@ PngImage::PngImage(const std::string& fileName) :
 
     auto imBuf = imageBuffer.get();
 
-    lRowPtrs = new png_bytep [ lHeight ];
+    lRowPtrs = new png_bytep[lHeight];
     if (!lRowPtrs)
         throw std::runtime_error("some error 6");
     for (int32_t i = 0; i < lHeight; ++i) {
-        lRowPtrs [ lHeight - (i + 1) ] = imBuf + i * lRowSize;
+        lRowPtrs[lHeight - (i + 1)] = imBuf + i * lRowSize;
     }
     png_read_image(lPngPtr, lRowPtrs);
 
     png_destroy_read_struct(&lPngPtr, &lInfoPtr, NULL);
-    delete [] lRowPtrs;
+    delete[] lRowPtrs;
 
     int w = lWidth;
     int h = lHeight;
@@ -124,9 +124,6 @@ PngImage::PngImage(const std::string& fileName) :
     data = vector<uint8_t> { p, p + s };
 
     file.reset();
-}
-
-PngImage::~PngImage() {
 }
 
 void PngImage::pngRwCallback(png_structp pngStruct, png_bytep data, png_size_t size) {

@@ -21,7 +21,7 @@ class File;
 class PngImage: public Image {
 public:
     PngImage(const std::string& fileName);
-    virtual ~PngImage();
+    virtual ~PngImage() = default;
 
     static void pngRwCallback(png_structp, png_bytep, png_size_t);
 

@@ -17,8 +17,6 @@ class BackGround(j.Controller):
     def update(self, elapsedTime):
         pass
 
-game = []
-
 def init ():
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glClearDepth(1.0)
