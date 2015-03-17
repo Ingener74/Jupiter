@@ -127,10 +127,13 @@ unique_ptr<Texture>
 
 void create_game(){
 
+//    PngImage backGroundImage{"Resources/bg.png"};
+//    backGroundTexture = make_unique_<ImageTexture>(&backGroundImage);
+
     backGround = make_unique_<Sprite>();
 
     flour = make_unique_<Sprite>();
-//    flour->setTexture()
+//    flour->setTexture(backGroundTexture)->setShape();
 
     box = make_unique_<Sprite>();
 
