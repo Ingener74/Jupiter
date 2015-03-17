@@ -11,16 +11,6 @@
 
 namespace jupiter {
 
-RenderVisitor::RenderVisitor() {
-}
-
-RenderVisitor::RenderVisitor(const glm::mat4& ortho) :
-    _ortho(ortho) {
-}
-
-RenderVisitor::~RenderVisitor() {
-}
-
 void jupiter::RenderVisitor::visit(Node* node) {
 }
 
@@ -42,6 +32,3 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 }
 
 } /* namespace jupiter */
-
-void jupiter::RenderVisitor::draw() {
-}

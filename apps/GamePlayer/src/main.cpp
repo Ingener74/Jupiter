@@ -113,6 +113,38 @@ void mouseMove( int x, int y )
     game->input();
 }
 
+unique_ptr<Node>
+    rootNode,
+        backGroundSprite, // background
+        flour,            // static flour
+        box;              // falling box
+unique_ptr<Texture>
+        backGroundTexture,
+        flourTexture,
+        boxTexture;
+void create_game(){
+
+
+
+    backGroundSprite = make_unique_<Sprite>("backGround");
+
+    rootNode = make_unique_<Node>("root");
+    rootNode->addNode(backGroundSprite.get());
+
+    game = make_unique_<Game>();
+
+    game->setRootNode(rootNode.get());
+}
+
+void create_game_from_json(const std::string& fileName){
+    path gameFile = fileName;
+
+    File::setBufferFactory(make_unique_<LinuxFileFactory>());
+    File::setBase(gameFile.parent_path().native());
+
+    game = make_unique_<JsonGame>(gameFile.filename().native());
+}
+
 int main(int argc, char **argv)
 {
     options_description desc("General description");
@@ -152,12 +184,8 @@ int main(int argc, char **argv)
 
         if (glewInit() != GLEW_OK) throw runtime_error("glew init error");
 
-        auto gameFileName = vm["game"].as<string>();
-
-        File::setBufferFactory(new LinuxFileFactory);
-//        File::setBase()
-
-        game = unique_ptr<JsonGame>(new JsonGame(gameFileName));
+        create_game();
+//        create_game_from_json(vm["game"].as<string>());
 
         glutReshapeWindow(game->getWidth(), game->getHeight());
         glViewport(0, 0, game->getWidth(), game->getHeight());

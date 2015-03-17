@@ -15,6 +15,22 @@
 namespace jupiter
 {
 
+struct Elem {
+    union {
+        struct {
+            float x, y, z;
+            union {
+                struct {
+                    float tx, ty;
+                };
+                struct {
+                    float r, g, b, a;
+                };
+            };
+        };
+    };
+};
+
 class Shape
 {
 public:

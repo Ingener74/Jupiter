@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 
+#include "Jupiter/Tools.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/LinuxFileFactory.h"
 
@@ -24,7 +25,7 @@ public:
         shared_ptr<FILE> f(fopen(_fileName.c_str(), "rb"), [](FILE* df)
         {
             if(df)
-                fclose(df);
+            fclose(df);
         });
         if (!f)
             throw JupiterError("can't open file " + _fileName);
@@ -41,8 +42,8 @@ public:
 
         setg(_buffer.data(), _buffer.data(), _buffer.data() + _buffer.capacity());
     }
-    virtual ~FileBuffer()
-    {
+    virtual ~FileBuffer() {
+        cout << __PRETTY_FUNCTION__ << ": " << _fileName << endl;
     }
 
 private:
@@ -50,14 +51,8 @@ private:
     vector<char> _buffer;
 };
 
-LinuxFileFactory::LinuxFileFactory() {
-}
-
-LinuxFileFactory::~LinuxFileFactory() {
-}
-
-std::streambuf* LinuxFileFactory::create(const std::string& fileName) {
-    return new FileBuffer(fileName);
+unique_ptr<streambuf> LinuxFileFactory::create(const string& fileName) {
+    return make_unique_<FileBuffer>(fileName);
 }
 
 } /* namespace jupiter */

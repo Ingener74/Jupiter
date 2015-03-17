@@ -9,23 +9,26 @@
 #define TOOLS_H_
 
 #include <memory>
-#include <Jupiter/JupiterError.h>
+#include <utility>
+#include "Jupiter/JupiterError.h"
 
 namespace jupiter
 {
 
+template <typename T, typename ... Args>
+std::unique_ptr<T> make_unique_( Args ... args )
+{
+    std::unique_ptr<T> ptr(new T(std::forward<Args>(args)...));
+    return ptr;
+}
+
 class Tools
 {
 public:
-    using Ptr = std::shared_ptr<Tools>;
-
-    static Tools::Ptr instance();
-    virtual ~Tools() = default;
+    Tools() = delete;
+    virtual ~Tools() = delete;
 
     static void glError() throw (JupiterError);
-
-private:
-    Tools() = default;
 };
 
 } /* namespace ndk_game */

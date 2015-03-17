@@ -32,6 +32,19 @@ private:
     glm::mat4 _ortho;
 };
 
+inline RenderVisitor::RenderVisitor() {
+}
+
+inline RenderVisitor::RenderVisitor(const glm::mat4& ortho) :
+    _ortho(ortho) {
+}
+
+inline RenderVisitor::~RenderVisitor() {
+}
+
+inline void RenderVisitor::draw() {
+}
+
 } /* namespace jupiter */
 
 #endif /* RENDERVISITOR_H_ */

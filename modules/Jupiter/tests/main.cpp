@@ -44,14 +44,14 @@ TEST(JupiterTest, Test1) {
 }
 
 TEST(JupiterTest, Test2) {
-    File::setBufferFactory(new LinuxFileFactory);
+    File::setBufferFactory(make_unique_<LinuxFileFactory>());
     EXPECT_THROW({
         File file{RESOURCES_IMAGES_BG_PNG};
     }, JupiterError);
 }
 
 TEST(JupiterTest, Test3) {
-    File::setBufferFactory(new LinuxFileFactory);
+    File::setBufferFactory(make_unique_<LinuxFileFactory>());
     File::setBase("../samples/Asteroids");
     EXPECT_NO_THROW({
         File file{RESOURCES_IMAGES_BG_PNG};
@@ -66,7 +66,7 @@ TEST(JupiterTest, Test4) {
 }
 
 TEST(JupiterTest, Test5) {
-    File::setBufferFactory(new LinuxFileFactory);
+    File::setBufferFactory(make_unique_<LinuxFileFactory>());
     EXPECT_NO_THROW({
         File file{RESOURCES_IMAGES_BG_PNG};
     });

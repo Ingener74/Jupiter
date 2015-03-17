@@ -10,16 +10,10 @@
 
 #include <GL/glew.h>
 
-#include <Jupiter/Tools.h>
+#include "Jupiter/Tools.h"
 
 namespace jupiter
 {
-
-Tools::Ptr Tools::instance()
-{
-    static Tools::Ptr self(new Tools);
-    return self;
-}
 
 void Tools::glError() throw (JupiterError)
 {
