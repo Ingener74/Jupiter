@@ -22,8 +22,8 @@ namespace jupiter {
 
 class Game {
 public:
-    Game();
-    virtual ~Game();
+    Game() = default;
+    virtual ~Game() = default;
 
     virtual void draw();
 

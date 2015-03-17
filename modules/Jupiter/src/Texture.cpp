@@ -9,18 +9,8 @@ using namespace std;
 
 void Texture::bind() const
 {
-    glBindTexture(GL_TEXTURE_2D, _textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
     Tools::glError();
-}
-
-int Texture::getWidth() const
-{
-    return _width;
-}
-
-int Texture::getHeight() const
-{
-    return _height;
 }
 
 } /* namespace ndk_game */

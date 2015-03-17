@@ -121,9 +121,9 @@ unique_ptr<Sprite>
     box;         // dynamic box
 
 unique_ptr<Texture>
-        backGroundTexture,
-        flourTexture,
-        boxTexture;
+    backGroundTexture,
+    flourTexture,
+    boxTexture;
 
 void create_game(){
 

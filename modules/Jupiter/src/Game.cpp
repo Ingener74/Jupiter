@@ -16,12 +16,6 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-Game::Game() {
-}
-
-Game::~Game() {
-}
-
 void Game::draw() {
     assert(nullptr != node);
     assert(nullptr != render);
