@@ -12,7 +12,7 @@ namespace jupiter {
 using namespace std;
 
 JsonSprite::JsonSprite(const boost::property_tree::ptree& node) :
-    Sprite(node.get<string>("name")) {
+    Sprite(/*node.get<string>("name")*/) {
 }
 
 JsonSprite::~JsonSprite() {

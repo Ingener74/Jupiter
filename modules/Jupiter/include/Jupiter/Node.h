@@ -25,10 +25,10 @@ class NodeVisitor;
 
 class Node {
 public:
-    Node(const std::string& name);
+    Node();
     virtual ~Node();
 
-    void addNode(Node* node);
+    Node* addNode(Node* node);
 
     float getRotationX() const;
     float getRotationY() const;
@@ -104,15 +104,16 @@ public:
     static int leakCheck;
 };
 
-inline Node::Node(const std::string& name) {
+inline Node::Node() {
     ++leakCheck;
 }
 
-inline void Node::addNode(Node* node) {
+inline Node* Node::addNode(Node* node) {
     if (!node)
         throw JupiterError("Node add nullptr node");
 
     nodes.insert(NodePtr { node });
+    return this;
 }
 
 inline float Node::getRotationX() const {

@@ -114,22 +114,31 @@ void mouseMove( int x, int y )
 }
 
 unique_ptr<Node>
-    rootNode,
-        backGroundSprite, // background
-        flour,            // static flour
-        box;              // falling box
+    rootNode;
+unique_ptr<Sprite>
+    backGround,  // static background
+    flour,       // static flour
+    box;         // dynamic box
+
 unique_ptr<Texture>
         backGroundTexture,
         flourTexture,
         boxTexture;
+
 void create_game(){
 
+    backGround = make_unique_<Sprite>();
 
+    flour = make_unique_<Sprite>();
+//    flour->setTexture()
 
-    backGroundSprite = make_unique_<Sprite>("backGround");
+    box = make_unique_<Sprite>();
 
-    rootNode = make_unique_<Node>("root");
-    rootNode->addNode(backGroundSprite.get());
+    rootNode = make_unique_<Node>();
+    rootNode->
+        addNode(backGround.get())->
+        addNode(flour.get())->
+        addNode(box.get());
 
     game = make_unique_<Game>();
 

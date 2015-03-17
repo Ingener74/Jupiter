@@ -19,7 +19,7 @@ namespace jupiter {
 
 class Sprite: public Node {
 public:
-    Sprite(const std::string& name);
+    Sprite() = default;
     virtual ~Sprite() = default;
 
     Texture* getTexture() const;

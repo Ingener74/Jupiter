@@ -146,7 +146,7 @@ public:
     void TearDown() {
     }
 
-    Node n{"testController"};
+    Node n{/*"testController"*/};
     MockController c;
 };
 

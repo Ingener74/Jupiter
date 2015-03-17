@@ -15,8 +15,4 @@ namespace jupiter {
 
 using namespace std;
 
-Sprite::Sprite(const std::string& name) :
-    Node(name) {
-}
-
 } /* namespace ndk_game */
