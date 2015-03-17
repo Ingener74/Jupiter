@@ -127,6 +127,8 @@ unique_ptr<Texture>
 
 void create_game(){
 
+    File::setBufferFactory(make_unique_<LinuxFileFactory>());
+
 //    PngImage backGroundImage{"Resources/bg.png"};
 //    backGroundTexture = make_unique_<ImageTexture>(&backGroundImage);
 
