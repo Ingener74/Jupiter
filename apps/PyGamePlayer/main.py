@@ -7,8 +7,8 @@ from OpenGL.GLUT import *
 import sys
 import math
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/wrappers/python')))
-import Jupiter as j
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/wrappers')))
+import PyJupiter as j
 
 # class BackGround(j.Controller):
 #     def __init__(self):

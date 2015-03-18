@@ -111,9 +111,7 @@ void mouseMove(int x, int y) {
 
 unique_ptr<BufferFactory> bufferFactory;
 unique_ptr<Node> rootNode;
-
 unique_ptr<Sprite> bg, flour, box;
-
 unique_ptr<Texture> bgTexture, flourTexture, boxTexture;
 
 void create_game(){
