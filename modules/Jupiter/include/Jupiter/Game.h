@@ -8,15 +8,18 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_GAME_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_GAME_H_
 
-#include <string>
+#ifdef SWIG
+#else
+    #include <string>
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+    #include <glm/gtc/type_ptr.hpp>
+    #include <glm/gtc/matrix_transform.hpp>
 
-#include "Jupiter/RenderVisitor.h"
-#include "Jupiter/Node.h"
+    #include "Jupiter/RenderVisitor.h"
+    #include "Jupiter/Node.h"
+#endif
 
 namespace jupiter {
 
@@ -33,7 +36,7 @@ public:
     virtual int getHeight() const;
 
     virtual void setRootNode(Node*);
-    const virtual Node* getRootNode() const;
+    virtual Node* getRootNode();
 
 protected:
     RenderVisitor* render = nullptr;
@@ -54,7 +57,7 @@ inline void Game::setRootNode(Node* node) {
     Game::node = node;
 }
 
-inline const Node* Game::getRootNode() const {
+inline Node* Game::getRootNode() {
     return node;
 }
 

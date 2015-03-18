@@ -8,10 +8,16 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_FILE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_FILE_H_
 
-#include <iostream>
-#include <memory>
+#ifdef SWIG
+    namespace jupiter {
+        %ignore BufferFactory::create(const std::string& fileName);
+    }  // namespace jupiter
+#else
+    #include <iostream>
+    #include <memory>
 
-#include "Jupiter/JupiterError.h"
+    #include "Jupiter/JupiterError.h"
+#endif
 
 namespace jupiter {
 
@@ -28,14 +34,14 @@ public:
 
     std::istream& stream();
 
-    static void setBufferFactory(std::unique_ptr<BufferFactory> factory = nullptr);
+    static void setBufferFactory(BufferFactory* factory = nullptr);
     static void setBase(const std::string& base);
 
 private:
     std::unique_ptr<std::streambuf> buffer;
     std::istream i;
 
-    static std::unique_ptr<BufferFactory> factory;
+    static BufferFactory* factory;
     static std::string base;
 };
 
@@ -52,7 +58,7 @@ inline void File::setBase(const std::string& base) {
     File::base = base;
 }
 
-inline void File::setBufferFactory(std::unique_ptr<BufferFactory> factory) {
+inline void File::setBufferFactory(BufferFactory* factory) {
     File::factory = std::move(factory);
 }
 

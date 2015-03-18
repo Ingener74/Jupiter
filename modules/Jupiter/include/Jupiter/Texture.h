@@ -2,7 +2,12 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 
-#include <GL/glew.h>
+#ifdef SWIG
+    namespace jupiter {
+    }  // namespace jupiter
+#else
+    #include <GL/glew.h>
+#endif
 
 namespace jupiter
 {

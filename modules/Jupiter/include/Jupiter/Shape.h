@@ -8,9 +8,15 @@
 #ifndef SHAPE_H_
 #define SHAPE_H_
 
-#include <string>
-#include <vector>
-#include <cstdint>
+#ifdef SWIG
+    namespace jupiter {
+        #pragma SWIG nowarn=312
+    }  // namespace jupiter
+#else
+    #include <string>
+    #include <vector>
+    #include <cstdint>
+#endif
 
 namespace jupiter
 {

@@ -8,7 +8,11 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include <memory>
+#ifdef SWIG
+#else
+    #include <memory>
+#endif
+
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Shader.h"

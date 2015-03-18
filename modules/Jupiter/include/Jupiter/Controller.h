@@ -8,7 +8,12 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_CONTROLLER_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_CONTROLLER_H_
 
-#include <memory>
+#ifdef SWIG
+    namespace jupiter {
+        %feature("director") Controller;
+    }  // namespace jupiter
+#else
+#endif
 
 namespace jupiter
 {

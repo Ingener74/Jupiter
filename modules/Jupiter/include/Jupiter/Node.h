@@ -8,16 +8,23 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 
-#include <set>
-#include <string>
+#ifdef SWIG
+    namespace jupiter {
+        #pragma SWIG nowarn=341,325
+        %ignore Node::NodePtr;
+    }  // namespace jupiter
+#else
+    #include <set>
+    #include <string>
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+    #include <glm/gtc/type_ptr.hpp>
+    #include <glm/gtc/matrix_transform.hpp>
 
-#include "Jupiter/Controller.h"
-#include "Jupiter/JupiterError.h"
+    #include "Jupiter/Controller.h"
+    #include "Jupiter/JupiterError.h"
+#endif
 
 namespace jupiter {
 

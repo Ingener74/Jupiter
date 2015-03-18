@@ -8,10 +8,13 @@
 #ifndef SHADERPROGRAM_H_
 #define SHADERPROGRAM_H_
 
-#include <string>
-#include <memory>
+#ifdef SWIG
+#else
+    #include <string>
+    #include <memory>
 
-#include <GL/glew.h>
+    #include <GL/glew.h>
+#endif
 
 namespace jupiter
 {

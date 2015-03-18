@@ -11,7 +11,7 @@ namespace jupiter {
 
 using namespace std;
 
-unique_ptr<BufferFactory> File::factory;
+BufferFactory* File::factory = nullptr;
 string File::base = "";
 
 }  // namespace jupiter
