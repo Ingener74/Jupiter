@@ -12,6 +12,7 @@ set(SOURCES
     
     src/Tools.cpp
     src/Texture.cpp
+    src/ImageTexture.cpp
 
     src/Image.cpp
     src/PngImage.cpp
@@ -27,6 +28,8 @@ set(SOURCES
     src/RenderVisitor.cpp
 
     src/Shader.cpp
+    src/FileShader.cpp
+
     src/Controller.cpp
 )
 

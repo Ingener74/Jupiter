@@ -103,21 +103,31 @@ bool myCreateGame(int argc, char* argv[]){
     File::setBase("samples/Box");
 
     int width = 800, height = 480;
-
     render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
 
-//    spriteShader = make_unique_<>();
+    File vs{"Resources/sprite.vs"}, fs{"Resources/sprite.fs"};
+    spriteShader = make_unique_<FileShader>(&vs, &fs);
 
-//    PngImage backGroundImage{"Resources/bg.png"};
-//    backGroundTexture = make_unique_<ImageTexture>(&backGroundImage);
+    PngImage bgImage{"Resources/bg.png"};
+    bgTexture = make_unique_<ImageTexture>(&bgImage);
 
     bg = make_unique_<Sprite>();
+    bg->
+        setProgram(spriteShader.get())->
+        setTexture(bgTexture.get())->
+        setShape(bgShape.get());
+
+    PngImage flourImage{"Resources/flour.png"};
+    flourTexture = make_unique_<ImageTexture>(&flourImage);
 
     flour = make_unique_<Sprite>();
     flour->
         setProgram(spriteShader.get())->
         setTexture(bgTexture.get())->
         setShape(bgShape.get());
+
+    PngImage boxImage{"Resources/box.png"};
+    boxTexture = make_unique_<ImageTexture>(&boxImage);
 
     box = make_unique_<Sprite>();
     box->

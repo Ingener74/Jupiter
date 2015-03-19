@@ -27,7 +27,8 @@ public:
 
     virtual void use() const;
 
-private:
+protected:
+
     GLuint _program = 0;
 };
 

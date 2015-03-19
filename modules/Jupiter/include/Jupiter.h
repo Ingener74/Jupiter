@@ -17,10 +17,15 @@
 #include "Jupiter/Image.h"
 #include "Jupiter/Texture.h"
 #include "Jupiter/File.h"
+#include "Jupiter/Shader.h"
 
 #include "Jupiter/LinuxFileFactory.h"
 
 #include "Jupiter/PngImage.h"
+
+#include "Jupiter/ImageTexture.h"
+
+#include "Jupiter/FileShader.h"
 
 #include "Jupiter/Rect.h"
 
