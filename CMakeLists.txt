@@ -14,8 +14,33 @@ find_package(PNG REQUIRED)
 # find glm
 find_package(GLM REQUIRED)
 
+option(USE_FREEGLUT "Use freeglut as window system" OFF)
+option(USE_GLFW "Use GLFW as window system" ON)
+
+if(USE_FREEGLUT AND USE_GLFW)
+    message(FATAL_ERROR "Use freeglut OR glfw")
+endif()
+
+if(NOT USE_FREEGLUT AND NOT USE_GLFW)
+    message(FATAL_ERROR "Use freeglut OR glfw")
+endif()
+
 # find GLUT
-find_package(GLUT REQUIRED)
+if(USE_FREEGLUT)
+    find_package(GLUT REQUIRED)
+    add_definitions(-DUSE_FREEGLUT)
+endif()
+
+# find GLFW
+if(USE_GLFW)
+    add_definitions(-DUSE_GLFW)
+#    find_package(PkgConfig REQUIRED)
+#    pkg_search_module(GLFW REQUIRED glfw3)
+
+    find_package(GLFW REQUIRED)
+    message(STATUS "glfw includes = ${GLFW_INCLUDE_DIR}")
+    message(STATUS "glfw libs     = ${GLFW_LIBRARIES}")
+endif()
 
 # find GLEW
 find_package(GLEW REQUIRED)
@@ -38,7 +63,9 @@ include_directories(
     ${GLM_INCLUDE_DIRS}
     
     ${GLUT_INCLUDE_DIR}
-
+    
+    ${GLFW_INCLUDE_DIR}
+    
     ${GLEW_INCLUDE_DIRS}
     
     ${BOX2D_INCLUDE_DIR}
@@ -53,6 +80,17 @@ include_directories(
     modules/Jupiter/include
     modules/Ganymede/include
 )
+
+# GL libraries
+set(GL_LIBRARIES
+    GL
+    ${GLEW_LIBRARIES}
+)
+if(USE_FREEGLUT)
+    set(GL_LIBRARIES ${GL_LIBRARIES} ${GLUT_LIBRARIES})
+elseif(USE_GLFW)
+    set(GL_LIBRARIES ${GL_LIBRARIES} ${GLFW_LIBRARIES})
+endif()
 
 add_definitions(-std=c++11)
 

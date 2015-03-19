@@ -35,6 +35,9 @@ public:
     virtual int getWidth() const;
     virtual int getHeight() const;
 
+    Game* setHeight(int height = 0);
+    Game* setWidth(int width = 0);
+
     virtual Game* setRootNode(Node*);
     virtual Node* getRootNode();
 
@@ -54,6 +57,16 @@ inline int Game::getWidth() const {
 
 inline int Game::getHeight() const {
     return height;
+}
+
+inline Game* Game::setHeight(int height) {
+    this->height = height;
+    return this;
+}
+
+inline Game* Game::setWidth(int width) {
+    this->width = width;
+    return this;
 }
 
 inline Game* Game::setRootNode(Node* node) {

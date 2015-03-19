@@ -25,9 +25,7 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
-    GL
-    ${GLEW_LIBRARIES}
-    ${GLUT_LIBRARIES}
+    ${GL_LIBRARIES}
     ${Boost_LIBRARIES}
     ${PNG_LIBRARIES}
     ${LUA_LIBRARIES}

@@ -30,17 +30,10 @@ set(SOURCES
     src/Controller.cpp
 )
 
-if(ANDROID)
-    set(SOURCES ${SOURCES}
-    )
-else()
-    set(SOURCES ${SOURCES}
-    )
-endif()
-
 add_library(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
+    ${GL_LIBRARIES}
     ${PNG_LIBRARIES}
     ${Boost_LIBRARIES}
 )

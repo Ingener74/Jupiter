@@ -23,7 +23,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <GL/glew.h>
-#include <GL/glut.h>
+
+#ifdef USE_FREEGLUT
+    #include <GL/glut.h>
+#elif defined (USE_GLFW)
+    #include <GLFW/glfw3.h>
+#endif
+
 
 //#include <selene.h>
 
@@ -68,46 +74,18 @@ using namespace jupiter;
  * -- text node
  */
 
-unique_ptr<Game> game;
-
 string usage = R"(
 Usage  : ./GamePlayer -g <path-to-game>
 Example: ./GamePlayer -g ~/games/Asteroids/Asteroids.lua
 )";
 
+string title =R"(Jupiter Game Player)";
+
 /*
  * Code
  */
-void display(void) {
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.f, 0.f, 0.f, 1.f);
 
-    game->draw();
-
-    glutSwapBuffers();
-}
-
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
-}
-
-void mouse(int button, int action, int x, int y) {
-    static map<int, string> buttons{
-        { GLUT_LEFT_BUTTON, "GLUT_LEFT_BUTTON" },
-        { GLUT_MIDDLE_BUTTON, "GLUT_MIDDLE_BUTTON" },
-        { GLUT_RIGHT_BUTTON, "GLUT_RIGHT_BUTTON" },
-    };
-    static map<int, string> actions{
-        { GLUT_DOWN, "GLUT_DOWN" },
-        { GLUT_UP, "GLUT_UP" }
-    };
-
-    game->input();
-}
-
-void mouseMove(int x, int y) {
-    game->input();
-}
+unique_ptr<Game> game;
 
 unique_ptr<BufferFactory> bufferFactory;
 unique_ptr<RenderVisitor> render;
@@ -118,11 +96,15 @@ unique_ptr<Shape> bgShape, flourShape, boxShape;
 unique_ptr<Controller> boxController;
 unique_ptr<Texture> bgTexture, flourTexture, boxTexture;
 
-void create_game(){
+bool myCreateGame(int argc, char* argv[]){
 
     bufferFactory = make_unique_<LinuxFileFactory>();
     File::setBufferFactory(bufferFactory.get());
     File::setBase("samples/Box");
+
+    int width = 800, height = 480;
+
+    render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
 
 //    spriteShader = make_unique_<>();
 
@@ -154,40 +136,88 @@ void create_game(){
     game = make_unique_<Game>();
     game->
         setRootNode(rootNode.get())->
-        setRender(render.get());
+        setRender(render.get())->setWidth(width)->setHeight(height);
+
+    return true;
 }
 
-void create_game_from_json(const std::string& fileName){
-    path gameFile = fileName;
+bool myCreateGameWithJsonFile(int argc, char* argv[]){
+//    const std::string& fileName
+
+    options_description desc("General description");
+
+    desc.add_options()
+        ("help,h", "Show help")
+        ("game,g", value<std::string>(), "Path to game file");
+    variables_map vm;
+
+    store(parse_command_line(argc, argv, desc), vm);
+    notify(vm);
+
+    if (vm.count("help")) {
+        cout << desc << endl;
+        cout << usage << endl;
+        return false;
+    }
+
+    if (!vm.count("game"))
+        throw runtime_error("have no game file");
+
+    path gameFile = vm["game"].as<string>();
 
     bufferFactory = make_unique_<LinuxFileFactory>();
     File::setBufferFactory(bufferFactory.get());
     File::setBase(gameFile.parent_path().native());
 
     game = make_unique_<JsonGame>(gameFile.filename().native());
+
+    return true;
+}
+
+void myDraw() {
+    game->draw();
+}
+
+void myInput() {
+    game->input();
+}
+
+#ifdef USE_FREEGLUT
+
+void display(void) {
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.f, 0.f, 0.f, 1.f);
+
+    myDraw();
+
+    glutSwapBuffers();
+}
+
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+}
+
+void mouse(int button, int action, int x, int y) {
+    static map<int, string> buttons{
+        { GLUT_LEFT_BUTTON, "GLUT_LEFT_BUTTON" },
+        { GLUT_MIDDLE_BUTTON, "GLUT_MIDDLE_BUTTON" },
+        { GLUT_RIGHT_BUTTON, "GLUT_RIGHT_BUTTON" },
+    };
+    static map<int, string> actions{
+        { GLUT_DOWN, "GLUT_DOWN" },
+        { GLUT_UP, "GLUT_UP" }
+    };
+
+    myInput();
+}
+
+void mouseMove(int x, int y) {
+    myInput();
 }
 
 int main(int argc, char **argv) {
-    options_description desc("General description");
     try {
-        cout << "Jupiter game player" << endl;
-
-        desc.add_options()
-            ("help,h", "Show help")
-            ("game,g", value<std::string>(), "Path to game file");
-        variables_map vm;
-
-        store(parse_command_line(argc, argv, desc), vm);
-        notify(vm);
-
-        if (vm.count("help")) {
-            cout << desc << endl;
-            cout << usage << endl;
-            return EXIT_SUCCESS;
-        }
-
-        if (!vm.count("game"))
-            throw runtime_error("have no game file");
+        cout << title << endl;
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -208,8 +238,10 @@ int main(int argc, char **argv) {
         if (glewInit() != GLEW_OK)
             throw runtime_error("glew init error");
 
-        create_game();
-//        create_game_from_json(vm["game"].as<string>());
+        if (!myCreateGame(argc, argv))
+            throw runtime_error("can't create game");
+//        if(!myCreateGameWithJsonFile(argc, argv))
+//            throw runtime_error("can't create game");
 
         glutReshapeWindow(game->getWidth(), game->getHeight());
         glViewport(0, 0, game->getWidth(), game->getHeight());
@@ -218,10 +250,60 @@ int main(int argc, char **argv) {
 
         return EXIT_SUCCESS;
     } catch (std::exception const & e) {
-        cerr << desc << endl;
-        cerr << usage << endl;
         cerr << e.what() << endl;
         return EXIT_FAILURE;
     }
 }
 
+#elif defined (USE_GLFW)
+
+void myErrorFun(int errorCode, const char* description) {
+    throw runtime_error(to_string(errorCode) + " " + description);
+}
+
+void myKeyFun(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    myInput();
+}
+
+int main(int argc, char **argv) {
+    try {
+        glfwSetErrorCallback(myErrorFun);
+
+        if(!glfwInit())
+            throw runtime_error("can't init GLFW");
+
+        auto window = glfwCreateWindow(640, 480, title.c_str(), nullptr, nullptr);
+        if (!window) {
+            glfwTerminate();
+            throw runtime_error("can't create window");
+        }
+
+        glfwMakeContextCurrent(window);
+        glfwSwapInterval(1);
+
+        glfwSetKeyCallback(window, myKeyFun);
+
+        myCreateGame(argc, argv);
+
+        glfwSetWindowSize(window, game->getWidth(), game->getHeight());
+        glViewport(0, 0, game->getWidth(), game->getHeight());
+
+        while (!glfwWindowShouldClose(window)) {
+            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClearColor(0.f, 0.f, 0.f, 1.f);
+
+            myDraw();
+
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+
+        glfwDestroyWindow(window);
+        glfwTerminate();
+
+    } catch (exception const& e) {
+        cerr << e.what() << endl;
+    }
+}
+
+#endif
