@@ -222,7 +222,7 @@ int main(int argc, char **argv) {
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(800, 480);
-        glutCreateWindow("Jupiter game player");
+        glutCreateWindow(title.c_str());
 
         glEnable(GL_DEPTH_TEST);
 

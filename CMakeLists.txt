@@ -14,8 +14,8 @@ find_package(PNG REQUIRED)
 # find glm
 find_package(GLM REQUIRED)
 
-option(USE_FREEGLUT "Use freeglut as window system" OFF)
-option(USE_GLFW "Use GLFW as window system" ON)
+option(USE_FREEGLUT "Use freeglut as window system" ON)
+option(USE_GLFW "Use GLFW as window system" OFF)
 
 if(USE_FREEGLUT AND USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
