@@ -16,19 +16,6 @@ using namespace std;
 using namespace jupiter;
 using namespace boost::filesystem;
 
-//TEST(JupiterTest, Aware) {
-//    auto node = Aware::create<Node>("test");
-//    ASSERT_EQ(Aware::objectsCount(), 1);
-//
-//    {
-//        unique_ptr<Node> node1{new Node("test2")};
-//        ASSERT_EQ(Aware::objectsCount(), 2);
-//        ASSERT_EQ(Aware::get<Node>("test2"), node1.get());
-//    }
-//
-//    ASSERT_EQ(Aware::objectsCount(), 1);
-//}
-
 /**********************************************************************************************************************
  *
  * File tests
@@ -85,7 +72,6 @@ TEST(JupiterTest, PngImage_Test1) {
     EXPECT_EQ(pngBackground.getWidth(), 1024);
     EXPECT_EQ(pngBackground.getHeight(), 1024);
     EXPECT_EQ(pngBackground.getType(), Image::Type::RGB);
-//    EXPECT_EQ(pngBackground.getName(), RESOURCES_IMAGES_BG_PNG);
 }
 
 TEST(JupiterTest, PngImage_Test2) {
@@ -93,7 +79,6 @@ TEST(JupiterTest, PngImage_Test2) {
     EXPECT_EQ(pngBullet.getWidth(), 128);
     EXPECT_EQ(pngBullet.getHeight(), 128);
     EXPECT_EQ(pngBullet.getType(), Image::Type::RGBA);
-//    EXPECT_EQ(pngBullet.getName(), RESOURCES_IMAGES_BULLET_PNG);
 }
 
 /**********************************************************************************************************************
@@ -275,14 +260,9 @@ TEST_F(ControllerTest, Test_rotateChanged){
 
 /**********************************************************************************************************************
  *
- * Aware objects leak test
+ * Node objects leak test
  *
  **********************************************************************************************************************/
-//TEST(JupiterTest, Aware_BalanceTest) {
-//    Aware::release();
-//    ASSERT_EQ(Object::objects, 0);
-//}
-
 TEST(JupiterTest, Node_LeakTest) {
     EXPECT_EQ(0, Node::leakCheck);
 }

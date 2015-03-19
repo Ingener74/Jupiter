@@ -3,8 +3,6 @@
 #define TEXTURE_H_
 
 #ifdef SWIG
-    namespace jupiter {
-    }  // namespace jupiter
 #else
     #include <GL/glew.h>
 #endif
