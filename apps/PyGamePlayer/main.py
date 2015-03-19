@@ -29,8 +29,8 @@ def reshape ( width, height ):
 def display ():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     
-    global game
-    game.draw()
+#     global game
+#     game.draw()
     
     glutSwapBuffers()
 
@@ -43,8 +43,10 @@ def animate():
     
 def mouse( button, state, x, y ):
     
-    global game
-    game.input()
+#     global game
+#     game.input()
+
+    pass
 
 def main():
     
@@ -64,8 +66,10 @@ def main():
     
     gameFile = "../../samples/Asteroids/Asteroids.json"
     
-#     global game
-#     game = j.Game(gameFile)
+    j.File.setBufferFactory(j.LinuxFileFactory())
+    
+    global game
+    game = j.JsonGame(gameFile)
 #     
 #     c = j.Controller()
 #     

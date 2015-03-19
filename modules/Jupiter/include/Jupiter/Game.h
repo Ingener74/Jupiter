@@ -35,8 +35,11 @@ public:
     virtual int getWidth() const;
     virtual int getHeight() const;
 
-    virtual void setRootNode(Node*);
+    virtual Game* setRootNode(Node*);
     virtual Node* getRootNode();
+
+    virtual Game* setRender(RenderVisitor*);
+    virtual RenderVisitor* getRender();
 
 protected:
     RenderVisitor* render = nullptr;
@@ -53,12 +56,22 @@ inline int Game::getHeight() const {
     return height;
 }
 
-inline void Game::setRootNode(Node* node) {
+inline Game* Game::setRootNode(Node* node) {
     Game::node = node;
+    return this;
 }
 
 inline Node* Game::getRootNode() {
     return node;
+}
+
+inline Game* Game::setRender(RenderVisitor* render) {
+    Game::render = render;
+    return this;
+}
+
+inline RenderVisitor* Game::getRender() {
+    return render;
 }
 
 } /* namespace jupiter */

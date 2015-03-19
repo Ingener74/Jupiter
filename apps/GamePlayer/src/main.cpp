@@ -110,8 +110,12 @@ void mouseMove(int x, int y) {
 }
 
 unique_ptr<BufferFactory> bufferFactory;
+unique_ptr<RenderVisitor> render;
+unique_ptr<Shader> spriteShader;
 unique_ptr<Node> rootNode;
 unique_ptr<Sprite> bg, flour, box;
+unique_ptr<Shape> bgShape, flourShape, boxShape;
+unique_ptr<Controller> boxController;
 unique_ptr<Texture> bgTexture, flourTexture, boxTexture;
 
 void create_game(){
@@ -120,15 +124,26 @@ void create_game(){
     File::setBufferFactory(bufferFactory.get());
     File::setBase("samples/Box");
 
+//    spriteShader = make_unique_<>();
+
 //    PngImage backGroundImage{"Resources/bg.png"};
 //    backGroundTexture = make_unique_<ImageTexture>(&backGroundImage);
 
     bg = make_unique_<Sprite>();
 
     flour = make_unique_<Sprite>();
-//    flour->setTexture(backGroundTexture)->setShape();
+    flour->
+        setProgram(spriteShader.get())->
+        setTexture(bgTexture.get())->
+        setShape(bgShape.get());
 
     box = make_unique_<Sprite>();
+    box->
+        setProgram(spriteShader.get())->
+        setTexture(boxTexture.get())->
+        setShape(boxShape.get())->
+        setController(boxController.get())->
+        setPositionY(100.f);
 
     rootNode = make_unique_<Node>();
     rootNode->
@@ -137,8 +152,9 @@ void create_game(){
         addNode(box.get());
 
     game = make_unique_<Game>();
-
-    game->setRootNode(rootNode.get());
+    game->
+        setRootNode(rootNode.get())->
+        setRender(render.get());
 }
 
 void create_game_from_json(const std::string& fileName){

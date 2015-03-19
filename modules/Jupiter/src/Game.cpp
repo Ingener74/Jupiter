@@ -17,8 +17,10 @@ using namespace std;
 using namespace glm;
 
 void Game::draw() {
-    assert(nullptr != node);
-    assert(nullptr != render);
+    if (!node)
+        throw JupiterError("no root node");
+    if (!render)
+        throw JupiterError("no render");
 
     node->accept(render);
     render->draw();
