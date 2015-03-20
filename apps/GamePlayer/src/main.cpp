@@ -89,6 +89,7 @@ unique_ptr<Game> game;
 
 unique_ptr<BufferFactory> bufferFactory;
 unique_ptr<RenderVisitor> render;
+unique_ptr<NodeVisitor> physics;
 unique_ptr<Shader> spriteShader;
 unique_ptr<Node> rootNode;
 unique_ptr<Sprite> bg, flour, box;
@@ -105,48 +106,61 @@ bool myCreateGame(int argc, char* argv[]){
     int width = 800, height = 480;
     render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
 
+    physics = make_unique_<NodeVisitor>();
+
     File vs{"Resources/sprite.vs"}, fs{"Resources/sprite.fs"};
     spriteShader = make_unique_<FileShader>(&vs, &fs);
 
     PngImage bgImage{"Resources/bg.png"};
     bgTexture = make_unique_<ImageTexture>(&bgImage);
+    bgShape = make_unique_<ImageShape>(&bgImage);
 
     bg = make_unique_<Sprite>();
-    bg->
-        setProgram(spriteShader.get())->
-        setTexture(bgTexture.get())->
-        setShape(bgShape.get());
+    bg
+        ->setProgram(spriteShader.get())
+        ->setTexture(bgTexture.get())
+        ->setShape(bgShape.get())
+    ;
 
-    PngImage flourImage{"Resources/flour.png"};
+    PngImage flourImage{"Resources/ground.png"};
     flourTexture = make_unique_<ImageTexture>(&flourImage);
+    flourShape = make_unique_<ImageShape>(&flourImage);
 
     flour = make_unique_<Sprite>();
-    flour->
-        setProgram(spriteShader.get())->
-        setTexture(bgTexture.get())->
-        setShape(bgShape.get());
+    flour
+        ->setProgram(spriteShader.get())
+        ->setTexture(bgTexture.get())
+        ->setShape(bgShape.get())
+    ;
 
     PngImage boxImage{"Resources/box.png"};
     boxTexture = make_unique_<ImageTexture>(&boxImage);
+    boxShape = make_unique_<ImageShape>(&boxImage);
 
     box = make_unique_<Sprite>();
-    box->
-        setProgram(spriteShader.get())->
-        setTexture(boxTexture.get())->
-        setShape(boxShape.get())->
-        setController(boxController.get())->
-        setPositionY(100.f);
+    box
+        ->setProgram(spriteShader.get())
+        ->setTexture(boxTexture.get())
+        ->setShape(boxShape.get())
+        ->setController(boxController.get())
+        ->setPositionY(100.f)
+    ;
 
     rootNode = make_unique_<Node>();
-    rootNode->
-        addNode(bg.get())->
-        addNode(flour.get())->
-        addNode(box.get());
+    rootNode
+        ->addNode(bg.get())
+        ->addNode(flour.get())
+        ->addNode(box.get())
+    ;
 
     game = make_unique_<Game>();
-    game->
-        setRootNode(rootNode.get())->
-        setRender(render.get())->setWidth(width)->setHeight(height);
+    game
+        ->setRootNode(rootNode.get())
+        ->setRender(render.get())
+        ->setPhysicsEngine(physics.get())
+        ->setWidth(width)
+        ->setHeight(height)
+    ;
 
     return true;
 }

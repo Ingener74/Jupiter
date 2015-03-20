@@ -27,6 +27,8 @@
 
 #include "Jupiter/FileShader.h"
 
+#include "Jupiter/ImageShape.h"
+
 #include "Jupiter/Rect.h"
 
 #include "Jupiter/JsonGame.h"

@@ -10,15 +10,15 @@
 
 #ifdef SWIG
 #else
-    #include <string>
 
-    #define GLM_FORCE_RADIANS
-    #include <glm/glm.hpp>
-    #include <glm/gtc/type_ptr.hpp>
-    #include <glm/gtc/matrix_transform.hpp>
+#include <string>
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Jupiter/RenderVisitor.h"
+#include "Jupiter/Node.h"
 
-    #include "Jupiter/RenderVisitor.h"
-    #include "Jupiter/Node.h"
 #endif
 
 namespace jupiter {
@@ -44,8 +44,12 @@ public:
     virtual Game* setRender(RenderVisitor*);
     virtual RenderVisitor* getRender();
 
+    virtual Game* setPhysicsEngine(NodeVisitor*);
+    virtual NodeVisitor* getPhysicsEngine();
+
 protected:
     RenderVisitor* render = nullptr;
+    NodeVisitor* physics = nullptr;
     Node* node = nullptr;
     int width = 0;
     int height = 0;
@@ -85,6 +89,15 @@ inline Game* Game::setRender(RenderVisitor* render) {
 
 inline RenderVisitor* Game::getRender() {
     return render;
+}
+
+inline Game* Game::setPhysicsEngine(NodeVisitor* physicsEngine) {
+    physics = physicsEngine;
+    return this;
+}
+
+inline NodeVisitor* Game::getPhysicsEngine() {
+    return physics;
 }
 
 } /* namespace jupiter */

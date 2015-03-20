@@ -46,11 +46,11 @@ public:
     };
 
     Shape() = default;
-    Shape( const std::vector<float>& data, Type );
+    Shape(const std::vector<float>& data, Type type);
     virtual ~Shape() = default;
 
     int32_t vertexCount() const;
-    Type type() const;
+    Shape::Type getType() const;
 
     bool hasCoordinates() const;
     int8_t coordinatesSize() const;
@@ -67,11 +67,53 @@ public:
     int8_t getStride() const;
 
 private:
-    std::vector<float> _data;
-    Type _type = Type::TRIANGLE_STRIP;
+    std::vector<float> data;
+    Type type = Type::TRIANGLE_STRIP;
 
     static const int DATA_IN_ONE_VERTEX = 5;
 };
+
+inline Shape::Shape(const std::vector<float>& data, Type type) :
+    data(data), type(type) {
+}
+
+inline int32_t Shape::vertexCount() const {
+    return data.size() / DATA_IN_ONE_VERTEX;
+}
+
+inline Shape::Type Shape::getType() const {
+    return Shape::type;
+}
+
+inline bool Shape::hasCoordinates() const {
+}
+
+inline int8_t Shape::coordinatesSize() const {
+}
+
+inline const float* Shape::coordinatesData() const {
+}
+
+inline bool Shape::hasTextureCoordinates() const {
+}
+
+inline int8_t Shape::textureCoordinatesSize() const {
+}
+
+inline const float* Shape::textureCoordinatesData() const {
+}
+
+inline bool Shape::hasColor() const {
+}
+
+inline int8_t Shape::colorSize() const {
+}
+
+inline const float* Shape::colorData() const {
+}
+
+inline int8_t Shape::getStride() const {
+}
 
 } /* namespace jupiter */
 

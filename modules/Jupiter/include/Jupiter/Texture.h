@@ -21,7 +21,7 @@ public:
     int getWidth() const;
     int getHeight() const;
 
-private:
+protected:
     GLuint textureID = 0;
     GLenum type = 0;
     uint32_t width = 0;

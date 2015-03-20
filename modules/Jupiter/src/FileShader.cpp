@@ -5,16 +5,22 @@
  *      Author: pavel
  */
 
+#include <iterator>
 #include "Jupiter/File.h"
 #include "Jupiter/FileShader.h"
 
 namespace jupiter {
 
+using namespace std;
+
 FileShader::FileShader(class File* vertex, class File* fragment) {
-    throw JupiterError("FileShader ctor not implemented");
+    string vertexShaderSource { (istreambuf_iterator<char>(vertex->stream())), istreambuf_iterator<char>() };
+    string fragmentShaderSource { (istreambuf_iterator<char>(fragment->stream())), istreambuf_iterator<char>() };
+    _program = createProgram(vertexShaderSource, fragmentShaderSource);
 }
 
 FileShader::~FileShader() {
+    glDeleteProgram(_program);
 }
 
 } /* namespace jupiter */

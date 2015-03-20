@@ -28,6 +28,8 @@ public:
     virtual void use() const;
 
 protected:
+    static GLuint createProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
+    static GLuint createShader(GLenum shaderType, const std::string& source);
 
     GLuint _program = 0;
 };

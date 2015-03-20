@@ -21,7 +21,10 @@ void Game::draw() {
         throw JupiterError("no root node");
     if (!render)
         throw JupiterError("no render");
+    if(!physics)
+        throw JupiterError("no physics");
 
+    node->accept(physics);
     node->accept(render);
     render->draw();
 }
