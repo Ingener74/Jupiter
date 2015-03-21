@@ -8,10 +8,16 @@
 #ifndef IMAGE_H_
 #define IMAGE_H_
 
-#include <cstdint>
-#include <iostream>
-#include <vector>
-#include <memory>
+#ifdef SWIG
+    namespace jupiter {
+        %ignore Image::operator <<(std::ostream&, const Image&);
+    }  // namespace jupiter
+#else
+    #include <cstdint>
+    #include <iostream>
+    #include <vector>
+    #include <memory>
+#endif
 
 namespace jupiter {
 
@@ -22,8 +28,6 @@ public:
     };
 
     Image(const std::string& name);
-    Image(Image&&);
-    Image& operator =(Image&&);
 
     virtual ~Image() = default;
 
@@ -41,12 +45,6 @@ protected:
 };
 
 inline Image::Image(const std::string& name) {
-}
-
-inline Image::Image(Image&&) {
-}
-
-inline Image& Image::operator =(Image&&) {
 }
 
 inline int Image::getWidth() const {

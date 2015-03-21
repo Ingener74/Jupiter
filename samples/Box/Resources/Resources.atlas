@@ -1,0 +1,5 @@
+textures: Resources.png
+bg.png	0	0	1920	1080	0	0	1920	1080	
+box.png	0	1081	518	518	0	0	518	518	
+ground.png	1921	0	112	336	0	0	336	112	r
+ground_grass.png	1921	337	107	476	0	0	476	107	r

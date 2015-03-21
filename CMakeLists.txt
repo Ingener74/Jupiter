@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-#add_subdirectory(3rdparty)
-
 # include modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
 
@@ -27,20 +25,18 @@ endif()
 
 # find GLUT
 if(USE_FREEGLUT)
-    find_package(GLUT REQUIRED)
     add_definitions(-DUSE_FREEGLUT)
+    find_package(GLUT REQUIRED)
 endif()
 
 # find GLFW
 if(USE_GLFW)
     add_definitions(-DUSE_GLFW)
-#    find_package(PkgConfig REQUIRED)
-#    pkg_search_module(GLFW REQUIRED glfw3)
-
     find_package(GLFW REQUIRED)
-    message(STATUS "glfw includes = ${GLFW_INCLUDE_DIR}")
-    message(STATUS "glfw libs     = ${GLFW_LIBRARIES}")
 endif()
+
+# find OpenGL
+find_package(OpenGL REQUIRED)
 
 # find GLEW
 find_package(GLEW REQUIRED)
@@ -66,6 +62,8 @@ include_directories(
     
     ${GLFW_INCLUDE_DIR}
     
+    ${OPENGL_INCLUDE_DIR}
+    
     ${GLEW_INCLUDE_DIRS}
     
     ${BOX2D_INCLUDE_DIR}
@@ -75,15 +73,13 @@ include_directories(
     ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}
     ${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR}
     
-    3rdparty/Selene/include
-    
     modules/Jupiter/include
     modules/Ganymede/include
 )
 
 # GL libraries
 set(GL_LIBRARIES
-    GL
+    ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARIES}
 )
 if(USE_FREEGLUT)
