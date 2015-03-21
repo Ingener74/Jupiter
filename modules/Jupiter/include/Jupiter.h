@@ -32,6 +32,5 @@
 #include "Jupiter/Rect.h"
 
 #include "Jupiter/JsonGame.h"
-#include "Jupiter/JsonNode.h"
 
 #endif /* ENGINE_H_ */

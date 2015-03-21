@@ -8,7 +8,6 @@
 #ifndef JUPITERERROR_H_
 #define JUPITERERROR_H_
 
-
 #ifdef SWIG
     #pragma SWIG nowarn=401
 #else

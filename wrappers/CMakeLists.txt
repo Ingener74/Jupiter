@@ -13,7 +13,7 @@ set(CMAKE_SWIG_FLAGS "-c++")
 
 set_source_files_properties(Jupiter.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall")
-set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-v")
+#set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-v") # swig verbose
 
 set(SHARED_LIBS
     Jupiter 
@@ -23,9 +23,13 @@ set(SHARED_LIBS
 )
 
 # Lua
-SWIG_ADD_MODULE(LuaJupiter lua Jupiter.i)
-SWIG_LINK_LIBRARIES(LuaJupiter ${SHARED_LIBS})
+if(WITH_LUA_WRAPPER)
+    SWIG_ADD_MODULE(LuaJupiter lua Jupiter.i)
+    SWIG_LINK_LIBRARIES(LuaJupiter ${SHARED_LIBS})
+endif()
 
 # Python
-SWIG_ADD_MODULE(PyJupiter python Jupiter.i)
-SWIG_LINK_LIBRARIES(PyJupiter ${SHARED_LIBS} ${PYTHON_LIBRARIES})
+if(WITH_PYTHON_WRAPPER)
+    SWIG_ADD_MODULE(PyJupiter python Jupiter.i)
+    SWIG_LINK_LIBRARIES(PyJupiter ${SHARED_LIBS} ${PYTHON_LIBRARIES})
+endif()

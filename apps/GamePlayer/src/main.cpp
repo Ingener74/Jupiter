@@ -88,9 +88,12 @@ string title =R"(Jupiter Game Player)";
 unique_ptr<Game> game;
 
 unique_ptr<BufferFactory>   bufferFactory;
+
 unique_ptr<RenderVisitor>   render;
 unique_ptr<NodeVisitor>     physics;
+
 unique_ptr<Shader>          spriteShader;
+
 unique_ptr<Node>            rootNode;
 
 unique_ptr<Sprite>          bg,

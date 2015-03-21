@@ -16,8 +16,9 @@
     #include <iostream>
     #include <memory>
 
-    #include "Jupiter/JupiterError.h"
 #endif
+
+#include "Jupiter/JupiterError.h"
 
 namespace jupiter {
 

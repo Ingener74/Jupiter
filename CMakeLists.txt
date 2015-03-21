@@ -97,6 +97,8 @@ add_subdirectory(modules)
 add_subdirectory(samples)
 
 option(WITH_WRAPPERS "Wrapper" OFF)
+option(WITH_LUA_WRAPPER "Lua wrapper" ON)
+option(WITH_PYTHON_WRAPPER "Python wrapper" ON)
 
 if(WITH_WRAPPERS)
     add_subdirectory(wrappers)

@@ -9,9 +9,7 @@
 #define IMAGE_H_
 
 #ifdef SWIG
-    namespace jupiter {
-        %ignore Image::operator <<(std::ostream&, const Image&);
-    }  // namespace jupiter
+    #pragma SWIG nowarn=503
 #else
     #include <cstdint>
     #include <iostream>

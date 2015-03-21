@@ -8,9 +8,11 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_PNGIMAGE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_PNGIMAGE_H_
 
-#include <memory>
-
-#include <png.h>
+#ifdef SWIG
+#else
+    #include <memory>
+    #include <png.h>
+#endif
 
 #include "Jupiter/Image.h"
 

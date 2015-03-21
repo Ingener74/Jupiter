@@ -13,6 +13,8 @@ namespace jupiter {
 
 ImageShape::ImageShape(Image* image) {
     throw JupiterError("ImageShape not implemented");
+
+
 }
 
 ImageShape::~ImageShape() {
