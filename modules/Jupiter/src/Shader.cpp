@@ -17,6 +17,14 @@ void Shader::use() const {
     glUseProgram(_program);
 }
 
+GLint Shader::getAttributeLocation(const std::string& name) const {
+    return glGetAttribLocation(_program, name.c_str());
+}
+
+GLint Shader::getUniformLocation(const string& name) const {
+    return glGetUniformLocation(_program, name.c_str());
+}
+
 GLuint Shader::createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {
     if (vertexShaderSource.empty())
         throw JupiterError("vertex shader is empty");
@@ -79,7 +87,7 @@ GLuint Shader::createShader(GLenum shaderType, const string& source) {
     static array<string, 2> shaderTypeString = { "GL_FRAGMENT_SHADER", "GL_VERTEX_SHADER" };
 
     throw JupiterError(""
-        "can't create shader " + shaderTypeString [ shaderType - GL_FRAGMENT_SHADER ] + "\n" + &buf.front());
+            "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
 }
 
 } /* namespace jupiter */

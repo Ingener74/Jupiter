@@ -22,49 +22,50 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
      * draw sprite
      */
 
-    sprite->getProgram()->use();
+    auto shader = sprite->getProgram();
+    shader->use();
 
     sprite->getTexture()->bind();
 
     /*
      * draw shape with program
      */
-//    glUniform1i(_uTEX, 0);
-//    glEnableVertexAttribArray(_aPOS);
-//    glEnableVertexAttribArray(_aTEX);
-//
-//    const GLfloat * spriteVertex = s->getVertex();
-//    uint32_t spriteVertexCount = s->getVertexCount();
-//
-//    glVertexAttribPointer(_aPOS, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
-//    glVertexAttribPointer(_aTEX, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
-//
-//    glm::mat4 mvp = _ortho * s->getModelMatrix();
-//
-//    glUniformMatrix4fv(_uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-//
-//    GLenum drawType;
-//    switch (s->getDrawType())
-//    {
-//    case ISpriteLoader::SpriteType::Triangles:
-//        drawType = GL_TRIANGLES;
-//        break;
-//    case ISpriteLoader::SpriteType::TriangleFan:
-//        drawType = GL_TRIANGLE_FAN;
-//        break;
-//    case ISpriteLoader::SpriteType::TriangleStrip:
-//        drawType = GL_TRIANGLE_STRIP;
-//        break;
-//    case ISpriteLoader::SpriteType::LineStrip:
-//        drawType = GL_LINE_STRIP;
-//        break;
-//    default:
-//        break;
-//    }
-//    glDrawArrays(drawType, 0, spriteVertexCount);
-//
-//    glDisableVertexAttribArray(_aPOS);
-//    glDisableVertexAttribArray(_aTEX);
+
+    auto texture       = shader->getUniformLocation("uTEX");
+    auto uniformMVP    = shader->getUniformLocation("uMVP");
+    auto position      = shader->getAttributeLocation("aPOS");
+    auto textureCoords = shader->getAttributeLocation("aTEX");
+
+    glUniform1i(texture, 0);
+    glEnableVertexAttribArray(position);
+    glEnableVertexAttribArray(textureCoords);
+
+    auto shape = sprite->getShape();
+
+    const GLfloat * spriteVertex = s->getVertex();
+    uint32_t spriteVertexCount = s->getVertexCount();
+
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
+    glVertexAttribPointer(textureCoords, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
+
+    glm::mat4 mvp = _ortho * sprite->getModelMatrix();
+
+    glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+    static GLenum drawTypes[] = {
+            GL_TRIANGLES,
+            GL_TRIANGLE_FAN,
+            GL_TRIANGLE_STRIP,
+            GL_LINE_STRIP,
+    };
+
+    glDrawArrays(drawTypes[shape->getType()], 0, spriteVertexCount);
+
+    glDisableVertexAttribArray(position);
+    glDisableVertexAttribArray(textureCoords);
+}
+
+void RenderVisitor::draw() {
 }
 
 } /* namespace jupiter */

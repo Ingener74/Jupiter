@@ -16,16 +16,17 @@
     #include <GL/glew.h>
 #endif
 
-namespace jupiter
-{
+namespace jupiter {
 
-class Shader
-{
+class Shader {
 public:
     Shader() = default;
     virtual ~Shader() = default;
 
     virtual void use() const;
+
+    virtual GLint getAttributeLocation(const std::string& name) const;
+    virtual GLint getUniformLocation(const std::string& name) const;
 
 protected:
     static GLuint createProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
