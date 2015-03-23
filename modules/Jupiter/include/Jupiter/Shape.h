@@ -13,6 +13,7 @@
         #pragma SWIG nowarn=312
     }  // namespace jupiter
 #else
+    #include <map>
     #include <string>
     #include <vector>
     #include <cstdint>

@@ -6,12 +6,15 @@
  */
 
 #include <string>
+
+#include "Jupiter/Tools.h"
 #include "Jupiter/Shader.h"
-#include "Jupiter/Builder.h"
 
 namespace jupiter {
 
 using namespace std;
+
+const int INVALID = -1;
 
 void Shader::use() const {
     glUseProgram(_program);
@@ -20,13 +23,15 @@ void Shader::use() const {
 Attribute Shader::getAttribute(const std::string& name) const {
     auto attribute = glGetAttribLocation(_program, name.c_str());
     Tools::glError();
-    return Attribute { INVALID != attribute ? attribute : throw JupiterError(name + " is not an active attribute in shader") };
+    return Attribute { name,
+            INVALID != attribute ? attribute : throw JupiterError(name + " is not an active attribute in shader") };
 }
 
 Uniform Shader::getUniform(const std::string& name) const {
     auto uniform = glGetUniformLocation(_program, name.c_str());
     Tools::glError();
-    return Uniform { INVALID != uniform ? uniform : throw JupiterError(name + " is not an active uniform in shader") };
+    return Uniform { name,
+            INVALID != uniform ? uniform : throw JupiterError(name + " is not an active uniform in shader") };
 }
 
 GLuint Shader::createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {

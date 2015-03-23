@@ -13,6 +13,8 @@ namespace jupiter
 class Texture
 {
 public:
+    friend class Uniform;
+
     Texture() = default;
     virtual ~Texture() = default;
 

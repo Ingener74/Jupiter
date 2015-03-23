@@ -14,7 +14,15 @@
     #include <memory>
 
     #include <GL/glew.h>
+
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+    #include <glm/gtc/type_ptr.hpp>
+    #include <glm/gtc/matrix_transform.hpp>
 #endif
+
+#include "Jupiter/Shape.h"
+#include "Jupiter/Texture.h"
 
 namespace jupiter {
 
@@ -28,10 +36,7 @@ public:
         glDisableVertexAttribArray(attribute);
     }
 
-    void setData(class Shape* shape) {
-        auto component = shape->getComponent(name);
-        glVertexAttribPointer(attribute, component.getSize(), GL_FLOAT, GL_FALSE, shape->getStride(), component.getOffset());
-    }
+    void set(class Shape* shape);
 
 private:
     std::string name;
@@ -40,17 +45,30 @@ private:
 
 class Uniform {
 public:
-    Uniform(){
+    Uniform(const std::string& name, int uniform) :
+            name(name), uniform(uniform) {
     }
-    virtual ~Uniform(){
+    virtual ~Uniform() {
+    }
+
+    void set(int data) {
+        glUniform1i(uniform, data);
+    }
+
+    void set(const glm::mat4x4& matrix, bool transpose = false) {
+        glUniformMatrix4fv(uniform, 1, transpose, glm::value_ptr(matrix));
+    }
+
+    void set(const Texture* texture){
+        glUniform1i(uniform, texture->textureID);
     }
 
 private:
+    std::string name;
+    int uniform;
 };
 
 class Shader {
-    const static int INVALID = -1;
-
 public:
     Shader() = default;
     virtual ~Shader() = default;
@@ -67,6 +85,13 @@ protected:
     GLuint _program = 0;
 };
 
-} /* namespace jupiter */
+inline void Attribute::set(class Shape* shape) {
+    auto component = shape->getComponent(name);
+    glVertexAttribPointer(attribute, component.getSize(), GL_FLOAT, GL_FALSE, shape->getStride(),
+            component.getOffset());
+}
+
+}
+/* namespace jupiter */
 
 #endif /* SHADERPROGRAM_H_ */

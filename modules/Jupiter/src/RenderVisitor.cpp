@@ -23,38 +23,26 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
      */
 
     auto shader = sprite->getProgram();
-    shader->use();
-
-    sprite->getTexture()->bind();
 
     /*
      * draw shape with program
      */
-
-//    glUniform1i(texture, 0);
-//    glEnableVertexAttribArray(position);
-//    glEnableVertexAttribArray(textureCoords);
+    shader->use();
 
     auto texture       = shader->getUniform("uTEX");
     auto uniformMVP    = shader->getUniform("uMVP");
     auto position      = shader->getAttribute("aPOS");
     auto textureCoords = shader->getAttribute("aTEX");
 
-    auto shape = sprite->getShape();
+    glActiveTexture(GL_TEXTURE0);
+    sprite->getTexture()->bind();
+    texture.set(sprite->getTexture());
 
-    const GLfloat * spriteVertex = nullptr; // s->getVertex();
-    uint32_t spriteVertexCount = 0; // s->getVertexCount();
-
-//    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
-//    glVertexAttribPointer(textureCoords, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
-
-    position.setData(shape);
-    textureCoords.setData(shape);
+    position.set(sprite->getShape());
+    textureCoords.set(sprite->getShape());
 
     glm::mat4 mvp = _ortho; // * sprite->getModelMatrix();
-    glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-    // uniformMVP.setData(glm::value_ptr(mvp));
+     uniformMVP.set(mvp);
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
@@ -63,10 +51,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
             GL_LINE_STRIP,
     };
 
-    glDrawArrays(drawTypes[shape->getType()], 0, spriteVertexCount);
-
-//    glDisableVertexAttribArray(position);
-//    glDisableVertexAttribArray(textureCoords);
+    glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
 }
 
 void RenderVisitor::draw() {
