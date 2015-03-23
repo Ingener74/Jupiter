@@ -90,14 +90,11 @@ public:
     Shape(const std::vector<float>& data, Type type);
     virtual ~Shape() = default;
 
-    int32_t vertexCount() const;
+    int32_t getVertexCount() const;
     Type getType() const;
-
     int8_t getStride() const;
 
-    const VertexComponent& getComponent(const std::string& name) {
-        return components[name];
-    }
+    const VertexComponent& getComponent(const std::string& name);
 
 private:
     std::vector<float> data;
@@ -111,7 +108,7 @@ inline Shape::Shape(const std::vector<float>& data, Type type) :
     data(data), type(type) {
 }
 
-inline int32_t Shape::vertexCount() const {
+inline int32_t Shape::getVertexCount() const {
     return data.size() / DATA_IN_ONE_VERTEX;
 }
 
@@ -120,6 +117,10 @@ inline Shape::Type Shape::getType() const {
 }
 
 inline int8_t Shape::getStride() const {
+}
+
+inline const VertexComponent& Shape::getComponent(const std::string& name) {
+    return components [ name ];
 }
 
 } /* namespace jupiter */

@@ -19,11 +19,13 @@ void Shader::use() const {
 
 Attribute Shader::getAttribute(const std::string& name) const {
     auto attribute = glGetAttribLocation(_program, name.c_str());
+    Tools::glError();
     return Attribute { INVALID != attribute ? attribute : throw JupiterError(name + " is not an active attribute in shader") };
 }
 
 Uniform Shader::getUniform(const std::string& name) const {
     auto uniform = glGetUniformLocation(_program, name.c_str());
+    Tools::glError();
     return Uniform { INVALID != uniform ? uniform : throw JupiterError(name + " is not an active uniform in shader") };
 }
 
