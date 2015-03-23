@@ -37,6 +37,65 @@ struct Elem {
     };
 };
 
+
+/*
+ * {
+ *     "shaderUniforms":{
+ *         "texture0":"",
+ *         "model":"",
+ *     },
+ *     "shaderAttribs":[
+ *         "attribVertex":3,
+ *         "attribTexCoord":2,
+ *         "attribColor":4
+ *     ],
+ *     "data":[
+ *         0.f, 0.f, 0.f,   0.f, 0.f,   1.f, 1.f, 1.f, 1.f,
+ *         0.f, 0.f, 0.f,   0.f, 0.f,   1.f, 1.f, 1.f, 1.f,
+ *         0.f, 0.f, 0.f,   0.f, 0.f,   1.f, 1.f, 1.f, 1.f
+ *     ]
+ * }
+ */
+
+class ShaderAttribute {
+public:
+    ShaderAttribute(int attribute) :
+        attribute(attribute) {
+        // glEnableAttribute(attribute)
+    }
+    virtual ~ShaderAttribute() {
+        // glDisableAttribute(attribute);
+    }
+
+    ShaderAttribute* setData(class ShapeData* data) {
+        // glSetDataToAttribute(data, stride, GL_FLOAT);
+        return this;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const ShaderAttribute& r) {
+        return out << "attribute : " << attribute;
+    }
+
+private:
+    int attribute = 0;
+};
+
+class ShapeData {
+public:
+    ShapeData() {
+    }
+    virtual ~ShapeData() {
+    }
+
+    const float* getData() const {
+        return nullptr;
+    }
+
+    uint32_t getSize() const {
+        return 0;
+    }
+};
+
 class Shape
 {
 public:
@@ -52,22 +111,11 @@ public:
     int32_t vertexCount() const;
     Shape::Type getType() const;
 
-    bool hasCoordinates() const;
-    int8_t coordinatesSize() const;
-    const float* coordinatesData() const;
-
-    bool hasTextureCoordinates() const;
-    int8_t textureCoordinatesSize() const;
-    const float* textureCoordinatesData() const;
-
-    bool hasColor() const;
-    int8_t colorSize() const;
-    const float* colorData() const;
-
     int8_t getStride() const;
 
 private:
     std::vector<float> data;
+    std::
     Type type = Type::TRIANGLE_STRIP;
 
     static const int DATA_IN_ONE_VERTEX = 5;
@@ -83,33 +131,6 @@ inline int32_t Shape::vertexCount() const {
 
 inline Shape::Type Shape::getType() const {
     return Shape::type;
-}
-
-inline bool Shape::hasCoordinates() const {
-}
-
-inline int8_t Shape::coordinatesSize() const {
-}
-
-inline const float* Shape::coordinatesData() const {
-}
-
-inline bool Shape::hasTextureCoordinates() const {
-}
-
-inline int8_t Shape::textureCoordinatesSize() const {
-}
-
-inline const float* Shape::textureCoordinatesData() const {
-}
-
-inline bool Shape::hasColor() const {
-}
-
-inline int8_t Shape::colorSize() const {
-}
-
-inline const float* Shape::colorData() const {
 }
 
 inline int8_t Shape::getStride() const {

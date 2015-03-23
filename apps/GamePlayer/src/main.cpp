@@ -133,6 +133,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setProgram(spriteShader.get())
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
+        ->setPositionZ(-1.f)
     ;
 
     PngImage flourImage{"Resources/ground.png"};

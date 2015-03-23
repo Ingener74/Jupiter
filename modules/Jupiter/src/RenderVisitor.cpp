@@ -42,13 +42,13 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 
     auto shape = sprite->getShape();
 
-    const GLfloat * spriteVertex = s->getVertex();
-    uint32_t spriteVertexCount = s->getVertexCount();
+    const GLfloat * spriteVertex = nullptr; // s->getVertex();
+    uint32_t spriteVertexCount = 0; // s->getVertexCount();
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
     glVertexAttribPointer(textureCoords, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
 
-    glm::mat4 mvp = _ortho * sprite->getModelMatrix();
+    glm::mat4 mvp = _ortho; // * sprite->getModelMatrix();
 
     glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, glm::value_ptr(mvp));
 
