@@ -18,15 +18,47 @@
 
 namespace jupiter {
 
+class Attribute {
+public:
+    Attribute(const std::string& name, int attribute) :
+        name(name), attribute(attribute) {
+        glEnableVertexAttribArray(attribute);
+    }
+    virtual ~Attribute() {
+        glDisableVertexAttribArray(attribute);
+    }
+
+    void setData(class Shape* shape) {
+        auto component = shape->getComponent(name);
+        glVertexAttribPointer(attribute, component.getSize(), GL_FLOAT, GL_FALSE, shape->getStride(), component.getOffset());
+    }
+
+private:
+    std::string name;
+    int attribute;
+};
+
+class Uniform {
+public:
+    Uniform(){
+    }
+    virtual ~Uniform(){
+    }
+
+private:
+};
+
 class Shader {
+    const static int INVALID = -1;
+
 public:
     Shader() = default;
     virtual ~Shader() = default;
 
     virtual void use() const;
 
-    virtual GLint getAttributeLocation(const std::string& name) const;
-    virtual GLint getUniformLocation(const std::string& name) const;
+    Attribute getAttribute(const std::string& name) const;
+    Uniform getUniform(const std::string& name) const;
 
 protected:
     static GLuint createProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);

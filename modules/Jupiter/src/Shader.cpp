@@ -17,12 +17,14 @@ void Shader::use() const {
     glUseProgram(_program);
 }
 
-GLint Shader::getAttributeLocation(const std::string& name) const {
-    return glGetAttribLocation(_program, name.c_str());
+Attribute Shader::getAttribute(const std::string& name) const {
+    auto attribute = glGetAttribLocation(_program, name.c_str());
+    return Attribute { INVALID != attribute ? attribute : throw JupiterError(name + " is not an active attribute in shader") };
 }
 
-GLint Shader::getUniformLocation(const string& name) const {
-    return glGetUniformLocation(_program, name.c_str());
+Uniform Shader::getUniform(const std::string& name) const {
+    auto uniform = glGetUniformLocation(_program, name.c_str());
+    return Uniform { INVALID != uniform ? uniform : throw JupiterError(name + " is not an active uniform in shader") };
 }
 
 GLuint Shader::createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {

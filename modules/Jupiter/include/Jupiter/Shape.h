@@ -57,43 +57,25 @@ struct Elem {
  * }
  */
 
-class ShaderAttribute {
+class VertexComponent {
 public:
-    ShaderAttribute(int attribute) :
-        attribute(attribute) {
-        // glEnableAttribute(attribute)
+    VertexComponent(uint32_t size = 0, float* offset = nullptr) :
+        size(size), offset(offset) {
     }
-    virtual ~ShaderAttribute() {
-        // glDisableAttribute(attribute);
-    }
-
-    ShaderAttribute* setData(class ShapeData* data) {
-        // glSetDataToAttribute(data, stride, GL_FLOAT);
-        return this;
-    }
-
-    friend std::ostream& operator<<(std::ostream& out, const ShaderAttribute& r) {
-        return out << "attribute : " << attribute;
-    }
-
-private:
-    int attribute = 0;
-};
-
-class ShapeData {
-public:
-    ShapeData() {
-    }
-    virtual ~ShapeData() {
-    }
-
-    const float* getData() const {
-        return nullptr;
+    virtual ~VertexComponent() {
     }
 
     uint32_t getSize() const {
         return 0;
     }
+
+    const float* getOffset() const {
+        return nullptr;
+    }
+
+private:
+    uint32_t size = 0;
+    float* offset = nullptr;
 };
 
 class Shape
@@ -109,13 +91,17 @@ public:
     virtual ~Shape() = default;
 
     int32_t vertexCount() const;
-    Shape::Type getType() const;
+    Type getType() const;
 
     int8_t getStride() const;
 
+    const VertexComponent& getComponent(const std::string& name) {
+        return components[name];
+    }
+
 private:
     std::vector<float> data;
-    std::
+    std::map<std::string, VertexComponent> components;
     Type type = Type::TRIANGLE_STRIP;
 
     static const int DATA_IN_ONE_VERTEX = 5;

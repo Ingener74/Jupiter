@@ -31,26 +31,30 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
      * draw shape with program
      */
 
-    auto texture       = shader->getUniformLocation("uTEX");
-    auto uniformMVP    = shader->getUniformLocation("uMVP");
-    auto position      = shader->getAttributeLocation("aPOS");
-    auto textureCoords = shader->getAttributeLocation("aTEX");
+//    glUniform1i(texture, 0);
+//    glEnableVertexAttribArray(position);
+//    glEnableVertexAttribArray(textureCoords);
 
-    glUniform1i(texture, 0);
-    glEnableVertexAttribArray(position);
-    glEnableVertexAttribArray(textureCoords);
+    auto texture       = shader->getUniform("uTEX");
+    auto uniformMVP    = shader->getUniform("uMVP");
+    auto position      = shader->getAttribute("aPOS");
+    auto textureCoords = shader->getAttribute("aTEX");
 
     auto shape = sprite->getShape();
 
     const GLfloat * spriteVertex = nullptr; // s->getVertex();
     uint32_t spriteVertexCount = 0; // s->getVertexCount();
 
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
-    glVertexAttribPointer(textureCoords, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
+//    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[0]);
+//    glVertexAttribPointer(textureCoords, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), &spriteVertex[3]);
+
+    position.setData(shape);
+    textureCoords.setData(shape);
 
     glm::mat4 mvp = _ortho; // * sprite->getModelMatrix();
-
     glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+    // uniformMVP.setData(glm::value_ptr(mvp));
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
@@ -61,8 +65,8 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 
     glDrawArrays(drawTypes[shape->getType()], 0, spriteVertexCount);
 
-    glDisableVertexAttribArray(position);
-    glDisableVertexAttribArray(textureCoords);
+//    glDisableVertexAttribArray(position);
+//    glDisableVertexAttribArray(textureCoords);
 }
 
 void RenderVisitor::draw() {
