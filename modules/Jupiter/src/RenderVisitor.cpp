@@ -42,7 +42,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     textureCoords.set(sprite->getShape());
 
     glm::mat4 mvp = _ortho; // * sprite->getModelMatrix();
-     uniformMVP.set(mvp);
+    uniformMVP.set(mvp);
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,

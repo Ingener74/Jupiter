@@ -30,6 +30,8 @@ set(SOURCES
     src/RenderVisitor.cpp
 
     src/Shader.cpp
+    src/Attribute.cpp
+    src/Uniform.cpp
     src/FileShader.cpp
 
     src/Controller.cpp
