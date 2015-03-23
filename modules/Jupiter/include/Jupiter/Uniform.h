@@ -9,6 +9,9 @@
 #define MODULES_JUPITER_INCLUDE_JUPITER_UNIFORM_H_
 
 #ifdef SWIG
+    namespace jupiter {
+        #pragma SWIG nowarn=509
+    }  // namespace jupiter
 #else
     #include <string>
 

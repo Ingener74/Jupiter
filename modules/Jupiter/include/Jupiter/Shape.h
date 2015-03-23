@@ -22,23 +22,6 @@
 namespace jupiter
 {
 
-struct Elem {
-    union {
-        struct {
-            float x, y, z;
-            union {
-                struct {
-                    float tx, ty;
-                };
-                struct {
-                    float r, g, b, a;
-                };
-            };
-        };
-    };
-};
-
-
 /*
  * {
  *     "shaderUniforms":{
@@ -91,38 +74,17 @@ public:
     Shape(const std::vector<float>& data, Type type);
     virtual ~Shape() = default;
 
-    int32_t getVertexCount() const;
+    uint32_t getVertexCount() const;
+    uint32_t getStride() const;
     Type getType() const;
-    int8_t getStride() const;
 
     const VertexComponent& getComponent(const std::string& name);
 
 private:
     std::vector<float> data;
     std::map<std::string, VertexComponent> components;
-    Type type = Type::TRIANGLE_STRIP;
-
-    static const int DATA_IN_ONE_VERTEX = 5;
+    Type type = TRIANGLE_STRIP;
 };
-
-inline Shape::Shape(const std::vector<float>& data, Type type) :
-    data(data), type(type) {
-}
-
-inline int32_t Shape::getVertexCount() const {
-    return data.size() / DATA_IN_ONE_VERTEX;
-}
-
-inline Shape::Type Shape::getType() const {
-    return Shape::type;
-}
-
-inline int8_t Shape::getStride() const {
-}
-
-inline const VertexComponent& Shape::getComponent(const std::string& name) {
-    return components [ name ];
-}
 
 } /* namespace jupiter */
 
