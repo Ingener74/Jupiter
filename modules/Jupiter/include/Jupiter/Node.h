@@ -79,7 +79,7 @@ public:
     bool isVisible() const;
     Node* setVisible(bool isVisible);
 
-    Node* accept(NodeVisitor* nv);
+    virtual Node* accept(NodeVisitor* nv);
 
     Node* setController(Controller* controller);
     Controller* getController();

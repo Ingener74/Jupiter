@@ -80,7 +80,7 @@ public:
 
     const VertexComponent& getComponent(const std::string& name);
 
-private:
+protected:
     std::vector<float> data;
     std::map<std::string, VertexComponent> components;
     Type type = TRIANGLE_STRIP;

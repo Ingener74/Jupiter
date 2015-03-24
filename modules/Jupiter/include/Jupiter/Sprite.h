@@ -35,38 +35,12 @@ public:
     Shader* getProgram() const;
     Sprite* setProgram(Shader*);
 
+    virtual Sprite* accept(NodeVisitor* nv);
 private:
     Texture* texture = nullptr;
     Shape* shape = nullptr;
     Shader* program = nullptr;
 };
-
-inline Texture* Sprite::getTexture() const {
-    return texture;
-}
-
-inline Sprite* Sprite::setTexture(Texture* texture) {
-    Sprite::texture = texture;
-    return this;
-}
-
-inline Shape* Sprite::getShape() const {
-    return shape;
-}
-
-inline Sprite* Sprite::setShape(Shape* shape) {
-    Sprite::shape = shape;
-    return this;
-}
-
-inline Shader* Sprite::getProgram() const {
-    return program;
-}
-
-inline Sprite* Sprite::setProgram(Shader* program) {
-    Sprite::program = program;
-    return this;
-}
 
 } /* namespace ndk_game */
 

@@ -8,14 +8,12 @@
 #ifndef NODEVISITOR_H_
 #define NODEVISITOR_H_
 
-namespace jupiter
-{
+namespace jupiter {
 
 class Node;
 class Sprite;
 
-class NodeVisitor
-{
+class NodeVisitor {
 public:
     NodeVisitor();
     virtual ~NodeVisitor();

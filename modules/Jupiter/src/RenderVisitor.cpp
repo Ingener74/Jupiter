@@ -5,9 +5,10 @@
  *      Author: pavel
  */
 
-#include <Jupiter/RenderVisitor.h>
-#include <Jupiter/Node.h>
-#include <Jupiter/Sprite.h>
+#include "Jupiter/Tools.h"
+#include "Jupiter/Node.h"
+#include "Jupiter/Sprite.h"
+#include "Jupiter/RenderVisitor.h"
 
 namespace jupiter {
 
@@ -18,15 +19,8 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
 
-    /*
-     * draw sprite
-     */
-
     auto shader = sprite->getProgram();
 
-    /*
-     * draw shape with program
-     */
     shader->use();
 
     auto texture       = shader->getUniform("uTEX");
@@ -52,6 +46,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     };
 
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
+    CHECK_GL_ERROR
 }
 
 void RenderVisitor::draw() {

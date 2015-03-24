@@ -14,10 +14,10 @@ namespace jupiter {
 
 ImageTexture::ImageTexture(Image* image) {
     glGenTextures(1, &textureID);
-    Tools::glError();
+    CHECK_GL_ERROR
 
     glBindTexture(GL_TEXTURE_2D, textureID);
-    Tools::glError();
+    CHECK_GL_ERROR
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -29,10 +29,10 @@ ImageTexture::ImageTexture(Image* image) {
     width = height = std::max(Tools::upperPowerOfTwo(image->getWidth()), Tools::upperPowerOfTwo(image->getHeight()));
 
     glTexImage2D(GL_TEXTURE_2D, 0, type, width, height, 0, type, GL_UNSIGNED_BYTE, nullptr);
-    Tools::glError();
+    CHECK_GL_ERROR
 
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->getWidth(), image->getHeight(), type, GL_UNSIGNED_BYTE, image->getData());
-    Tools::glError();
+    CHECK_GL_ERROR
 }
 
 ImageTexture::~ImageTexture() {

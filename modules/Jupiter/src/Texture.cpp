@@ -10,7 +10,7 @@ using namespace std;
 void Texture::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, textureID);
-    Tools::glError();
+    CHECK_GL_ERROR
 }
 
 } /* namespace ndk_game */

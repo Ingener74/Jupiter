@@ -134,6 +134,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
         ->setPositionZ(-1.f)
+        ->setVisible(true)
     ;
 
     PngImage flourImage{"Resources/ground.png"};
@@ -145,6 +146,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setProgram(spriteShader.get())
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
+        ->setVisible(true)
     ;
 
     PngImage boxImage{"Resources/box.png"};
@@ -158,6 +160,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setShape(boxShape.get())
         ->setController(boxController.get())
         ->setPositionY(100.f)
+        ->setVisible(true)
     ;
 
     rootNode = make_unique_<Node>();

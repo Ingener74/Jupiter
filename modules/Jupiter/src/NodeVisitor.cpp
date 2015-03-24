@@ -7,25 +7,20 @@
 
 #include "Jupiter/NodeVisitor.h"
 
-namespace jupiter
-{
+namespace jupiter {
 
 //using namespace std;
 
-NodeVisitor::NodeVisitor()
-{
+NodeVisitor::NodeVisitor() {
 }
 
-NodeVisitor::~NodeVisitor()
-{
+NodeVisitor::~NodeVisitor() {
 }
 
-void NodeVisitor::visit(Node*)
-{
+void NodeVisitor::visit(Node*) {
 }
 
-void NodeVisitor::visit(Sprite*)
-{
+void NodeVisitor::visit(Sprite*) {
 }
 
 } /* namespace jupiter */

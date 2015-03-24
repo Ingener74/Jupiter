@@ -26,8 +26,10 @@ public:
     virtual ~Tools() = delete;
 
     static uint32_t upperPowerOfTwo(uint32_t v);
-    static void glError() throw (JupiterError);
+    static void glError(const std::string& file = {}, int line = -1, const std::string& function = {}) throw (JupiterError);
 };
+
+#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
 
 inline uint32_t Tools::upperPowerOfTwo(uint32_t v) {
     v--;
