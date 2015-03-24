@@ -17,7 +17,6 @@ Uniform::Uniform(const std::string& name, int uniform) :
 }
 
 Uniform::~Uniform() {
-    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
 }
 
 void Uniform::set(int v0) {

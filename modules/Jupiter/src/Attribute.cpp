@@ -21,7 +21,6 @@ Attribute::Attribute(const std::string& name, int attribute) :
 Attribute::~Attribute() {
     glDisableVertexAttribArray(attribute);
     CHECK_GL_ERROR
-    std::cout << __PRETTY_FUNCTION__ << "" << std::endl;
 }
 
 void Attribute::set(class Shape* shape) {

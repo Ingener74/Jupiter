@@ -117,7 +117,7 @@ bool myCreateGame(int argc, char* argv[]){
     File::setBase("samples/Box");
 
     int width = 800, height = 480;
-    render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
+    render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, 100, -100));
 
     physics = make_unique_<NodeVisitor>();
 
@@ -133,7 +133,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setProgram(spriteShader.get())
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
-        ->setPositionZ(-1.f)
+//        ->setPositionZ(-1.f)
         ->setVisible(true)
     ;
 
@@ -168,6 +168,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->addNode(bg.get())
         ->addNode(flour.get())
         ->addNode(box.get())
+        ->setVisible(true)
     ;
 
     game = make_unique_<Game>();
@@ -227,7 +228,7 @@ void myInput() {
 
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.f, 0.f, 0.f, 1.f);
+    glClearColor(0.1f, 0.3f, 0.1f, 1.f);
 
     myDraw();
 
@@ -267,8 +268,10 @@ int main(int argc, char **argv) {
 
         glEnable(GL_DEPTH_TEST);
 
+        glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//        glCullFace(GL_FRONT_AND_BACK);
 
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);

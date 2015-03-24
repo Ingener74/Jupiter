@@ -50,11 +50,11 @@ public:
     }
 
     uint32_t getSize() const {
-        return 0;
+        return size;
     }
 
     const float* getOffset() const {
-        return nullptr;
+        return offset;
     }
 
 private:

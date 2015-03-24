@@ -20,6 +20,7 @@ std::unique_ptr<T> make_unique_(Args ... args) {
     return ptr;
 }
 
+
 class Tools {
 public:
     Tools() = delete;
@@ -30,17 +31,6 @@ public:
 };
 
 #define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
-
-inline uint32_t Tools::upperPowerOfTwo(uint32_t v) {
-    v--;
-    v |= v >> 1;
-    v |= v >> 2;
-    v |= v >> 4;
-    v |= v >> 8;
-    v |= v >> 16;
-    v++;
-    return v;
-}
 
 } /* namespace ndk_game */
 

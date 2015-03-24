@@ -23,14 +23,15 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 
     shader->use();
 
-    auto texture       = shader->getUniform("uTEX");
-    auto uniformMVP    = shader->getUniform("uMVP");
-    auto position      = shader->getAttribute("aPOS");
-    auto textureCoords = shader->getAttribute("aTEX");
+    auto uniformTexture   = shader->getUniform("uTEX");
+    auto uniformMVP       = shader->getUniform("uMVP");
+    auto position         = shader->getAttribute("aPOS");
+    auto textureCoords    = shader->getAttribute("aTEX");
 
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
-    texture.set(sprite->getTexture());
+    glEnable(GL_TEXTURE_2D);
+    uniformTexture.set(sprite->getTexture());
 
     position.set(sprite->getShape());
     textureCoords.set(sprite->getShape());

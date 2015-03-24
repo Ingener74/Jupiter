@@ -32,5 +32,16 @@ void Tools::glError(const std::string& file, int line, const std::string& functi
     }
 }
 
+uint32_t Tools::upperPowerOfTwo(uint32_t v) {
+    v--;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    v++;
+    return v;
+}
+
 } /* namespace ndk_game */
 
