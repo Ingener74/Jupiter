@@ -23,25 +23,26 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
 
-//    mat4 view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, -1.f), vec3(0.f, 1.f, 0.f));
+    mat4 view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f));
 
     auto shader = sprite->getProgram();
 
     shader->use();
 
-    auto uniformTexture   = shader->getUniform("uTEX");
+//    auto uniformTexture   = shader->getUniform("uTEX");
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
-    uniformTexture.set(sprite->getTexture());
+//    uniformTexture.set(sprite->getTexture());
+//    uniformTexture.set(0);
 
-    auto position         = shader->getAttribute("aPOS");
+    auto position = shader->getAttribute("aPOS");
     position.set(sprite->getShape());
 
-    auto textureCoords    = shader->getAttribute("aTEX");
+    auto textureCoords = shader->getAttribute("aTEX");
     textureCoords.set(sprite->getShape());
 
-    auto uniformMVP       = shader->getUniform("uMVP");
-    mat4 mvp = _ortho * /*view * */sprite->getModel();
+    auto uniformMVP = shader->getUniform("uMVP");
+    mat4 mvp = _ortho * view * sprite->getModel();
     uniformMVP.set(mvp);
 
 //    sprite->getShape()->test(mvp);

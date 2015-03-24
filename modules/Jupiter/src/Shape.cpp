@@ -18,7 +18,11 @@ Shape::Shape(const std::vector<float>& data, Shape::Type type) :
 }
 
 uint32_t Shape::getVertexCount() const {
-    return data.size() / getStride();
+    uint32_t sum = 0;
+    for(const auto& i: components){
+        sum += i.second.getSize();
+    }
+    return data.size() / sum;
 }
 
 uint32_t Shape::getStride() const {
@@ -26,7 +30,7 @@ uint32_t Shape::getStride() const {
     for(const auto& i: components){
         sum += i.second.getSize();
     }
-    return sum;
+    return sum * sizeof(float);
 }
 
 Shape::Type Shape::getType() const {

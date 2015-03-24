@@ -14,7 +14,7 @@ namespace jupiter {
 
 class ImageShape: public Shape {
 public:
-    ImageShape(class Image*);
+    ImageShape(class Image*, float z = 0.f);
     virtual ~ImageShape();
 };
 

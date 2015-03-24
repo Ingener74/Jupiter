@@ -126,16 +126,15 @@ bool myCreateGame(int argc, char* argv[]){
 
     PngImage bgImage{"Resources/bg.png"};
     bgTexture = make_unique_<ImageTexture>(&bgImage);
-    bgShape = make_unique_<ImageShape>(&bgImage);
+    bgShape = make_unique_<ImageShape>(&bgImage, -1.f);
 
     bg = make_unique_<Sprite>();
     bg
         ->setProgram(spriteShader.get())
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
-//        ->setPositionZ(-1.f)
         ->setVisible(true)
-//        ->scale(5.f, 5.f)
+        ->scale(.4f, .4f)
     ;
 
     PngImage flourImage{"Resources/ground.png"};
@@ -145,9 +144,11 @@ bool myCreateGame(int argc, char* argv[]){
     flour = make_unique_<Sprite>();
     flour
         ->setProgram(spriteShader.get())
-        ->setTexture(bgTexture.get())
-        ->setShape(bgShape.get())
+        ->setTexture(flourTexture.get())
+        ->setShape(flourShape.get())
         ->setVisible(true)
+        ->scale(.3f, .3f)
+        ->translateY(-2.f)
     ;
 
     PngImage boxImage{"Resources/box.png"};
@@ -160,8 +161,9 @@ bool myCreateGame(int argc, char* argv[]){
         ->setTexture(boxTexture.get())
         ->setShape(boxShape.get())
         ->setController(boxController.get())
-//        ->setPositionY(100.f)
+        ->setPositionY(2.f)
         ->setVisible(true)
+        ->scale(.2f, .2f)
     ;
 
     rootNode = make_unique_<Node>();
@@ -219,7 +221,7 @@ bool myCreateGameWithJsonFile(int argc, char* argv[]){
 
 void myDraw() {
 
-    bg->translateX(0.1f);
+//    bg->translateX(0.1f);
 
     game->draw();
 }
