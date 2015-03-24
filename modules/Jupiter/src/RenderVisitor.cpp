@@ -5,12 +5,16 @@
  *      Author: pavel
  */
 
+#include <iostream>
 #include "Jupiter/Tools.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
 #include "Jupiter/RenderVisitor.h"
 
 namespace jupiter {
+
+using namespace std;
+using namespace glm;
 
 void jupiter::RenderVisitor::visit(Node* node) {
 }
@@ -19,25 +23,29 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
 
+    mat4 view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, -1.f), vec3(0.f, 1.f, 0.f));
+
     auto shader = sprite->getProgram();
 
     shader->use();
 
     auto uniformTexture   = shader->getUniform("uTEX");
-    auto uniformMVP       = shader->getUniform("uMVP");
-    auto position         = shader->getAttribute("aPOS");
-    auto textureCoords    = shader->getAttribute("aTEX");
-
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
-    glEnable(GL_TEXTURE_2D);
     uniformTexture.set(sprite->getTexture());
 
+    auto position         = shader->getAttribute("aPOS");
     position.set(sprite->getShape());
+
+    auto textureCoords    = shader->getAttribute("aTEX");
     textureCoords.set(sprite->getShape());
 
-    glm::mat4 mvp = _ortho; // * sprite->getModelMatrix();
+    auto uniformMVP       = shader->getUniform("uMVP");
+    mat4 mvp = _ortho * view * sprite->getModel(); // * sprite->getModelMatrix();
     uniformMVP.set(mvp);
+
+    sprite->getShape()->test(mvp);
+    cout << endl;
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
@@ -47,6 +55,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     };
 
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
+
     CHECK_GL_ERROR
 }
 

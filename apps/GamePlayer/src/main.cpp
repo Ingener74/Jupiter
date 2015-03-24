@@ -117,7 +117,9 @@ bool myCreateGame(int argc, char* argv[]){
     File::setBase("samples/Box");
 
     int width = 800, height = 480;
-    render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, 100, -100));
+    render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
+//    render = make_unique_<RenderVisitor>(ortho<float>(-20, 20, -20, 20, -10, 10));
+//    render = make_unique_<RenderVisitor>(perspective<float>(45.f, width / float(height), 1.f, 10000.f));
 
     physics = make_unique_<NodeVisitor>();
 
@@ -135,6 +137,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setShape(bgShape.get())
 //        ->setPositionZ(-1.f)
         ->setVisible(true)
+        ->scale(5.f, 5.f)
     ;
 
     PngImage flourImage{"Resources/ground.png"};
@@ -217,6 +220,9 @@ bool myCreateGameWithJsonFile(int argc, char* argv[]){
 }
 
 void myDraw() {
+
+    bg->translateX(0.1f);
+
     game->draw();
 }
 
@@ -271,7 +277,6 @@ int main(int argc, char **argv) {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//        glCullFace(GL_FRONT_AND_BACK);
 
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);

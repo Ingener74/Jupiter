@@ -84,6 +84,8 @@ public:
     Node* setController(Controller* controller);
     Controller* getController();
 
+    const glm::mat4& getModel() const;
+
 protected:
     template<typename T, typename ... Args>
     void createNode(Args ... args);
@@ -352,6 +354,10 @@ inline bool Node::NodePtr::operator ==(const NodePtr& r) const {
 
 inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
     return node != r.node;
+}
+
+inline const glm::mat4& Node::getModel() const {
+    return model;
 }
 
 } /* namespace jupiter */

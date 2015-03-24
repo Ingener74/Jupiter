@@ -13,6 +13,7 @@
 namespace jupiter {
 
 using namespace std;
+using namespace glm;
 
 ImageShape::ImageShape(Image* image) {
 
@@ -31,17 +32,41 @@ ImageShape::ImageShape(Image* image) {
      */
 
     float h = image->getHeight(), w = image->getWidth();
-    float l = Tools::upperPowerOfTwo(max(h, w));
+    float l = Tools::upperPowerOfTwo(std::max(h, w));
     float z = 0.f;
 
+    vec3
+    p0{-w/2, h/2, z},
+    p1{w/2, h/2, z},
+    p2{-w/2, -h/2, z},
+    p3{w/2, -h/2, z};
+
+    vec2
+    t0{0.f, 0.f},
+    t1{w/l, 0.f},
+    t2{0.f, h/l},
+    t3{w/l, h/l};
+
+//    data = {
+//        -w/2,  h/2, z,    0.f, 0.f,
+//         w/2,  h/2, z,    w/l, 0.f,
+//        -w/2, -h/2, z,    0.f, h/l,
+//         w/2, -h/2, z,    w/l, h/l,
+//    };
+
     data = {
-        -w/2,  h/2, z,    0.f, 0.f,
-         w/2,  h/2, z,    w/l, 0.f,
-        -w/2, -h/2, z,    0.f, h/l,
-         w/2, -h/2, z,    w/l, h/l,
+        // 2 1 0
+        p2.x, p2.y, p2.z,  t2.x, t2.y,
+        p1.x, p1.y, p1.z,  t1.x, t1.y,
+        p0.x, p0.y, p0.z,  t0.x, t0.y,
+        // 1 2 3
+        p1.x, p1.y, p1.z,  t1.x, t1.y,
+        p2.x, p2.y, p2.z,  t2.x, t2.y,
+        p3.x, p3.y, p3.z,  t3.x, t3.y,
     };
+
     components = { {"aPOS", {3, &data[0]}}, {"aTEX", {2, &data[3]}}};
-    type = TRIANGLE_STRIP;
+    type = TRIANGLES;
 }
 
 ImageShape::~ImageShape() {
