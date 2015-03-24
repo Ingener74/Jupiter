@@ -118,8 +118,6 @@ bool myCreateGame(int argc, char* argv[]){
 
     int width = 800, height = 480;
     render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
-//    render = make_unique_<RenderVisitor>(ortho<float>(-20, 20, -20, 20, -10, 10));
-//    render = make_unique_<RenderVisitor>(perspective<float>(45.f, width / float(height), 1.f, 10000.f));
 
     physics = make_unique_<NodeVisitor>();
 
@@ -137,7 +135,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setShape(bgShape.get())
 //        ->setPositionZ(-1.f)
         ->setVisible(true)
-        ->scale(5.f, 5.f)
+//        ->scale(5.f, 5.f)
     ;
 
     PngImage flourImage{"Resources/ground.png"};
@@ -162,7 +160,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->setTexture(boxTexture.get())
         ->setShape(boxShape.get())
         ->setController(boxController.get())
-        ->setPositionY(100.f)
+//        ->setPositionY(100.f)
         ->setVisible(true)
     ;
 

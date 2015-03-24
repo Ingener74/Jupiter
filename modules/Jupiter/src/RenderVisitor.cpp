@@ -23,7 +23,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
 
-    mat4 view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, -1.f), vec3(0.f, 1.f, 0.f));
+//    mat4 view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, -1.f), vec3(0.f, 1.f, 0.f));
 
     auto shader = sprite->getProgram();
 
@@ -41,11 +41,11 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     textureCoords.set(sprite->getShape());
 
     auto uniformMVP       = shader->getUniform("uMVP");
-    mat4 mvp = _ortho * view * sprite->getModel(); // * sprite->getModelMatrix();
+    mat4 mvp = _ortho * /*view * */sprite->getModel();
     uniformMVP.set(mvp);
 
-    sprite->getShape()->test(mvp);
-    cout << endl;
+//    sprite->getShape()->test(mvp);
+//    cout << endl;
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
