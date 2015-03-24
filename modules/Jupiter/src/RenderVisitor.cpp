@@ -29,11 +29,10 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 
     shader->use();
 
-//    auto uniformTexture   = shader->getUniform("uTEX");
+    auto uniformTexture   = shader->getUniform("uTEX");
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
-//    uniformTexture.set(sprite->getTexture());
-//    uniformTexture.set(0);
+    uniformTexture.set(0);          // texture unit not texture id
 
     auto position = shader->getAttribute("aPOS");
     position.set(sprite->getShape());
@@ -44,9 +43,6 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     auto uniformMVP = shader->getUniform("uMVP");
     mat4 mvp = _ortho * view * sprite->getModel();
     uniformMVP.set(mvp);
-
-//    sprite->getShape()->test(mvp);
-//    cout << endl;
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,

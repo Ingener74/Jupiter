@@ -18,10 +18,7 @@
     #include <vector>
     #include <cstdint>
 
-    #define GLM_FORCE_RADIANS
-    #include <glm/glm.hpp>
-    #include <glm/gtc/type_ptr.hpp>
-    #include <glm/gtc/matrix_transform.hpp>
+    #include "Jupiter/VertexComponent.h"
 #endif
 
 namespace jupiter
@@ -46,32 +43,6 @@ namespace jupiter
  * }
  */
 
-class VertexComponent {
-public:
-    VertexComponent(uint32_t size = 0, float* offset = nullptr) :
-        size(size), offset(offset) {
-
-        // Bind VBO
-
-    }
-    virtual ~VertexComponent() {
-
-        // Unbind VBO
-    }
-
-    uint32_t getSize() const {
-        return size;
-    }
-
-    const float* getOffset() const {
-        return offset;
-    }
-
-private:
-    uint32_t size = 0;
-    float* offset = nullptr;
-};
-
 class Shape
 {
 public:
@@ -88,14 +59,12 @@ public:
     uint32_t getStride() const;
     Type getType() const;
 
-    void test(const glm::mat4& mvp);
-
     const VertexComponent& getComponent(const std::string& name);
 
 protected:
     std::vector<float> data;
 //    GLuint vbo = 0;
-//    uint32_t stride = 0;
+    uint32_t vertexCount = 0, stride = 0;
     std::map<std::string, VertexComponent> components;
     Type type = TRIANGLE_STRIP;
 };

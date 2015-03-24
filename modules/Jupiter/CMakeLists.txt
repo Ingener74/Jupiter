@@ -21,6 +21,7 @@ set(SOURCES
     src/JsonNode.cpp
     
     src/Shape.cpp
+    src/VertexComponent.cpp
     src/ImageShape.cpp
     
     src/Sprite.cpp

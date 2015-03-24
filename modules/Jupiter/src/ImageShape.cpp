@@ -5,6 +5,11 @@
  *      Author: pavel
  */
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Jupiter/Tools.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Image.h"
@@ -41,21 +46,11 @@ ImageShape::ImageShape(Image* image, float z) {
     p3{ w/2, -h/2, z};
 
     vec2
-    t0{0.f, 0.f},
-    t1{1.f, 0.f},
-    t2{0.f, 1.f},
-    t3{1.f, 1.f};
+    t0{1.f, 0.f},
+    t1{0.f, 0.f},
+    t2{1.f, 1.f},
+    t3{0.f, 1.f};
 
-//    data = {
-//        // 2 1 0
-//        p1.x, p1.y, p1.z,  t1.x, t1.y,
-//        p0.x, p0.y, p0.z,  t0.x, t0.y,
-//        p2.x, p2.y, p2.z,  t2.x, t2.y,
-//        // 1 2 3
-//        p1.x, p1.y, p1.z,  t1.x, t1.y,
-//        p2.x, p2.y, p2.z,  t2.x, t2.y,
-//        p3.x, p3.y, p3.z,  t3.x, t3.y,
-//    };
     data = {
         // 2 1 0
         p2.x, p2.y, p2.z,  t2.x, t2.y,
@@ -68,6 +63,10 @@ ImageShape::ImageShape(Image* image, float z) {
     };
 
     components = { {"aPOS", {3, &data[0]}}, {"aTEX", {2, &data[3]}}};
+
+    vertexCount = 6;
+    stride = 5 * sizeof(float);
+
     type = TRIANGLES;
 }
 

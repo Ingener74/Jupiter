@@ -153,7 +153,7 @@ bool myCreateGame(int argc, char* argv[]){
 
     PngImage boxImage{"Resources/box.png"};
     boxTexture = make_unique_<ImageTexture>(&boxImage);
-    boxShape = make_unique_<ImageShape>(&boxImage);
+    boxShape = make_unique_<ImageShape>(&boxImage, 1.f);
 
     box = make_unique_<Sprite>();
     box
@@ -222,6 +222,9 @@ bool myCreateGameWithJsonFile(int argc, char* argv[]){
 void myDraw() {
 
 //    bg->translateX(0.1f);
+
+    box->translateY(.1f);
+    flour->translateY(-.1f);
 
     game->draw();
 }
