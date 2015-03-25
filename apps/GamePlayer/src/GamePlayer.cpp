@@ -1,37 +1,11 @@
 /*
- * main.1   cpp
+ * GamePlayer.cpp
  *
- *  Created on: Jul 31, 2014
+ *  Created on: Mar 25, 2015
  *      Author: pavel
  */
 
-#include <map>
-#include <memory>
-#include <fstream>
-#include <iterator>
-#include <iostream>
-#include <stdexcept>
-
-#include <boost/filesystem.hpp>
-#include <boost/program_options.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <GL/glew.h>
-
-#ifdef USE_FREEGLUT
-    #include <GL/glut.h>
-#elif defined (USE_GLFW)
-    #include <GLFW/glfw3.h>
-#endif
-
-
-//#include <selene.h>
+#include "GamePlayer.h"
 
 #include <Jupiter.h>
 #include <Ganymede/Ganimede.h>
@@ -233,129 +207,14 @@ void myInput() {
     game->input();
 }
 
-#ifdef USE_FREEGLUT
-
-void display(void) {
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.1f, 0.3f, 0.1f, 1.f);
-
-    myDraw();
-
-    glutSwapBuffers();
+std::string getTitle() {
+    return "Jupiter Game Player";
 }
 
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
+int getWidth() {
+    return game->getWidth();
 }
 
-void mouse(int button, int action, int x, int y) {
-    static map<int, string> buttons{
-        { GLUT_LEFT_BUTTON, "GLUT_LEFT_BUTTON" },
-        { GLUT_MIDDLE_BUTTON, "GLUT_MIDDLE_BUTTON" },
-        { GLUT_RIGHT_BUTTON, "GLUT_RIGHT_BUTTON" },
-    };
-    static map<int, string> actions{
-        { GLUT_DOWN, "GLUT_DOWN" },
-        { GLUT_UP, "GLUT_UP" }
-    };
-
-    myInput();
+int getHeight() {
+    return game->getHeight();
 }
-
-void mouseMove(int x, int y) {
-    myInput();
-}
-
-int main(int argc, char **argv) {
-    try {
-        cout << title << endl;
-
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-        glutInitWindowSize(800, 480);
-        glutCreateWindow(title.c_str());
-
-        glEnable(GL_DEPTH_TEST);
-
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        glutReshapeFunc(reshape);
-        glutDisplayFunc(display);
-        glutIdleFunc(display);
-        glutMouseFunc(mouse);
-        glutMotionFunc(mouseMove);
-
-        if (glewInit() != GLEW_OK)
-            throw runtime_error("glew init error");
-
-        if (!myCreateGame(argc, argv))
-            throw runtime_error("can't create game");
-//        if(!myCreateGameWithJsonFile(argc, argv))
-//            throw runtime_error("can't create game");
-
-        glutReshapeWindow(game->getWidth(), game->getHeight());
-        glViewport(0, 0, game->getWidth(), game->getHeight());
-
-        glutMainLoop();
-
-        return EXIT_SUCCESS;
-    } catch (std::exception const & e) {
-        cerr << e.what() << endl;
-        return EXIT_FAILURE;
-    }
-}
-
-#elif defined (USE_GLFW)
-
-void myErrorFun(int errorCode, const char* description) {
-    throw runtime_error(to_string(errorCode) + " " + description);
-}
-
-void myKeyFun(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    myInput();
-}
-
-int main(int argc, char **argv) {
-    try {
-        glfwSetErrorCallback(myErrorFun);
-
-        if(!glfwInit())
-            throw runtime_error("can't init GLFW");
-
-        auto window = glfwCreateWindow(640, 480, title.c_str(), nullptr, nullptr);
-        if (!window) {
-            glfwTerminate();
-            throw runtime_error("can't create window");
-        }
-
-        glfwMakeContextCurrent(window);
-        glfwSwapInterval(1);
-
-        glfwSetKeyCallback(window, myKeyFun);
-
-        myCreateGame(argc, argv);
-
-        glfwSetWindowSize(window, game->getWidth(), game->getHeight());
-        glViewport(0, 0, game->getWidth(), game->getHeight());
-
-        while (!glfwWindowShouldClose(window)) {
-            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glClearColor(0.f, 0.f, 0.f, 1.f);
-
-            myDraw();
-
-            glfwSwapBuffers(window);
-            glfwPollEvents();
-        }
-
-        glfwDestroyWindow(window);
-        glfwTerminate();
-
-    } catch (exception const& e) {
-        cerr << e.what() << endl;
-    }
-}
-
-#endif

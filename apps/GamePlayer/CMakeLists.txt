@@ -6,7 +6,7 @@ project(${PROJECT_NAME})
 include_directories(src/asteroids)
 
 set(SOURCES
-    src/main.cpp
+    src/GamePlayer.cpp
     
 #    src/asteroids/BackGround.cpp
 #    src/asteroids/BattleShip.cpp
@@ -21,6 +21,12 @@ set(SOURCES
 #    src/asteroids/RightButton.cpp
 #    src/asteroids/WinAgain.cpp
 )
+
+if(USE_FREEGLUT)
+    set(SOURCES ${SOURCES} src/GlutMain.cpp)
+elseif(USE_GLFW)
+    set(SOURCES ${SOURCES} src/GLFWMain.cpp)
+endif()
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
