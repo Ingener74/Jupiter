@@ -45,11 +45,17 @@ ImageShape::ImageShape(Image* image, float z) {
     p2{-w/2, -h/2, z},
     p3{ w/2, -h/2, z};
 
+//    vec2
+//    t0{1.f, 0.f},
+//    t1{0.f, 0.f},
+//    t2{1.f, 1.f},
+//    t3{0.f, 1.f};
+
     vec2
-    t0{1.f, 0.f},
+    t0{w/l, 0.f},
     t1{0.f, 0.f},
-    t2{1.f, 1.f},
-    t3{0.f, 1.f};
+    t2{w/l, h/l},
+    t3{0.f, h/l};
 
     data = {
         // 2 1 0

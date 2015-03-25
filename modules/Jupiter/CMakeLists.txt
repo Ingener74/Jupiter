@@ -29,6 +29,7 @@ set(SOURCES
 
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
+    src/PrintVisitor.cpp
 
     src/Shader.cpp
     src/Attribute.cpp

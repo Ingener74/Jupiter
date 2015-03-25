@@ -100,14 +100,17 @@ bool MyCreateGameDirect(const variables_map& vm) {
     int width = 800, height = 480;
     render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
 
+//    physics = make_unique_<PrintVisitor>();
     physics = make_unique_<NodeVisitor>();
 
     File vs { "Resources/sprite.vs" }, fs { "Resources/sprite.fs" };
     spriteShader = make_unique_<FileShader>(&vs, &fs);
 
+    rootNode = make_unique_<Node>();
+
     PngImage bgImage { "Resources/bg.png" };
     bgTexture = make_unique_<ImageTexture>(&bgImage);
-    bgShape = make_unique_<ImageShape>(&bgImage, -1.f);
+    bgShape = make_unique_<ImageShape>(&bgImage);
 
     bg = make_unique_<Sprite>();
     bg
@@ -115,7 +118,10 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
         ->setVisible(true)
-        ->scale(.4f, .4f)
+        ->scale(.5f, .5f)
+//        ->translateZ(10.f)
+        ->rotateZ(M_PI)
+        ->setParent(rootNode.get())
     ;
 
     PngImage flourImage { "Resources/ground.png" };
@@ -128,13 +134,16 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setTexture(flourTexture.get())
         ->setShape(flourShape.get())
         ->setVisible(true)
-        ->scale(.3f, .3f)
-        ->translateY(-2.f)
+        ->scale(.8f, .8f)
+//        ->translate(0.f, -180.f, -20.f)
+        ->translateY(-180.f)
+        ->rotateZ(M_PI)
+        ->setParent(rootNode.get())
     ;
 
     PngImage boxImage { "Resources/box.png" };
     boxTexture = make_unique_<ImageTexture>(&boxImage);
-    boxShape = make_unique_<ImageShape>(&boxImage, 1.f);
+    boxShape = make_unique_<ImageShape>(&boxImage);
 
     box = make_unique_<Sprite>();
     box
@@ -142,12 +151,13 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setTexture(boxTexture.get())
         ->setShape(boxShape.get())
         ->setController(boxController.get())
-        ->setPositionY(2.f)
         ->setVisible(true)
-        ->scale(.2f, .2f)
+//        ->translate(0.f, 150.f, -10.f)
+        ->translateY(150.f)
+        ->scale(.1f, .1f)
+        ->setParent(rootNode.get())
     ;
 
-    rootNode = make_unique_<Node>();
     rootNode
         ->addNode(bg.get())
         ->addNode(flour.get())
@@ -185,8 +195,9 @@ bool MyCreateGameJsonFile(const variables_map& vm) {
 }
 
 void MyDraw() {
-    box->translateY(.1f);
-    flour->translateY(-.1f);
+
+    box->translateZ(.1f);
+    flour->translateZ(-.1f);
 
     game->draw();
 }

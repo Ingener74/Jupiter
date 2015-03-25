@@ -23,10 +23,12 @@ public:
     RenderVisitor(const glm::mat4& ortho);
     virtual ~RenderVisitor();
 
+    virtual void begin();
+
     virtual void visit(Node*);
     virtual void visit(Sprite*);
 
-    virtual void draw();
+    virtual void end();
 
 private:
     glm::mat4 _ortho;

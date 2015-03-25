@@ -17,10 +17,17 @@ NodeVisitor::NodeVisitor() {
 NodeVisitor::~NodeVisitor() {
 }
 
+void NodeVisitor::begin() {
+}
+
 void NodeVisitor::visit(Node*) {
 }
 
 void NodeVisitor::visit(Sprite*) {
 }
 
+void NodeVisitor::end() {
+}
+
 } /* namespace jupiter */
+

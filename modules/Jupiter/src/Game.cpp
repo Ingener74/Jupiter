@@ -24,9 +24,13 @@ void Game::draw() {
     if(!physics)
         throw JupiterError("no physics");
 
+    physics->begin();
     node->accept(physics);
+    physics->end();
+
+    render->begin();
     node->accept(render);
-    render->draw();
+    render->end();
 }
 
 void Game::input() {

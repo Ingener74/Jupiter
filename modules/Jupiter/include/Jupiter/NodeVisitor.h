@@ -18,8 +18,12 @@ public:
     NodeVisitor();
     virtual ~NodeVisitor();
 
+    virtual void begin();
+
     virtual void visit(Node*);
     virtual void visit(Sprite*);
+
+    virtual void end();
 };
 
 } /* namespace jupiter */

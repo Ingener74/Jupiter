@@ -51,7 +51,7 @@ Sprite* Sprite::accept(NodeVisitor* nv) {
         nv->visit(this);
 
         for (const auto& i : nodes) {
-            i.node->accept(nv);
+            i->accept(nv);
         }
     }
 

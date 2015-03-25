@@ -19,6 +19,9 @@ using namespace glm;
 void jupiter::RenderVisitor::visit(Node* node) {
 }
 
+void RenderVisitor::begin() {
+}
+
 void jupiter::RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
@@ -29,7 +32,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
 
     shader->use();
 
-    auto uniformTexture   = shader->getUniform("uTEX");
+    auto uniformTexture = shader->getUniform("uTEX");
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
     uniformTexture.set(0);          // texture unit not texture id
@@ -56,7 +59,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     CHECK_GL_ERROR
 }
 
-void RenderVisitor::draw() {
+void RenderVisitor::end() {
 }
 
 } /* namespace jupiter */

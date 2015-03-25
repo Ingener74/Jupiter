@@ -29,10 +29,10 @@ JsonNode::JsonNode(const ptree& node) :
 
     if (auto nodes_ = node.get_child_optional("nodes")) {
         for (auto i : nodes_.get()) {
-            if (auto json_node = i.second.get_child_optional("node"))
-                createNode<JsonNode>(i.second.get_child("node"));
-            if (auto json_sprite = i.second.get_child_optional("sprite"))
-                createNode<JsonNode>(i.second.get_child("sprite"));
+//            if (auto json_node = i.second.get_child_optional("node"))
+//                createNode<JsonNode>(i.second.get_child("node"));
+//            if (auto json_sprite = i.second.get_child_optional("sprite"))
+//                createNode<JsonNode>(i.second.get_child("sprite"));
         }
     }
 //    cout << name << " " << nodes.size() << endl;

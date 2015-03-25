@@ -15,6 +15,7 @@
     }  // namespace jupiter
 #else
     #include <set>
+    #include <list>
     #include <string>
 
     #define GLM_FORCE_RADIANS
@@ -36,6 +37,8 @@ public:
     virtual ~Node();
 
     Node* addNode(Node* node);
+    Node* setParent(Node*);
+    Node* getParent();
 
     float getRotationX() const;
     float getRotationY() const;
@@ -47,7 +50,7 @@ public:
     Node* setRotationZ(float z);
 
     Node* rotate(float x, float y, float z);
-    Node* rotateX(float x);
+    Node* rotateX(float angle);
     Node* rotateY(float y);
     Node* rotateZ(float z);
 
@@ -87,278 +90,12 @@ public:
     const glm::mat4& getModel() const;
 
 protected:
-    template<typename T, typename ... Args>
-    void createNode(Args ... args);
-
-    struct NodePtr {
-        using Created = bool;
-
-        Node* node = nullptr;
-        Created created = false;
-
-        NodePtr(Node*, Created created = false);
-
-        bool operator <(const NodePtr& r) const;
-        bool operator >(const NodePtr& r) const;
-        bool operator ==(const NodePtr& r) const;
-        bool operator !=(const NodePtr& r) const;
-    };
-
     bool visible = true;
     glm::mat4 model;
     Controller* controller = nullptr;
-    std::set<NodePtr> nodes;
-
-public:
-    static int leakCheck;
+    Node* parent = nullptr;
+    std::list<Node*> nodes;
 };
-
-inline Node::Node() {
-    ++leakCheck;
-}
-
-inline Node* Node::addNode(Node* node) {
-    if (!node)
-        throw JupiterError("Node add nullptr node");
-
-    nodes.insert(NodePtr { node });
-    return this;
-}
-
-inline float Node::getRotationX() const {
-    return 0.f;
-}
-
-inline float Node::getRotationY() const {
-    return 0.f;
-}
-
-inline float Node::getRotationZ() const {
-    return 0.f;
-}
-
-inline Node* Node::setRotation(float x, float y, float z) {
-    if (controller)
-        controller->onRotate(x, y, z);
-
-    return this;
-}
-
-inline Node* Node::setRotationX(float x) {
-    if (controller)
-        controller->onRotate(x, 0, 0);
-
-    return this;
-}
-
-inline Node* Node::setRotationY(float y) {
-    if (controller)
-        controller->onRotate(0, y, 0);
-
-    return this;
-}
-
-inline Node* Node::setRotationZ(float z) {
-    if (controller)
-        controller->onRotate(0, 0, z);
-
-    return this;
-}
-
-inline Node* Node::rotate(float x, float y, float z) {
-    if (controller)
-        controller->onRotate(x, y, z);
-
-    return this;
-}
-
-inline Node* Node::rotateX(float x) {
-    if (controller)
-        controller->onRotate(x, 0, 0);
-
-    return this;
-}
-
-inline Node* Node::rotateY(float y) {
-    if (controller)
-        controller->onRotate(0, y, 0);
-
-    return this;
-}
-
-inline Node* Node::rotateZ(float z) {
-    if (controller)
-        controller->onRotate(0, 0, z);
-
-    return this;
-}
-
-inline float Node::getPositionX() const {
-    return model [ 3 ].x;
-}
-
-inline float Node::getPositionY() const {
-    return model [ 3 ].y;
-}
-
-inline float Node::getPositionZ() const {
-    return model [ 3 ].z;
-}
-
-inline Node* Node::setPosition(float x, float y, float z) {
-    model [ 3 ].x = x;
-    model [ 3 ].y = y;
-    model [ 3 ].z = z;
-    if (controller)
-        controller->onPositionChanged(x, y, z);
-
-    return this;
-}
-
-inline Node* Node::setPositionX(float x) {
-    model [ 3 ].x = x;
-    if (controller)
-        controller->onPositionChanged(x, 0.f, 0.f);
-
-    return this;
-}
-
-inline Node* Node::setPositionY(float y) {
-    model [ 3 ].y = y;
-    if (controller)
-        controller->onPositionChanged(0.f, y, 0.f);
-
-    return this;
-}
-
-inline Node* Node::setPositionZ(float z) {
-    model [ 3 ].z = z;
-    if (controller)
-        controller->onPositionChanged(0.f, 0.f, z);
-
-    return this;
-}
-
-inline Node* Node::translate(float x, float y, float z) {
-    model = glm::translate(model, glm::vec3 { x, y, z });
-    if (controller)
-        controller->onMove(x, y, z);
-
-    return this;
-}
-
-inline Node* Node::translateX(float x) {
-    model = glm::translate(model, glm::vec3 { x, 0.f, 0.f });
-    if (controller)
-        controller->onMove(x, 0, 0);
-
-    return this;
-}
-
-inline Node* Node::translateY(float y) {
-    model = glm::translate(model, glm::vec3 { 0.f, y, 0.f });
-    if (controller)
-        controller->onMove(0, y, 0);
-
-    return this;
-}
-
-inline Node* Node::translateZ(float z) {
-    model = glm::translate(model, glm::vec3 { 0.f, 0.f, z });
-    if (controller)
-        controller->onMove(0, 0, z);
-
-    return this;
-}
-
-inline float Node::getScaleX() const {
-    return model [ 0 ].x;
-}
-
-inline float Node::getScaleY() const {
-    return model [ 1 ].y;
-}
-
-inline Node* Node::setScale(float x, float y) {
-    model [ 0 ].x = x;
-    model [ 1 ].y = y;
-    return this;
-}
-
-inline Node* Node::setScaleX(float x) {
-    model [ 0 ].x = x;
-    return this;
-}
-
-inline Node* Node::setScaleY(float y) {
-    model [ 1 ].y = y;
-    return this;
-}
-
-inline Node* Node::scale(float x, float y) {
-    model = glm::scale(model, glm::vec3 { x, y, 0.f });
-    return this;
-}
-
-inline Node* Node::scaleX(float x) {
-    model = glm::scale(model, glm::vec3 { x, 0.f, 0.f });
-    return this;
-}
-
-inline Node* Node::scaleY(float y) {
-    model = glm::scale(model, glm::vec3 { 0.f, y, 0.f });
-    return this;
-}
-
-inline bool Node::isVisible() const {
-    return visible;
-}
-
-inline Node* Node::setVisible(bool isVisible) {
-    visible = isVisible;
-    if (controller)
-        controller->onVisibleChanged(isVisible);
-
-    return this;
-}
-
-inline Node* Node::setController(Controller* controller) {
-    Node::controller = controller;
-    return this;
-}
-
-inline Controller* Node::getController() {
-    return controller;
-}
-
-template<typename T, typename ... Args>
-inline void Node::createNode(Args ... args) {
-    nodes.insert(NodePtr { new T(args...), true });
-}
-
-inline Node::NodePtr::NodePtr(Node* node, Created created) :
-    node(node), created(created) {
-}
-
-inline bool Node::NodePtr::operator <(const NodePtr& r) const {
-    return node->model [ 3 ].z < r.node->model [ 3 ].z || node < r.node;
-}
-
-inline bool Node::NodePtr::operator >(const NodePtr& r) const {
-    return node->model [ 3 ].z > r.node->model [ 3 ].z || node > r.node;
-}
-
-inline bool Node::NodePtr::operator ==(const NodePtr& r) const {
-    return node == r.node;
-}
-
-inline bool Node::NodePtr::operator !=(const NodePtr& r) const {
-    return node != r.node;
-}
-
-inline const glm::mat4& Node::getModel() const {
-    return model;
-}
 
 } /* namespace jupiter */
 
