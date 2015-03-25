@@ -14,7 +14,7 @@ void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.1f, 0.3f, 0.1f, 1.f);
 
-    myDraw();
+    MyDraw();
 
     glutSwapBuffers();
 }
@@ -34,17 +34,15 @@ void mouse(int button, int action, int x, int y) {
         { GLUT_UP, "GLUT_UP" }
     };
 
-    myInput();
+    MyInput();
 }
 
 void mouseMove(int x, int y) {
-    myInput();
+    MyInput();
 }
 
 int main(int argc, char **argv) {
     try {
-//        cout << title << endl;
-
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(800, 480);
@@ -65,10 +63,7 @@ int main(int argc, char **argv) {
         if (glewInit() != GLEW_OK)
             throw runtime_error("glew init error");
 
-        if (!myCreateGame(argc, argv))
-            throw runtime_error("can't create game");
-//        if(!myCreateGameWithJsonFile(argc, argv))
-//            throw runtime_error("can't create game");
+        createGame(argc, argv);
 
         glutReshapeWindow(getWidth(), getHeight());
         glViewport(0, 0, getWidth(), getHeight());

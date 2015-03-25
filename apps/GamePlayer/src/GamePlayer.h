@@ -27,10 +27,12 @@
 
 #include <GL/glew.h>
 
-bool myCreateGame(int argc, char* argv[]);
-bool myCreateGameWithJsonFile(int argc, char* argv[]);
-void myDraw();
-void myInput();
+bool createGame(int argc, char* argv[]);
+
+bool MyCreateGameDirect(const boost::program_options::variables_map& vm);
+bool MyCreateGameJsonFile(const boost::program_options::variables_map& vm);
+void MyDraw();
+void MyInput();
 
 std::string getTitle();
 int getWidth();

@@ -10,26 +10,6 @@
 #include <Jupiter.h>
 #include <Ganymede/Ganimede.h>
 
-/*
- * Old game controller
- */
-//#include <Tools.h>
-//#include <BackGround.h>
-//#include <BattleShip.h>
-//#include <Life.h>
-//#include <StartButton.h>
-//#include <Rock.h>
-//#include <GameAgain.h>
-//#include <FireButton.h>
-//#include <GasButton.h>
-//#include <LeftButton.h>
-//#include <RightButton.h>
-//#include <WinAgain.h>
-
-/*
- * New game controllers
- */
-
 using namespace std;
 using namespace glm;
 using namespace boost::filesystem;
@@ -37,16 +17,6 @@ using namespace boost::program_options;
 
 using namespace ganymede;
 using namespace jupiter;
-
-/*
- * -- preload/caching images in before node in tree
- *
- * -- sound
- *
- * -- animation node
- *
- * -- text node
- */
 
 string usage = R"(
 Usage  : ./GamePlayer -g <path-to-game>
@@ -84,21 +54,58 @@ unique_ptr<Texture>         bgTexture,
 
 unique_ptr<Controller>      boxController;
 
-bool myCreateGame(int argc, char* argv[]){
+bool createGame(int argc, char* argv[]) {
+    options_description desc("General description");
+
+    desc.add_options()
+        ("help,h"   ,                  "Show help")
+        ("sample,s" , value<string>(), "Select sample: box or json")
+        ("game,g"   , value<string>(), "Path to game file")
+        ("base,b"   , value<string>(), "Base directory");
+    variables_map vm;
+
+    store(parse_command_line(argc, argv, desc), vm);
+    notify(vm);
+
+    if (vm.count("help")) {
+        cout << desc << endl;
+        cout << usage << endl;
+        return false;
+    }
+
+    if (!vm.count("sample"))
+        throw runtime_error("select sample");
+
+    if (vm["sample"].as<string>() == "box") {
+        MyCreateGameDirect(vm);
+        return true;
+    } else if (vm["sample"].as<string>() == "json") {
+        MyCreateGameJsonFile(vm);
+        return true;
+    } else {
+        throw runtime_error("select sample");
+    }
+    return false;
+}
+
+bool MyCreateGameDirect(const variables_map& vm) {
+
+    if (!vm.count("base"))
+        throw runtime_error("base directory is invalid");
 
     bufferFactory = make_unique_<LinuxFileFactory>();
     File::setBufferFactory(bufferFactory.get());
-    File::setBase("samples/Box");
+    File::setBase(vm["base"].as<string>());
 
     int width = 800, height = 480;
     render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
 
     physics = make_unique_<NodeVisitor>();
 
-    File vs{"Resources/sprite.vs"}, fs{"Resources/sprite.fs"};
+    File vs { "Resources/sprite.vs" }, fs { "Resources/sprite.fs" };
     spriteShader = make_unique_<FileShader>(&vs, &fs);
 
-    PngImage bgImage{"Resources/bg.png"};
+    PngImage bgImage { "Resources/bg.png" };
     bgTexture = make_unique_<ImageTexture>(&bgImage);
     bgShape = make_unique_<ImageShape>(&bgImage, -1.f);
 
@@ -111,7 +118,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->scale(.4f, .4f)
     ;
 
-    PngImage flourImage{"Resources/ground.png"};
+    PngImage flourImage { "Resources/ground.png" };
     flourTexture = make_unique_<ImageTexture>(&flourImage);
     flourShape = make_unique_<ImageShape>(&flourImage);
 
@@ -125,7 +132,7 @@ bool myCreateGame(int argc, char* argv[]){
         ->translateY(-2.f)
     ;
 
-    PngImage boxImage{"Resources/box.png"};
+    PngImage boxImage { "Resources/box.png" };
     boxTexture = make_unique_<ImageTexture>(&boxImage);
     boxShape = make_unique_<ImageShape>(&boxImage, 1.f);
 
@@ -150,6 +157,7 @@ bool myCreateGame(int argc, char* argv[]){
 
     game = make_unique_<Game>();
     game
+
         ->setRootNode(rootNode.get())
         ->setRender(render.get())
         ->setPhysicsEngine(physics.get())
@@ -160,24 +168,7 @@ bool myCreateGame(int argc, char* argv[]){
     return true;
 }
 
-bool myCreateGameWithJsonFile(int argc, char* argv[]){
-//    const std::string& fileName
-
-    options_description desc("General description");
-
-    desc.add_options()
-        ("help,h", "Show help")
-        ("game,g", value<std::string>(), "Path to game file");
-    variables_map vm;
-
-    store(parse_command_line(argc, argv, desc), vm);
-    notify(vm);
-
-    if (vm.count("help")) {
-        cout << desc << endl;
-        cout << usage << endl;
-        return false;
-    }
+bool MyCreateGameJsonFile(const variables_map& vm) {
 
     if (!vm.count("game"))
         throw runtime_error("have no game file");
@@ -193,17 +184,14 @@ bool myCreateGameWithJsonFile(int argc, char* argv[]){
     return true;
 }
 
-void myDraw() {
-
-//    bg->translateX(0.1f);
-
+void MyDraw() {
     box->translateY(.1f);
     flour->translateY(-.1f);
 
     game->draw();
 }
 
-void myInput() {
+void MyInput() {
     game->input();
 }
 
@@ -212,9 +200,14 @@ std::string getTitle() {
 }
 
 int getWidth() {
+    if (!game)
+        throw runtime_error("game is invalid");
     return game->getWidth();
 }
 
 int getHeight() {
+    if (!game)
+        throw runtime_error("game is invalid");
     return game->getHeight();
 }
+

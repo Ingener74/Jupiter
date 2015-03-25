@@ -15,7 +15,7 @@ void myErrorFun(int errorCode, const char* description) {
 }
 
 void myKeyFun(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    myInput();
+    MyInput();
 }
 
 int main(int argc, char **argv) {
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearColor(0.f, 0.f, 0.f, 1.f);
 
-            myDraw();
+            MyDraw();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
