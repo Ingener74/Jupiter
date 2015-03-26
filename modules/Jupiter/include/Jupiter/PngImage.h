@@ -11,7 +11,6 @@
 #ifdef SWIG
 #else
     #include <memory>
-    #include <png.h>
 #endif
 
 #include "Jupiter/Image.h"
@@ -25,7 +24,7 @@ public:
     PngImage(const std::string& fileName);
     virtual ~PngImage() = default;
 
-    static void pngRwCallback(png_structp, png_bytep, png_size_t);
+    static void pngRwCallback(void*, uint8_t*, size_t);
 
 private:
     std::unique_ptr<File> file;

@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include <png.h>
+
 #include "Jupiter/File.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/PngImage.h"
@@ -40,7 +42,7 @@ PngImage::PngImage(const std::string& fileName) :
     if (!lInfoPtr)
         throw JupiterError("some error 2");
 
-    png_set_read_fn(lPngPtr, this, pngRwCallback);
+    png_set_read_fn(lPngPtr, this, reinterpret_cast<void (*)(png_struct_def*, unsigned char*, long unsigned int)>(pngRwCallback));
     if (setjmp(png_jmpbuf(lPngPtr)))
         throw JupiterError("can't set read callback");
 
@@ -126,8 +128,11 @@ PngImage::PngImage(const std::string& fileName) :
     file.reset();
 }
 
-void PngImage::pngRwCallback(png_structp pngStruct, png_bytep data, png_size_t size) {
-    auto* self = static_cast<PngImage*>(png_get_io_ptr(pngStruct));
+void PngImage::pngRwCallback(void* pngStruct, uint8_t* data, size_t size){
+    // (png_structp , png_bytep data, png_size_t )
+
+    auto pngp = static_cast<png_structp>(pngStruct);
+    auto* self = static_cast<PngImage*>(png_get_io_ptr(pngp));
     self->file->stream().read(reinterpret_cast<char*>(data), size);
 }
 

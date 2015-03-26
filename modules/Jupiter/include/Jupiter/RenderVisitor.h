@@ -19,9 +19,9 @@ namespace jupiter {
 
 class RenderVisitor: public NodeVisitor {
 public:
-    RenderVisitor();
+    RenderVisitor() = default;
     RenderVisitor(const glm::mat4& projection, const glm::mat4& view);
-    virtual ~RenderVisitor();
+    virtual ~RenderVisitor() = default;
 
     virtual void begin();
 

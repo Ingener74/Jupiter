@@ -100,11 +100,12 @@ bool MyCreateGameDirect(const variables_map& vm) {
     int width = 800, height = 480;
     render = make_unique_<RenderVisitor>(
         ortho(-width / 2.f, width / 2.f, -height / 2.f, height / 2.f, -100.f, 100.f),
-        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
+//        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
+        lookAt(vec3(0.f, 0.f, 0.f), vec3(90.f, 60.f, 90.f), vec3(0.f, 1.f, 0.f))
     );
 
-//    physics = make_unique_<PrintVisitor>();
-    physics = make_unique_<NodeVisitor>();
+    physics = make_unique_<PrintVisitor>();
+//    physics = make_unique_<NodeVisitor>();
 
     File vs { "Resources/sprite.vs" }, fs { "Resources/sprite.fs" };
     spriteShader = make_unique_<FileShader>(&vs, &fs);
@@ -139,8 +140,8 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setShape(flourShape.get())
         ->setVisible(true)
         ->scale(.8f, .8f)
-//        ->translate(0.f, -180.f, -20.f)
-        ->translateY(-180.f)
+        ->translate(0.f, -180.f, 20.f)
+//        ->translateY(-180.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
@@ -156,8 +157,8 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setShape(boxShape.get())
         ->setController(boxController.get())
         ->setVisible(true)
-//        ->translate(0.f, 150.f, -10.f)
-        ->translateY(150.f)
+        ->translate(0.f, 150.f, 20.f)
+//        ->translateY(150.f)
         ->scale(.1f, .1f)
         ->setParent(rootNode.get())
     ;

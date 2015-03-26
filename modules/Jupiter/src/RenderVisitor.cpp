@@ -23,12 +23,6 @@ RenderVisitor::RenderVisitor(const glm::mat4& projection, const glm::mat4& view)
     projection(projection), view(view) {
 }
 
-RenderVisitor::RenderVisitor() {
-}
-
-RenderVisitor::~RenderVisitor() {
-}
-
 void RenderVisitor::begin() {
 }
 
