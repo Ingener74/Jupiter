@@ -9,6 +9,7 @@
 #define MODULES_JUPITER_INCLUDE_JUPITER_ATTRIBUTE_H_
 
 #ifdef SWIG
+//        %nodefaultctor Attribute;
 #else
     #include <string>
     #include <GL/glew.h>

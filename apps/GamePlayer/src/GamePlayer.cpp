@@ -98,7 +98,10 @@ bool MyCreateGameDirect(const variables_map& vm) {
     File::setBase(vm["base"].as<string>());
 
     int width = 800, height = 480;
-    render = make_unique_<RenderVisitor>(ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100));
+    render = make_unique_<RenderVisitor>(
+        ortho(-width / 2.f, width / 2.f, -height / 2.f, height / 2.f, -100.f, 100.f),
+        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
+    );
 
 //    physics = make_unique_<PrintVisitor>();
     physics = make_unique_<NodeVisitor>();
@@ -118,7 +121,8 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
         ->setVisible(true)
-        ->scale(.5f, .5f)
+//        ->scale(.5f, .5f)
+        ->scale(.3f, .3f)
 //        ->translateZ(10.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())

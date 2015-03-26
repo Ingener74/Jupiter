@@ -12,8 +12,8 @@ include_directories(
 set(CMAKE_SWIG_FLAGS "-c++")
 
 set_source_files_properties(Jupiter.i PROPERTIES CPLUSPLUS ON)
-set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall")
-#set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-v") # swig verbose
+set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
+# set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor;-v") # swig verbose
 
 set(SHARED_LIBS
     Jupiter 

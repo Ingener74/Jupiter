@@ -11,6 +11,7 @@
 #ifdef SWIG
     namespace jupiter {
         #pragma SWIG nowarn=509
+        %nodefaultctor Uniform;
     }  // namespace jupiter
 #else
     #include <string>

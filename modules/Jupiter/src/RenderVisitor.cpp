@@ -19,14 +19,22 @@ using namespace glm;
 void jupiter::RenderVisitor::visit(Node* node) {
 }
 
+RenderVisitor::RenderVisitor(const glm::mat4& projection, const glm::mat4& view) :
+    projection(projection), view(view) {
+}
+
+RenderVisitor::RenderVisitor() {
+}
+
+RenderVisitor::~RenderVisitor() {
+}
+
 void RenderVisitor::begin() {
 }
 
 void jupiter::RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
-
-    mat4 view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f));
 
     auto shader = sprite->getProgram();
 
@@ -44,7 +52,7 @@ void jupiter::RenderVisitor::visit(Sprite* sprite) {
     textureCoords.set(sprite->getShape());
 
     auto uniformMVP = shader->getUniform("uMVP");
-    mat4 mvp = _ortho * view * sprite->getModel();
+    mat4 mvp = projection * view * sprite->getModel();
     uniformMVP.set(mvp);
 
     static GLenum drawTypes[] = {

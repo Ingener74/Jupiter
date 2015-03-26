@@ -20,7 +20,7 @@ namespace jupiter {
 class RenderVisitor: public NodeVisitor {
 public:
     RenderVisitor();
-    RenderVisitor(const glm::mat4& ortho);
+    RenderVisitor(const glm::mat4& projection, const glm::mat4& view);
     virtual ~RenderVisitor();
 
     virtual void begin();
@@ -31,18 +31,8 @@ public:
     virtual void end();
 
 private:
-    glm::mat4 _ortho;
+    glm::mat4 projection, view;
 };
-
-inline RenderVisitor::RenderVisitor() {
-}
-
-inline RenderVisitor::RenderVisitor(const glm::mat4& ortho) :
-    _ortho(ortho) {
-}
-
-inline RenderVisitor::~RenderVisitor() {
-}
 
 } /* namespace jupiter */
 
