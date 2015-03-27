@@ -35,6 +35,11 @@ public:
 
     std::istream& stream();
 
+    /*
+    const void* getBuffer() const;
+    const uint32_t getSize() const;
+    */
+
     static void setBufferFactory(BufferFactory* factory = nullptr);
     static void setBase(const std::string& base);
 
@@ -45,23 +50,6 @@ private:
     static BufferFactory* factory;
     static std::string base;
 };
-
-inline File::File(const std::string& fileName) :
-    buffer(factory ? factory->create(base + (base.empty() ? "" : "/") + fileName) :
-            throw JupiterError("have no file buffer factory")), i(buffer.get()) {
-}
-
-inline std::istream& File::stream() {
-    return i;
-}
-
-inline void File::setBase(const std::string& base) {
-    File::base = base;
-}
-
-inline void File::setBufferFactory(BufferFactory* factory) {
-    File::factory = std::move(factory);
-}
 
 }  // namespace jupiter
 

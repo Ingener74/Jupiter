@@ -29,10 +29,19 @@ void PrintVisitor::visit(Node* node) {
     cout << tabs(t) << "node visible:   " << node->isVisible() << endl;
 }
 
+ostream& operator<<(ostream& out, const glm::mat4& r){
+    return out << "["
+        << r[0][0] << ", " << r[0][1] << ", " << r[0][2] << ", " << r[0][3] << "; "
+        << r[1][0] << ", " << r[1][1] << ", " << r[1][2] << ", " << r[1][3] << "; "
+        << r[2][0] << ", " << r[2][1] << ", " << r[2][2] << ", " << r[2][3] << "; "
+        << r[3][0] << ", " << r[3][1] << ", " << r[3][2] << ", " << r[3][3] << "]";
+}
+
 void PrintVisitor::visit(Sprite* sprite) {
     int t = calcTabs(sprite);
     cout << tabs(t) << "sprite visible: " << sprite->isVisible() << endl <<
-            tabs(t) << "sprite width:   " << sprite->getTexture()->getWidth() << " x " << sprite->getTexture()->getHeight() << endl;
+            tabs(t) << "sprite width:   " << sprite->getTexture()->getWidth() << " x " << sprite->getTexture()->getHeight() << endl <<
+            tabs(t) << "sprite model:   " << sprite->getModel() << endl;
 }
 
 void PrintVisitor::end() {

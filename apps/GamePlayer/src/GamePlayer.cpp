@@ -54,40 +54,6 @@ unique_ptr<Texture>         bgTexture,
 
 unique_ptr<Controller>      boxController;
 
-bool createGame(int argc, char* argv[]) {
-    options_description desc("General description");
-
-    desc.add_options()
-        ("help,h"   ,                  "Show help")
-        ("sample,s" , value<string>(), "Select sample: box or json")
-        ("game,g"   , value<string>(), "Path to game file")
-        ("base,b"   , value<string>(), "Base directory");
-    variables_map vm;
-
-    store(parse_command_line(argc, argv, desc), vm);
-    notify(vm);
-
-    if (vm.count("help")) {
-        cout << desc << endl;
-        cout << usage << endl;
-        return false;
-    }
-
-    if (!vm.count("sample"))
-        throw runtime_error("select sample");
-
-    if (vm["sample"].as<string>() == "box") {
-        MyCreateGameDirect(vm);
-        return true;
-    } else if (vm["sample"].as<string>() == "json") {
-        MyCreateGameJsonFile(vm);
-        return true;
-    } else {
-        throw runtime_error("select sample");
-    }
-    return false;
-}
-
 bool MyCreateGameDirect(const variables_map& vm) {
 
     if (!vm.count("base"))
@@ -98,10 +64,12 @@ bool MyCreateGameDirect(const variables_map& vm) {
     File::setBase(vm["base"].as<string>());
 
     int width = 800, height = 480;
+    float div = 2.f;
+
     render = make_unique_<RenderVisitor>(
-        ortho(-width / 2.f, width / 2.f, -height / 2.f, height / 2.f, -100.f, 100.f),
+        ortho(-width / div, width / div, -height / div, height / div, -200.f, 200.f),
 //        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
-        lookAt(vec3(0.f, 0.f, 0.f), vec3(90.f, 60.f, 90.f), vec3(0.f, 1.f, 0.f))
+        lookAt(vec3(0.f, 0.f, 0.f), vec3(50.f, 30.f, 90.f), vec3(0.f, 1.f, 0.f))
     );
 
     physics = make_unique_<PrintVisitor>();
@@ -199,11 +167,41 @@ bool MyCreateGameJsonFile(const variables_map& vm) {
     return true;
 }
 
+bool createGame(int argc, char* argv[]) {
+    options_description desc("General description");
+
+    desc.add_options()
+        ("help,h"   ,                  "Show help")
+        ("sample,s" , value<string>(), "Select sample: box or json")
+        ("game,g"   , value<string>(), "Path to game file")
+        ("base,b"   , value<string>(), "Base directory");
+    variables_map vm;
+
+    store(parse_command_line(argc, argv, desc), vm);
+    notify(vm);
+
+    if (vm.count("help")) {
+        cout << desc << endl;
+        cout << usage << endl;
+        return false;
+    }
+
+    if (!vm.count("sample"))
+        throw runtime_error("select sample");
+
+    if (vm["sample"].as<string>() == "box") {
+        MyCreateGameDirect(vm);
+        return true;
+    } else if (vm["sample"].as<string>() == "json") {
+        MyCreateGameJsonFile(vm);
+        return true;
+    } else {
+        throw runtime_error("select sample");
+    }
+    return false;
+}
+
 void MyDraw() {
-
-    box->translateZ(.1f);
-    flour->translateZ(-.1f);
-
     game->draw();
 }
 

@@ -3,17 +3,26 @@ cmake_minimum_required(VERSION 2.8.11)
 # include modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
 
+
+option(USE_FREEGLUT          "Use freeglut as window system"   ON)
+option(USE_GLFW              "Use GLFW as window system"       OFF)
+
+option(WITH_WRAPPERS         "Wrapper"                         OFF)
+option(WITH_LUA_WRAPPER      "Lua wrapper"                     ON)
+option(WITH_PYTHON_WRAPPER   "Python wrapper"                  ON)
+
+option(WITH_GAME_PLAYER      "Build with c++ game player"      ON)
+
 # find boost
 find_package(Boost 1.53.0 REQUIRED system thread filesystem program_options)
 
 # find png
 find_package(PNG REQUIRED)
 
+find_package(FreeImage)
+
 # find glm
 find_package(GLM REQUIRED)
-
-option(USE_FREEGLUT "Use freeglut as window system" ON)
-option(USE_GLFW "Use GLFW as window system" OFF)
 
 if(USE_FREEGLUT AND USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
@@ -73,6 +82,8 @@ include_directories(
     ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}
     ${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR}
     
+    3rdparty/json/src
+    
     modules/Jupiter/include
     modules/Ganymede/include
 )
@@ -95,10 +106,6 @@ add_subdirectory(apps)
 add_subdirectory(modules)
 
 add_subdirectory(samples)
-
-option(WITH_WRAPPERS "Wrapper" OFF)
-option(WITH_LUA_WRAPPER "Lua wrapper" ON)
-option(WITH_PYTHON_WRAPPER "Python wrapper" ON)
 
 if(WITH_WRAPPERS)
     add_subdirectory(wrappers)

@@ -25,7 +25,6 @@ public:
 
     virtual void begin();
 
-    virtual void visit(Node*);
     virtual void visit(Sprite*);
 
     virtual void end();

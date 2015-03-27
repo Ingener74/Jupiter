@@ -16,9 +16,6 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-void jupiter::RenderVisitor::visit(Node* node) {
-}
-
 RenderVisitor::RenderVisitor(const glm::mat4& projection, const glm::mat4& view) :
     projection(projection), view(view) {
 }
@@ -26,7 +23,7 @@ RenderVisitor::RenderVisitor(const glm::mat4& projection, const glm::mat4& view)
 void RenderVisitor::begin() {
 }
 
-void jupiter::RenderVisitor::visit(Sprite* sprite) {
+void RenderVisitor::visit(Sprite* sprite) {
     if (!sprite)
         throw JupiterError("Render visitor: sprite is nullptr");
 

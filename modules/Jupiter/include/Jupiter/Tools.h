@@ -20,7 +20,6 @@ std::unique_ptr<T> make_unique_(Args ... args) {
     return ptr;
 }
 
-
 class Tools {
 public:
     Tools() = delete;
@@ -30,7 +29,8 @@ public:
     static void glError(const std::string& file = {}, int line = -1, const std::string& function = {}) throw (JupiterError);
 };
 
-#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
+//#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
+#define CHECK_GL_ERROR
 
 } /* namespace ndk_game */
 
