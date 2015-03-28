@@ -19,8 +19,10 @@ using namespace ganymede;
 using namespace jupiter;
 
 string usage = R"(
-Usage  : ./GamePlayer -g <path-to-game>
-Example: ./GamePlayer -g ~/games/Asteroids/Asteroids.lua
+Usage  :
+Example: ./GamePlayer -h                                            - for help
+Example: ./GamePlayer -s json -g samples/Asteroids/Asteroids.json   - for sample from json file
+Example: ./GamePlayer -s box -b samples/Box                         - for box sample
 )";
 
 string title =R"(Jupiter Game Player)";
@@ -68,12 +70,12 @@ bool MyCreateGameDirect(const variables_map& vm) {
 
     render = make_unique_<RenderVisitor>(
         ortho(-width / div, width / div, -height / div, height / div, -200.f, 200.f),
-//        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
-        lookAt(vec3(0.f, 0.f, 0.f), vec3(50.f, 30.f, 90.f), vec3(0.f, 1.f, 0.f))
+        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
+//        lookAt(vec3(0.f, 0.f, 0.f), vec3(50.f, 30.f, 90.f), vec3(0.f, 1.f, 0.f))
     );
 
-    physics = make_unique_<PrintVisitor>();
-//    physics = make_unique_<NodeVisitor>();
+//    physics = make_unique_<PrintVisitor>();
+    physics = make_unique_<NodeVisitor>();
 
     File vs { "Resources/sprite.vs" }, fs { "Resources/sprite.fs" };
     spriteShader = make_unique_<FileShader>(&vs, &fs);

@@ -41,6 +41,14 @@ void mouseMove(int x, int y) {
     MyInput();
 }
 
+void timer(int time){
+
+    glutPostRedisplay();
+
+    int delay = 1000 / 30;
+    glutTimerFunc(delay, timer, 0);
+}
+
 int main(int argc, char **argv) {
     try {
         glutInit(&argc, argv);
@@ -56,7 +64,6 @@ int main(int argc, char **argv) {
 
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);
-        glutIdleFunc(display);
         glutMouseFunc(mouse);
         glutMotionFunc(mouseMove);
 
@@ -67,6 +74,8 @@ int main(int argc, char **argv) {
 
         glutReshapeWindow(getWidth(), getHeight());
         glViewport(0, 0, getWidth(), getHeight());
+
+        glutTimerFunc(0, timer, 0);
 
         glutMainLoop();
 
