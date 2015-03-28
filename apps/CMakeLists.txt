@@ -7,6 +7,8 @@ if(ANDROID)
 
 else()
     
-    add_subdirectory(GamePlayer)
+    if(WITH_GAME_PLAYER)
+        add_subdirectory(GamePlayer)
+    endif()
     
 endif()

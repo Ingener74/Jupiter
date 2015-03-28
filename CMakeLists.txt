@@ -7,11 +7,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modu
 option(USE_FREEGLUT          "Use freeglut as window system"   ON)
 option(USE_GLFW              "Use GLFW as window system"       OFF)
 
-option(WITH_WRAPPERS         "Wrapper"                         OFF)
+option(WITH_WRAPPERS         "Wrapper"                         ON)
 option(WITH_LUA_WRAPPER      "Lua wrapper"                     ON)
 option(WITH_PYTHON_WRAPPER   "Python wrapper"                  ON)
 
 option(WITH_GAME_PLAYER      "Build with c++ game player"      ON)
+option(WITH_TESTS            "Build tests"                     ON)
 
 # find boost
 find_package(Boost 1.53.0 REQUIRED system thread filesystem program_options)
@@ -56,9 +57,11 @@ find_package(Box2D REQUIRED)
 # find Lua
 find_package(Lua REQUIRED)
 
-# find GTest and GMock
-add_subdirectory(3rdparty/gmock-1.7.0)
-enable_testing()
+if(WITH_TESTS)
+    # find GTest and GMock
+    add_subdirectory(3rdparty/gmock-1.7.0)
+    enable_testing()
+endif()
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
