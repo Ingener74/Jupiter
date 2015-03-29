@@ -8,6 +8,8 @@
 #ifndef NODEVISITOR_H_
 #define NODEVISITOR_H_
 
+#include <stack>
+
 namespace jupiter {
 
 class Node;
@@ -20,10 +22,16 @@ public:
 
     virtual void begin();
 
+    virtual void push(Node*);
+    virtual void pop();
+
     virtual void visit(Node*);
     virtual void visit(Sprite*);
 
     virtual void end();
+
+protected:
+    std::stack<Node*> stack;
 };
 
 } /* namespace jupiter */

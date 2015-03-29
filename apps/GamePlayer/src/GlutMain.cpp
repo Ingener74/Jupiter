@@ -56,12 +56,6 @@ int main(int argc, char **argv) {
         glutInitWindowSize(800, 480);
         glutCreateWindow(getTitle().c_str());
 
-        glEnable(GL_DEPTH_TEST);
-
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);
         glutMouseFunc(mouse);
@@ -69,6 +63,11 @@ int main(int argc, char **argv) {
 
         if (glewInit() != GLEW_OK)
             throw runtime_error("glew init error");
+
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_DEPTH_TEST);
+//        glEnable(GL_BLEND);
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         createGame(argc, argv);
 

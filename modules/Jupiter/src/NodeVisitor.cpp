@@ -20,6 +20,12 @@ NodeVisitor::~NodeVisitor() {
 void NodeVisitor::begin() {
 }
 
+void jupiter::NodeVisitor::push(Node*) {
+}
+
+void jupiter::NodeVisitor::pop() {
+}
+
 void NodeVisitor::visit(Node*) {
 }
 
@@ -30,4 +36,3 @@ void NodeVisitor::end() {
 }
 
 } /* namespace jupiter */
-

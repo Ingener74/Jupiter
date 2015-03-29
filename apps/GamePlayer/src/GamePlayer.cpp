@@ -65,14 +65,25 @@ bool MyCreateGameDirect(const variables_map& vm) {
     File::setBufferFactory(bufferFactory.get());
     File::setBase(vm["base"].as<string>());
 
-    int width = 800, height = 480;
+    int width = 800, height = 480, depth = height;
     float div = 2.f;
 
-    render = make_unique_<RenderVisitor>(
-        ortho(-width / div, width / div, -height / div, height / div, -200.f, 200.f),
-        lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f))
-//        lookAt(vec3(0.f, 0.f, 0.f), vec3(50.f, 30.f, 90.f), vec3(0.f, 1.f, 0.f))
-    );
+    auto proj = ortho(
+            -width/div,  width/div,
+            -height/div, height/div,
+            -depth/div,  depth/div);
+
+//    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, depth/div - 1.f), vec3(0.f, 1.f, 0.f));
+
+    float a1 = 90.f * M_PI / 180.f;
+    float b1 = depth/div - 1.f;
+
+    float k1 = b1 * cos(a1);
+    float k2 = b1 * sin(a1);
+
+    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(k1, 0.f, k2), vec3(0.f, 1.f, 0.f));
+
+    render = make_unique_<RenderVisitor>(proj, view);
 
 //    physics = make_unique_<PrintVisitor>();
     physics = make_unique_<NodeVisitor>();
@@ -92,9 +103,7 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
         ->setVisible(true)
-//        ->scale(.5f, .5f)
         ->scale(.3f, .3f)
-//        ->translateZ(10.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
@@ -110,8 +119,7 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setShape(flourShape.get())
         ->setVisible(true)
         ->scale(.8f, .8f)
-        ->translate(0.f, -180.f, 20.f)
-//        ->translateY(-180.f)
+        ->translate(0.f, -180.f, 100.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
@@ -127,8 +135,7 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setShape(boxShape.get())
         ->setController(boxController.get())
         ->setVisible(true)
-        ->translate(0.f, 150.f, 20.f)
-//        ->translateY(150.f)
+        ->translate(0.f, 150.f, 100.f)
         ->scale(.1f, .1f)
         ->setParent(rootNode.get())
     ;
@@ -204,6 +211,10 @@ bool createGame(int argc, char* argv[]) {
 }
 
 void MyDraw() {
+
+    box->translateY(-.5f);
+    flour->translateY(-.5f);
+
     game->draw();
 }
 

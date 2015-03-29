@@ -60,7 +60,8 @@ void Uniform::set(float v0, float v1, float v2, float v3) {
 }
 
 void Uniform::set(const Texture* texture) {
-    glUniform1i(uniform, texture->textureID);
+    // glUniform1i(uniform, texture->textureID);
+    throw JupiterError("not implemented");
     CHECK_GL_ERROR
 }
 
