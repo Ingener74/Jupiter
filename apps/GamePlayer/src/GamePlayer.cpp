@@ -108,7 +108,9 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setParent(rootNode.get())
     ;
 
-    PngImage flourImage { "Resources/ground.png" };
+//    PngImage flourImage { "Resources/ground.png" };
+    PngImage flourImage { "Resources/ground_grass.png" };
+
     flourTexture = make_unique_<ImageTexture>(&flourImage);
     flourShape = make_unique_<ImageShape>(&flourImage);
 
