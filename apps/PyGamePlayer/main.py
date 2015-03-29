@@ -67,17 +67,13 @@ def main():
     gameFile = "../../samples/Asteroids/Asteroids.json"
     
     j.File.setBufferFactory(j.LinuxFileFactory())
+    j.File.setBase('../../samples/Box')
+    
+    rn = j.Node()
     
     global game
-    game = j.JsonGame(gameFile)
-#     
-#     c = j.Controller()
-#     
-#     s = j.Sprite("resources/images/bg.png")
-#     s.translateX(1.0)
-#     
-#     print s.getTexture().bind()
-#     print s.getController().update(60.0 / 1000.0)
+    game = j.Game()
+    game.setRootNode(rn)
     
     init()
     
