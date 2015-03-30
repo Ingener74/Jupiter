@@ -56,7 +56,7 @@ unique_ptr<Texture>         bgTexture,
 
 unique_ptr<Controller>      boxController;
 
-bool MyCreateGameDirect(const variables_map& vm) {
+bool createGameDirect(const variables_map& vm) {
 
     if (!vm.count("base"))
         throw runtime_error("base directory is invalid");
@@ -68,14 +68,15 @@ bool MyCreateGameDirect(const variables_map& vm) {
     int width = 800, height = 480, depth = height;
     float div = 2.f;
 
-    auto proj = ortho(
-            -width/div,  width/div,
-            -height/div, height/div,
-            -depth/div,  depth/div);
+//    auto proj = ortho(
+//            -width/div,  width/div,
+//            -height/div, height/div,
+//            -depth/div,  depth/div);
+    auto proj = perspective<float>(45.f, 800.f / 480.f, 10.f, 10000.f);
 
 //    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, depth/div - 1.f), vec3(0.f, 1.f, 0.f));
 
-    float a1 = 90.f * M_PI / 180.f;
+    float a1 = 70.f * M_PI / 180.f;
     float b1 = depth/div - 1.f;
 
     float k1 = b1 * cos(a1);
@@ -121,7 +122,7 @@ bool MyCreateGameDirect(const variables_map& vm) {
         ->setShape(flourShape.get())
         ->setVisible(true)
         ->scale(.8f, .8f)
-        ->translate(0.f, -180.f, 100.f)
+        ->translate(0.f, -190.f, 100.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
@@ -162,7 +163,7 @@ bool MyCreateGameDirect(const variables_map& vm) {
     return true;
 }
 
-bool MyCreateGameJsonFile(const variables_map& vm) {
+bool createGameJsonFile(const variables_map& vm) {
 
     if (!vm.count("game"))
         throw runtime_error("have no game file");
@@ -201,10 +202,10 @@ bool createGame(int argc, char* argv[]) {
         throw runtime_error("select sample");
 
     if (vm["sample"].as<string>() == "box") {
-        MyCreateGameDirect(vm);
+        createGameDirect(vm);
         return true;
     } else if (vm["sample"].as<string>() == "json") {
-        MyCreateGameJsonFile(vm);
+        createGameJsonFile(vm);
         return true;
     } else {
         throw runtime_error("select sample");
@@ -212,7 +213,7 @@ bool createGame(int argc, char* argv[]) {
     return false;
 }
 
-void MyDraw() {
+void draw() {
 
     box->translateY(-.5f);
     flour->translateY(-.5f);
@@ -220,7 +221,7 @@ void MyDraw() {
     game->draw();
 }
 
-void MyInput() {
+void input() {
     game->input();
 }
 
