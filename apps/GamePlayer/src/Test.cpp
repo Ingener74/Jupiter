@@ -7,6 +7,7 @@
 
 #include <array>
 #include <vector>
+#include <sstream>
 #include <iostream>
 #include <stdexcept>
 
@@ -26,26 +27,36 @@ GLuint createProgram(const string& vertexShaderSource, const string& fragmentSha
 
 
 void init();
+void deinit();
 void display(void);
 void reshape(int w, int h);
 void mouse(int button, int action, int x, int y);
 void mouseMove(int x, int y);
 void timer(int time);
+void glError();
 
 string vs = R"(
 
-varying vec4 color;
+attribute vec4 vertex;
+attribute vec4 color;
+
+// uniform   mat4 projection, view, model;
+uniform   mat4 projection, model;
+
+varying vec4 vcolor;
+
 void main(){
-    gl_Position = gl_Projection * gl_ModelView * gl_Vertex;
-    color = gl_Color;
+    // gl_Position = projection * view * model * vertex;
+    gl_Position = projection * model * vertex;
+    vcolor = color;
 }
 
 )", fs = R"(
 
-varying vec4 color;
+varying vec4 vcolor;
 
 void main(){
-    gl_FragColor = color;
+    gl_FragColor = vcolor;
 }
 
 )";
@@ -60,34 +71,54 @@ void main(){
  *   X                       X
  */
 
+struct Vertex{
+    float x, y, z;
+    float r, g, b;
+};
+
 vector<float> flour = {
-        -3.f, 3.f, 0.f,   1.f, 1.f, 1.f,
-         3.f, 3.f, 0.f,   1.f, 1.f, 1.f,
-        -3.f,-3.f, 0.f,   1.f, 1.f, 1.f,
-         3.f,-3.f, 0.f,   1.f, 1.f, 1.f,
+    -35.f, 9.f, 0.f,   .5f, .4f, .1f,
+     35.f, 9.f, 0.f,   .5f, .4f, .1f,
+    -35.f,-9.f, 0.f,   .5f, .4f, .1f,
+     35.f,-9.f, 0.f,   .5f, .4f, .1f,
 }, box = {
-        -35.f, 9.f, 0.f,   1.f, 1.f, 1.f,
-         35.f, 9.f, 0.f,   1.f, 1.f, 1.f,
-        -35.f,-9.f, 0.f,   1.f, 1.f, 1.f,
-         35.f,-9.f, 0.f,   1.f, 1.f, 1.f,
+    -3.f, 3.f, 0.f,   .3f, .6f, .1f,
+     3.f, 3.f, 0.f,   .3f, .6f, .1f,
+    -3.f,-3.f, 0.f,   .3f, .6f, .1f,
+     3.f,-3.f, 0.f,   .3f, .6f, .1f,
+}, bg = {
+    -100.f, 40.f, 0.f,   .7f, .7f, .7f,
+     100.f, 40.f, 0.f,   .7f, .7f, .7f,
+    -100.f,-40.f, 0.f,   .7f, .7f, .7f,
+     100.f,-40.f, 0.f,   .7f, .7f, .7f,
 };
 
 vector<ushort> flourInd = {
-        0, 2, 1,   3, 1, 2,
+    0, 2, 1,   3, 1, 2,
 }, boxInd = {
-        0, 2, 1,   3, 1, 2,
+    0, 2, 1,   3, 1, 2,
+}, bgInd = {
+    0, 2, 1,   3, 1, 2,
 };
 
-int width = 800, height = 480;
+float width = 400.f, height = 240.f;
 
-GLuint shader = 0;
+GLuint
+    shader = 0,
+    aVertex = 0,
+    aColor = 0,
+    uProjection = 0,
+    uView = 0,
+    uModel = 0;
 
 enum Objects{
     Flour,
     Box,
+    Bg,
 
     FlourInd,
     BoxInd,
+    BgInd,
 
     End
 };
@@ -101,7 +132,7 @@ int main(int argc, char **argv) {
     try {
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-        glutInitWindowSize(800, 480);
+        glutInitWindowSize(width, height);
         glutCreateWindow("Test");
 
         glutReshapeFunc(reshape);
@@ -115,11 +146,13 @@ int main(int argc, char **argv) {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        glViewport(0, 0, width, height);
+        init();
+        reshape(width, height);
 
         glutTimerFunc(0, timer, 0);
-
         glutMainLoop();
+
+        deinit();
 
         return EXIT_SUCCESS;
     } catch (std::exception const & e) {
@@ -131,8 +164,12 @@ int main(int argc, char **argv) {
 void init(){
     shader = createProgram(vs, fs);
 
-    proj = glm::perspective(45.f, 800.f / 480.f, 10.f, 10000.f);
-    view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, 50.f), vec3(0.f, 1.f, 0.f));
+    uProjection = glGetUniformLocation(shader, "projection");
+    uView       = glGetUniformLocation(shader, "view");
+    uModel      = glGetUniformLocation(shader, "model");
+
+    aVertex     = glGetAttribLocation(shader, "vertex");
+    aColor      = glGetAttribLocation(shader, "color");
 
     glGenBuffers(End, VBOs);
 
@@ -142,15 +179,44 @@ void init(){
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Box]);
     glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), box.data(), GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[Bg]);
+    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), bg.data(), GL_STATIC_DRAW);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[FlourInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, flourInd.size() * sizeof(ushort), flourInd.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BoxInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), boxInd.data(), GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BgInd]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), bgInd.data(), GL_STATIC_DRAW);
+
+    models[Box] = glm::translate(models[Box], vec3(0.f, 30.f, 0.f));
+    models[Flour] = glm::translate(models[Flour], vec3(0.f, -40.f, 0.f));
+    models[Bg] = glm::translate(models[Bg], vec3(0.f, 0.f, -1.f));
 }
 
 void deinit(){
     glDeleteBuffers(End, VBOs);
+}
+
+void drawObj(int obj, int objInd) {
+    glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(models[obj]));
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
+
+    glEnableVertexAttribArray(aVertex);
+    glVertexAttribPointer(aVertex, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0));
+
+    glEnableVertexAttribArray(aColor);
+    glVertexAttribPointer(aColor, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (0 + 3 * sizeof(float)));
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
+    glDisableVertexAttribArray(aVertex);
+    glDisableVertexAttribArray(aColor);
 }
 
 void display(void) {
@@ -159,55 +225,23 @@ void display(void) {
 
     glUseProgram(shader);
 
-    glMatrixMode(GL_PROJECTION);
-    gluPerspective(M_PI / 4, 800.f / 480.f, 10.f, 10000.f);
+    glUniformMatrix4fv(uProjection, 1, GL_FALSE, value_ptr(proj));
+    glUniformMatrix4fv(uView,       1, GL_FALSE, value_ptr(view));
 
-    glMatrixMode(GL_MODELVIEW);
-    gluLookAt(0.f, 0.f, 0.f,   0.f, 0.f, 50.f,   0.f, 1.f, 0.f);
+    drawObj(Bg, BgInd);
+    drawObj(Flour, FlourInd);
+    drawObj(Box, BoxInd);
 
-    {
-        // Рисуем пол
-        glBindBuffer(GL_ARRAY_BUFFER, VBOs[Flour]);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 6*sizeof(float), static_cast<void*>(0));
-
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(3, GL_FLOAT, 6*sizeof(float), (void*)(0 + 3*sizeof(float)));
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[FlourInd]);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_COLOR_ARRAY);
-    }
-
-    {
-        // Рисуем коробочку
-        glBindBuffer(GL_ARRAY_BUFFER, VBOs[Box]);
-
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 6*sizeof(float), static_cast<void*>(0));
-
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(3, GL_FLOAT, 6*sizeof(float), (void*)(0 + 3*sizeof(float)));
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BoxInd]);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_COLOR_ARRAY);
-    }
-
-    glPopMatrix();
-    glPopMatrix();
-
+    glFlush();
     glutSwapBuffers();
 }
 
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
+
+//    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
+    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
+    view = glm::lookAt<float>(vec3(0.f, 0.f, 0.f), vec3(0.f, 50.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
 void mouse(int button, int action, int x, int y) {
@@ -289,4 +323,14 @@ GLuint createShader(GLenum shaderType, const string& source) {
             "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
 }
 
+void glError()
+{
+    GLenum error;
+    if ((error = glGetError()) != GL_NO_ERROR) {
+        stringstream s;
+        s << "glGetError: " << hex << error << gluErrorString(error);
+        string res = s.str();
+        throw runtime_error(res);
+    }
+}
 
