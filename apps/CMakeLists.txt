@@ -10,5 +10,7 @@ else()
     if(WITH_GAME_PLAYER)
         add_subdirectory(GamePlayer)
     endif()
+
+    add_subdirectory(Test)
     
 endif()

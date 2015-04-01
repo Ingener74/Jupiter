@@ -29,6 +29,3 @@ set(LIBS
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/bin)
-
-add_executable(Test src/Test.cpp)
-target_link_libraries(Test ${GL_LIBRARIES} ${GLEW_LIBRARIES})

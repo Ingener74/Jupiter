@@ -19,11 +19,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Shaders.h"
+
 using namespace std;
 using namespace glm;
-
-GLuint createShader(GLenum shaderType, const string& source);
-GLuint createProgram(const string& vertexShaderSource, const string& fragmentShaderSource);
 
 
 void init();
@@ -34,6 +33,43 @@ void mouse(int button, int action, int x, int y);
 void mouseMove(int x, int y);
 void timer(int time);
 void glError();
+
+/*
+
+// vertex shader
+
+uniform   mat4  projection, model;
+uniform   vec4  lightPosition, lightColor;
+
+attribute vec4  vertex;
+attribute vec4  color;
+
+varying   vec4  vcolor;
+
+void main(){
+    gl_Position = projection * model * vertex;
+    vcolor = color;
+}
+
+// fragment shader
+
+uniform sampler2D tex;
+uniform sampler2D bump;
+
+varying vec4 texCoords;
+varying vec4 bumpCoords;
+
+varying vec4 vcolor;
+
+void main(){
+
+    vec4 rgb = sampler2D(tex, texCoords);
+    vec4 norm = sampler2D(bump, bumpCoords);
+
+    gl_FragColor = vcolor;
+}
+
+*/
 
 string vs = R"(
 
@@ -122,7 +158,7 @@ enum Objects{
 
     End
 };
-GLuint VBOs[2];
+GLuint VBOs[End];
 
 mat4 models[End];
 
@@ -256,71 +292,6 @@ void timer(int time) {
 
     int delay = 1000 / 30;
     glutTimerFunc(delay, timer, 0);
-}
-
-GLuint createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {
-    if (vertexShaderSource.empty())
-        throw runtime_error("vertex shader is empty");
-    if (fragmentShaderSource.empty())
-        throw runtime_error("fragment shader is empty");
-
-    GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource);
-    GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-    GLuint program = glCreateProgram();
-    if (!program)
-        throw runtime_error("can't create program");
-
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-
-    glLinkProgram(program);
-    GLint linkStatus = GL_FALSE;
-    glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
-
-    if (linkStatus != GL_TRUE) {
-        GLint bufLen = 0;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufLen);
-        if (bufLen) {
-            vector<char> buf(bufLen);
-            glGetProgramInfoLog(program, bufLen, NULL, buf.data());
-            throw runtime_error(string("can't link shader program\n") + buf.data());
-        }
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return program;
-}
-
-GLuint createShader(GLenum shaderType, const string& source) {
-    GLuint shader = glCreateShader(shaderType);
-    if (!shader)
-        throw runtime_error("can't create shader");
-
-    const char* sourceBuffer = source.c_str();
-
-    glShaderSource(shader, 1, &sourceBuffer, 0);
-    glCompileShader(shader);
-
-    GLint compiled = 0;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-    if (compiled)
-        return shader;
-
-    GLint infoLen = 0;
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-    if (!infoLen)
-        throw runtime_error("error in create shader");
-
-    vector<char> buf(infoLen);
-    glGetShaderInfoLog(shader, infoLen, 0, buf.data());
-
-    static array<string, 2> shaderTypeString = { "GL_FRAGMENT_SHADER", "GL_VERTEX_SHADER" };
-
-    throw runtime_error(""
-            "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
 }
 
 void glError()
