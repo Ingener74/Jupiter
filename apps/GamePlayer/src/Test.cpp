@@ -264,7 +264,7 @@ GLuint createProgram(const string& vertexShaderSource, const string& fragmentSha
     if (fragmentShaderSource.empty())
         throw runtime_error("fragment shader is empty");
 
-    GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource); // TODO surrount shaders to RAII
+    GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     GLuint program = glCreateProgram();
