@@ -176,6 +176,7 @@ enum Objects{
     End
 };
 GLuint VBOs[End];
+size_t indexes[End];
 mat4 models[End];
 
 mat4 proj, view;
@@ -251,10 +252,15 @@ void init(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BgInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), bgInd.data(), GL_STATIC_DRAW);
 
-    models[Box] = glm::translate(models[Box], vec3(0.f, 30.f, 0.f));
-    models[BoxHead] = glm::translate(models[BoxHead], vec3(0.f, 3.f, 0.f));
-    models[Flour] = glm::translate(models[Flour], vec3(0.f, -40.f, 0.f));
-    models[Bg] = glm::translate(models[Bg], vec3(0.f, 0.f, -1.f));
+    indexes[Flour]     = flourInd.size();
+    indexes[Box]       = boxInd.size();
+    indexes[BoxHead]   = boxHeadInd.size();
+    indexes[Bg]        = bgInd.size();
+
+    models[Box]        = glm::translate(models[Box],     vec3(0.f, 30.f, 0.f));
+    models[BoxHead]    = glm::translate(models[BoxHead], vec3(0.f, 3.f, 0.f));
+    models[Flour]      = glm::translate(models[Flour],   vec3(0.f, -40.f, 0.f));
+    models[Bg]         = glm::translate(models[Bg],      vec3(0.f, 0.f, -1.f));
 }
 
 void reshape(int w, int h) {
@@ -285,7 +291,7 @@ void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLES, indexes[obj], GL_UNSIGNED_SHORT, 0);
 
     glDisableVertexAttribArray(aVertex);
     glDisableVertexAttribArray(aColor);
