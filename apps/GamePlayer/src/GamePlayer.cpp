@@ -82,7 +82,7 @@ bool createGameDirect(const variables_map& vm) {
     float k1 = b1 * cos(a1);
     float k2 = b1 * sin(a1);
 
-    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(k1, 0.f, k2), vec3(0.f, 1.f, 0.f));
+    auto view = lookAt(vec3(k1, 0.f, k2), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 
     render = make_unique_<RenderVisitor>(proj, view);
 

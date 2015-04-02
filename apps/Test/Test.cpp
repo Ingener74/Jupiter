@@ -36,14 +36,12 @@ void timer(int time);
 void glError();
 
 ostream& operator<<(ostream& out, const mat4& r){
-
-    auto t = r;
-
-    return out << endl << "[" <<
-        setw(10) << t[0][0] << ", " << setw(10) << t[0][1] << ", " << setw(10) << t[0][2] << ", " << setw(10) << t[0][3] << "; " << endl <<
-        setw(10) << t[1][0] << ", " << setw(10) << t[1][1] << ", " << setw(10) << t[1][2] << ", " << setw(10) << t[1][3] << "; " << endl <<
-        setw(10) << t[2][0] << ", " << setw(10) << t[2][1] << ", " << setw(10) << t[2][2] << ", " << setw(10) << t[2][3] << "; " << endl <<
-        setw(10) << t[3][0] << ", " << setw(10) << t[3][1] << ", " << setw(10) << t[3][2] << ", " << setw(10) << t[3][3] << "]"  << endl;
+    auto t = transpose(r);
+    return out << endl <<
+        "[" << setw(10) << t[0][0] << ", " << setw(10) << t[0][1] << ", " << setw(10) << t[0][2] << ", " << setw(10) << t[0][3] << ";" << endl <<
+        " " << setw(10) << t[1][0] << ", " << setw(10) << t[1][1] << ", " << setw(10) << t[1][2] << ", " << setw(10) << t[1][3] << ";" << endl <<
+        " " << setw(10) << t[2][0] << ", " << setw(10) << t[2][1] << ", " << setw(10) << t[2][2] << ", " << setw(10) << t[2][3] << ";" << endl <<
+        " " << setw(10) << t[3][0] << ", " << setw(10) << t[3][1] << ", " << setw(10) << t[3][2] << ", " << setw(10) << t[3][3] << "]" << endl;
 }
 
 /*
@@ -118,8 +116,7 @@ void main(){
  */
 
 struct Vertex{
-    float x, y, z;
-    float r, g, b;
+    vec3 pos, rgb;
 };
 
 vector<float> flour = {
@@ -177,6 +174,8 @@ mat4 proj, view;
 
 int main(int argc, char **argv) {
     try {
+        cout << "test " << sizeof(Vertex) << " " << sizeof(float) * 6 << endl;
+
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
@@ -246,21 +245,14 @@ void init(){
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
 
-//    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
-
-    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
-    view = glm::lookAt<float>(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, -50.f), vec3(0.f, 1.f, 0.f));
-
-    cout << "proj " << proj << endl;
-    cout << "view " << view << endl;
+    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
+//    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
+    view = glm::lookAt<float>(vec3(40.f, 40.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
 void drawObj(int obj, int objInd) {
 
-    auto vm = view * models[obj];
-
     glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(models[obj]));
-//    glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(vm));
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
 
