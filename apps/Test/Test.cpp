@@ -6,7 +6,6 @@
  */
 
 #include <numeric>
-#include <iomanip>
 #include <array>
 #include <vector>
 #include <sstream>
@@ -19,13 +18,12 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "Shaders.h"
+#include "Tools.h"
 
 using namespace std;
 using namespace glm;
-
 
 void init();
 void deinit();
@@ -34,16 +32,6 @@ void reshape(int w, int h);
 void mouse(int button, int action, int x, int y);
 void mouseMove(int x, int y);
 void timer(int time);
-void glError();
-
-ostream& operator<<(ostream& out, const mat4& r){
-    auto t = transpose(r);
-    return out << endl <<
-        "[" << setw(10) << t[0][0] << ", " << setw(10) << t[0][1] << ", " << setw(10) << t[0][2] << ", " << setw(10) << t[0][3] << ";" << endl <<
-        " " << setw(10) << t[1][0] << ", " << setw(10) << t[1][1] << ", " << setw(10) << t[1][2] << ", " << setw(10) << t[1][3] << ";" << endl <<
-        " " << setw(10) << t[2][0] << ", " << setw(10) << t[2][1] << ", " << setw(10) << t[2][2] << ", " << setw(10) << t[2][3] << ";" << endl <<
-        " " << setw(10) << t[3][0] << ", " << setw(10) << t[3][1] << ", " << setw(10) << t[3][2] << ", " << setw(10) << t[3][3] << "]" << endl;
-}
 
 /*
 
@@ -131,9 +119,9 @@ vector<float> flour = {
     -3.f,-3.f, 0.f,   .3f, .6f, .1f,
      3.f,-3.f, 0.f,   .3f, .6f, .1f,
 }, boxHead = {
-    -3.f, 3.f, 0.f,   .3f, .6f, .8f,
-     3.f, 3.f, 0.f,   .3f, .6f, .4f,
-    -3.f,-3.f, 0.f,   .3f, .6f, .8f,
+    -3.f,  0.f, 0.f,   .3f, .6f, .8f,
+     3.f,  0.f, 0.f,   .3f, .6f, .4f,
+     0.f, 15.f, 0.f,   1.f, 1.f, 1.f,
 }, bg = {
     -100.f, 40.f, 0.f,   .7f, .7f, .7f,
      100.f, 40.f, 0.f,   .7f, .7f, .7f,
@@ -151,8 +139,8 @@ vector<ushort> flourInd = {
     0, 2, 1,   3, 1, 2,
 };
 
-float width = 400.f, height = 240.f;
-// float width = 800.f, height = 480.f;
+float w = 400.f, h = 240.f, m = 3.f;
+float width = w * m, height = h * m;
 
 GLuint
     shader = 0,
@@ -257,10 +245,10 @@ void init(){
     indexes[BoxHead]   = boxHeadInd.size();
     indexes[Bg]        = bgInd.size();
 
-    models[Box]        = glm::translate(models[Box],     vec3(0.f, 30.f, 0.f));
-    models[BoxHead]    = glm::translate(models[BoxHead], vec3(0.f, 3.f, 0.f));
-    models[Flour]      = glm::translate(models[Flour],   vec3(0.f, -40.f, 0.f));
-    models[Bg]         = glm::translate(models[Bg],      vec3(0.f, 0.f, -1.f));
+    models[Box]        = glm::translate(models[Box],     vec3(0.f,  30.f,  0.f));
+    models[BoxHead]    = glm::translate(models[BoxHead], vec3(0.f,  3.0f,  0.f));
+    models[Flour]      = glm::translate(models[Flour],   vec3(0.f, -40.f,  0.f));
+    models[Bg]         = glm::translate(models[Bg],      vec3(0.f,   0.f, -1.f));
 }
 
 void reshape(int w, int h) {
@@ -268,17 +256,17 @@ void reshape(int w, int h) {
 
     proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
 //    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
-    view = glm::lookAt<float>(vec3(40.f, 40.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
 void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
 
     if (parentsModels.empty()) {
-        glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(models[obj]));
+        glUniformMatrix4fv(uModel, 1, GL_FALSE, &models[obj][0][0]);
     } else {
         auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
         m = m * models[obj];
-        glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(m));
+        glUniformMatrix4fv(uModel, 1, GL_FALSE, &m[0][0]);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
@@ -303,8 +291,8 @@ void display(void) {
 
     glUseProgram(shader);
 
-    glUniformMatrix4fv(uProjection, 1, GL_FALSE, value_ptr(proj));
-    glUniformMatrix4fv(uView,       1, GL_FALSE, value_ptr(view));
+    glUniformMatrix4fv(uProjection, 1, GL_FALSE, &proj[0][0]);
+    glUniformMatrix4fv(uView,       1, GL_FALSE, &view[0][0]);
 
     models[Box] = glm::rotate(models[Box], .03f, vec3(0.f, 0.f, 1.f));
 
@@ -336,14 +324,4 @@ void deinit(){
     glDeleteProgram(shader);
 }
 
-void glError()
-{
-    GLenum error;
-    if ((error = glGetError()) != GL_NO_ERROR) {
-        stringstream s;
-        s << "glGetError: " << hex << error << gluErrorString(error);
-        string res = s.str();
-        throw runtime_error(res);
-    }
-}
 
