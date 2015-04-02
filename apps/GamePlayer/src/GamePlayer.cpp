@@ -68,16 +68,17 @@ bool createGameDirect(const variables_map& vm) {
     int width = 800, height = 480, depth = height;
     float div = 2.f;
 
-    auto proj = ortho(
-            -width/div,  width/div,
-            -height/div, height/div,
-            -depth/div,  depth/div);
-//    auto proj = perspective<float>(45.f, 800.f / 480.f, 10.f, 10000.f);
+//    auto proj = ortho(
+//            -width/div,  width/div,
+//            -height/div, height/div,
+//            -depth/div,  depth/div);
+    auto proj = perspective<float>(45.f, 800.f / 480.f, 10.f, 10000.f);
 
 //    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, depth/div - 1.f), vec3(0.f, 1.f, 0.f));
 
-    float a1 = 70.f * M_PI / 180.f;
-    float b1 = depth/div - 1.f;
+    float a1 = 90.f * M_PI / 180.f;
+//    float b1 = depth/div - 1.f;
+    float b1 = 500.f;
 
     float k1 = b1 * cos(a1);
     float k2 = b1 * sin(a1);
@@ -105,6 +106,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(bgShape.get())
         ->setVisible(true)
         ->scale(.3f, .3f)
+        ->translateZ(-1.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
@@ -122,7 +124,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(flourShape.get())
         ->setVisible(true)
         ->scale(.8f, .8f)
-        ->translate(0.f, -190.f, 100.f)
+        ->translate(0.f, -190.f, 0.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
@@ -138,7 +140,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(boxShape.get())
         ->setController(boxController.get())
         ->setVisible(true)
-        ->translate(0.f, 150.f, 100.f)
+        ->translate(0.f, 150.f, 0.f)
         ->scale(.1f, .1f)
         ->setParent(rootNode.get())
     ;

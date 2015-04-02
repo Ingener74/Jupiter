@@ -31,20 +31,25 @@ void RenderVisitor::visit(Sprite* sprite) {
 
     shader->use();
 
-    auto uniformTexture = shader->getUniform("uTEX");
+    auto uniformTexture = shader->getUniform("Texture");
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
     uniformTexture.set(0);          // texture unit not texture id
 
-    auto position = shader->getAttribute("aPOS");
+    auto position = shader->getAttribute("VertexPosition");
     position.set(sprite->getShape());
 
-    auto textureCoords = shader->getAttribute("aTEX");
+    auto textureCoords = shader->getAttribute("VertexTexCoord");
     textureCoords.set(sprite->getShape());
 
-    auto uniformMVP = shader->getUniform("uMVP");
-    mat4 mvp = projection * view * sprite->getModel();
-    uniformMVP.set(mvp);
+    auto uniformProjection = shader->getUniform("Projection");
+    uniformProjection.set(projection);
+
+    auto uniformView = shader->getUniform("View");
+    uniformView.set(view);
+
+    auto uniformModel = shader->getUniform("Model");
+    uniformModel.set(sprite->getModel());
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
