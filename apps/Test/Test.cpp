@@ -306,6 +306,8 @@ void display(void) {
     glUniformMatrix4fv(uProjection, 1, GL_FALSE, value_ptr(proj));
     glUniformMatrix4fv(uView,       1, GL_FALSE, value_ptr(view));
 
+    models[Box] = glm::rotate(models[Box], .03f, vec3(0.f, 0.f, 1.f));
+
     drawObj(Bg,        BgInd);
     drawObj(Flour,     FlourInd);
     drawObj(Box,       BoxInd);
