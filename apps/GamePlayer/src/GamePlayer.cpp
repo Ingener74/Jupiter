@@ -68,11 +68,11 @@ bool createGameDirect(const variables_map& vm) {
     int width = 800, height = 480, depth = height;
     float div = 2.f;
 
-//    auto proj = ortho(
-//            -width/div,  width/div,
-//            -height/div, height/div,
-//            -depth/div,  depth/div);
-    auto proj = perspective<float>(45.f, 800.f / 480.f, 10.f, 10000.f);
+    auto proj = ortho(
+            -width/div,  width/div,
+            -height/div, height/div,
+            -depth/div,  depth/div);
+//    auto proj = perspective<float>(45.f, 800.f / 480.f, 10.f, 10000.f);
 
 //    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, depth/div - 1.f), vec3(0.f, 1.f, 0.f));
 

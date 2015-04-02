@@ -5,6 +5,7 @@
  *      Author: ingener
  */
 
+#include <iomanip>
 #include <array>
 #include <vector>
 #include <sstream>
@@ -33,6 +34,17 @@ void mouse(int button, int action, int x, int y);
 void mouseMove(int x, int y);
 void timer(int time);
 void glError();
+
+ostream& operator<<(ostream& out, const mat4& r){
+
+    auto t = r;
+
+    return out << endl << "[" <<
+        setw(10) << t[0][0] << ", " << setw(10) << t[0][1] << ", " << setw(10) << t[0][2] << ", " << setw(10) << t[0][3] << "; " << endl <<
+        setw(10) << t[1][0] << ", " << setw(10) << t[1][1] << ", " << setw(10) << t[1][2] << ", " << setw(10) << t[1][3] << "; " << endl <<
+        setw(10) << t[2][0] << ", " << setw(10) << t[2][1] << ", " << setw(10) << t[2][2] << ", " << setw(10) << t[2][3] << "; " << endl <<
+        setw(10) << t[3][0] << ", " << setw(10) << t[3][1] << ", " << setw(10) << t[3][2] << ", " << setw(10) << t[3][3] << "]"  << endl;
+}
 
 /*
 
@@ -76,14 +88,12 @@ string vs = R"(
 attribute vec4 vertex;
 attribute vec4 color;
 
-// uniform   mat4 projection, view, model;
-uniform   mat4 projection, model;
+uniform   mat4 projection, view, model;
 
 varying vec4 vcolor;
 
 void main(){
-    // gl_Position = projection * view * model * vertex;
-    gl_Position = projection * model * vertex;
+    gl_Position = projection * view * model * vertex;
     vcolor = color;
 }
 
@@ -138,6 +148,7 @@ vector<ushort> flourInd = {
 };
 
 float width = 400.f, height = 240.f;
+// float width = 800.f, height = 480.f;
 
 GLuint
     shader = 0,
@@ -232,12 +243,24 @@ void init(){
     models[Bg] = glm::translate(models[Bg], vec3(0.f, 0.f, -1.f));
 }
 
-void deinit(){
-    glDeleteBuffers(End, VBOs);
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+
+//    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
+
+    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
+    view = glm::lookAt<float>(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, -50.f), vec3(0.f, 1.f, 0.f));
+
+    cout << "proj " << proj << endl;
+    cout << "view " << view << endl;
 }
 
 void drawObj(int obj, int objInd) {
+
+    auto vm = view * models[obj];
+
     glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(models[obj]));
+//    glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(vm));
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
 
@@ -264,26 +287,12 @@ void display(void) {
     glUniformMatrix4fv(uProjection, 1, GL_FALSE, value_ptr(proj));
     glUniformMatrix4fv(uView,       1, GL_FALSE, value_ptr(view));
 
-    drawObj(Bg, BgInd);
+    drawObj(Bg,    BgInd);
     drawObj(Flour, FlourInd);
-    drawObj(Box, BoxInd);
+    drawObj(Box,   BoxInd);
 
     glFlush();
     glutSwapBuffers();
-}
-
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
-
-//    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
-    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
-    view = glm::lookAt<float>(vec3(0.f, 0.f, 0.f), vec3(0.f, 50.f, 0.f), vec3(0.f, 1.f, 0.f));
-}
-
-void mouse(int button, int action, int x, int y) {
-}
-
-void mouseMove(int x, int y) {
 }
 
 void timer(int time) {
@@ -292,6 +301,17 @@ void timer(int time) {
 
     int delay = 1000 / 30;
     glutTimerFunc(delay, timer, 0);
+}
+
+void mouse(int button, int action, int x, int y) {
+}
+
+void mouseMove(int x, int y) {
+}
+
+void deinit(){
+    glDeleteBuffers(End, VBOs);
+    glDeleteProgram(shader);
 }
 
 void glError()
