@@ -5,6 +5,7 @@
  *      Author: ingener
  */
 
+#include <numeric>
 #include <iomanip>
 #include <array>
 #include <vector>
@@ -129,6 +130,10 @@ vector<float> flour = {
      3.f, 3.f, 0.f,   .3f, .6f, .1f,
     -3.f,-3.f, 0.f,   .3f, .6f, .1f,
      3.f,-3.f, 0.f,   .3f, .6f, .1f,
+}, boxHead = {
+    -3.f, 3.f, 0.f,   .3f, .6f, .8f,
+     3.f, 3.f, 0.f,   .3f, .6f, .4f,
+    -3.f,-3.f, 0.f,   .3f, .6f, .8f,
 }, bg = {
     -100.f, 40.f, 0.f,   .7f, .7f, .7f,
      100.f, 40.f, 0.f,   .7f, .7f, .7f,
@@ -140,6 +145,8 @@ vector<ushort> flourInd = {
     0, 2, 1,   3, 1, 2,
 }, boxInd = {
     0, 2, 1,   3, 1, 2,
+}, boxHeadInd = {
+    0, 2, 1,
 }, bgInd = {
     0, 2, 1,   3, 1, 2,
 };
@@ -158,16 +165,17 @@ GLuint
 enum Objects{
     Flour,
     Box,
+    BoxHead,
     Bg,
 
     FlourInd,
     BoxInd,
+    BoxHeadInd,
     BgInd,
 
     End
 };
 GLuint VBOs[End];
-
 mat4 models[End];
 
 mat4 proj, view;
@@ -225,6 +233,9 @@ void init(){
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Box]);
     glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), box.data(), GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[BoxHead]);
+    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), boxHead.data(), GL_STATIC_DRAW);
+
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Bg]);
     glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), bg.data(), GL_STATIC_DRAW);
 
@@ -234,10 +245,14 @@ void init(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BoxInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), boxInd.data(), GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BoxHeadInd]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), boxHeadInd.data(), GL_STATIC_DRAW);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BgInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), bgInd.data(), GL_STATIC_DRAW);
 
     models[Box] = glm::translate(models[Box], vec3(0.f, 30.f, 0.f));
+    models[BoxHead] = glm::translate(models[BoxHead], vec3(0.f, 3.f, 0.f));
     models[Flour] = glm::translate(models[Flour], vec3(0.f, -40.f, 0.f));
     models[Bg] = glm::translate(models[Bg], vec3(0.f, 0.f, -1.f));
 }
@@ -250,9 +265,15 @@ void reshape(int w, int h) {
     view = glm::lookAt<float>(vec3(40.f, 40.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
-void drawObj(int obj, int objInd) {
+void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
 
-    glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(models[obj]));
+    if (parentsModels.empty()) {
+        glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(models[obj]));
+    } else {
+        auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
+        m = m * models[obj];
+        glUniformMatrix4fv(uModel, 1, GL_FALSE, value_ptr(m));
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
 
@@ -279,9 +300,10 @@ void display(void) {
     glUniformMatrix4fv(uProjection, 1, GL_FALSE, value_ptr(proj));
     glUniformMatrix4fv(uView,       1, GL_FALSE, value_ptr(view));
 
-    drawObj(Bg,    BgInd);
-    drawObj(Flour, FlourInd);
-    drawObj(Box,   BoxInd);
+    drawObj(Bg,        BgInd);
+    drawObj(Flour,     FlourInd);
+    drawObj(Box,       BoxInd);
+    drawObj(BoxHead,   BoxHeadInd, {models[Box]});
 
     glFlush();
     glutSwapBuffers();
