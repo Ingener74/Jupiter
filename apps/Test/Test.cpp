@@ -190,17 +190,20 @@ enum Objects{
     Box,
     BoxHead,
     Bg,
+    TBox,
 
     FlourInd,
     BoxInd,
     BoxHeadInd,
     BgInd,
+    TBoxInd,
 
     End
 };
 GLuint VBOs[End];
 size_t indexes[End];
 mat4 models[End];
+GLuint Textures[End];
 
 mat4 proj, view;
 
@@ -295,8 +298,17 @@ void init(){
     if(imageFileName.empty())
         throw runtime_error("image file name is empty");
 
-//    vector<unsigned char> data;
-//    lodepng::decode()
+    vector<uint8_t> data;
+    uint32_t w, h;
+    auto error = lodepng::decode(data, w, h, imageFileName, LCT_RGBA);
+    if (error)
+        throw runtime_error(lodepng_error_text(error));
+//    cout << w << " x " << h << " " << data.size() << endl;
+
+    glGenTextures(End, Textures);
+
+    glBindTexture(GL_TEXTURE_2D, Textures[TBox]);
+//    glTexImage2D(GL_TEXTURE_2D, 0, )
 
     indexes[Flour]     = flourInd.size();
     indexes[Box]       = boxInd.size();
@@ -380,6 +392,7 @@ void deinit(){
     glDeleteBuffers(End, VBOs);
     glDeleteProgram(cs.shader);
     glDeleteProgram(ts.shader);
+    glDeleteTextures(End, Textures);
 }
 
 
