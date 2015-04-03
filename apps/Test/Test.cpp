@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+#include <cstddef>
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -72,10 +73,10 @@ void main(){
 
 string vs = R"(
 
+uniform   mat4 projection, view, model;
+
 attribute vec4 vertex;
 attribute vec4 color;
-
-uniform   mat4 projection, view, model;
 
 varying vec4 vcolor;
 
@@ -104,29 +105,33 @@ void main(){
  *   X                       X
  */
 
-struct Vertex{
+struct VertexPositionColor{
     vec3 pos, rgb;
 };
 
-vector<float> flour = {
-    -35.f, 9.f, 0.f,   .5f, .4f, .1f,
-     35.f, 9.f, 0.f,   .5f, .4f, .1f,
-    -35.f,-9.f, 0.f,   .5f, .4f, .1f,
-     35.f,-9.f, 0.f,   .5f, .4f, .1f,
+struct VertexPositionTexCoord {
+    vec3 pos, tc;
+};
+
+vector<VertexPositionColor> flour = {
+    {{-35.f, 9.f, 0.f}, {.5f, .4f, .1f}},
+    {{ 35.f, 9.f, 0.f}, {.5f, .4f, .1f}},
+    {{-35.f,-9.f, 0.f}, {.5f, .4f, .1f}},
+    {{ 35.f,-9.f, 0.f}, {.5f, .4f, .1f}},
 }, box = {
-    -3.f, 3.f, 0.f,   .3f, .6f, .1f,
-     3.f, 3.f, 0.f,   .3f, .6f, .1f,
-    -3.f,-3.f, 0.f,   .3f, .6f, .1f,
-     3.f,-3.f, 0.f,   .3f, .6f, .1f,
+    {{-3.f, 3.f, 0.f},   {.3f, .6f, .1f}},
+    {{ 3.f, 3.f, 0.f},   {.3f, .6f, .1f}},
+    {{-3.f,-3.f, 0.f},   {.3f, .6f, .1f}},
+    {{ 3.f,-3.f, 0.f},   {.3f, .6f, .1f}},
 }, boxHead = {
-    -3.f,  0.f, 0.f,   .3f, .6f, .8f,
-     3.f,  0.f, 0.f,   .3f, .6f, .4f,
-     0.f, 15.f, 0.f,   1.f, 1.f, 1.f,
+    {{-3.f,  0.f, 0.f},   {.3f, .6f, .8f}},
+    {{ 3.f,  0.f, 0.f},   {.3f, .6f, .4f}},
+    {{ 0.f, 15.f, 0.f},   {1.f, 1.f, 1.f}},
 }, bg = {
-    -100.f, 40.f, 0.f,   .7f, .7f, .7f,
-     100.f, 40.f, 0.f,   .7f, .7f, .7f,
-    -100.f,-40.f, 0.f,   .7f, .7f, .7f,
-     100.f,-40.f, 0.f,   .7f, .7f, .7f,
+    {{-100.f, 40.f, 0.f}, {.7f, .7f, .7f}},
+    {{ 100.f, 40.f, 0.f}, {.7f, .7f, .7f}},
+    {{-100.f,-40.f, 0.f}, {.7f, .7f, .7f}},
+    {{ 100.f,-40.f, 0.f}, {.7f, .7f, .7f}},
 };
 
 vector<ushort> flourInd = {
@@ -171,8 +176,6 @@ mat4 proj, view;
 
 int main(int argc, char **argv) {
     try {
-        cout << "test " << sizeof(Vertex) << " " << sizeof(float) * 6 << endl;
-
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
@@ -217,16 +220,16 @@ void init(){
     glGenBuffers(End, VBOs);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Flour]);
-    glBufferData(GL_ARRAY_BUFFER, flour.size() * sizeof(float), flour.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, flour.size() * sizeof(VertexPositionColor), &flour.front().pos.x, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Box]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), box.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &box.front().pos.x, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[BoxHead]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), boxHead.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &boxHead.front().pos.x, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Bg]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(float), bg.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &bg.front().pos.x, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[FlourInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, flourInd.size() * sizeof(ushort), flourInd.data(), GL_STATIC_DRAW);
@@ -272,10 +275,9 @@ void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
 
     glEnableVertexAttribArray(aVertex);
-    glVertexAttribPointer(aVertex, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0));
-
+    glVertexAttribPointer(aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos.x));
     glEnableVertexAttribArray(aColor);
-    glVertexAttribPointer(aColor, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (0 + 3 * sizeof(float)));
+    glVertexAttribPointer(aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb.r));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
 
