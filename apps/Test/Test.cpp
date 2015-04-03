@@ -20,6 +20,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "lodepng.h"
+
 #include "Shaders.h"
 #include "Tools.h"
 
@@ -71,7 +73,7 @@ void main(){
 
 */
 
-string vs = R"(
+string coloredSpriteVertex = R"(
 
 uniform   mat4 projection, view, model;
 
@@ -85,12 +87,36 @@ void main(){
     vcolor = color;
 }
 
-)", fs = R"(
+)", coloredSpriteFragment = R"(
 
 varying vec4 vcolor;
 
 void main(){
     gl_FragColor = vcolor;
+}
+
+)", texturedSpriteVertex = R"(
+
+uniform   mat4 projection, view, model;
+
+attribute vec4 vertex;
+attribute vec2 texcoord;
+
+varying vec2 vtexcoord;
+
+void main(){
+    gl_Position = projection * view * model * vertex;
+    vtexcoord = texcoord;
+}
+
+)", texturedSpriteFragment = R"(
+
+varying vec2 vtexcoord;
+
+uniform sampler2D texture;
+
+void main(){
+    gl_FragColor = texture2D(texture, vtexcoord);
 }
 
 )";
@@ -147,13 +173,17 @@ vector<ushort> flourInd = {
 float w = 400.f, h = 240.f, m = 1.f;
 float width = w * m, height = h * m;
 
-GLuint
-    shader = 0,
-    aVertex = 0,
-    aColor = 0,
-    uProjection = 0,
-    uView = 0,
-    uModel = 0;
+class ColoredShader {
+public:
+    GLuint shader = 0, aVertex = 0, aColor = 0, uProjection = 0, uView = 0, uModel = 0;
+};
+ColoredShader cs;
+
+class TexturedShader{
+public:
+    GLuint shader = 0, aVertex = 0, aTexCoord = 0, uProjection = 0, uView = 0, uModel = 0;
+};
+TexturedShader ts;
 
 enum Objects{
     Flour,
@@ -174,8 +204,15 @@ mat4 models[End];
 
 mat4 proj, view;
 
+string imageFileName;
+
 int main(int argc, char **argv) {
     try {
+        if(argc < 2)
+            throw invalid_argument("usage: ./Test <path-to-image-file>/image.png");
+
+        imageFileName = argv[1];
+
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
@@ -208,14 +245,26 @@ int main(int argc, char **argv) {
 }
 
 void init(){
-    shader = createProgram(vs, fs);
+    {
+        cs.shader = createProgram(coloredSpriteVertex, coloredSpriteFragment);
 
-    uProjection = glGetUniformLocation(shader, "projection");
-    uView       = glGetUniformLocation(shader, "view");
-    uModel      = glGetUniformLocation(shader, "model");
+        cs.uProjection = glGetUniformLocation(cs.shader, "projection");
+        cs.uView       = glGetUniformLocation(cs.shader, "view");
+        cs.uModel      = glGetUniformLocation(cs.shader, "model");
 
-    aVertex     = glGetAttribLocation(shader, "vertex");
-    aColor      = glGetAttribLocation(shader, "color");
+        cs.aVertex     = glGetAttribLocation(cs.shader, "vertex");
+        cs.aColor      = glGetAttribLocation(cs.shader, "color");
+    }
+    {
+        ts.shader = createProgram(texturedSpriteVertex, texturedSpriteFragment);
+
+        ts.uProjection = glGetUniformLocation(cs.shader, "projection");
+        ts.uView       = glGetUniformLocation(cs.shader, "view");
+        ts.uModel      = glGetUniformLocation(cs.shader, "model");
+
+        ts.aVertex     = glGetAttribLocation(cs.shader, "vertex");
+        ts.aTexCoord   = glGetAttribLocation(cs.shader, "texcoord");
+    }
 
     glGenBuffers(End, VBOs);
 
@@ -243,6 +292,12 @@ void init(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BgInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), bgInd.data(), GL_STATIC_DRAW);
 
+    if(imageFileName.empty())
+        throw runtime_error("image file name is empty");
+
+//    vector<unsigned char> data;
+//    lodepng::decode()
+
     indexes[Flour]     = flourInd.size();
     indexes[Box]       = boxInd.size();
     indexes[BoxHead]   = boxHeadInd.size();
@@ -265,36 +320,36 @@ void reshape(int w, int h) {
 void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
 
     if (parentsModels.empty()) {
-        glUniformMatrix4fv(uModel, 1, GL_FALSE, &models[obj][0][0]);
+        glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &models[obj][0][0]);
     } else {
         auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
         m = m * models[obj];
-        glUniformMatrix4fv(uModel, 1, GL_FALSE, &m[0][0]);
+        glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &m[0][0]);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
 
-    glEnableVertexAttribArray(aVertex);
-    glVertexAttribPointer(aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos.x));
-    glEnableVertexAttribArray(aColor);
-    glVertexAttribPointer(aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb.r));
+    glEnableVertexAttribArray(cs.aVertex);
+    glVertexAttribPointer(cs.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
+    glEnableVertexAttribArray(cs.aColor);
+    glVertexAttribPointer(cs.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
 
     glDrawElements(GL_TRIANGLES, indexes[obj], GL_UNSIGNED_SHORT, 0);
 
-    glDisableVertexAttribArray(aVertex);
-    glDisableVertexAttribArray(aColor);
+    glDisableVertexAttribArray(cs.aVertex);
+    glDisableVertexAttribArray(cs.aColor);
 }
 
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
 
-    glUseProgram(shader);
+    glUseProgram(cs.shader);
 
-    glUniformMatrix4fv(uProjection, 1, GL_FALSE, &proj[0][0]);
-    glUniformMatrix4fv(uView,       1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(cs.uProjection, 1, GL_FALSE, &proj[0][0]);
+    glUniformMatrix4fv(cs.uView,       1, GL_FALSE, &view[0][0]);
 
     models[Box] = glm::rotate(models[Box], .03f, vec3(0.f, 0.f, 1.f));
 
@@ -323,7 +378,8 @@ void mouseMove(int x, int y) {
 
 void deinit(){
     glDeleteBuffers(End, VBOs);
-    glDeleteProgram(shader);
+    glDeleteProgram(cs.shader);
+    glDeleteProgram(ts.shader);
 }
 
 
