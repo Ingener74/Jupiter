@@ -59,8 +59,6 @@ void RenderVisitor::visit(Sprite* sprite) {
     };
 
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
-
-    CHECK_GL_ERROR
 }
 
 void RenderVisitor::end() {

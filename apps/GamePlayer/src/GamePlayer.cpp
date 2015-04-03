@@ -33,7 +33,8 @@ string title =R"(Jupiter Game Player)";
 
 unique_ptr<Game> game;
 
-unique_ptr<BufferFactory>   bufferFactory;
+//unique_ptr<BufferFactory>   bufferFactory;
+LinuxFileFactory            bufferFactory;
 
 unique_ptr<RenderVisitor>   render;
 unique_ptr<NodeVisitor>     physics;
@@ -61,29 +62,23 @@ bool createGameDirect(const variables_map& vm) {
     if (!vm.count("base"))
         throw runtime_error("base directory is invalid");
 
-    bufferFactory = make_unique_<LinuxFileFactory>();
-    File::setBufferFactory(bufferFactory.get());
+//    bufferFactory = make_unique_<LinuxFileFactory>();
+//    File::setBufferFactory(bufferFactory.get());
+
+    File::setBufferFactory(&bufferFactory);
     File::setBase(vm["base"].as<string>());
 
-    int width = 800, height = 480, depth = height;
+    float width = 800, height = 480, depth = height;
     float div = 2.f;
 
 //    auto proj = ortho(
 //            -width/div,  width/div,
 //            -height/div, height/div,
 //            -depth/div,  depth/div);
-    auto proj = perspective<float>(45.f, 800.f / 480.f, 10.f, 10000.f);
 
-//    auto view = lookAt(vec3(0.f, 0.f, 0.f), vec3(0.f, 0.f, depth/div - 1.f), vec3(0.f, 1.f, 0.f));
+    auto proj = perspective<float>(45.f, width / height, 10.f, 10000.f);
 
-    float a1 = 90.f * M_PI / 180.f;
-//    float b1 = depth/div - 1.f;
-    float b1 = 500.f;
-
-    float k1 = b1 * cos(a1);
-    float k2 = b1 * sin(a1);
-
-    auto view = lookAt(vec3(k1, 0.f, k2), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    auto view = lookAt(vec3(300.f, 0.f, 600.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 
     render = make_unique_<RenderVisitor>(proj, view);
 
@@ -106,13 +101,13 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(bgShape.get())
         ->setVisible(true)
         ->scale(.3f, .3f)
-        ->translateZ(-1.f)
+        ->translateZ(-10.f)
         ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
 
-//    PngImage flourImage { "Resources/ground.png" };
-    PngImage flourImage { "Resources/ground_grass.png" };
+    PngImage flourImage { "Resources/ground.png" };
+//    PngImage flourImage { "Resources/ground_grass.png" };
 
     flourTexture = make_unique_<ImageTexture>(&flourImage);
     flourShape = make_unique_<ImageShape>(&flourImage);
@@ -123,9 +118,9 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(flourTexture.get())
         ->setShape(flourShape.get())
         ->setVisible(true)
-        ->scale(.8f, .8f)
-        ->translate(0.f, -190.f, 0.f)
-        ->rotateZ(M_PI)
+//        ->scale(.8f, .8f)
+//        ->translate(0.f, -190.f, 200.f)
+//        ->rotateZ(M_PI)
         ->setParent(rootNode.get())
     ;
 
@@ -140,7 +135,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(boxShape.get())
         ->setController(boxController.get())
         ->setVisible(true)
-        ->translate(0.f, 150.f, 0.f)
+        ->translate(0.f, 150.f, 200.f)
         ->scale(.1f, .1f)
         ->setParent(rootNode.get())
     ;
@@ -172,8 +167,10 @@ bool createGameJsonFile(const variables_map& vm) {
 
     path gameFile = vm["game"].as<string>();
 
-    bufferFactory = make_unique_<LinuxFileFactory>();
-    File::setBufferFactory(bufferFactory.get());
+//    bufferFactory = make_unique_<LinuxFileFactory>();
+//    File::setBufferFactory(bufferFactory.get());
+
+    File::setBufferFactory(&bufferFactory);
     File::setBase(gameFile.parent_path().native());
 
     game = make_unique_<JsonGame>(gameFile.filename().native());
@@ -219,6 +216,9 @@ void draw() {
 
     box->translateY(-.5f);
     flour->translateY(-.5f);
+
+    bg->rotateZ(0.05f);
+    bg->translateZ(-1.f);
 
     game->draw();
 }

@@ -20,7 +20,7 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-ImageShape::ImageShape(Image* image, float z) {
+ImageShape::ImageShape(Image* image) {
 
     /*
      * -w/2                  w/2
@@ -38,6 +38,8 @@ ImageShape::ImageShape(Image* image, float z) {
 
     float h = image->getHeight(), w = image->getWidth();
     float l = Tools::upperPowerOfTwo(std::max(h, w));
+
+    float z = 0.f;
 
     vec3
     p0{-w/2,  h/2, z},
@@ -62,7 +64,7 @@ ImageShape::ImageShape(Image* image, float z) {
         p3.x, p3.y, p3.z,  t3.x, t3.y,
     };
 
-    components = { {"aPOS", {3, &data[0]}}, {"aTEX", {2, &data[3]}}};
+    components = { {"VertexPosition", {3, &data[0]}}, {"VertexTexCoord", {2, &data[3]}}};
 
     vertexCount = 6;
     stride = 5 * sizeof(float);
