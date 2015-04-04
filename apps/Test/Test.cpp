@@ -5,6 +5,7 @@
  *      Author: ingener
  */
 
+#include <map>
 #include <numeric>
 #include <array>
 #include <vector>
@@ -34,7 +35,10 @@ void mouse(int button, int action, int x, int y);
 void mouseMove(int x, int y);
 void timer(int time);
 
+void shaderInfo(GLuint shader);
+
 /*
+}
 
 // vertex shader
 
@@ -167,7 +171,8 @@ vector<VertexPositionTexCoord> tBox = {
 };
 
 vector<ushort> flourInd = {
-    0, 2, 1,   3, 1, 2,
+    0, 2, 1,   3
+//    0, 2, 1,   3, 1, 2,
 }, boxInd = {
     0, 2, 1,   3, 1, 2,
 }, boxHeadInd = {
@@ -265,6 +270,9 @@ void init(){
 
         cs.aVertex     = glGetAttribLocation(cs.shader, "vertex");
         cs.aColor      = glGetAttribLocation(cs.shader, "color");
+
+        cout << "colored sprite" << endl;
+        shaderInfo(cs.shader);
     }
     {
         ts.shader = createProgram(texturedSpriteVertex, texturedSpriteFragment);
@@ -277,6 +285,9 @@ void init(){
 
         ts.aVertex     = glGetAttribLocation(ts.shader, "vertex");
         ts.aTexCoord   = glGetAttribLocation(ts.shader, "texcoord");
+
+        cout << "textured sprite" << endl;
+        shaderInfo(ts.shader);
     }
 
     glGenBuffers(End, VBOs);
@@ -337,7 +348,7 @@ void reshape(int w, int h) {
     view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
-void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
+void drawObj(int obj, int objInd, GLenum mode = GL_TRIANGLES, const vector<mat4>& parentsModels = {}) {
 
     if (parentsModels.empty()) {
         glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &models[obj][0][0]);
@@ -356,7 +367,7 @@ void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
 
-    glDrawElements(GL_TRIANGLES, indexes[obj], GL_UNSIGNED_SHORT, 0);
+    glDrawElements(mode, indexes[obj], GL_UNSIGNED_SHORT, 0);
 
     glDisableVertexAttribArray(cs.aVertex);
     glDisableVertexAttribArray(cs.aColor);
@@ -405,9 +416,9 @@ void display(void) {
     models[Box] = glm::rotate(models[Box], .03f, vec3(0.f, 0.f, 1.f));
 
     drawObj(Bg,        BgInd);
-    drawObj(Flour,     FlourInd);
+    drawObj(Flour,     FlourInd, GL_TRIANGLE_STRIP);
     drawObj(Box,       BoxInd);
-    drawObj(BoxHead,   BoxHeadInd, {models[Box]});
+    drawObj(BoxHead,   BoxHeadInd, GL_TRIANGLES, {models[Box]});
 
     glUseProgram(ts.shader);
 
@@ -443,4 +454,66 @@ void deinit(){
             glDeleteTextures(1, &i.textureId);
 }
 
+void shaderInfo(GLuint shader){
 
+    static map<int, string> types = {
+        {GL_FLOAT        , "GL_FLOAT       "},
+        {GL_FLOAT_VEC2   , "GL_FLOAT_VEC2  "},
+        {GL_FLOAT_VEC3   , "GL_FLOAT_VEC3  "},
+        {GL_FLOAT_VEC4   , "GL_FLOAT_VEC4  "},
+        {GL_FLOAT_MAT2   , "GL_FLOAT_MAT2  "},
+        {GL_FLOAT_MAT3   , "GL_FLOAT_MAT3  "},
+        {GL_FLOAT_MAT4   , "GL_FLOAT_MAT4  "},
+        {GL_FLOAT_MAT2x3 , "GL_FLOAT_MAT2x3"},
+        {GL_FLOAT_MAT2x4 , "GL_FLOAT_MAT2x4"},
+        {GL_FLOAT_MAT3x2 , "GL_FLOAT_MAT3x2"},
+        {GL_FLOAT_MAT3x4 , "GL_FLOAT_MAT3x4"},
+        {GL_FLOAT_MAT4x2 , "GL_FLOAT_MAT4x2"},
+        {GL_FLOAT_MAT4x3 , "GL_FLOAT_MAT4x3"},
+        {GL_INT          , "GL_INT         "},
+        {GL_INT_VEC2     , "GL_INT_VEC2    "},
+        {GL_INT_VEC3     , "GL_INT_VEC3    "},
+        {GL_INT_VEC4     , "GL_INT_VEC4    "},
+        {GL_BOOL         , "GL_BOOL        "},
+        {GL_BOOL_VEC2    , "GL_BOOL_VEC2   "},
+        {GL_BOOL_VEC3    , "GL_BOOL_VEC3   "},
+        {GL_BOOL_VEC4    , "GL_BOOL_VEC4   "},
+        {GL_SAMPLER_2D   , "GL_SAMPLER_2D  "},
+        {GL_SAMPLER_CUBE , "GL_SAMPLER_CUBE"},
+    };
+
+    GLint activeAttributes = 0;
+    glGetProgramiv(shader, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+    cout << "activeAttributes " << activeAttributes << endl;
+
+    for (GLint i = 0; i < activeAttributes; ++i) {
+
+        const GLsizei bufferSize = 100;
+
+        GLsizei lenght = 0;
+        GLint size = 0;
+        GLenum type = 0;
+        GLchar name[bufferSize];
+
+        glGetActiveAttrib(shader, i, bufferSize, &lenght, &size, &type, name);
+
+        cout << lenght << " " << size << " " << types[type] << " " << name << endl;
+    }
+
+    GLint activeUniforms = 0;
+    glGetProgramiv(shader, GL_ACTIVE_UNIFORMS, &activeUniforms);
+    cout << "activeUniforms " << activeUniforms << endl;
+
+    for (GLint i = 0; i < activeUniforms; ++i) {
+        const GLsizei bufferSize = 100;
+
+        GLsizei lenght = 0;
+        GLint size = 0;
+        GLenum type = 0;
+        GLchar name[bufferSize];
+
+        glGetActiveUniform(shader, i, bufferSize, &lenght, &size, &type, name);
+
+        cout << lenght << " " << size << " " << types[type] << " " << name << endl;
+    }
+}
