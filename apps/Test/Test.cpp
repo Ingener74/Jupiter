@@ -20,8 +20,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "lodepng.h"
-
 #include "Shaders.h"
 #include "Tools.h"
 
@@ -136,7 +134,8 @@ struct VertexPositionColor{
 };
 
 struct VertexPositionTexCoord {
-    vec3 pos, tc;
+    vec3 pos;
+    vec2 tc;
 };
 
 vector<VertexPositionColor> flour = {
@@ -160,6 +159,13 @@ vector<VertexPositionColor> flour = {
     {{ 100.f,-40.f, 0.f}, {.7f, .7f, .7f}},
 };
 
+vector<VertexPositionTexCoord> tBox = {
+        {{-10.f, 10.f, 0.f},   {0.f, 0.f}},
+        {{ 10.f, 10.f, 0.f},   {1.f, 0.f}},
+        {{-10.f,-10.f, 0.f},   {0.f, 1.f}},
+        {{ 10.f,-10.f, 0.f},   {1.f, 1.f}},
+};
+
 vector<ushort> flourInd = {
     0, 2, 1,   3, 1, 2,
 }, boxInd = {
@@ -168,9 +174,11 @@ vector<ushort> flourInd = {
     0, 2, 1,
 }, bgInd = {
     0, 2, 1,   3, 1, 2,
+}, tBoxInd = {
+    0, 2, 1,   3, 1, 2,
 };
 
-float w = 400.f, h = 240.f, m = 1.f;
+float w = 400.f, h = 240.f, m = 3.f;
 float width = w * m, height = h * m;
 
 class ColoredShader {
@@ -181,7 +189,7 @@ ColoredShader cs;
 
 class TexturedShader{
 public:
-    GLuint shader = 0, aVertex = 0, aTexCoord = 0, uProjection = 0, uView = 0, uModel = 0;
+    GLuint shader = 0, aVertex = 0, aTexCoord = 0, uProjection = 0, uView = 0, uModel = 0, uTexture = 0;
 };
 TexturedShader ts;
 
@@ -203,7 +211,7 @@ enum Objects{
 GLuint VBOs[End];
 size_t indexes[End];
 mat4 models[End];
-GLuint Textures[End];
+Texture Textures[End];
 
 mat4 proj, view;
 
@@ -261,12 +269,14 @@ void init(){
     {
         ts.shader = createProgram(texturedSpriteVertex, texturedSpriteFragment);
 
-        ts.uProjection = glGetUniformLocation(cs.shader, "projection");
-        ts.uView       = glGetUniformLocation(cs.shader, "view");
-        ts.uModel      = glGetUniformLocation(cs.shader, "model");
+        ts.uProjection = glGetUniformLocation(ts.shader, "projection");
+        ts.uView       = glGetUniformLocation(ts.shader, "view");
+        ts.uModel      = glGetUniformLocation(ts.shader, "model");
 
-        ts.aVertex     = glGetAttribLocation(cs.shader, "vertex");
-        ts.aTexCoord   = glGetAttribLocation(cs.shader, "texcoord");
+        ts.uTexture    = glGetUniformLocation(ts.shader, "texture");
+
+        ts.aVertex     = glGetAttribLocation(ts.shader, "vertex");
+        ts.aTexCoord   = glGetAttribLocation(ts.shader, "texcoord");
     }
 
     glGenBuffers(End, VBOs);
@@ -283,6 +293,9 @@ void init(){
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[Bg]);
     glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &bg.front().pos.x, GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[TBox]);
+    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &tBox.front().pos.x, GL_STATIC_DRAW);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[FlourInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, flourInd.size() * sizeof(ushort), flourInd.data(), GL_STATIC_DRAW);
 
@@ -295,30 +308,25 @@ void init(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BgInd]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), bgInd.data(), GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[TBoxInd]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), tBoxInd.data(), GL_STATIC_DRAW);
+
     if(imageFileName.empty())
         throw runtime_error("image file name is empty");
 
-    vector<uint8_t> data;
-    uint32_t w, h;
-    auto error = lodepng::decode(data, w, h, imageFileName, LCT_RGBA);
-    if (error)
-        throw runtime_error(lodepng_error_text(error));
-//    cout << w << " x " << h << " " << data.size() << endl;
-
-    glGenTextures(End, Textures);
-
-    glBindTexture(GL_TEXTURE_2D, Textures[TBox]);
-//    glTexImage2D(GL_TEXTURE_2D, 0, )
+    Textures[TBox] = loadTexture(imageFileName);
 
     indexes[Flour]     = flourInd.size();
     indexes[Box]       = boxInd.size();
     indexes[BoxHead]   = boxHeadInd.size();
     indexes[Bg]        = bgInd.size();
+    indexes[TBox]      = tBoxInd.size();
 
     models[Box]        = glm::translate(models[Box],     vec3(0.f,  30.f,  0.f));
     models[BoxHead]    = glm::translate(models[BoxHead], vec3(0.f,  3.0f,  0.f));
     models[Flour]      = glm::translate(models[Flour],   vec3(0.f, -40.f,  0.f));
     models[Bg]         = glm::translate(models[Bg],      vec3(0.f,   0.f, -1.f));
+    models[TBox]       = glm::translate(models[TBox],    vec3(0.f, -13.f,  4.f));
 }
 
 void reshape(int w, int h) {
@@ -354,6 +362,37 @@ void drawObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
     glDisableVertexAttribArray(cs.aColor);
 }
 
+void drawTexturedObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
+
+    if (parentsModels.empty()) {
+        glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &models[obj][0][0]);
+    } else {
+        auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
+        m = m * models[obj];
+        glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &m[0][0]);
+    }
+
+    GLint textureUnit = 0;
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    glBindTexture(GL_TEXTURE_2D, Textures[obj].textureId);
+    glUniform1i(ts.uTexture, textureUnit);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
+
+    glEnableVertexAttribArray(ts.aVertex);
+    glVertexAttribPointer(ts.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
+
+    glEnableVertexAttribArray(ts.aTexCoord);
+    glVertexAttribPointer(ts.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
+
+    glDrawElements(GL_TRIANGLES, indexes[obj], GL_UNSIGNED_SHORT, 0);
+
+    glDisableVertexAttribArray(ts.aVertex);
+    glDisableVertexAttribArray(ts.aTexCoord);
+}
+
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
@@ -369,6 +408,13 @@ void display(void) {
     drawObj(Flour,     FlourInd);
     drawObj(Box,       BoxInd);
     drawObj(BoxHead,   BoxHeadInd, {models[Box]});
+
+    glUseProgram(ts.shader);
+
+    glUniformMatrix4fv(ts.uProjection, 1, GL_FALSE, &proj[0][0]);
+    glUniformMatrix4fv(ts.uView,       1, GL_FALSE, &view[0][0]);
+
+    drawTexturedObj(TBox, TBoxInd, {models[Box]});
 
     glFlush();
     glutSwapBuffers();
@@ -392,7 +438,9 @@ void deinit(){
     glDeleteBuffers(End, VBOs);
     glDeleteProgram(cs.shader);
     glDeleteProgram(ts.shader);
-    glDeleteTextures(End, Textures);
+    for (auto i : Textures)
+        if (i.textureId)
+            glDeleteTextures(1, &i.textureId);
 }
 
 
