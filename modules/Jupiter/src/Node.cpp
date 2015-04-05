@@ -243,11 +243,16 @@ Node* Node::accept(NodeVisitor* nv) {
         throw JupiterError("Node: visitor is nullptr");
 
     if (visible) {
+
+        nv->push(this);
+
         nv->visit(this);
 
         for (const auto& i : nodes) {
             i->accept(nv);
         }
+
+        nv->pop();
     }
 
     return this;
@@ -264,6 +269,11 @@ Controller* Node::getController() {
 
 const glm::mat4& Node::getModel() const {
     return model;
+}
+
+Node* jupiter::Node::setModel(const glm::mat4& model) {
+    Node::model = model;
+    return this;
 }
 
 } /* namespace jupiter */

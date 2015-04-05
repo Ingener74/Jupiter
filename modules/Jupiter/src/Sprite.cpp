@@ -45,14 +45,19 @@ Sprite* Sprite::setProgram(Shader* program) {
 
 Sprite* Sprite::accept(NodeVisitor* nv) {
     if (!nv)
-        throw JupiterError("Node: visitor is nullptr");
+        throw JupiterError("Sprite: visitor is nullptr");
 
     if (visible) {
+
+        nv->push(this);
+
         nv->visit(this);
 
         for (const auto& i : nodes) {
             i->accept(nv);
         }
+
+        nv->pop();
     }
 
     return this;

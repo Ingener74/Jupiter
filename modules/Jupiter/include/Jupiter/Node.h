@@ -88,6 +88,7 @@ public:
     Controller* getController();
 
     const glm::mat4& getModel() const;
+    Node* setModel(const glm::mat4& model);
 
 protected:
     bool visible = true;

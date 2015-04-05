@@ -200,7 +200,7 @@ TexturedShader ts;
 
 class ColoredSprite{
 public:
-    GLuint VBO = 0, IBO = 0;
+    GLuint VBO = 0, IBO = 0, VAO = 0;
     size_t indexes = 0;
     mat4   model;
     GLenum drawMode;
@@ -500,8 +500,23 @@ ColoredSprite createSprite(const vector<VertexPositionColor>& vertexes, const ve
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
 
-    result.indexes = indexes.size();
+//    glGenVertexArrays(1, &result.VAO);
+//    glBindVertexArray(result.VAO);
+//
+//    {
+//        glBindBuffer(GL_ARRAY_BUFFER, sprite.VBO);
+//
+//        glEnableVertexAttribArray(cs.aVertex);
+//        glVertexAttribPointer(cs.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
+//        glEnableVertexAttribArray(cs.aColor);
+//        glVertexAttribPointer(cs.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
+//
+//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.IBO);
+//    }
 
+    glBindVertexArray(0);
+
+    result.indexes = indexes.size();
     result.drawMode = drawMode;
 
     return result;
@@ -510,6 +525,7 @@ ColoredSprite createSprite(const vector<VertexPositionColor>& vertexes, const ve
 void deleteSprite(const ColoredSprite& s) {
     glDeleteBuffers(1, &s.VBO);
     glDeleteBuffers(1, &s.IBO);
+    glDeleteVertexArrays(1, &s.VAO);
 }
 
 TexturedSprite createSprite(const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode,
