@@ -198,25 +198,27 @@ public:
 };
 TexturedShader ts;
 
-enum Objects{
-    Flour,
-    Box,
-    BoxHead,
-    Bg,
-    TBox,
-
-    FlourInd,
-    BoxInd,
-    BoxHeadInd,
-    BgInd,
-    TBoxInd,
-
-    End
+class ColoredSprite{
+public:
+    GLuint VBO = 0, IBO = 0;
+    size_t indexes = 0;
+    mat4   model;
+    GLenum drawMode;
 };
-GLuint VBOs[End];
-size_t indexes[End];
-mat4 models[End];
-Texture Textures[End];
+
+class TexturedSprite: public ColoredSprite{
+public:
+    Texture texture;
+};
+
+ColoredSprite createSprite(const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode);
+void deleteSprite(const ColoredSprite&);
+
+TexturedSprite createSprite(const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode, const Texture& texture);
+void deleteSprite(const TexturedSprite&);
+
+ColoredSprite boxSprite, flourSprite, bgSprite, boxHeadSprite;
+TexturedSprite tBoxSprite;
 
 mat4 proj, view;
 
@@ -290,54 +292,21 @@ void init(){
         shaderInfo(ts.shader);
     }
 
-    glGenBuffers(End, VBOs);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[Flour]);
-    glBufferData(GL_ARRAY_BUFFER, flour.size() * sizeof(VertexPositionColor), &flour.front().pos.x, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[Box]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &box.front().pos.x, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[BoxHead]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &boxHead.front().pos.x, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[Bg]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &bg.front().pos.x, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[TBox]);
-    glBufferData(GL_ARRAY_BUFFER, box.size() * sizeof(VertexPositionColor), &tBox.front().pos.x, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[FlourInd]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, flourInd.size() * sizeof(ushort), flourInd.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BoxInd]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), boxInd.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BoxHeadInd]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), boxHeadInd.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[BgInd]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), bgInd.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[TBoxInd]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, boxInd.size() * sizeof(ushort), tBoxInd.data(), GL_STATIC_DRAW);
-
-    if(imageFileName.empty())
+    if (imageFileName.empty())
         throw runtime_error("image file name is empty");
 
-    Textures[TBox] = loadTexture(imageFileName);
+    boxSprite      = createSprite(box,      boxInd,      GL_TRIANGLES);
+    flourSprite    = createSprite(flour,    flourInd,    GL_TRIANGLE_STRIP);
+    bgSprite       = createSprite(bg,       bgInd,       GL_TRIANGLES);
+    boxHeadSprite  = createSprite(boxHead,  boxHeadInd,  GL_TRIANGLES);
 
-    indexes[Flour]     = flourInd.size();
-    indexes[Box]       = boxInd.size();
-    indexes[BoxHead]   = boxHeadInd.size();
-    indexes[Bg]        = bgInd.size();
-    indexes[TBox]      = tBoxInd.size();
+    tBoxSprite     = createSprite(tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
 
-    models[Box]        = glm::translate(models[Box],     vec3(0.f,  30.f,  0.f));
-    models[BoxHead]    = glm::translate(models[BoxHead], vec3(0.f,  3.0f,  0.f));
-    models[Flour]      = glm::translate(models[Flour],   vec3(0.f, -40.f,  0.f));
-    models[Bg]         = glm::translate(models[Bg],      vec3(0.f,   0.f, -1.f));
-    models[TBox]       = glm::translate(models[TBox],    vec3(0.f, -13.f,  4.f));
+    boxSprite.model        = glm::translate(boxSprite.model,     vec3(0.f,  30.f,  0.f));
+    boxHeadSprite.model    = glm::translate(boxHeadSprite.model, vec3(0.f,  3.0f,  0.f));
+    flourSprite.model      = glm::translate(flourSprite.model,   vec3(0.f, -40.f,  0.f));
+    bgSprite.model         = glm::translate(bgSprite.model,      vec3(0.f,   0.f, -1.f));
+    tBoxSprite.model       = glm::translate(tBoxSprite.model,    vec3(0.f, -13.f,  4.f));
 }
 
 void reshape(int w, int h) {
@@ -348,47 +317,47 @@ void reshape(int w, int h) {
     view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
-void drawObj(int obj, int objInd, GLenum mode = GL_TRIANGLES, const vector<mat4>& parentsModels = {}) {
+void drawObj(const ColoredSprite& sprite, const vector<mat4>& parentsModels = {}) {
 
     if (parentsModels.empty()) {
-        glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &models[obj][0][0]);
+        glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &sprite.model[0][0]);
     } else {
         auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
-        m = m * models[obj];
+        m = m * sprite.model;
         glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &m[0][0]);
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
+    glBindBuffer(GL_ARRAY_BUFFER, sprite.VBO);
 
     glEnableVertexAttribArray(cs.aVertex);
     glVertexAttribPointer(cs.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
     glEnableVertexAttribArray(cs.aColor);
     glVertexAttribPointer(cs.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.IBO);
 
-    glDrawElements(mode, indexes[obj], GL_UNSIGNED_SHORT, 0);
+    glDrawElements(sprite.drawMode, sprite.indexes, GL_UNSIGNED_SHORT, 0);
 
     glDisableVertexAttribArray(cs.aVertex);
     glDisableVertexAttribArray(cs.aColor);
 }
 
-void drawTexturedObj(int obj, int objInd, const vector<mat4>& parentsModels = {}) {
+void drawTexturedObj(const TexturedSprite& sprite, const vector<mat4>& parentsModels = {}) {
 
     if (parentsModels.empty()) {
-        glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &models[obj][0][0]);
+        glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &sprite.model[0][0]);
     } else {
         auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
-        m = m * models[obj];
+        m = m * sprite.model;
         glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &m[0][0]);
     }
 
     GLint textureUnit = 0;
     glActiveTexture(GL_TEXTURE0 + textureUnit);
-    glBindTexture(GL_TEXTURE_2D, Textures[obj].textureId);
+    glBindTexture(GL_TEXTURE_2D, sprite.texture.textureId);
     glUniform1i(ts.uTexture, textureUnit);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[obj]);
+    glBindBuffer(GL_ARRAY_BUFFER, sprite.VBO);
 
     glEnableVertexAttribArray(ts.aVertex);
     glVertexAttribPointer(ts.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
@@ -396,9 +365,9 @@ void drawTexturedObj(int obj, int objInd, const vector<mat4>& parentsModels = {}
     glEnableVertexAttribArray(ts.aTexCoord);
     glVertexAttribPointer(ts.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOs[objInd]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.IBO);
 
-    glDrawElements(GL_TRIANGLES, indexes[obj], GL_UNSIGNED_SHORT, 0);
+    glDrawElements(sprite.drawMode, sprite.indexes, GL_UNSIGNED_SHORT, 0);
 
     glDisableVertexAttribArray(ts.aVertex);
     glDisableVertexAttribArray(ts.aTexCoord);
@@ -413,19 +382,19 @@ void display(void) {
     glUniformMatrix4fv(cs.uProjection, 1, GL_FALSE, &proj[0][0]);
     glUniformMatrix4fv(cs.uView,       1, GL_FALSE, &view[0][0]);
 
-    models[Box] = glm::rotate(models[Box], .03f, vec3(0.f, 0.f, 1.f));
+    boxSprite.model = glm::rotate(boxSprite.model, .03f, vec3(0.f, 0.f, 1.f));
 
-    drawObj(Bg,        BgInd);
-    drawObj(Flour,     FlourInd, GL_TRIANGLE_STRIP);
-    drawObj(Box,       BoxInd);
-    drawObj(BoxHead,   BoxHeadInd, GL_TRIANGLES, {models[Box]});
+    drawObj(bgSprite);
+    drawObj(flourSprite);
+    drawObj(boxSprite);
+    drawObj(boxHeadSprite, {boxSprite.model});
 
     glUseProgram(ts.shader);
 
     glUniformMatrix4fv(ts.uProjection, 1, GL_FALSE, &proj[0][0]);
     glUniformMatrix4fv(ts.uView,       1, GL_FALSE, &view[0][0]);
 
-    drawTexturedObj(TBox, TBoxInd, {models[Box]});
+    drawTexturedObj(tBoxSprite, {boxSprite.model});
 
     glFlush();
     glutSwapBuffers();
@@ -446,12 +415,14 @@ void mouseMove(int x, int y) {
 }
 
 void deinit(){
-    glDeleteBuffers(End, VBOs);
     glDeleteProgram(cs.shader);
     glDeleteProgram(ts.shader);
-    for (auto i : Textures)
-        if (i.textureId)
-            glDeleteTextures(1, &i.textureId);
+
+    deleteSprite(boxSprite);
+    deleteSprite(bgSprite);
+    deleteSprite(flourSprite);
+    deleteSprite(tBoxSprite);
+    deleteSprite(boxHeadSprite);
 }
 
 void shaderInfo(GLuint shader){
@@ -516,4 +487,55 @@ void shaderInfo(GLuint shader){
 
         cout << lenght << " " << size << " " << types[type] << " " << name << endl;
     }
+}
+
+ColoredSprite createSprite(const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode) {
+
+    ColoredSprite result;
+    glGenBuffers(1, &result.VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, result.VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionColor), &vertexes.front().pos.x, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &result.IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+
+    result.indexes = indexes.size();
+
+    result.drawMode = drawMode;
+
+    return result;
+}
+
+void deleteSprite(const ColoredSprite& s) {
+    glDeleteBuffers(1, &s.VBO);
+    glDeleteBuffers(1, &s.IBO);
+}
+
+TexturedSprite createSprite(const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode,
+        const Texture& texture) {
+
+    TexturedSprite result;
+
+    glGenBuffers(1, &result.VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, result.VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionTexCoord), &vertexes.front().pos.x, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &result.IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+
+    result.indexes = indexes.size();
+
+    result.drawMode = drawMode;
+
+    result.texture = texture;
+
+    return result;
+}
+
+inline void deleteSprite(const TexturedSprite& s) {
+    glDeleteBuffers(1, &s.VBO);
+    glDeleteBuffers(1, &s.IBO);
+    glDeleteTextures(1, &s.texture.textureId);
 }

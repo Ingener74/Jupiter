@@ -78,7 +78,7 @@ bool createGameDirect(const variables_map& vm) {
 
     auto proj = perspective<float>(45.f, width / height, 10.f, 10000.f);
 
-    auto view = lookAt(vec3(300.f, 0.f, 600.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    auto view = lookAt(vec3(300.f, 100.f, 600.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 
     render = make_unique_<RenderVisitor>(proj, view);
 
