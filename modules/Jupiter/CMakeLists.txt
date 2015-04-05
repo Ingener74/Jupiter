@@ -39,6 +39,11 @@ set(SOURCES
     src/Controller.cpp
 )
 
+if(ANDROID)
+else()
+    set(SOURCES ${SOURCES} src/File-default.cpp)
+endif()
+
 add_library(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS

@@ -11,9 +11,6 @@ namespace jupiter {
 
 using namespace std;
 
-BufferFactory* File::factory = nullptr;
-string File::base = "";
-
 File::File(const std::string& fileName) :
     buffer(factory ? factory->create(base + (base.empty() ? "" : "/") + fileName) :
             throw JupiterError("have no file buffer factory")), i(buffer.get()) {

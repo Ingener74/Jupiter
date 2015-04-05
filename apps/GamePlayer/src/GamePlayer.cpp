@@ -33,9 +33,6 @@ string title =R"(Jupiter Game Player)";
 
 unique_ptr<Game> game;
 
-//unique_ptr<BufferFactory>   bufferFactory;
-LinuxFileFactory            bufferFactory;
-
 unique_ptr<RenderVisitor>   render;
 unique_ptr<NodeVisitor>     physics;
 
@@ -67,10 +64,6 @@ bool createGameDirect(const variables_map& vm) {
     if (!vm.count("base"))
         throw runtime_error("base directory is invalid");
 
-//    bufferFactory = make_unique_<LinuxFileFactory>();
-//    File::setBufferFactory(bufferFactory.get());
-
-    File::setBufferFactory(&bufferFactory);
     File::setBase(vm["base"].as<string>());
 
     float width = 800, height = 480, depth = height;
@@ -182,10 +175,6 @@ bool createGameJsonFile(const variables_map& vm) {
 
     path gameFile = vm["game"].as<string>();
 
-//    bufferFactory = make_unique_<LinuxFileFactory>();
-//    File::setBufferFactory(bufferFactory.get());
-
-    File::setBufferFactory(&bufferFactory);
     File::setBase(gameFile.parent_path().native());
 
     game = make_unique_<JsonGame>(gameFile.filename().native());
@@ -229,11 +218,7 @@ bool createGame(int argc, char* argv[]) {
 
 void draw() {
 
-//    box->translateY(-.5f);
-//    flour->translate(0.f, 0.05, .5f);
-//
-//    bg->rotateZ(0.05f);
-//    bg->translateZ(-1.f);
+    box->rotateZ(.03f);
 
     game->draw();
 }
@@ -243,6 +228,8 @@ void input() {
 }
 
 void keyboard(uint8_t key) {
+
+//    cout << "key " << key << endl;
 
     switch (key) {
     case 'w': // up
