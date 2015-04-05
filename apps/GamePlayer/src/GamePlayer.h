@@ -33,6 +33,7 @@ bool createGameDirect(const boost::program_options::variables_map& vm);
 bool createGameJsonFile(const boost::program_options::variables_map& vm);
 void draw();
 void input();
+void keyboard(uint8_t key);
 
 std::string getTitle();
 int getWidth();

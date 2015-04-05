@@ -10,6 +10,10 @@
 
 #include <memory>
 #include <utility>
+#include <iostream>
+
+#include <glm/glm.hpp>
+
 #include "Jupiter/JupiterError.h"
 
 namespace jupiter {

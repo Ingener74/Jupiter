@@ -41,6 +41,10 @@ void mouseMove(int x, int y) {
     input();
 }
 
+void keyboardFunc(uint8_t key, int x, int y){
+    keyboard(key);
+}
+
 void timer(int time){
 
     glutPostRedisplay();
@@ -60,6 +64,7 @@ int main(int argc, char **argv) {
         glutDisplayFunc(display);
         glutMouseFunc(mouse);
         glutMotionFunc(mouseMove);
+        glutKeyboardFunc(keyboardFunc);
 
         if (glewInit() != GLEW_OK)
             throw runtime_error("glew init error");

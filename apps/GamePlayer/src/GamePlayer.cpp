@@ -57,6 +57,11 @@ unique_ptr<Texture>         bgTexture,
 
 unique_ptr<Controller>      boxController;
 
+float viewRadius = 600.f;
+
+float xAngle = 0.f;
+float yAngle = 0.f;
+
 bool createGameDirect(const variables_map& vm) {
 
     if (!vm.count("base"))
@@ -78,7 +83,17 @@ bool createGameDirect(const variables_map& vm) {
 
     auto proj = perspective<float>(45.f, width / height, 10.f, 10000.f);
 
-    auto view = lookAt(vec3(300.f, 100.f, 600.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+//    float z = viewRadius * sin(yAngle) * cos(xAngle);
+//    float x = viewRadius * sin(yAngle) * sin(xAngle);
+//    float y = viewRadius * cos(yAngle);
+
+    float x = viewRadius * sin(xAngle);
+    float y = viewRadius * sin(yAngle);
+    float z = viewRadius * cos(xAngle);
+
+    cout << x << " " << y << " " << z << " " << endl;
+
+    auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 
     render = make_unique_<RenderVisitor>(proj, view);
 
@@ -100,9 +115,9 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
         ->setVisible(true)
-        ->scale(.3f, .3f)
         ->translateZ(-10.f)
         ->rotateZ(M_PI)
+        ->scale(.3f, .3f)
         ->setParent(rootNode.get())
     ;
 
@@ -118,9 +133,9 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(flourTexture.get())
         ->setShape(flourShape.get())
         ->setVisible(true)
-//        ->scale(.8f, .8f)
-//        ->translate(0.f, -190.f, 200.f)
-//        ->rotateZ(M_PI)
+        ->translate(0.f, -190.f, 20.f)
+        ->rotateZ(M_PI)
+        ->scale(.8f, .8f)
         ->setParent(rootNode.get())
     ;
 
@@ -135,7 +150,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(boxShape.get())
         ->setController(boxController.get())
         ->setVisible(true)
-        ->translate(0.f, 150.f, 200.f)
+        ->translate(0.f, 150.f, 20.f)
         ->scale(.1f, .1f)
         ->setParent(rootNode.get())
     ;
@@ -214,17 +229,44 @@ bool createGame(int argc, char* argv[]) {
 
 void draw() {
 
-    box->translateY(-.5f);
-    flour->translateY(-.5f);
-
-    bg->rotateZ(0.05f);
-    bg->translateZ(-1.f);
+//    box->translateY(-.5f);
+//    flour->translate(0.f, 0.05, .5f);
+//
+//    bg->rotateZ(0.05f);
+//    bg->translateZ(-1.f);
 
     game->draw();
 }
 
 void input() {
     game->input();
+}
+
+void keyboard(uint8_t key) {
+
+    switch (key) {
+    case 'w': // up
+        yAngle += .01f;
+        break;
+    case 's': // down
+        yAngle -= .01f;
+        break;
+    case 'a': // left
+        xAngle += .01f;
+        break;
+    case 'd': // right
+        xAngle -= .01f;
+        break;
+    default:
+        break;
+    }
+
+    float x = viewRadius * sin(xAngle);
+    float y = viewRadius * sin(yAngle);
+    float z = viewRadius * cos(xAngle);
+
+    auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    render->setView(view);
 }
 
 std::string getTitle() {

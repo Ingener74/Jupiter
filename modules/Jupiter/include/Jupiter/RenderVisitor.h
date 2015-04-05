@@ -23,6 +23,8 @@ public:
     RenderVisitor(const glm::mat4& projection, const glm::mat4& view);
     virtual ~RenderVisitor() = default;
 
+    void setView(const glm::mat4& view);
+
     virtual void begin();
 
     virtual void visit(Sprite*);

@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 
 #include <GL/glew.h>
 
@@ -16,6 +17,7 @@ namespace jupiter
 {
 
 using namespace std;
+using namespace glm;
 
 void Tools::glError(const std::string& file, int line, const std::string& function) throw (JupiterError)
 {

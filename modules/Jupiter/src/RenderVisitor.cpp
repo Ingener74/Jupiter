@@ -20,6 +20,10 @@ RenderVisitor::RenderVisitor(const glm::mat4& projection, const glm::mat4& view)
     projection(projection), view(view) {
 }
 
+void RenderVisitor::setView(const glm::mat4& view) {
+    RenderVisitor::view = view;
+}
+
 void RenderVisitor::begin() {
 }
 
@@ -65,3 +69,4 @@ void RenderVisitor::end() {
 }
 
 } /* namespace jupiter */
+
