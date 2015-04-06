@@ -164,10 +164,10 @@ vector<VertexPositionColor> flour = {
 };
 
 vector<VertexPositionTexCoord> tBox = {
-        {{-10.f, 10.f, 0.f},   {0.f, 0.f}},
-        {{ 10.f, 10.f, 0.f},   {1.f, 0.f}},
-        {{-10.f,-10.f, 0.f},   {0.f, 1.f}},
-        {{ 10.f,-10.f, 0.f},   {1.f, 1.f}},
+    {{-10.f, 10.f, 0.f},   {0.f, 0.f}},
+    {{ 10.f, 10.f, 0.f},   {1.f, 0.f}},
+    {{-10.f,-10.f, 0.f},   {0.f, 1.f}},
+    {{ 10.f,-10.f, 0.f},   {1.f, 1.f}},
 };
 
 vector<ushort> flourInd = {
@@ -183,7 +183,7 @@ vector<ushort> flourInd = {
     0, 2, 1,   3, 1, 2,
 };
 
-float w = 400.f, h = 240.f, m = 3.f;
+float w = 400.f, h = 240.f, m = 1.f;
 float width = w * m, height = h * m;
 
 class ColoredShader {
@@ -211,10 +211,10 @@ public:
     Texture texture;
 };
 
-ColoredSprite createSprite(const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode);
+ColoredSprite createSprite(const ColoredShader&, const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode);
 void deleteSprite(const ColoredSprite&);
 
-TexturedSprite createSprite(const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode, const Texture& texture);
+TexturedSprite createSprite(const TexturedShader&, const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode, const Texture&);
 void deleteSprite(const TexturedSprite&);
 
 ColoredSprite boxSprite, flourSprite, bgSprite, boxHeadSprite;
@@ -295,12 +295,12 @@ void init(){
     if (imageFileName.empty())
         throw runtime_error("image file name is empty");
 
-    boxSprite      = createSprite(box,      boxInd,      GL_TRIANGLES);
-    flourSprite    = createSprite(flour,    flourInd,    GL_TRIANGLE_STRIP);
-    bgSprite       = createSprite(bg,       bgInd,       GL_TRIANGLES);
-    boxHeadSprite  = createSprite(boxHead,  boxHeadInd,  GL_TRIANGLES);
+    boxSprite      = createSprite(cs, box,      boxInd,      GL_TRIANGLES);
+    flourSprite    = createSprite(cs, flour,    flourInd,    GL_TRIANGLE_STRIP);
+    bgSprite       = createSprite(cs, bg,       bgInd,       GL_TRIANGLES);
+    boxHeadSprite  = createSprite(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
 
-    tBoxSprite     = createSprite(tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
+    tBoxSprite     = createSprite(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
 
     boxSprite.model        = glm::translate(boxSprite.model,     vec3(0.f,  30.f,  0.f));
     boxHeadSprite.model    = glm::translate(boxHeadSprite.model, vec3(0.f,  3.0f,  0.f));
@@ -327,19 +327,11 @@ void drawObj(const ColoredSprite& sprite, const vector<mat4>& parentsModels = {}
         glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &m[0][0]);
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, sprite.VBO);
-
-    glEnableVertexAttribArray(cs.aVertex);
-    glVertexAttribPointer(cs.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
-    glEnableVertexAttribArray(cs.aColor);
-    glVertexAttribPointer(cs.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.IBO);
+    glBindVertexArray(sprite.VAO);
 
     glDrawElements(sprite.drawMode, sprite.indexes, GL_UNSIGNED_SHORT, 0);
 
-    glDisableVertexAttribArray(cs.aVertex);
-    glDisableVertexAttribArray(cs.aColor);
+    glBindVertexArray(0);
 }
 
 void drawTexturedObj(const TexturedSprite& sprite, const vector<mat4>& parentsModels = {}) {
@@ -357,20 +349,11 @@ void drawTexturedObj(const TexturedSprite& sprite, const vector<mat4>& parentsMo
     glBindTexture(GL_TEXTURE_2D, sprite.texture.textureId);
     glUniform1i(ts.uTexture, textureUnit);
 
-    glBindBuffer(GL_ARRAY_BUFFER, sprite.VBO);
-
-    glEnableVertexAttribArray(ts.aVertex);
-    glVertexAttribPointer(ts.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
-
-    glEnableVertexAttribArray(ts.aTexCoord);
-    glVertexAttribPointer(ts.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.IBO);
+    glBindVertexArray(sprite.VAO);
 
     glDrawElements(sprite.drawMode, sprite.indexes, GL_UNSIGNED_SHORT, 0);
 
-    glDisableVertexAttribArray(ts.aVertex);
-    glDisableVertexAttribArray(ts.aTexCoord);
+    glBindVertexArray(0);
 }
 
 void display(void) {
@@ -489,30 +472,25 @@ void shaderInfo(GLuint shader){
     }
 }
 
-ColoredSprite createSprite(const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode) {
+ColoredSprite createSprite(const ColoredShader& shader, const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode) {
 
     ColoredSprite result;
+
+    glGenVertexArrays(1, &result.VAO);
+    glBindVertexArray(result.VAO);
+
     glGenBuffers(1, &result.VBO);
     glBindBuffer(GL_ARRAY_BUFFER, result.VBO);
     glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionColor), &vertexes.front().pos.x, GL_STATIC_DRAW);
 
+    glEnableVertexAttribArray(shader.aVertex);
+    glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
+    glEnableVertexAttribArray(shader.aColor);
+    glVertexAttribPointer(shader.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
+
     glGenBuffers(1, &result.IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
-
-//    glGenVertexArrays(1, &result.VAO);
-//    glBindVertexArray(result.VAO);
-//
-//    {
-//        glBindBuffer(GL_ARRAY_BUFFER, sprite.VBO);
-//
-//        glEnableVertexAttribArray(cs.aVertex);
-//        glVertexAttribPointer(cs.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
-//        glEnableVertexAttribArray(cs.aColor);
-//        glVertexAttribPointer(cs.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
-//
-//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprite.IBO);
-//    }
 
     glBindVertexArray(0);
 
@@ -528,18 +506,29 @@ void deleteSprite(const ColoredSprite& s) {
     glDeleteVertexArrays(1, &s.VAO);
 }
 
-TexturedSprite createSprite(const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode,
+TexturedSprite createSprite(const TexturedShader& shader, const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode,
         const Texture& texture) {
 
     TexturedSprite result;
+
+    glGenVertexArrays(1, &result.VAO);
+    glBindVertexArray(result.VAO);
 
     glGenBuffers(1, &result.VBO);
     glBindBuffer(GL_ARRAY_BUFFER, result.VBO);
     glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionTexCoord), &vertexes.front().pos.x, GL_STATIC_DRAW);
 
+    glEnableVertexAttribArray(shader.aVertex);
+    glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
+
+    glEnableVertexAttribArray(shader.aTexCoord);
+    glVertexAttribPointer(shader.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
+
     glGenBuffers(1, &result.IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
 
     result.indexes = indexes.size();
 
@@ -553,5 +542,6 @@ TexturedSprite createSprite(const vector<VertexPositionTexCoord>& vertexes, cons
 inline void deleteSprite(const TexturedSprite& s) {
     glDeleteBuffers(1, &s.VBO);
     glDeleteBuffers(1, &s.IBO);
+    glDeleteVertexArrays(1, &s.VAO);
     glDeleteTextures(1, &s.texture.textureId);
 }
