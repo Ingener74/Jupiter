@@ -121,6 +121,30 @@ void main(){
     gl_FragColor = texture2D(texture, vtexcoord);
 }
 
+)", testSpriteVertex = R"(
+
+uniform   mat4 projection, view, model;
+
+attribute vec4 vertex;
+attribute vec2 texcoord;
+
+varying vec2 vtexcoord;
+
+void main(){
+    gl_Position = projection * view * model * vertex;
+    vtexcoord = texcoord;
+}
+
+)", testSpriteFragment = R"(
+
+varying vec2 vtexcoord;
+
+uniform sampler2D texture;
+
+void main(){
+    gl_FragColor = texture2D(texture, vtexcoord);
+}
+
 )";
 
 /*
@@ -243,6 +267,18 @@ int main(int argc, char **argv) {
 
         if (glewInit() != GLEW_OK)
             throw runtime_error("glew init error");
+
+        /*{
+            cout << glGetString(GL_VENDOR) << endl;
+            cout << glGetString(GL_RENDERER) << endl;
+            cout << glGetString(GL_VERSION) << endl;
+            cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+            stringstream s;
+            s << glGetString(GL_EXTENSIONS);
+            string ext;
+            while(s >> ext)
+                cout << ext << endl;
+        }*/
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
