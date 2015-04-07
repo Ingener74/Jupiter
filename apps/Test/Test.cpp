@@ -216,6 +216,96 @@ vector<ushort> flourInd = {
 float w = 400.f, h = 240.f, m = 1.f;
 float width = w * m, height = h * m;
 
+class Attribute {
+public:
+    Attribute(GLint attribute = 0, string attributeName = { }) :
+        attribute(attribute), attributeName(attributeName) {
+    }
+
+    GLint attribute = 0;
+    string attributeName;
+
+    friend ostream& operator<<(ostream& out, const Attribute& r) {
+        return out << r.attributeName << ": " << r.attribute;
+    }
+};
+
+class Uniform {
+public:
+    Uniform(GLint uniform = 0, string uniformName = {}) :
+        uniform(uniform), uniformName(uniformName) {
+    }
+    GLint uniform = 0;
+    string uniformName;
+
+    friend ostream& operator<<(ostream& out, const Uniform& r) {
+        return out << r.uniformName << ": " << r.uniform;
+    }
+};
+
+class Program {
+public:
+    Program(const string& vertesShader, const std::string& fragmentShader) {
+        program = createProgram(vertesShader, fragmentShader);
+
+        GLint activeAttributes = 0;
+        glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+
+        for (GLint i = 0; i < activeAttributes; ++i) {
+
+            const GLsizei bufferSize = 100;
+
+            GLsizei lenght = 0;
+            GLint size = 0;
+            GLenum type = 0;
+            GLchar name[bufferSize];
+
+            glGetActiveAttrib(program, i, bufferSize, &lenght, &size, &type, name);
+
+            attributes.emplace_back(glGetAttribLocation(program, name), name);
+        }
+
+        GLint activeUniforms = 0;
+        glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
+
+        for (GLint i = 0; i < activeUniforms; ++i) {
+            const GLsizei bufferSize = 100;
+
+            GLsizei lenght = 0;
+            GLint size = 0;
+            GLenum type = 0;
+            GLchar name[bufferSize];
+
+            glGetActiveUniform(program, i, bufferSize, &lenght, &size, &type, name);
+
+            uniforms.emplace_back(glGetUniformLocation(program, name), name);
+        }
+    }
+    virtual ~Program() {
+        glDeleteProgram(program);
+    }
+
+    GLuint program = 0;
+    vector<Attribute> attributes;
+    vector<Uniform> uniforms;
+
+    friend ostream& operator<<(ostream& out, const Program& r){
+        return out << r.program << "attributes [ " << [&](){
+            stringstream s;
+            for(auto i: r.attributes)
+                s << i << "; ";
+            return s.str();
+        }() << " ], uniforms [ " << [&](){
+            stringstream s;
+            for(auto i: r.uniforms)
+                s << i << "; ";
+            return s.str();
+        }() << " ]";
+    }
+
+protected:
+};
+
 class ColoredShader {
 public:
     GLuint shader = 0, aVertex = 0, aColor = 0, uProjection = 0, uView = 0, uModel = 0;
@@ -345,6 +435,8 @@ public:
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
 unique_ptr<TexturedSprite> tBoxSprite;
 
+unique_ptr<Program> coloredSh;
+
 mat4 proj, view;
 
 string imageFileName;
@@ -400,6 +492,10 @@ int main(int argc, char **argv) {
 }
 
 void init(){
+
+    coloredSh = make_unique_<Program>(coloredSpriteVertex, coloredSpriteFragment);
+    cout << *coloredSh << endl;
+
     {
         cs.shader = createProgram(coloredSpriteVertex, coloredSpriteFragment);
 
