@@ -9,6 +9,7 @@
 #include <numeric>
 #include <array>
 #include <vector>
+#include <memory>
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
@@ -36,6 +37,11 @@ void mouseMove(int x, int y);
 void timer(int time);
 
 void shaderInfo(GLuint shader);
+
+template<typename T, typename ... Args>
+unique_ptr<T> make_unique_(Args ... args) {
+    return unique_ptr<T>(new T(args...));
+}
 
 /*
 }
@@ -216,7 +222,7 @@ public:
 };
 ColoredShader cs;
 
-class TexturedShader{
+class TexturedShader {
 public:
     GLuint shader = 0, aVertex = 0, aTexCoord = 0, uProjection = 0, uView = 0, uModel = 0, uTexture = 0;
 };
@@ -224,6 +230,54 @@ TexturedShader ts;
 
 class ColoredSprite{
 public:
+    ColoredSprite(){
+    }
+    ColoredSprite(const ColoredShader& shader, const vector<VertexPositionColor>& vertexes,
+        const vector<ushort>& indexes, GLenum drawMode) {
+
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionColor), &vertexes.front().pos.x, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(shader.aVertex);
+        glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*) offsetof(VertexPositionColor, pos));
+
+        glEnableVertexAttribArray(shader.aColor);
+        glVertexAttribPointer(shader.aColor,  3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*) offsetof(VertexPositionColor, rgb));
+
+        glGenBuffers(1, &IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+
+        ColoredSprite::indexes = indexes.size();
+        ColoredSprite::drawMode = drawMode;
+    }
+
+    virtual ~ColoredSprite() {
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &IBO);
+        glDeleteVertexArrays(1, &VAO);
+    }
+
+    void draw(const vector<mat4>& parentsModels = { }) {
+
+        if (parentsModels.empty()) {
+            glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &model[0][0]);
+        } else {
+            auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>()) * model;
+            glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &m[0][0]);
+        }
+
+        glBindVertexArray(VAO);
+        glDrawElements(drawMode, indexes, GL_UNSIGNED_SHORT, 0);
+        glBindVertexArray(0);
+    }
+
     GLuint VBO = 0, IBO = 0, VAO = 0;
     size_t indexes = 0;
     mat4   model;
@@ -232,17 +286,64 @@ public:
 
 class TexturedSprite: public ColoredSprite{
 public:
+    TexturedSprite(const TexturedShader& shader, const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode, const Texture& texture){
+
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionTexCoord), &vertexes.front().pos.x, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(shader.aVertex);
+        glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
+
+        glEnableVertexAttribArray(shader.aTexCoord);
+        glVertexAttribPointer(shader.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
+
+        glGenBuffers(1, &IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+
+        TexturedSprite::indexes = indexes.size();
+        TexturedSprite::drawMode = drawMode;
+        TexturedSprite::texture = texture;
+    }
+
+    virtual ~TexturedSprite(){
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &IBO);
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteTextures(1, &texture.textureId);
+    }
+
+    void draw(const vector<mat4>& parentsModels = { }) {
+
+        if (parentsModels.empty()) {
+            glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &model[0][0]);
+        } else {
+            auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(),
+                multiplies<mat4>()) * model;
+            glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &m[0][0]);
+        }
+
+        GLint textureUnit = 0;
+        glActiveTexture(GL_TEXTURE0 + textureUnit);
+        glBindTexture(GL_TEXTURE_2D, texture.textureId);
+        glUniform1i(ts.uTexture, textureUnit);
+
+        glBindVertexArray(VAO);
+        glDrawElements(drawMode, indexes, GL_UNSIGNED_SHORT, 0);
+        glBindVertexArray(0);
+    }
+
     Texture texture;
 };
 
-ColoredSprite createSprite(const ColoredShader&, const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode);
-void deleteSprite(const ColoredSprite&);
-
-TexturedSprite createSprite(const TexturedShader&, const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode, const Texture&);
-void deleteSprite(const TexturedSprite&);
-
-ColoredSprite boxSprite, flourSprite, bgSprite, boxHeadSprite;
-TexturedSprite tBoxSprite;
+unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
+unique_ptr<TexturedSprite> tBoxSprite;
 
 mat4 proj, view;
 
@@ -331,18 +432,18 @@ void init(){
     if (imageFileName.empty())
         throw runtime_error("image file name is empty");
 
-    boxSprite      = createSprite(cs, box,      boxInd,      GL_TRIANGLES);
-    flourSprite    = createSprite(cs, flour,    flourInd,    GL_TRIANGLE_STRIP);
-    bgSprite       = createSprite(cs, bg,       bgInd,       GL_TRIANGLES);
-    boxHeadSprite  = createSprite(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
+    boxSprite      = make_unique_<ColoredSprite>(cs, box,      boxInd,      GL_TRIANGLES);
+    flourSprite    = make_unique_<ColoredSprite>(cs, flour,    flourInd,    GL_TRIANGLE_STRIP);
+    bgSprite       = make_unique_<ColoredSprite>(cs, bg,       bgInd,       GL_TRIANGLES);
+    boxHeadSprite  = make_unique_<ColoredSprite>(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
 
-    tBoxSprite     = createSprite(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
+    tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
 
-    boxSprite.model        = glm::translate(boxSprite.model,     vec3(0.f,  30.f,  0.f));
-    boxHeadSprite.model    = glm::translate(boxHeadSprite.model, vec3(0.f,  3.0f,  0.f));
-    flourSprite.model      = glm::translate(flourSprite.model,   vec3(0.f, -40.f,  0.f));
-    bgSprite.model         = glm::translate(bgSprite.model,      vec3(0.f,   0.f, -1.f));
-    tBoxSprite.model       = glm::translate(tBoxSprite.model,    vec3(0.f, -13.f,  4.f));
+    boxSprite->model        = glm::translate(boxSprite->model,     vec3(0.f,  30.f,  0.f));
+    boxHeadSprite->model    = glm::translate(boxHeadSprite->model, vec3(0.f,  3.0f,  0.f));
+    flourSprite->model      = glm::translate(flourSprite->model,   vec3(0.f, -40.f,  0.f));
+    bgSprite->model         = glm::translate(bgSprite->model,      vec3(0.f,   0.f, -1.f));
+    tBoxSprite->model       = glm::translate(tBoxSprite->model,    vec3(0.f, -13.f,  4.f));
 }
 
 void reshape(int w, int h) {
@@ -353,67 +454,32 @@ void reshape(int w, int h) {
     view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
-void drawObj(const ColoredSprite& sprite, const vector<mat4>& parentsModels = {}) {
-
-    if (parentsModels.empty()) {
-        glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &sprite.model[0][0]);
-    } else {
-        auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
-        m = m * sprite.model;
-        glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &m[0][0]);
-    }
-
-    glBindVertexArray(sprite.VAO);
-
-    glDrawElements(sprite.drawMode, sprite.indexes, GL_UNSIGNED_SHORT, 0);
-
-    glBindVertexArray(0);
-}
-
-void drawTexturedObj(const TexturedSprite& sprite, const vector<mat4>& parentsModels = {}) {
-
-    if (parentsModels.empty()) {
-        glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &sprite.model[0][0]);
-    } else {
-        auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>());
-        m = m * sprite.model;
-        glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &m[0][0]);
-    }
-
-    GLint textureUnit = 0;
-    glActiveTexture(GL_TEXTURE0 + textureUnit);
-    glBindTexture(GL_TEXTURE_2D, sprite.texture.textureId);
-    glUniform1i(ts.uTexture, textureUnit);
-
-    glBindVertexArray(sprite.VAO);
-
-    glDrawElements(sprite.drawMode, sprite.indexes, GL_UNSIGNED_SHORT, 0);
-
-    glBindVertexArray(0);
-}
-
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
 
-    glUseProgram(cs.shader);
+    {
+        glUseProgram(cs.shader);
 
-    glUniformMatrix4fv(cs.uProjection, 1, GL_FALSE, &proj[0][0]);
-    glUniformMatrix4fv(cs.uView,       1, GL_FALSE, &view[0][0]);
+        glUniformMatrix4fv(cs.uProjection, 1, GL_FALSE, &proj[0][0]);
+        glUniformMatrix4fv(cs.uView, 1, GL_FALSE, &view[0][0]);
 
-    boxSprite.model = glm::rotate(boxSprite.model, .03f, vec3(0.f, 0.f, 1.f));
+        boxSprite->model = glm::rotate(boxSprite->model, .03f, vec3(0.f, 0.f, 1.f));
 
-    drawObj(bgSprite);
-    drawObj(flourSprite);
-    drawObj(boxSprite);
-    drawObj(boxHeadSprite, {boxSprite.model});
+        bgSprite->draw();
+        flourSprite->draw();
+        boxSprite->draw();
+        boxHeadSprite->draw( { boxSprite->model });
+    }
 
-    glUseProgram(ts.shader);
+    {
+        glUseProgram(ts.shader);
 
-    glUniformMatrix4fv(ts.uProjection, 1, GL_FALSE, &proj[0][0]);
-    glUniformMatrix4fv(ts.uView,       1, GL_FALSE, &view[0][0]);
+        glUniformMatrix4fv(ts.uProjection, 1, GL_FALSE, &proj[0][0]);
+        glUniformMatrix4fv(ts.uView, 1, GL_FALSE, &view[0][0]);
 
-    drawTexturedObj(tBoxSprite, {boxSprite.model});
+        tBoxSprite->draw( { boxSprite->model });
+    }
 
     glFlush();
     glutSwapBuffers();
@@ -437,11 +503,11 @@ void deinit(){
     glDeleteProgram(cs.shader);
     glDeleteProgram(ts.shader);
 
-    deleteSprite(boxSprite);
-    deleteSprite(bgSprite);
-    deleteSprite(flourSprite);
-    deleteSprite(tBoxSprite);
-    deleteSprite(boxHeadSprite);
+    boxSprite.reset();
+    bgSprite.reset();
+    flourSprite.reset();
+    boxHeadSprite.reset();
+    tBoxSprite.reset();
 }
 
 void shaderInfo(GLuint shader){
@@ -506,78 +572,4 @@ void shaderInfo(GLuint shader){
 
         cout << lenght << " " << size << " " << types[type] << " " << name << endl;
     }
-}
-
-ColoredSprite createSprite(const ColoredShader& shader, const vector<VertexPositionColor>& vertexes, const vector<ushort>& indexes, GLenum drawMode) {
-
-    ColoredSprite result;
-
-    glGenVertexArrays(1, &result.VAO);
-    glBindVertexArray(result.VAO);
-
-    glGenBuffers(1, &result.VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, result.VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionColor), &vertexes.front().pos.x, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(shader.aVertex);
-    glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, pos));
-    glEnableVertexAttribArray(shader.aColor);
-    glVertexAttribPointer(shader.aColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, rgb));
-
-    glGenBuffers(1, &result.IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
-
-    glBindVertexArray(0);
-
-    result.indexes = indexes.size();
-    result.drawMode = drawMode;
-
-    return result;
-}
-
-void deleteSprite(const ColoredSprite& s) {
-    glDeleteBuffers(1, &s.VBO);
-    glDeleteBuffers(1, &s.IBO);
-    glDeleteVertexArrays(1, &s.VAO);
-}
-
-TexturedSprite createSprite(const TexturedShader& shader, const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode,
-        const Texture& texture) {
-
-    TexturedSprite result;
-
-    glGenVertexArrays(1, &result.VAO);
-    glBindVertexArray(result.VAO);
-
-    glGenBuffers(1, &result.VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, result.VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionTexCoord), &vertexes.front().pos.x, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(shader.aVertex);
-    glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
-
-    glEnableVertexAttribArray(shader.aTexCoord);
-    glVertexAttribPointer(shader.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
-
-    glGenBuffers(1, &result.IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
-
-    glBindVertexArray(0);
-
-    result.indexes = indexes.size();
-
-    result.drawMode = drawMode;
-
-    result.texture = texture;
-
-    return result;
-}
-
-inline void deleteSprite(const TexturedSprite& s) {
-    glDeleteBuffers(1, &s.VBO);
-    glDeleteBuffers(1, &s.IBO);
-    glDeleteVertexArrays(1, &s.VAO);
-    glDeleteTextures(1, &s.texture.textureId);
 }
