@@ -213,7 +213,7 @@ vector<ushort> flourInd = {
     0, 2, 1,   3, 1, 2,
 };
 
-float w = 400.f, h = 240.f, m = 1.f;
+float w = 400.f, h = 240.f, m = 3.f;
 float width = w * m, height = h * m;
 
 class Attribute {
@@ -290,17 +290,17 @@ public:
     vector<Uniform> uniforms;
 
     friend ostream& operator<<(ostream& out, const Program& r){
-        return out << r.program << "attributes [ " << [&](){
+        return out << "program id " << r.program << " attributes [ " << [&](){
             stringstream s;
             for(auto i: r.attributes)
                 s << i << "; ";
             return s.str();
-        }() << " ], uniforms [ " << [&](){
+        }() << "], uniforms [ " << [&](){
             stringstream s;
             for(auto i: r.uniforms)
                 s << i << "; ";
             return s.str();
-        }() << " ]";
+        }() << "]";
     }
 
 protected:
@@ -435,7 +435,7 @@ public:
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
 unique_ptr<TexturedSprite> tBoxSprite;
 
-unique_ptr<Program> coloredSh;
+unique_ptr<Program> coloredSh, texturedSh;
 
 mat4 proj, view;
 
@@ -495,6 +495,9 @@ void init(){
 
     coloredSh = make_unique_<Program>(coloredSpriteVertex, coloredSpriteFragment);
     cout << *coloredSh << endl;
+
+    texturedSh = make_unique_<Program>(texturedSpriteVertex, texturedSpriteFragment);
+    cout << *texturedSh << endl;
 
     {
         cs.shader = createProgram(coloredSpriteVertex, coloredSpriteFragment);
