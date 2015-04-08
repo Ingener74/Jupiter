@@ -306,6 +306,14 @@ public:
     vector<Attribute> attributes;
     vector<Uniform> uniforms;
 
+    const Attribute& getAttribute(const string& attributeName) const {
+        auto it = find(attributes.begin(), attributes.end(),
+            [&](const Attribute& i) {return i.attributeName == attributeName;});
+        if (it == attributes.end())
+            throw runtime_error("no attribute with name " + attributeName);
+        return *it;
+    }
+
     friend ostream& operator<<(ostream& out, const Program& r){
         return out << "program id " << r.program << " attributes [ " << [&](){
             stringstream s;
@@ -449,7 +457,40 @@ public:
         TexturedSprite::texture = texture;
     }
 
-//    TexturedSprite(const Program& shaderProgram)
+    /*
+     *
+     */
+    struct VertexAttributeData {
+        string attributeName;
+        GLint size;
+        vector<float> data;
+    };
+    TexturedSprite(const Program& shaderProgram, const vector<VertexAttributeData>& mesh, const vector<ushort>& indeces, GLenum drawMode, const vector<pair<uint, Texture>>& textures){
+        vbos.resize(mesh.size());
+
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(mesh.size(), vbos.data());
+
+        for(size_t i = 0; i < mesh.size(); ++i){
+            glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
+            glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), &mesh.at(i).data.data(), GL_STATIC_DRAW);
+
+            auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
+            glEnableVertexAttribArray(attrib);
+            glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
+        }
+
+        glGenBuffers(1, &IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(ushort), indeces.data(), GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+
+        TexturedSprite::indexes = indeces.size();
+        TexturedSprite::drawMode = drawMode;
+    }
 
     virtual ~TexturedSprite(){
         glDeleteBuffers(1, &VBO);
@@ -478,6 +519,7 @@ public:
         glBindVertexArray(0);
     }
 
+    vector<GLuint> vbos;
     GLuint vboTexCoords = 0;
     Texture texture;
 };
