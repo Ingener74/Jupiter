@@ -15,6 +15,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+#include <cstdint>
+#include <climits>
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -201,7 +203,7 @@ vector<VertexPositionTexCoord> tBox = {
     {{ 10.f,-10.f, 0.f},   {1.f, 1.f}},
 };
 
-vector<ushort> flourInd = {
+vector<uint16_t> flourInd = {
     0, 2, 1,   3
 //    0, 2, 1,   3, 1, 2,
 }, boxInd = {
@@ -227,11 +229,11 @@ vector<vec2> shipTexCoords = {
     {0.f, 1.f},
     {1.f, 1.f},
 };
-vector<ushort> shipIndices = {
+vector<uint16_t> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = 1.f;
+float w = 400.f, h = 240.f, m = 4.f;
 float width = w * m, height = h * m;
 
 class Attribute {
@@ -356,7 +358,7 @@ public:
     ColoredSprite(){
     }
     ColoredSprite(const ColoredShader& shader, const vector<VertexPositionColor>& vertexes,
-        const vector<ushort>& indexes, GLenum drawMode) {
+        const vector<uint16_t>& indexes, GLenum drawMode) {
 
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
@@ -373,7 +375,7 @@ public:
 
         glGenBuffers(1, &IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(uint16_t), indexes.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(0);
 
@@ -409,7 +411,7 @@ public:
 
 class TexturedSprite: public ColoredSprite{
 public:
-    TexturedSprite(const TexturedShader& shader, const vector<VertexPositionTexCoord>& vertexes, const vector<ushort>& indexes, GLenum drawMode, const Texture& texture){
+    TexturedSprite(const TexturedShader& shader, const vector<VertexPositionTexCoord>& vertexes, const vector<uint16_t>& indexes, GLenum drawMode, const Texture& texture){
 
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
@@ -426,7 +428,7 @@ public:
 
         glGenBuffers(1, &IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(uint16_t), indexes.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(0);
 
@@ -435,7 +437,7 @@ public:
         TexturedSprite::texture = texture;
     }
 
-    TexturedSprite(const TexturedShader& shader, const vector<vec3>& verteces, const vector<vec2>& texcoords, const vector<ushort>& indexes, GLenum drawMode, const Texture& texture){
+    TexturedSprite(const TexturedShader& shader, const vector<vec3>& verteces, const vector<vec2>& texcoords, const vector<uint16_t>& indexes, GLenum drawMode, const Texture& texture){
 
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
@@ -456,7 +458,7 @@ public:
 
         glGenBuffers(1, &IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(uint16_t), indexes.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(0);
 
@@ -555,14 +557,14 @@ public:
 
         vector<VertexAttributeData>    attributesData;
         vector<TextureUnitConnection>  textures;
-        vector<ushort>                 indices;
+        vector<uint16_t>                 indices;
         GLenum                         drawMode;
     };
 
     // Для данных в одном буфере
 
 
-    vector<ushort> indecex;
+    vector<uint16_t> indecex;
 
     /*
     Mesh(const Program& shaderProgram, const vector<VertexAttributeData>& mesh){
@@ -584,7 +586,7 @@ public:
 
         glGenBuffers(1, &IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(ushort), indeces.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(uint16_t), indeces.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(0);
 
