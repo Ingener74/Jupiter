@@ -468,37 +468,6 @@ public:
     /*
      *
      */
-    struct VertexAttributeData {
-        string attributeName;
-        GLint size;
-        vector<float> data;
-    };
-    TexturedSprite(const Program& shaderProgram, const vector<VertexAttributeData>& mesh, const vector<ushort>& indeces, GLenum drawMode, const vector<pair<uint, Texture>>& textures){
-        vbos.resize(mesh.size());
-
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-
-        glGenBuffers(mesh.size(), vbos.data());
-
-        for(size_t i = 0; i < mesh.size(); ++i){
-            glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
-            glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
-
-            auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
-            glEnableVertexAttribArray(attrib);
-            glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
-        }
-
-        glGenBuffers(1, &IBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(ushort), indeces.data(), GL_STATIC_DRAW);
-
-        glBindVertexArray(0);
-
-        TexturedSprite::indexes = indeces.size();
-        TexturedSprite::drawMode = drawMode;
-    }
 
     virtual ~TexturedSprite(){
         glDeleteBuffers(1, &VBO);
@@ -534,14 +503,111 @@ public:
 
 class Mesh {
 public:
+
+    /*
+     * кадры могут делить координаты, текстурный координаты, текстуры, индексы и пр.
+     * один кадр хранит информаци по текущему состоянию меша, т.е. какой использовать,
+     *      буфер координат,
+     *      буфер текстурных координат,
+     *      буфер цветов,
+     *      буфер нормалей,
+     *      текстуру
+     *      и т. д.
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+
+    struct Frame {
+    };
+
+    struct VertexData {
+
+        // Для данных в одном буфере
+        struct VertexConsecutiveData {
+            struct AttributeParameters {
+                string attributeName;
+                GLint size;
+                size_t offset;
+            };
+            vector<AttributeParameters> attributeParams;
+            vector<float> data;
+        };
+
+        // Соединения текстур с текстурными блоками
+        struct TextureUnitConnection{
+            GLuint          textureUnit;
+            Texture         texture;
+        };
+        // Для данных разделённых по разным буферам
+        struct VertexAttributeData {
+            string          attributeName;
+            GLint           size;
+            vector<float>   data;
+        };
+
+        vector<VertexAttributeData>    attributesData;
+        vector<TextureUnitConnection>  textures;
+        vector<ushort>                 indices;
+        GLenum                         drawMode;
+    };
+
+    // Для данных в одном буфере
+
+
+    vector<ushort> indecex;
+
+    /*
+    Mesh(const Program& shaderProgram, const vector<VertexAttributeData>& mesh){
+        vbos.resize(mesh.size());
+
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(mesh.size(), vbos.data());
+
+        for(size_t i = 0; i < mesh.size(); ++i){
+            glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
+            glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
+
+            auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
+            glEnableVertexAttribArray(attrib);
+            glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
+        }
+
+        glGenBuffers(1, &IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(ushort), indeces.data(), GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+
+        TexturedSprite::indexes = indeces.size();
+        TexturedSprite::drawMode = drawMode;
+    }
+    */
     Mesh() {
     }
 
     virtual ~Mesh() {
+        glDeleteVertexArrays(vaos.size(), vaos.data());
+        glDeleteBuffers(vbos.size(), vbos.data());
     }
 
     void draw(const std::vector<mat4>& models) {
     }
+
+    vector<GLuint> vaos;
+    vector<GLuint> vbos;
+//    vector<TextureUnitConnection> samplers;
+
+    vector<Frame> frames;
 };
 
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
@@ -551,14 +617,14 @@ unique_ptr<Program> coloredSh, texturedSh;
 
 mat4 proj, view;
 
-string imageFileName, shipImage;
+string boxImage, shipImage;
 
 int main(int argc, char **argv) {
     try {
         if(argc < 3)
             throw invalid_argument("usage: ./Test <path-to-image-file>/box.png <path-to-image-file/ship.png");
 
-        imageFileName = argv[1];
+        boxImage  = argv[1];
         shipImage = argv[2];
 
         glutInit(&argc, argv);
@@ -651,10 +717,10 @@ void init(){
     bgSprite       = make_unique_<ColoredSprite>(cs, bg,       bgInd,       GL_TRIANGLES);
     boxHeadSprite  = make_unique_<ColoredSprite>(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
 
-    if (imageFileName.empty())
+    if (boxImage.empty())
         throw runtime_error("image file name is empty");
 
-    tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
+    tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(boxImage));
     ship           = make_unique_<TexturedSprite>(ts, shipVerteces, shipTexCoords, shipIndices, GL_TRIANGLE_STRIP, loadTexture(shipImage));
 
     boxSprite->model        = glm::translate(boxSprite->model,     vec3(0.f,  30.f,  0.f));
@@ -669,8 +735,8 @@ void init(){
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
 
-    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
-//    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
+//    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
+    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
     view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
@@ -693,7 +759,6 @@ void display(void) {
         glUseProgram(ts.shader);
 
         tBoxSprite->draw( { boxSprite->model });
-
         ship->draw();
     }
 
