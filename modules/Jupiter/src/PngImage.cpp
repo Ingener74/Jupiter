@@ -29,7 +29,7 @@ PngImage::PngImage(const std::string& fileName) :
     png_int_32 lRowSize;
     bool lTransparency;
 
-    file->stream().read(reinterpret_cast<char*>(lHeader), sizeof(lHeader));
+    file->getStream().read(reinterpret_cast<char*>(lHeader), sizeof(lHeader));
 
     if (png_sig_cmp(lHeader, 0, 8) != 0)
         throw std::runtime_error("can't signature mismatch");
@@ -133,7 +133,7 @@ void PngImage::pngRwCallback(void* pngStruct, uint8_t* data, size_t size){
 
     auto pngp = static_cast<png_structp>(pngStruct);
     auto* self = static_cast<PngImage*>(png_get_io_ptr(pngp));
-    self->file->stream().read(reinterpret_cast<char*>(data), size);
+    self->file->getStream().read(reinterpret_cast<char*>(data), size);
 }
 
 } /* namespace jupiter */

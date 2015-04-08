@@ -16,8 +16,12 @@ File::File(const std::string& fileName) :
             throw JupiterError("have no file buffer factory")), i(buffer.get()) {
 }
 
-std::istream& File::stream() {
+std::istream& File::getStream() {
     return i;
+}
+
+std::vector<uint8_t> File::getBuffer() {
+    return {};
 }
 
 void File::setBase(const std::string& base) {

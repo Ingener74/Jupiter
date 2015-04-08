@@ -14,6 +14,13 @@ option(WITH_PYTHON_WRAPPER   "Python wrapper"                  ON)
 option(WITH_GAME_PLAYER      "Build with c++ game player"      ON)
 option(WITH_TESTS            "Build tests"                     ON)
 
+if(USE_FREEGLUT AND USE_GLFW)
+    message(FATAL_ERROR "Use freeglut OR glfw")
+endif()
+if(NOT USE_FREEGLUT AND NOT USE_GLFW)
+    message(FATAL_ERROR "Use freeglut OR glfw")
+endif()
+
 # find boost
 find_package(Boost 1.53.0 REQUIRED system thread filesystem program_options)
 
@@ -24,14 +31,6 @@ find_package(FreeImage)
 
 # find glm
 find_package(GLM REQUIRED)
-
-if(USE_FREEGLUT AND USE_GLFW)
-    message(FATAL_ERROR "Use freeglut OR glfw")
-endif()
-
-if(NOT USE_FREEGLUT AND NOT USE_GLFW)
-    message(FATAL_ERROR "Use freeglut OR glfw")
-endif()
 
 # find GLUT
 if(USE_FREEGLUT)
@@ -57,11 +56,7 @@ find_package(Box2D REQUIRED)
 # find Lua
 find_package(Lua REQUIRED)
 
-if(WITH_TESTS)
-    # find GTest and GMock
-    add_subdirectory(3rdparty/gmock-1.7.0)
-    enable_testing()
-endif()
+add_subdirectory(3rdparty)
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
@@ -86,6 +81,7 @@ include_directories(
     ${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR}
     
     3rdparty/json/src
+    3rdparty/lodepng
     
     modules/Jupiter/include
     modules/Ganymede/include

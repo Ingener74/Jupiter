@@ -15,6 +15,7 @@
 #else
     #include <iostream>
     #include <memory>
+    #include <vector>
 
 #endif
 
@@ -33,12 +34,8 @@ public:
     File(const std::string& fileName);
     virtual ~File() = default;
 
-    std::istream& stream();
-
-    /*
-    const void* getBuffer() const;
-    const uint32_t getSize() const;
-    */
+    std::istream& getStream();
+    std::vector<uint8_t> getBuffer();
 
     static void setBufferFactory(BufferFactory* factory = nullptr);
     static void setBase(const std::string& base);

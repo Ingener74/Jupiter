@@ -84,8 +84,6 @@ bool createGameDirect(const variables_map& vm) {
     float y = viewRadius * sin(yAngle);
     float z = viewRadius * cos(xAngle);
 
-    cout << x << " " << y << " " << z << " " << endl;
-
     auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 
     render = make_unique_<RenderVisitor>(proj, view);

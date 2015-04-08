@@ -14,8 +14,8 @@ namespace jupiter {
 using namespace std;
 
 FileShader::FileShader(class File* vertex, class File* fragment) {
-    string vertexShaderSource { (istreambuf_iterator<char>(vertex->stream())), istreambuf_iterator<char>() };
-    string fragmentShaderSource { (istreambuf_iterator<char>(fragment->stream())), istreambuf_iterator<char>() };
+    string vertexShaderSource { (istreambuf_iterator<char>(vertex->getStream())), istreambuf_iterator<char>() };
+    string fragmentShaderSource { (istreambuf_iterator<char>(fragment->getStream())), istreambuf_iterator<char>() };
     _program = createProgram(vertexShaderSource, fragmentShaderSource);
 }
 
