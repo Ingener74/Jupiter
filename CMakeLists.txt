@@ -11,6 +11,7 @@ option(WITH_WRAPPERS         "Wrapper"                         ON)
 option(WITH_LUA_WRAPPER      "Lua wrapper"                     ON)
 option(WITH_PYTHON_WRAPPER   "Python wrapper"                  ON)
 
+option(WITH_GANIMEDE         "Build Ganimede"                  ON)
 option(WITH_GAME_PLAYER      "Build with c++ game player"      ON)
 option(WITH_TESTS            "Build tests"                     ON)
 
@@ -55,7 +56,9 @@ find_package(GLEW REQUIRED)
 find_package(Box2D REQUIRED)
 
 # find Lua
-find_package(Lua REQUIRED)
+if(WITH_GANIMEDE)
+	find_package(Lua)
+endif()
 
 if(WITH_TESTS)
     # find GTest and GMock
@@ -101,6 +104,8 @@ if(USE_FREEGLUT)
 elseif(USE_GLFW)
     set(GL_LIBRARIES ${GL_LIBRARIES} ${GLFW_LIBRARIES})
 endif()
+
+message(STATUS "found gl libraries = ${GL_LIBRARIES}")
 
 add_definitions(-std=c++11)
 

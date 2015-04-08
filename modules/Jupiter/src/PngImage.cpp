@@ -42,9 +42,9 @@ PngImage::PngImage(const std::string& fileName) :
     if (!lInfoPtr)
         throw JupiterError("some error 2");
 
-    png_set_read_fn(lPngPtr, this, reinterpret_cast<void (*)(png_struct_def*, unsigned char*, long unsigned int)>(pngRwCallback));
-    if (setjmp(png_jmpbuf(lPngPtr)))
-        throw JupiterError("can't set read callback");
+//    png_set_read_fn(lPngPtr, this, reinterpret_cast<void (*)(png_struct_def*, unsigned char*, long unsigned int)>(pngRwCallback));
+//    if (setjmp(png_jmpbuf(lPngPtr)))
+//        throw JupiterError("can't set read callback");
 
     png_set_sig_bytes(lPngPtr, 8);
     png_read_info(lPngPtr, lInfoPtr);

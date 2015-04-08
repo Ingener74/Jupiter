@@ -8,14 +8,14 @@
 #include "GamePlayer.h"
 
 #include <Jupiter.h>
-#include <Ganymede/Ganimede.h>
+//#include <Ganymede/Ganimede.h>
 
 using namespace std;
 using namespace glm;
 using namespace boost::filesystem;
 using namespace boost::program_options;
 
-using namespace ganymede;
+//using namespace ganymede;
 using namespace jupiter;
 
 string usage = R"(
@@ -58,6 +58,13 @@ float viewRadius = 600.f;
 
 float xAngle = 0.f;
 float yAngle = 0.f;
+
+const float Pi = 3.1415926;
+
+string to_string_(const wstring& wstr){
+    string s{wstr.begin(), wstr.end()};
+    return s;
+}
 
 bool createGameDirect(const variables_map& vm) {
 
@@ -109,7 +116,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(bgShape.get())
         ->setVisible(true)
         ->translateZ(-10.f)
-        ->rotateZ(M_PI)
+        ->rotateZ(Pi)
         ->scale(.3f, .3f)
         ->setParent(rootNode.get())
     ;
@@ -127,7 +134,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(flourShape.get())
         ->setVisible(true)
         ->translate(0.f, -190.f, 20.f)
-        ->rotateZ(M_PI)
+        ->rotateZ(Pi)
         ->scale(.8f, .8f)
         ->setParent(rootNode.get())
     ;
@@ -175,9 +182,9 @@ bool createGameJsonFile(const variables_map& vm) {
 
     path gameFile = vm["game"].as<string>();
 
-    File::setBase(gameFile.parent_path().native());
+    File::setBase(to_string_(gameFile.parent_path().native()));
 
-    game = make_unique_<JsonGame>(gameFile.filename().native());
+    game = make_unique_<JsonGame>(to_string_(gameFile.filename().native()));
 
     return true;
 }

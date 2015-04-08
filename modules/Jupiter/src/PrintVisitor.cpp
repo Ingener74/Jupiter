@@ -8,8 +8,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include <glm/virtrev/xstream.hpp>
-
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
 #include "Jupiter/PrintVisitor.h"
