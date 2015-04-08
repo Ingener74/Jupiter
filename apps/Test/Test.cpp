@@ -735,8 +735,8 @@ void init(){
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
 
-//    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
-    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
+    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
+//    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
     view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
 
