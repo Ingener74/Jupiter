@@ -213,7 +213,24 @@ vector<ushort> flourInd = {
     0, 2, 1,   3, 1, 2,
 };
 
-float w = 400.f, h = 240.f, m = 3.f;
+//
+vector<vec3> shipVerteces = {
+    {-5.f, 5.f, 0.f},
+    { 5.f, 5.f, 0.f},
+    {-5.f,-5.f, 0.f},
+    { 5.f,-5.f, 0.f},
+};
+vector<vec2> shipTexCoords = {
+    {0.f, 0.f},
+    {1.f, 0.f},
+    {0.f, 1.f},
+    {1.f, 1.f},
+};
+vector<ushort> shipIndices = {
+    0, 2, 1, 3
+};
+
+float w = 400.f, h = 240.f, m = 1.f;
 float width = w * m, height = h * m;
 
 class Attribute {
@@ -402,6 +419,38 @@ public:
         TexturedSprite::texture = texture;
     }
 
+    TexturedSprite(const TexturedShader& shader, const vector<vec3>& verteces, const vector<vec2>& texcoords, const vector<ushort>& indexes, GLenum drawMode, const Texture& texture){
+
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, verteces.size() * sizeof(vec3), &verteces.front().x, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(shader.aVertex);
+        glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+        glGenBuffers(1, &vboTexCoords);
+        glBindBuffer(GL_ARRAY_BUFFER, vboTexCoords);
+        glBufferData(GL_ARRAY_BUFFER, texcoords.size() * sizeof(vec2), &texcoords.front().x, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(shader.aTexCoord);
+        glVertexAttribPointer(shader.aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+        glGenBuffers(1, &IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(ushort), indexes.data(), GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+
+        TexturedSprite::indexes = indexes.size();
+        TexturedSprite::drawMode = drawMode;
+        TexturedSprite::texture = texture;
+    }
+
+//    TexturedSprite(const Program& shaderProgram)
+
     virtual ~TexturedSprite(){
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &IBO);
@@ -429,24 +478,26 @@ public:
         glBindVertexArray(0);
     }
 
+    GLuint vboTexCoords = 0;
     Texture texture;
 };
 
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
-unique_ptr<TexturedSprite> tBoxSprite;
+unique_ptr<TexturedSprite> tBoxSprite, ship;
 
 unique_ptr<Program> coloredSh, texturedSh;
 
 mat4 proj, view;
 
-string imageFileName;
+string imageFileName, shipImage;
 
 int main(int argc, char **argv) {
     try {
-        if(argc < 2)
-            throw invalid_argument("usage: ./Test <path-to-image-file>/image.png");
+        if(argc < 3)
+            throw invalid_argument("usage: ./Test <path-to-image-file>/box.png <path-to-image-file/ship.png");
 
         imageFileName = argv[1];
+        shipImage = argv[2];
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -508,9 +559,6 @@ void init(){
 
         cs.aVertex     = glGetAttribLocation(cs.shader, "vertex");
         cs.aColor      = glGetAttribLocation(cs.shader, "color");
-
-        cout << "colored sprite" << endl;
-        shaderInfo(cs.shader);
     }
     {
         ts.shader = createProgram(texturedSpriteVertex, texturedSpriteFragment);
@@ -523,26 +571,26 @@ void init(){
 
         ts.aVertex     = glGetAttribLocation(ts.shader, "vertex");
         ts.aTexCoord   = glGetAttribLocation(ts.shader, "texcoord");
-
-        cout << "textured sprite" << endl;
-        shaderInfo(ts.shader);
     }
-
-    if (imageFileName.empty())
-        throw runtime_error("image file name is empty");
 
     boxSprite      = make_unique_<ColoredSprite>(cs, box,      boxInd,      GL_TRIANGLES);
     flourSprite    = make_unique_<ColoredSprite>(cs, flour,    flourInd,    GL_TRIANGLE_STRIP);
     bgSprite       = make_unique_<ColoredSprite>(cs, bg,       bgInd,       GL_TRIANGLES);
     boxHeadSprite  = make_unique_<ColoredSprite>(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
 
+    if (imageFileName.empty())
+        throw runtime_error("image file name is empty");
+
     tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(imageFileName));
+    ship           = make_unique_<TexturedSprite>(ts, shipVerteces, shipTexCoords, shipIndices, GL_TRIANGLE_STRIP, loadTexture(shipImage));
 
     boxSprite->model        = glm::translate(boxSprite->model,     vec3(0.f,  30.f,  0.f));
     boxHeadSprite->model    = glm::translate(boxHeadSprite->model, vec3(0.f,  3.0f,  0.f));
     flourSprite->model      = glm::translate(flourSprite->model,   vec3(0.f, -40.f,  0.f));
     bgSprite->model         = glm::translate(bgSprite->model,      vec3(0.f,   0.f, -1.f));
     tBoxSprite->model       = glm::translate(tBoxSprite->model,    vec3(0.f, -13.f,  4.f));
+
+    ship->model             = glm::translate(ship->model,          vec3(0.f,  -20.f,  5.f));
 }
 
 void reshape(int w, int h) {
@@ -578,6 +626,8 @@ void display(void) {
         glUniformMatrix4fv(ts.uView, 1, GL_FALSE, &view[0][0]);
 
         tBoxSprite->draw( { boxSprite->model });
+
+        ship->draw();
     }
 
     glFlush();
