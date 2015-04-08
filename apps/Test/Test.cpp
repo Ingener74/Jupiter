@@ -5,15 +5,16 @@
  *      Author: ingener
  */
 
-#include <map>
-#include <numeric>
+#include <algorithm>
 #include <array>
-#include <vector>
-#include <memory>
-#include <sstream>
-#include <iostream>
-#include <stdexcept>
 #include <cstddef>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <sstream>
+#include <stdexcept>
+#include <vector>
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -307,11 +308,18 @@ public:
     vector<Uniform> uniforms;
 
     const Attribute& getAttribute(const string& attributeName) const {
-        auto it = find(attributes.begin(), attributes.end(),
+        auto it = find_if(attributes.begin(), attributes.end(),
             [&](const Attribute& i) {return i.attributeName == attributeName;});
         if (it == attributes.end())
             throw runtime_error("no attribute with name " + attributeName);
         return *it;
+    }
+
+    void setUniformMatrix4x4(const string& uniformName, const mat4& matrix) {
+        auto it = find_if(uniforms.begin(), uniforms.end(), [&](const Uniform& i) {return i.uniformName == uniformName;});
+        if (it == uniforms.end())
+            throw runtime_error("no uniform");
+        glUniformMatrix4fv(it->uniform, 1, GL_FALSE, &matrix[0][0]);
     }
 
     friend ostream& operator<<(ostream& out, const Program& r){
@@ -475,7 +483,7 @@ public:
 
         for(size_t i = 0; i < mesh.size(); ++i){
             glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
-            glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), &mesh.at(i).data.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
 
             auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
             glEnableVertexAttribArray(attrib);
@@ -524,6 +532,18 @@ public:
     Texture texture;
 };
 
+class Mesh {
+public:
+    Mesh() {
+    }
+
+    virtual ~Mesh() {
+    }
+
+    void draw(const std::vector<mat4>& models) {
+    }
+};
+
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
 unique_ptr<TexturedSprite> tBoxSprite, ship;
 
@@ -569,8 +589,8 @@ int main(int argc, char **argv) {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        init();
         reshape(width, height);
+        init();
 
         glutTimerFunc(0, timer, 0);
         glutMainLoop();
@@ -592,6 +612,9 @@ void init(){
     texturedSh = make_unique_<Program>(texturedSpriteVertex, texturedSpriteFragment);
     cout << *texturedSh << endl;
 
+    texturedSh->setUniformMatrix4x4("projection", proj);
+    texturedSh->setUniformMatrix4x4("view", view);
+
     {
         cs.shader = createProgram(coloredSpriteVertex, coloredSpriteFragment);
 
@@ -601,6 +624,10 @@ void init(){
 
         cs.aVertex     = glGetAttribLocation(cs.shader, "vertex");
         cs.aColor      = glGetAttribLocation(cs.shader, "color");
+
+        glUseProgram(cs.shader);
+        glUniformMatrix4fv(cs.uProjection, 1, GL_FALSE, &proj[0][0]);
+        glUniformMatrix4fv(cs.uView, 1, GL_FALSE, &view[0][0]);
     }
     {
         ts.shader = createProgram(texturedSpriteVertex, texturedSpriteFragment);
@@ -613,6 +640,10 @@ void init(){
 
         ts.aVertex     = glGetAttribLocation(ts.shader, "vertex");
         ts.aTexCoord   = glGetAttribLocation(ts.shader, "texcoord");
+
+        glUseProgram(ts.shader);
+        glUniformMatrix4fv(ts.uProjection, 1, GL_FALSE, &proj[0][0]);
+        glUniformMatrix4fv(ts.uView, 1, GL_FALSE, &view[0][0]);
     }
 
     boxSprite      = make_unique_<ColoredSprite>(cs, box,      boxInd,      GL_TRIANGLES);
@@ -650,9 +681,6 @@ void display(void) {
     {
         glUseProgram(cs.shader);
 
-        glUniformMatrix4fv(cs.uProjection, 1, GL_FALSE, &proj[0][0]);
-        glUniformMatrix4fv(cs.uView, 1, GL_FALSE, &view[0][0]);
-
         boxSprite->model = glm::rotate(boxSprite->model, .03f, vec3(0.f, 0.f, 1.f));
 
         bgSprite->draw();
@@ -663,9 +691,6 @@ void display(void) {
 
     {
         glUseProgram(ts.shader);
-
-        glUniformMatrix4fv(ts.uProjection, 1, GL_FALSE, &proj[0][0]);
-        glUniformMatrix4fv(ts.uView, 1, GL_FALSE, &view[0][0]);
 
         tBoxSprite->draw( { boxSprite->model });
 
