@@ -245,7 +245,7 @@ vector<uint16_t> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = 1.f;
+float w = 400.f, h = 240.f, m = .5f;
 float width = w * m, height = h * m;
 
 class Attribute {
@@ -659,6 +659,12 @@ unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
 unique_ptr<TexturedSprite> tBoxSprite, ship;
 
 unique_ptr<Program> coloredSh, texturedSh;
+
+unique_ptr<Mesh>
+    root,
+        bgMesh,
+        groundMesh,
+        boxMesh;
 
 mat4 proj, view;
 
