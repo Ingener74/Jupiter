@@ -19,13 +19,13 @@
 #include <climits>
 
 #include <GL/glew.h>
-#include <GL/glxew.h>
+// #include <GL/glxew.h>
 
-//#ifdef  _WIN32
-//    #include <GL/wglew.h>
-//#else
-//    #include <GL/glxew.h>
-//#endif
+#ifdef  _WIN32
+    #include <GL/wglew.h>
+#else
+    #include <GL/glxew.h>
+#endif
 
 
 //#include <GL/glut.h>
@@ -245,7 +245,7 @@ vector<uint16_t> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = .5f;
+float w = 400.f, h = 240.f, m = 4.f;
 float width = w * m, height = h * m;
 
 class Attribute {
