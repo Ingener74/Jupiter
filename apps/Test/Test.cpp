@@ -19,6 +19,14 @@
 #include <climits>
 
 #include <GL/glew.h>
+#include <GL/glxew.h>
+
+//#ifdef  _WIN32
+//    #include <GL/wglew.h>
+//#else
+//    #include <GL/glxew.h>
+//#endif
+
 
 //#include <GL/glut.h>
 #include <GL/freeglut.h>
@@ -665,22 +673,20 @@ int main(int argc, char **argv) {
         shipImage = argv[2];
 
         glutInit(&argc, argv);
-
-        // Для OpenGL 3.3, пока не работает
-        // glutInitContextVersion(3, 3);
-        // glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
-
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
+
+        // Для OpenGL 3.3
+        glutInitContextVersion(3, 3);
+        glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
+        glutInitContextProfile(GLUT_CORE_PROFILE);
+
         glutCreateWindow("Test");
 
-        glutReshapeFunc(reshape);
-        glutDisplayFunc(display);
-        glutMouseFunc(mouse);
-        glutMotionFunc(mouseMove);
-
-        if (glewInit() != GLEW_OK)
-            throw runtime_error("glew init error");
+        glewExperimental = GL_TRUE;
+        auto glewInitError = glewInit();
+        if (glewInitError != GLEW_OK)
+            throw runtime_error("glew init error " + string(reinterpret_cast<const char*>(glewGetErrorString(glewInitError))));
 
         {
             cout << "OpenGL vendor:                     " << glGetString(GL_VENDOR) << endl;
@@ -693,6 +699,11 @@ int main(int argc, char **argv) {
 //            while (s >> ext)
 //                cout << ext << endl;
         }
+
+        glutReshapeFunc(reshape);
+        glutDisplayFunc(display);
+        glutMouseFunc(mouse);
+        glutMotionFunc(mouseMove);
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
