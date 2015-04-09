@@ -565,6 +565,7 @@ public:
                 "image.png",
             }
         },
+
         {   // Второй кадр
         }
     }
@@ -847,7 +848,6 @@ void key(unsigned char k, int x, int y) {
 }
 
 void specKey ( int key, int x, int y ){
-    cout << key << endl;
 }
 
 void deinit(){
