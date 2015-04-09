@@ -21,9 +21,9 @@ set(LIBS
     ${GL_LIBRARIES}
     ${Boost_LIBRARIES}
     ${PNG_LIBRARIES}
-    ${LUA_LIBRARIES}
+    #${LUA_LIBRARIES}
     
-    Ganymede
+    #Ganymede
     Jupiter
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
