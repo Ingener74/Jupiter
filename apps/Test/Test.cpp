@@ -19,8 +19,6 @@
 #include <climits>
 
 #include <GL/glew.h>
-// #include <GL/glxew.h>
-
 #ifdef  _WIN32
     #include <GL/wglew.h>
 #else
@@ -49,6 +47,8 @@ void display(void);
 void reshape(int w, int h);
 void mouse(int button, int action, int x, int y);
 void mouseMove(int x, int y);
+void key ( unsigned char key, int x, int y );
+void specKey ( int key, int x, int y );
 void timer(int time);
 
 void shaderInfo(GLuint shader);
@@ -245,7 +245,7 @@ vector<uint16_t> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = 4.f;
+float w = 400.f, h = 240.f, m = .5f;
 float width = w * m, height = h * m;
 
 class Attribute {
@@ -710,6 +710,8 @@ int main(int argc, char **argv) {
         glutDisplayFunc(display);
         glutMouseFunc(mouse);
         glutMotionFunc(mouseMove);
+        glutKeyboardFunc(key);
+        glutSpecialFunc(specKey);
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
@@ -837,6 +839,15 @@ void mouse(int button, int action, int x, int y) {
 }
 
 void mouseMove(int x, int y) {
+}
+
+void key(unsigned char k, int x, int y) {
+    if (k == 27)
+        glutLeaveMainLoop();
+}
+
+void specKey ( int key, int x, int y ){
+    cout << key << endl;
 }
 
 void deinit(){
