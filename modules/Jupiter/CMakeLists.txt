@@ -50,6 +50,7 @@ set(LIBS
     ${GL_LIBRARIES}
     ${PNG_LIBRARIES}
     ${Boost_LIBRARIES}
+    lodepng
 )
 if(ANDROID)
     set(LIBS ${LIBS}
@@ -59,8 +60,9 @@ else()
     )
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
+add_definitions(-fPIC)
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 if(WITH_TESTS)

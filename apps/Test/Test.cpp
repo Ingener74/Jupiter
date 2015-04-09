@@ -231,7 +231,7 @@ vector<ushort> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = 3.f;
+float w = 400.f, h = 240.f, m = 1.f;
 float width = w * m, height = h * m;
 
 class Attribute {

@@ -17,7 +17,7 @@ public:
     LinuxFileFactory() = default;
     virtual ~LinuxFileFactory() = default;
 
-    virtual std::unique_ptr<std::streambuf> create(const std::string& fileName);
+    virtual std::unique_ptr<Buffer> create(const std::string& fileName);
 };
 
 } /* namespace jupiter */

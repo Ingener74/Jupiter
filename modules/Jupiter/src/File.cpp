@@ -11,25 +11,30 @@ namespace jupiter {
 
 using namespace std;
 
-File::File(const std::string& fileName) :
+const vector<uint8_t>& Buffer::getBuffer() const {
+    return buffer;
+}
+
+File::File(const string& fileName) :
     buffer(factory ? factory->create(base + (base.empty() ? "" : "/") + fileName) :
             throw JupiterError("have no file buffer factory")), i(buffer.get()) {
 }
 
-std::istream& File::getStream() {
+istream& File::getStream() {
     return i;
 }
 
-std::vector<uint8_t> File::getBuffer() {
-    return {};
+const vector<uint8_t>& File::getBuffer() const {
+    return buffer->getBuffer();
 }
 
-void File::setBase(const std::string& base) {
+void File::setBase(const string& base) {
     File::base = base;
 }
 
 void File::setBufferFactory(BufferFactory* factory) {
-    File::factory = std::move(factory);
+    File::factory = move(factory);
 }
 
 }  // namespace jupiter
+

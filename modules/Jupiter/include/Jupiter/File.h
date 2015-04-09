@@ -23,10 +23,20 @@
 
 namespace jupiter {
 
+class Buffer: public std::streambuf {
+public:
+    virtual ~Buffer() = default;
+
+    const std::vector<uint8_t>& getBuffer() const;
+
+protected:
+    std::vector<uint8_t> buffer;
+};
+
 class BufferFactory {
 public:
     virtual ~BufferFactory() = default;
-    virtual std::unique_ptr<std::streambuf> create(const std::string& fileName) = 0;
+    virtual std::unique_ptr<Buffer> create(const std::string& fileName) = 0;
 };
 
 class File {
@@ -35,13 +45,13 @@ public:
     virtual ~File() = default;
 
     std::istream& getStream();
-    std::vector<uint8_t> getBuffer();
+    const std::vector<uint8_t>& getBuffer() const;
 
     static void setBufferFactory(BufferFactory* factory = nullptr);
     static void setBase(const std::string& base);
 
 private:
-    std::unique_ptr<std::streambuf> buffer;
+    std::unique_ptr<Buffer> buffer;
     std::istream i;
 
     static BufferFactory* factory;

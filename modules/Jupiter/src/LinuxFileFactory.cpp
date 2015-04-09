@@ -18,40 +18,43 @@ namespace jupiter {
 
 using namespace std;
 
-class FileBuffer: public streambuf {
+class FileBuffer: public Buffer {
 public:
     FileBuffer(const string& fileName) :
-        _fileName(fileName) {
-        shared_ptr<FILE> f(fopen(_fileName.c_str(), "rb"), [](FILE* df)
+        fileName(fileName) {
+        shared_ptr<FILE> f(fopen(fileName.c_str(), "rb"), [](FILE* df)
         {
             if(df)
             fclose(df);
         });
         if (!f)
-            throw JupiterError("can't open file " + _fileName);
+            throw JupiterError("can't open file " + fileName);
 
         fseek(f.get(), 0, SEEK_END);
         auto size = ftell(f.get());
         rewind(f.get());
 
-        _buffer.reserve(size);
+        buffer.resize(size);
 
-        auto res = fread(_buffer.data(), sizeof(char), size, f.get());
+        char*
+        ptr = reinterpret_cast<char*>(buffer.data());
+
+        auto res = fread(ptr, sizeof(char), size, f.get());
         if (res != size)
             throw JupiterError("can't read file");
 
-        setg(_buffer.data(), _buffer.data(), _buffer.data() + _buffer.capacity());
+        ptr = reinterpret_cast<char*>(buffer.data());
+        setg(ptr, ptr, ptr + buffer.capacity());
     }
     virtual ~FileBuffer() {
-        cout << __PRETTY_FUNCTION__ << ": " << _fileName << endl;
+        cout << __FUNCTION__ << ": " << fileName << endl;
     }
 
 private:
-    string _fileName;
-    vector<char> _buffer;
+    string fileName;
 };
 
-unique_ptr<streambuf> LinuxFileFactory::create(const string& fileName) {
+std::unique_ptr<Buffer> LinuxFileFactory::create(const string& fileName) {
     return make_unique_<FileBuffer>(fileName);
 }
 

@@ -29,15 +29,15 @@ public:
 
     virtual ~Image() = default;
 
-    virtual int getWidth() const;
-    virtual int getHeight() const;
+    virtual uint32_t getWidth() const;
+    virtual uint32_t getHeight() const;
     virtual void const* getData() const;
     virtual Image::Type getType() const;
 
     friend std::ostream& operator <<(std::ostream& out, const Image& r);
 
 protected:
-    int width = 0, height = 0;
+    uint32_t width = 0, height = 0;
     Image::Type type = Image::Type::RGB;
     std::vector<uint8_t> data;
 };
@@ -45,11 +45,11 @@ protected:
 inline Image::Image(const std::string& name) {
 }
 
-inline int Image::getWidth() const {
+inline uint32_t Image::getWidth() const {
     return width;
 }
 
-inline int Image::getHeight() const {
+inline uint32_t Image::getHeight() const {
     return height;
 }
 

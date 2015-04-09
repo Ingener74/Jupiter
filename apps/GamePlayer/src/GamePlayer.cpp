@@ -107,7 +107,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(bgShape.get())
         ->setVisible(true)
         ->translateZ(-10.f)
-        ->rotateZ(M_PI)
+//        ->rotateZ(M_PI)
         ->scale(.3f, .3f)
         ->setParent(rootNode.get())
     ;
@@ -125,7 +125,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setShape(flourShape.get())
         ->setVisible(true)
         ->translate(0.f, -190.f, 20.f)
-        ->rotateZ(M_PI)
+//        ->rotateZ(M_PI)
         ->scale(.8f, .8f)
         ->setParent(rootNode.get())
     ;
