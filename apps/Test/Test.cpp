@@ -19,7 +19,11 @@
 #include <climits>
 
 #include <GL/glew.h>
-#include <GL/glut.h>
+
+//#include <GL/glut.h>
+#include <GL/freeglut.h>
+#include <GL/freeglut_ext.h>
+#include <GL/freeglut_std.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -661,6 +665,11 @@ int main(int argc, char **argv) {
         shipImage = argv[2];
 
         glutInit(&argc, argv);
+
+        // Для OpenGL 3.3, пока не работает
+        // glutInitContextVersion(3, 3);
+        // glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
+
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
         glutCreateWindow("Test");
@@ -673,17 +682,17 @@ int main(int argc, char **argv) {
         if (glewInit() != GLEW_OK)
             throw runtime_error("glew init error");
 
-        /*{
-            cout << glGetString(GL_VENDOR) << endl;
-            cout << glGetString(GL_RENDERER) << endl;
-            cout << glGetString(GL_VERSION) << endl;
-            cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
-            stringstream s;
-            s << glGetString(GL_EXTENSIONS);
-            string ext;
-            while(s >> ext)
-                cout << ext << endl;
-        }*/
+        {
+            cout << "OpenGL vendor:                     " << glGetString(GL_VENDOR) << endl;
+            cout << "OpenGL renderer:                   " << glGetString(GL_RENDERER) << endl;
+            cout << "OpenGL version:                    " << glGetString(GL_VERSION) << endl;
+            cout << "OpenGL shading language version:   " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+//            stringstream s;
+//            s << glGetString(GL_EXTENSIONS);
+//            string ext;
+//            while (s >> ext)
+//                cout << ext << endl;
+        }
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
