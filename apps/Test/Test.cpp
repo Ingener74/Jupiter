@@ -515,101 +515,160 @@ public:
     Texture texture;
 };
 
-class Mesh {
-public:
 
-    /*
-     * кадры могут делить координаты, текстурный координаты, текстуры, индексы и пр.
-     * один кадр хранит информаци по текущему состоянию меша, т.е. какой использовать,
-     *      буфер координат,
-     *      буфер текстурных координат,
-     *      буфер цветов,
-     *      буфер нормалей,
-     *      текстуру
-     *      и т. д.
-     *
-     *
-     *
-     */
 
-    /*
 
-    {
-        {   // Первый кадр
-            {   // Аттрибуты шейдера
-                {
-                    pos,
-                    3,
-                    {   // Координаты
-                        0.f, 0.f, 0.f,
-                        0.f, 0.f, 0.f,
-                        0.f, 0.f, 0.f,
-                        0.f, 0.f, 0.f,
-                    }
-                },
-                {
-                    texcoord,
-                    2,
-                    {   // Текстурный координаты
-                        0.f, 0.f,
-                        0.f, 0.f,
-                        0.f, 0.f,
-                        0.f, 0.f,
-                    }
+/*
+ * кадры могут делить координаты, текстурный координаты, текстуры, индексы и пр.
+ * один кадр хранит информаци по текущему состоянию меша, т.е. какой использовать,
+ *      буфер координат,
+ *      буфер текстурных координат,
+ *      буфер цветов,
+ *      буфер нормалей,
+ *      текстуру
+ *      и т. д.
+ *
+ *
+ *
+ */
+
+/*
+
+{
+    {   // Первый кадр
+        {   // Аттрибуты шейдера
+            {
+                pos,
+                3,
+                {   // Координаты
+                    0.f, 0.f, 0.f,
+                    0.f, 0.f, 0.f,
+                    0.f, 0.f, 0.f,
+                    0.f, 0.f, 0.f,
                 }
             },
-            {   // Индексы
-                1, 2, 3, 4,
-            },
-            {   // Текстура
-                "image.png",
+            {
+                texcoord,
+                2,
+                {   // Текстурный координаты
+                    0.f, 0.f,
+                    0.f, 0.f,
+                    0.f, 0.f,
+                    0.f, 0.f,
+                }
             }
         },
+        {   // Индексы
+            1, 2, 3, 4,
+        },
+        {   // Текстура
+            "image.png",
+        }
+    },
 
-        {   // Второй кадр
+    {   // Второй кадр
+    }
+}
+
+Array of Structure
+[{pos, col, texcoord, normal}, {pos, col, texcoord, normal}, {pos, col, texcoord, normal}, ... ]
+
+Structure of Arrays
+{
+    [{pos}     , {pos}     , {pos}     , ... ],
+    [{col}     , {col}     , {col}     , ... ],
+    [{texcoord}, {texcoord}, {texcoord}, ... ],
+    [{normal}  , {normal}  , {normal}  , ... ],
+}
+
+*/
+
+template<typename T>
+struct FrameRange {
+    int32_t start, end;
+    T data;
+};
+
+struct MeshData{
+
+    struct Attribute {
+        string attribute;
+        vector<FrameRange<vector<float>>> data;
+    };
+    struct Texture{
+        GLuint textureId;
+        GLuint unit;
+    };
+    struct Uniform {
+        string                           uniform;
+        vector<FrameRange<Texture>>      textures;
+    };
+
+    int                                  frames;
+    vector<Attribute>                    attributesData;
+
+    vector<Uniform>                      uniformsData;
+
+    vector<FrameRange<vector<uint16_t>>> indeces;
+    vector<FrameRange<GLenum>>           drawModes;
+};
+
+
+MeshData boxMeshData{
+    3,
+    {
+        {
+            "pos",
+            {
+                {0, 3, {0.f, 0.f, 0.f,  0.f, 0.f, 0.f,  0.f, 0.f, 0.f,  0.f, 0.f, 0.f,  }}
+            }
+        },
+        {
+            "texcoord",
+            {
+                {
+                    0, 1, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  }
+                },
+                {
+                    1, 2, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  }
+                },
+                {
+                    2, 3, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  }
+                },
+            }
+        }
+    },
+    {
+        {
+            "texture",
+            {
+                {
+                    0, 3, {3, 0}
+                }
+            }
+        }, {
+            "bump",
+            {
+                {
+                    0, 3, {5, 0}
+                }
+            }
+        }
+    },
+    {
+        {
+            0, 3, {0, 1, 2, 3}
+        }
+    },
+    {
+        {
+            0, 3, GL_TRIANGLE_STRIP
         }
     }
+};
 
-    */
-    struct Frame {
-    };
-
-    struct VertexData {
-
-        // Для данных в одном буфере
-        struct VertexConsecutiveData {
-            struct AttributeParameters {
-                string attributeName;
-                GLint size;
-                size_t offset;
-            };
-            vector<AttributeParameters> attributeParams;
-            vector<float> data;
-        };
-
-        // Соединения текстур с текстурными блоками
-        struct TextureUnitConnection{
-            GLuint          textureUnit;
-            Texture         texture;
-        };
-        // Для данных разделённых по разным буферам
-        struct VertexAttributeData {
-            string          attributeName;
-            GLint           size;
-            vector<float>   data;
-        };
-
-        vector<VertexAttributeData>    attributesData;
-        vector<TextureUnitConnection>  textures;
-        vector<uint16_t>                 indices;
-        GLenum                         drawMode;
-    };
-
-    // Для данных в одном буфере
-
-
-    vector<uint16_t> indecex;
-
+class Mesh {
+public:
     /*
     Mesh(const Program& shaderProgram, const vector<VertexAttributeData>& mesh){
         vbos.resize(mesh.size());
@@ -642,18 +701,10 @@ public:
     }
 
     virtual ~Mesh() {
-        glDeleteVertexArrays(vaos.size(), vaos.data());
-        glDeleteBuffers(vbos.size(), vbos.data());
     }
 
     void draw(const std::vector<mat4>& models) {
     }
-
-    vector<GLuint> vaos;
-    vector<GLuint> vbos;
-//    vector<TextureUnitConnection> samplers;
-
-    vector<Frame> frames;
 };
 
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
