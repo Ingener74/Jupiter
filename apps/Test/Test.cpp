@@ -25,8 +25,9 @@
     #include <GL/glxew.h>
 #endif
 
+#include <GL/gl.h>
+#include <GL/glext.h>
 
-//#include <GL/glut.h>
 #include <GL/freeglut.h>
 #include <GL/freeglut_ext.h>
 #include <GL/freeglut_std.h>
@@ -245,7 +246,7 @@ vector<uint16_t> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = .5f;
+float w = 400.f, h = 240.f, m = 3.f;
 float width = w * m, height = h * m;
 
 class Attribute {
@@ -534,6 +535,10 @@ template<typename T>
 struct FrameRange {
     int32_t start, end;
     T data;
+
+    bool inRange(int32_t frame) const {
+        return frame >= start && frame < end;
+    }
 };
 
 struct MeshData{
@@ -560,7 +565,7 @@ struct MeshData{
     vector<FrameRange<GLenum>>           drawModes;
 };
 
-
+/*
 MeshData boxMeshData{
     3,
     {
@@ -585,7 +590,8 @@ MeshData boxMeshData{
             {
                 { 0, 3, {3, 0} }
             }
-        }, {
+        },
+        {
             "bump",
             {
                 { 0, 3, {5, 0} }
@@ -599,45 +605,66 @@ MeshData boxMeshData{
         { 0, 3, GL_TRIANGLE_STRIP }
     }
 };
+*/
 
 class Mesh {
 public:
-    /*
-    Mesh(const Program& shaderProgram, const vector<VertexAttributeData>& mesh){
-        vbos.resize(mesh.size());
 
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
+    Mesh(const Program& shaderProgram, const MeshData& mesh){
 
-        glGenBuffers(mesh.size(), vbos.data());
+        vaos = vector<GLuint>(mesh.frames);
 
-        for(size_t i = 0; i < mesh.size(); ++i){
-            glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
-            glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
+        glGenVertexArrays(vaos.size(), vaos.data());
 
-            auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
-            glEnableVertexAttribArray(attrib);
-            glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
-        }
-
-        glGenBuffers(1, &IBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(uint16_t), indeces.data(), GL_STATIC_DRAW);
-
-        glBindVertexArray(0);
-
-        TexturedSprite::indexes = indeces.size();
-        TexturedSprite::drawMode = drawMode;
+//        for(size_t i = 0; i < mesh.frames; ++i){
+//            glBindVertexArray(vaos.at(i));
+//
+//            glGenBuffers(mesh.size(), vbos.data());
+//
+//            for(size_t i = 0; i < mesh.size(); ++i){
+//                glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
+//                glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
+//
+//                auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
+//                glEnableVertexAttribArray(attrib);
+//                glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
+//            }
+//
+//            glGenBuffers(1, &IBO);
+//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+//            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(uint16_t), indeces.data(), GL_STATIC_DRAW);
+//
+//            glBindVertexArray(0);
+//        }
     }
-    */
+
     Mesh() {
     }
 
     virtual ~Mesh() {
+        glDeleteVertexArrays(vaos.size(), vaos.data());
+        glDeleteBuffers(vbos.size(), vbos.data());
     }
 
-    void draw(const std::vector<mat4>& models) {
+    void draw(size_t frame = 0, const std::vector<mat4>& models = { }) {
+
+        glBindVertexArray(vaos.at(frame));
+
+        glDrawElements(drawModes.at(frame), elementsCounts.at(frame), GL_UNSIGNED_SHORT, nullptr);
+
+        glBindVertexArray(0);
     }
+
+    size_t getFrameCount() const {
+        return vaos.size();
+    }
+
+protected:
+    vector<GLuint> vaos;
+    vector<GLsizei> elementsCounts;
+    vector<GLenum>  drawModes;
+
+    vector<GLuint> vbos;
 };
 
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;

@@ -11,3 +11,4 @@ libs
 .classpath
 .pyc
 
+/build-linux/
