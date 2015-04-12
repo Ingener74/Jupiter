@@ -60,6 +60,7 @@ protected:
 //        free(strings);
 //        return res.str();
 #endif
+        return {};
     }
 };
 
