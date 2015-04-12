@@ -67,7 +67,7 @@ target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 if(WITH_TESTS)
     add_executable(Jupiter_test tests/main.cpp)
-    target_link_libraries(Jupiter_test Jupiter gtest gtest_main gmock GL)
+    target_link_libraries(Jupiter_test Jupiter gtest gtest_main gmock ${GL_LIBRARIES})
     add_test(AllTestsInJupiter Jupiter_test)
 endif()
 
