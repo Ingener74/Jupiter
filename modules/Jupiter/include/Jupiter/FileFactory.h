@@ -12,10 +12,10 @@
 
 namespace jupiter {
 
-class LinuxFileFactory: public BufferFactory {
+class FileFactory : public BufferFactory {
 public:
-    LinuxFileFactory() = default;
-    virtual ~LinuxFileFactory() = default;
+    FileFactory() = default;
+    virtual ~FileFactory() = default;
 
     virtual std::unique_ptr<Buffer> create(const std::string& fileName);
 };

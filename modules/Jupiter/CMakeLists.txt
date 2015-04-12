@@ -5,7 +5,7 @@ project(${PROJECT_NAME})
 
 set(SOURCES
     src/File.cpp
-    src/LinuxFileFactory.cpp
+    src/FileFactory.cpp
     
     src/Game.cpp
     src/JsonGame.cpp
@@ -44,6 +44,12 @@ else()
     set(SOURCES ${SOURCES} src/File-default.cpp)
 endif()
 
+if(MINGW)
+else()
+    add_definitions(-fPIC)
+endif()
+
+
 add_library(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
@@ -60,9 +66,6 @@ else()
     )
 endif()
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-
-add_definitions(-fPIC)
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 if(WITH_TESTS)

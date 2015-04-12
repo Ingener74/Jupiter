@@ -31,7 +31,7 @@ TEST(JupiterTest, Test1) {
 }
 
 TEST(JupiterTest, Test2) {
-    auto bufferFactory = make_unique_<LinuxFileFactory>();
+    auto bufferFactory = make_unique_<FileFactory>();
     File::setBufferFactory(bufferFactory.get());
     EXPECT_THROW({
         File file{RESOURCES_IMAGES_BG_PNG};
@@ -39,7 +39,7 @@ TEST(JupiterTest, Test2) {
 }
 
 TEST(JupiterTest, Test3) {
-    auto bufferFactory = make_unique_<LinuxFileFactory>();
+    auto bufferFactory = make_unique_<FileFactory>();
     File::setBufferFactory(bufferFactory.get());
     File::setBase("../samples/Asteroids");
     EXPECT_NO_THROW({
@@ -55,7 +55,7 @@ TEST(JupiterTest, Test4) {
 }
 
 TEST(JupiterTest, Test5) {
-    auto bufferFactory = make_unique_<LinuxFileFactory>();
+    auto bufferFactory = make_unique_<FileFactory>();
     File::setBufferFactory(bufferFactory.get());
     EXPECT_NO_THROW({
         File file{RESOURCES_IMAGES_BG_PNG};

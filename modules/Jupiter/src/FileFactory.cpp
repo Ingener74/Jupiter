@@ -7,12 +7,10 @@
 
 #include <vector>
 #include <iostream>
-#include <string>
 #include <memory>
 
 #include "Jupiter/Tools.h"
-#include "Jupiter/JupiterError.h"
-#include "Jupiter/LinuxFileFactory.h"
+#include "Jupiter/FileFactory.h"
 
 namespace jupiter {
 
@@ -54,7 +52,7 @@ private:
     string fileName;
 };
 
-std::unique_ptr<Buffer> LinuxFileFactory::create(const string& fileName) {
+std::unique_ptr<Buffer> FileFactory::create(const string& fileName) {
     return make_unique_<FileBuffer>(fileName);
 }
 

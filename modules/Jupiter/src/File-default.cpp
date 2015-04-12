@@ -5,14 +5,13 @@
  *      Author: pavel
  */
 
-#include "Jupiter/LinuxFileFactory.h"
-#include "Jupiter/File.h"
+#include "Jupiter/FileFactory.h"
 
 namespace jupiter {
 
 using namespace std;
 
-static LinuxFileFactory fileFactory;
+static FileFactory fileFactory;
 
 BufferFactory* File::factory = &fileFactory;
 string File::base = "";

@@ -18,7 +18,7 @@
 #include "Jupiter/Texture.h"
 #include "Jupiter/File.h"
 
-#include "Jupiter/LinuxFileFactory.h"
+#include "Jupiter/FileFactory.h"
 
 #include "Jupiter/PngImage.h"
 
