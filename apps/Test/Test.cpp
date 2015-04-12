@@ -616,9 +616,9 @@ public:
 
         glGenVertexArrays(vaos.size(), vaos.data());
 
-//        for(size_t i = 0; i < mesh.frames; ++i){
-//            glBindVertexArray(vaos.at(i));
-//
+        for(size_t i = 0; i < mesh.frames; ++i){
+            glBindVertexArray(vaos.at(i));
+
 //            glGenBuffers(mesh.size(), vbos.data());
 //
 //            for(size_t i = 0; i < mesh.size(); ++i){
@@ -633,9 +633,9 @@ public:
 //            glGenBuffers(1, &IBO);
 //            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 //            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(uint16_t), indeces.data(), GL_STATIC_DRAW);
-//
-//            glBindVertexArray(0);
-//        }
+
+            glBindVertexArray(0);
+        }
     }
 
     Mesh() {
@@ -643,7 +643,6 @@ public:
 
     virtual ~Mesh() {
         glDeleteVertexArrays(vaos.size(), vaos.data());
-        glDeleteBuffers(vbos.size(), vbos.data());
     }
 
     void draw(size_t frame = 0, const std::vector<mat4>& models = { }) {
@@ -664,7 +663,7 @@ protected:
     vector<GLsizei> elementsCounts;
     vector<GLenum>  drawModes;
 
-    vector<GLuint> vbos;
+
 };
 
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
@@ -680,15 +679,22 @@ unique_ptr<Mesh>
 
 mat4 proj, view;
 
+string base;
 string boxImage, shipImage;
+string buttonNormal, buttonDisabled, buttonPressed;
 
 int main(int argc, char **argv) {
     try {
-        if(argc < 3)
-            throw invalid_argument("usage: ./Test <path-to-image-file>/box.png <path-to-image-file/ship.png");
+        if(argc < 2)
+            throw invalid_argument("usage: ./Test <path-to-resource>");
 
-        boxImage  = argv[1];
-        shipImage = argv[2];
+        base = argv[1];
+        boxImage        = base + "/Resources/box.png";
+        shipImage       = base + "/Resources/ship1.png";
+
+        buttonNormal    = base + "/Resources/button-1/disabled.png";
+        buttonDisabled  = base + "/Resources/button-1/normal.png";
+        buttonPressed   = base + "/Resources/button-1/pressed.png";
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
