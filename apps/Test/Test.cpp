@@ -99,6 +99,8 @@ void main(){
 
 string coloredSpriteVertex = R"(
 
+#version 120
+
 uniform   mat4 projection, view, model;
 
 attribute vec4 vertex;
@@ -113,6 +115,8 @@ void main(){
 
 )", coloredSpriteFragment = R"(
 
+#version 120
+
 varying vec4 vcolor;
 
 void main(){
@@ -120,6 +124,8 @@ void main(){
 }
 
 )", texturedSpriteVertex = R"(
+
+#version 120
 
 uniform   mat4 projection, view, model;
 
@@ -134,6 +140,8 @@ void main(){
 }
 
 )", texturedSpriteFragment = R"(
+
+#version 120
 
 varying vec2 vtexcoord;
 
