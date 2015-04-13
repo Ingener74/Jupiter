@@ -248,14 +248,20 @@ public:
     Mesh(Program* shaderProgram, const MeshData& mesh){
 
         vaos = vector<GLuint>(mesh.frames);
+        for (size_t i = 0; i < mesh.attributesData; ++i) {
+            meshAttributes.at(i).vbo.resize(mesh.attributesData.size());
+            glGenBuffers(meshAttributes.at(i).vbo.size(), meshAttributes.at(i).vbo.data());
+        }
 
         glGenVertexArrays(vaos.size(), vaos.data());
 
         for(size_t i = 0; i < mesh.frames; ++i){
             glBindVertexArray(vaos.at(i));
 
-//            glGenBuffers(mesh.size(), vbos.data());
-//
+            for (size_t j = 0; j < meshAttributes.size(); ++j) {
+                bindBuffer(j, i);
+            }
+
 //            for(size_t i = 0; i < mesh.size(); ++i){
 //                glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
 //                glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
@@ -289,14 +295,18 @@ public:
         glBindVertexArray(0);
     }
 
+    void bindBuffer(size_t attribute, size_t frame){
+    }
+
     size_t getFrameCount() const {
         return vaos.size();
     }
 
 protected:
-    vector<GLuint> vaos;
-    vector<GLsizei> elementsCounts;
-    vector<GLenum>  drawModes;
+    vector<GLuint>     vaos;
+    vector<GLsizei>    elementsCounts;
+    vector<GLenum>     drawModes;
+    vector<MeshAttrib> meshAttributes;
 };
 
 unique_ptr<Program> coloredSh, texturedSh;
