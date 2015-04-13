@@ -64,30 +64,6 @@ void main(){
     gl_FragColor = texture2D(texture, vtexcoord);
 }
 
-)", testSpriteVertex = R"(
-
-uniform   mat4 projection, view, model;
-
-attribute vec4 vertex;
-attribute vec2 texcoord;
-
-varying vec2 vtexcoord;
-
-void main(){
-    gl_Position = projection * view * model * vertex;
-    vtexcoord = texcoord;
-}
-
-)", testSpriteFragment = R"(
-
-varying vec2 vtexcoord;
-
-uniform sampler2D texture;
-
-void main(){
-    gl_FragColor = texture2D(texture, vtexcoord);
-}
-
 )";
 
 struct VertexPositionColor{
@@ -128,8 +104,7 @@ vector<VertexPositionTexCoord> tBox = {
 };
 
 vector<uint16_t> flourInd = {
-    0, 2, 1,   3
-//    0, 2, 1,   3, 1, 2,
+    0, 2, 1, 3
 }, boxInd = {
     0, 2, 1,   3, 1, 2,
 }, boxHeadInd = {
@@ -164,11 +139,13 @@ public:
 };
 ColoredShader cs;
 
+
 class TexturedShader {
 public:
     GLuint shader = 0, aVertex = 0, aTexCoord = 0, uProjection = 0, uView = 0, uModel = 0, uTexture = 0;
 };
 TexturedShader ts;
+
 
 class ColoredSprite{
 public:
@@ -329,7 +306,6 @@ string boxImage, shipImage;
 
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
-
     proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
     view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
@@ -374,9 +350,6 @@ void init(){
     flourSprite    = make_unique_<ColoredSprite>(cs, flour,    flourInd,    GL_TRIANGLE_STRIP);
     bgSprite       = make_unique_<ColoredSprite>(cs, bg,       bgInd,       GL_TRIANGLES);
     boxHeadSprite  = make_unique_<ColoredSprite>(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
-
-    if (boxImage.empty())
-        throw runtime_error("image file name is empty");
 
     tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(boxImage));
     ship           = make_unique_<TexturedSprite>(ts, shipVerteces, shipTexCoords, shipIndices, GL_TRIANGLE_STRIP, loadTexture(shipImage));

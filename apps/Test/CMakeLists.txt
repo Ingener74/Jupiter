@@ -7,4 +7,3 @@ target_link_libraries(Test-1 ${GL_LIBRARIES} lodepng)
 
 add_executable(Test-2 main.cpp v2/v2.cpp Shaders.cpp Tools.cpp)
 target_link_libraries(Test-2 ${GL_LIBRARIES} lodepng)
-

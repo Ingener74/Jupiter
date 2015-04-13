@@ -163,12 +163,12 @@ Structure of Arrays
 */
 
 template<typename T>
-struct FrameRange {
+struct Range {
     int32_t start, end;
     T data;
 
-    bool inRange(int32_t frame) const {
-        return frame >= start && frame < end;
+    bool inRange(int32_t i) const {
+        return i >= start && i < end;
     }
 };
 
@@ -176,7 +176,7 @@ struct MeshData{
 
     struct Attribute {
         string attribute;
-        vector<FrameRange<vector<float>>> data;
+        vector<Range<vector<float>>> data;
     };
     struct Texture{
         GLuint textureId;
@@ -184,7 +184,7 @@ struct MeshData{
     };
     struct Uniform {
         string                           uniform;
-        vector<FrameRange<Texture>>      textures;
+        vector<Range<Texture>>      textures;
     };
 
     int                                  frames;
@@ -192,8 +192,8 @@ struct MeshData{
     vector<Attribute>                    attributesData;
     vector<Uniform>                      uniformsData;
 
-    vector<FrameRange<vector<uint16_t>>> indeces;
-    vector<FrameRange<GLenum>>           drawModes;
+    vector<Range<vector<uint16_t>>> indeces;
+    vector<Range<GLenum>>           drawModes;
 };
 
 /*
@@ -240,6 +240,10 @@ MeshData boxMeshData{
 
 class Mesh {
 public:
+
+    struct MeshAttrib {
+        vector<Range<GLuint>> vbo;
+    };
 
     Mesh(Program* shaderProgram, const MeshData& mesh){
 
@@ -293,19 +297,26 @@ protected:
     vector<GLuint> vaos;
     vector<GLsizei> elementsCounts;
     vector<GLenum>  drawModes;
-
-
 };
 
 unique_ptr<Program> coloredSh, texturedSh;
 unique_ptr<Mesh> root, bgMesh, groundMesh, boxMesh;
 
+mat4 proj, view;
+
 void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+
+    proj = glm::perspective(45.f, w / float(h), 10.f, 10000.f);
+//    proj = glm::ortho<float>(-w/2, w/2, -h/2, h/2, -h/2, h/2);
+    view = glm::lookAt<float>(vec3(40.f, 40.f, 100.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 }
+
 void init() {
     coloredSh = make_unique_<Program>(vertex_color, fragment_color);
     cout << "colored shader: " << *coloredSh << endl;
 }
+
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
@@ -313,6 +324,7 @@ void display(void) {
     glFlush();
     glutSwapBuffers();
 }
+
 void deinit() {
 }
 
