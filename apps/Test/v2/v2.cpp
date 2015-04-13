@@ -308,10 +308,10 @@ public:
             glGenBuffers(1, &it->data);
             glBindBuffer(GL_ARRAY_BUFFER, it->data);
 
-            glBufferData(GL_ARRAY_BUFFER, );
-
-            glEnableVertexAttribArray(meshAttributes.at(attribute).attrib);
-            glVertexAttribPointer(attrib, , GL_FLOAT, GL_FALSE, 0, 0);
+//            glBufferData(GL_ARRAY_BUFFER, );
+//
+//            glEnableVertexAttribArray(meshAttributes.at(attribute).attrib);
+//            glVertexAttribPointer(attrib, , GL_FLOAT, GL_FALSE, 0, 0);
         }
     }
 
