@@ -7,6 +7,10 @@
     #warning no tupemaps
 #endif
 
+%begin %{
+#include <cmath>
+%}
+
 %{
 
 #include "Jupiter.h"

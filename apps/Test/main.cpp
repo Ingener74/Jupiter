@@ -11,7 +11,7 @@ using namespace std;
 
 string base;
 
-float w = 400.f, h = 240.f, m = .5f;
+float w = 400.f, h = 240.f, m = 4.f;
 float width = w * m, height = h * m;
 
 int main(int argc, char **argv) {
@@ -51,6 +51,8 @@ int main(int argc, char **argv) {
         glutMotionFunc(mouseMove);
         glutKeyboardFunc(key);
         glutSpecialFunc(specKey);
+
+//        glutFullScreen();
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);

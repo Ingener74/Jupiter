@@ -8,13 +8,14 @@
 #ifndef TOOLS_H_
 #define TOOLS_H_
 
-#include <memory>
-#include <utility>
-#include <iostream>
+#ifdef SWIG
+#else
+    #include <memory>
+    #include <utility>
+    #include <iostream>
 
-#include <glm/glm.hpp>
-
-#include "Jupiter/JupiterError.h"
+    #include "Jupiter/JupiterError.h"
+#endif
 
 namespace jupiter {
 

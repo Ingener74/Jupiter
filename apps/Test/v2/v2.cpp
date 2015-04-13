@@ -70,7 +70,7 @@ public:
 
 class Program {
 public:
-    Program(const string& vertesShader, const std::string& fragmentShader) {
+    Program(const string& vertesShader, const string& fragmentShader) {
         program = createProgram(vertesShader, fragmentShader);
 
         GLint activeAttributes = 0;
@@ -172,32 +172,32 @@ struct Range {
     }
 };
 
-struct MeshData{
+struct MeshIn {
 
     struct Attribute {
         string attribute;
-        vector<Range<vector<float>>> data;
+        vector<Range<vector<float>>> data; // для одного аттрибута может быть несколько
     };
     struct Texture{
         GLuint textureId;
         GLuint unit;
     };
     struct Uniform {
-        string                           uniform;
-        vector<Range<Texture>>      textures;
+        string                        uniform;
+        vector<Range<Texture>>        textures;
     };
 
-    int                                  frames;
+    int                               frames;
 
-    vector<Attribute>                    attributesData;
-    vector<Uniform>                      uniformsData;
+    vector<Attribute>                 attributesData;
+    vector<Uniform>                   uniformsData;
 
-    vector<Range<vector<uint16_t>>> indeces;
-    vector<Range<GLenum>>           drawModes;
+    vector<Range<vector<uint16_t>>>   indeces;
+    vector<Range<GLenum>>             drawModes;
 };
 
 /*
-MeshData boxMeshData{
+MeshIn boxMeshData{
     3,
     {
         {
@@ -240,40 +240,25 @@ MeshData boxMeshData{
 
 class Mesh {
 public:
-
     struct MeshAttrib {
-        vector<Range<GLuint>> vbo;
+        GLint attrib;
+        vector<Range<GLuint>> vbos;
     };
 
-    Mesh(Program* shaderProgram, const MeshData& mesh){
+    Mesh(Program* shaderProgram, const MeshIn & mesh){
 
         vaos = vector<GLuint>(mesh.frames);
-        for (size_t i = 0; i < mesh.attributesData; ++i) {
-            meshAttributes.at(i).vbo.resize(mesh.attributesData.size());
-            glGenBuffers(meshAttributes.at(i).vbo.size(), meshAttributes.at(i).vbo.data());
-        }
 
         glGenVertexArrays(vaos.size(), vaos.data());
 
         for(size_t i = 0; i < mesh.frames; ++i){
+
             glBindVertexArray(vaos.at(i));
 
-            for (size_t j = 0; j < meshAttributes.size(); ++j) {
-                bindBuffer(j, i);
-            }
+            for (size_t j = 0; j < meshAttributes.size(); ++j)
+                bindBuffer(shaderProgram, mesh, j, i);
 
-//            for(size_t i = 0; i < mesh.size(); ++i){
-//                glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
-//                glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
-//
-//                auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
-//                glEnableVertexAttribArray(attrib);
-//                glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
-//            }
-//
-//            glGenBuffers(1, &IBO);
-//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-//            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(uint16_t), indeces.data(), GL_STATIC_DRAW);
+            bindIndexBuffer(shaderProgram, i, mesh);
 
             glBindVertexArray(0);
         }
@@ -286,7 +271,7 @@ public:
         glDeleteVertexArrays(vaos.size(), vaos.data());
     }
 
-    void draw(size_t frame = 0, const std::vector<mat4>& models = { }) {
+    void draw(size_t frame = 0, const vector<mat4>& models = { }) {
 
         glBindVertexArray(vaos.at(frame));
 
@@ -295,7 +280,37 @@ public:
         glBindVertexArray(0);
     }
 
-    void bindBuffer(size_t attribute, size_t frame){
+    void bindBuffer(Program *shader, const MeshIn &mesh, size_t attribute, size_t frame) {
+
+        auto it = meshAttributes.at(attribute).vbos.begin();
+        while(!it->inRange(frame))
+            ++it;
+
+        if(it->data){
+            glBindBuffer(GL_ARRAY_BUFFER, it->data);
+        }else{
+            glGenBuffers(1, &it->data);
+            glBindBuffer(GL_ARRAY_BUFFER, it->data);
+
+//            glBufferData(GL_ARRAY_BUFFER, );
+//
+//            glEnableVertexAttribArray(attrib);
+//            glVertexAttribPointer(attrib, , GL_FLOAT, GL_FALSE, 0, 0);
+        }
+    }
+
+    void bindIndexBuffer(Program *shader, size_t frame, const MeshIn &mesh) {
+        auto it = ibos.begin();
+        while (!it->inRange(frame))
+            it++;
+
+        if (it->data) {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
+        } else {
+            glGenBuffers(1, &it->data);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t), nullptr, GL_STATIC_DRAW);
+        }
     }
 
     size_t getFrameCount() const {
@@ -303,10 +318,11 @@ public:
     }
 
 protected:
-    vector<GLuint>     vaos;
-    vector<GLsizei>    elementsCounts;
-    vector<GLenum>     drawModes;
-    vector<MeshAttrib> meshAttributes;
+    vector<GLuint>        vaos;
+    vector<GLsizei>       elementsCounts;
+    vector<GLenum>        drawModes;
+    vector<MeshAttrib>    meshAttributes;
+    vector<Range<GLuint>> ibos;
 };
 
 unique_ptr<Program> coloredSh, texturedSh;

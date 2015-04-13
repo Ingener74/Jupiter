@@ -7,9 +7,15 @@
 
 #include <boost/filesystem.hpp>
 
-#include "Jupiter/Game.h"
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Node.h"
+
+#include "Jupiter/Game.h"
 
 namespace jupiter {
 

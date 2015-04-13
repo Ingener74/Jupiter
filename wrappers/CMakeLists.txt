@@ -13,12 +13,11 @@ set(CMAKE_SWIG_FLAGS "-c++")
 
 set_source_files_properties(Jupiter.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
-# set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor;-v") # swig verbose
+#set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor;-v") # swig verbose
 
 set(SHARED_LIBS
     Jupiter 
-    GL 
-    ${GLEW_LIBRARIES} 
+    ${GL_LIBRARIES}
     ${Boost_LIBRARIES}
 )
 
