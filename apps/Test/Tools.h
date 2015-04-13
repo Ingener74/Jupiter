@@ -9,10 +9,21 @@
 #define APPS_TEST_TOOLS_H_
 
 #include <iostream>
+#include <memory>
+#include <string>
+
+#include <GL/glew.h>
+
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
 using glm::mat4;
 using std::ostream;
+
+template<typename T, typename ... Args>
+std::unique_ptr<T> make_unique_(Args ... args) {
+    return std::unique_ptr<T>(new T(args...));
+}
 
 ostream& operator<<(ostream& out, const mat4& r);
 

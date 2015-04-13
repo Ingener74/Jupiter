@@ -20,7 +20,7 @@ using namespace jupiter;
 %include "Jupiter/JupiterError.h"
 
 %include "Jupiter/File.h"
-%include "Jupiter/LinuxFileFactory.h"
+%include "Jupiter/FileFactory.h"
 
 %include "Jupiter/Game.h"
 %include "Jupiter/JsonGame.h"

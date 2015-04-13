@@ -5,97 +5,10 @@
  *      Author: ingener
  */
 
-#include <algorithm>
-#include <array>
-#include <cstddef>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <numeric>
-#include <sstream>
-#include <stdexcept>
-#include <vector>
-#include <cstdint>
-#include <climits>
-
-#include <GL/glew.h>
-#ifdef  _WIN32
-    #include <GL/wglew.h>
-#else
-    #include <GL/glxew.h>
-#endif
-
-#include <GL/gl.h>
-#include <GL/glext.h>
-
-#include <GL/freeglut.h>
-#include <GL/freeglut_ext.h>
-#include <GL/freeglut_std.h>
-
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "Shaders.h"
-#include "Tools.h"
+#include "main.h"
 
 using namespace std;
 using namespace glm;
-
-void init();
-void deinit();
-void display(void);
-void reshape(int w, int h);
-void mouse(int button, int action, int x, int y);
-void mouseMove(int x, int y);
-void key ( unsigned char key, int x, int y );
-void specKey ( int key, int x, int y );
-void timer(int time);
-
-void shaderInfo(GLuint shader);
-
-template<typename T, typename ... Args>
-unique_ptr<T> make_unique_(Args ... args) {
-    return unique_ptr<T>(new T(args...));
-}
-
-/*
-}
-
-// vertex shader
-
-uniform   mat4  projection, model;
-uniform   vec4  lightPosition, lightColor;
-
-attribute vec4  vertex;
-attribute vec4  color;
-
-varying   vec4  vcolor;
-
-void main(){
-    gl_Position = projection * model * vertex;
-    vcolor = color;
-}
-
-// fragment shader
-
-uniform sampler2D tex;
-uniform sampler2D bump;
-
-varying vec4 texCoords;
-varying vec4 bumpCoords;
-
-varying vec4 vcolor;
-
-void main(){
-
-    vec4 rgb = sampler2D(tex, texCoords);
-    vec4 norm = sampler2D(bump, bumpCoords);
-
-    gl_FragColor = vcolor;
-}
-
-*/
 
 string coloredSpriteVertex = R"(
 
@@ -254,438 +167,8 @@ vector<uint16_t> shipIndices = {
     0, 2, 1, 3
 };
 
-float w = 400.f, h = 240.f, m = 3.f;
+float w = 400.f, h = 240.f, m = .5f;
 float width = w * m, height = h * m;
-
-class Attribute {
-public:
-    Attribute(GLint attribute = 0, string attributeName = { }) :
-        attribute(attribute), attributeName(attributeName) {
-    }
-
-    GLint attribute = 0;
-    string attributeName;
-
-    friend ostream& operator<<(ostream& out, const Attribute& r) {
-        return out << r.attributeName << ": " << r.attribute;
-    }
-};
-
-class Uniform {
-public:
-    Uniform(GLint uniform = 0, string uniformName = {}) :
-        uniform(uniform), uniformName(uniformName) {
-    }
-    GLint uniform = 0;
-    string uniformName;
-
-    friend ostream& operator<<(ostream& out, const Uniform& r) {
-        return out << r.uniformName << ": " << r.uniform;
-    }
-};
-
-class Program {
-public:
-    Program(const string& vertesShader, const std::string& fragmentShader) {
-        program = createProgram(vertesShader, fragmentShader);
-
-        GLint activeAttributes = 0;
-        glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
-
-        for (GLint i = 0; i < activeAttributes; ++i) {
-
-            const GLsizei bufferSize = 100;
-
-            GLsizei lenght = 0;
-            GLint size = 0;
-            GLenum type = 0;
-            GLchar name[bufferSize];
-
-            glGetActiveAttrib(program, i, bufferSize, &lenght, &size, &type, name);
-
-            attributes.emplace_back(glGetAttribLocation(program, name), name);
-        }
-
-        GLint activeUniforms = 0;
-        glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
-
-        for (GLint i = 0; i < activeUniforms; ++i) {
-            const GLsizei bufferSize = 100;
-
-            GLsizei lenght = 0;
-            GLint size = 0;
-            GLenum type = 0;
-            GLchar name[bufferSize];
-
-            glGetActiveUniform(program, i, bufferSize, &lenght, &size, &type, name);
-
-            uniforms.emplace_back(glGetUniformLocation(program, name), name);
-        }
-    }
-    virtual ~Program() {
-        glDeleteProgram(program);
-    }
-
-    GLuint program = 0;
-    vector<Attribute> attributes;
-    vector<Uniform> uniforms;
-
-    const Attribute& getAttribute(const string& attributeName) const {
-        auto it = find_if(attributes.begin(), attributes.end(),
-            [&](const Attribute& i) {return i.attributeName == attributeName;});
-        if (it == attributes.end())
-            throw runtime_error("no attribute with name " + attributeName);
-        return *it;
-    }
-
-    void setUniformMatrix4x4(const string& uniformName, const mat4& matrix) {
-        auto it = find_if(uniforms.begin(), uniforms.end(), [&](const Uniform& i) {return i.uniformName == uniformName;});
-        if (it == uniforms.end())
-            throw runtime_error("no uniform");
-        glUniformMatrix4fv(it->uniform, 1, GL_FALSE, &matrix[0][0]);
-    }
-
-    friend ostream& operator<<(ostream& out, const Program& r){
-        return out << "program id " << r.program << " attributes [ " << [&](){
-            stringstream s;
-            for(auto i: r.attributes)
-                s << i << "; ";
-            return s.str();
-        }() << "], uniforms [ " << [&](){
-            stringstream s;
-            for(auto i: r.uniforms)
-                s << i << "; ";
-            return s.str();
-        }() << "]";
-    }
-
-protected:
-};
-
-class ColoredShader {
-public:
-    GLuint shader = 0, aVertex = 0, aColor = 0, uProjection = 0, uView = 0, uModel = 0;
-};
-ColoredShader cs;
-
-class TexturedShader {
-public:
-    GLuint shader = 0, aVertex = 0, aTexCoord = 0, uProjection = 0, uView = 0, uModel = 0, uTexture = 0;
-};
-TexturedShader ts;
-
-class ColoredSprite{
-public:
-    ColoredSprite(){
-    }
-    ColoredSprite(const ColoredShader& shader, const vector<VertexPositionColor>& vertexes,
-        const vector<uint16_t>& indexes, GLenum drawMode) {
-
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-
-        glGenBuffers(1, &VBO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionColor), &vertexes.front().pos.x, GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(shader.aVertex);
-        glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*) offsetof(VertexPositionColor, pos));
-
-        glEnableVertexAttribArray(shader.aColor);
-        glVertexAttribPointer(shader.aColor,  3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*) offsetof(VertexPositionColor, rgb));
-
-        glGenBuffers(1, &IBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(uint16_t), indexes.data(), GL_STATIC_DRAW);
-
-        glBindVertexArray(0);
-
-        ColoredSprite::indexes = indexes.size();
-        ColoredSprite::drawMode = drawMode;
-    }
-
-    virtual ~ColoredSprite() {
-        glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &IBO);
-        glDeleteVertexArrays(1, &VAO);
-    }
-
-    void draw(const vector<mat4>& parentsModels = { }) {
-
-        if (parentsModels.empty()) {
-            glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &model[0][0]);
-        } else {
-            auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(), multiplies<mat4>()) * model;
-            glUniformMatrix4fv(cs.uModel, 1, GL_FALSE, &m[0][0]);
-        }
-
-        glBindVertexArray(VAO);
-        glDrawElements(drawMode, indexes, GL_UNSIGNED_SHORT, 0);
-        glBindVertexArray(0);
-    }
-
-    GLuint VBO = 0, IBO = 0, VAO = 0;
-    size_t indexes = 0;
-    mat4   model;
-    GLenum drawMode;
-};
-
-class TexturedSprite: public ColoredSprite{
-public:
-    TexturedSprite(const TexturedShader& shader, const vector<VertexPositionTexCoord>& vertexes, const vector<uint16_t>& indexes, GLenum drawMode, const Texture& texture){
-
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-
-        glGenBuffers(1, &VBO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(VertexPositionTexCoord), &vertexes.front().pos.x, GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(shader.aVertex);
-        glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, pos));
-
-        glEnableVertexAttribArray(shader.aTexCoord);
-        glVertexAttribPointer(shader.aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexCoord), (void*)offsetof(VertexPositionTexCoord, tc));
-
-        glGenBuffers(1, &IBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(uint16_t), indexes.data(), GL_STATIC_DRAW);
-
-        glBindVertexArray(0);
-
-        TexturedSprite::indexes = indexes.size();
-        TexturedSprite::drawMode = drawMode;
-        TexturedSprite::texture = texture;
-    }
-
-    TexturedSprite(const TexturedShader& shader, const vector<vec3>& verteces, const vector<vec2>& texcoords, const vector<uint16_t>& indexes, GLenum drawMode, const Texture& texture){
-
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-
-        glGenBuffers(1, &VBO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, verteces.size() * sizeof(vec3), &verteces.front().x, GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(shader.aVertex);
-        glVertexAttribPointer(shader.aVertex, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-        glGenBuffers(1, &vboTexCoords);
-        glBindBuffer(GL_ARRAY_BUFFER, vboTexCoords);
-        glBufferData(GL_ARRAY_BUFFER, texcoords.size() * sizeof(vec2), &texcoords.front().x, GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(shader.aTexCoord);
-        glVertexAttribPointer(shader.aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-        glGenBuffers(1, &IBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(uint16_t), indexes.data(), GL_STATIC_DRAW);
-
-        glBindVertexArray(0);
-
-        TexturedSprite::indexes = indexes.size();
-        TexturedSprite::drawMode = drawMode;
-        TexturedSprite::texture = texture;
-    }
-
-    /*
-     *
-     */
-
-    virtual ~TexturedSprite(){
-        glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &IBO);
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteTextures(1, &texture.textureId);
-    }
-
-    void draw(const vector<mat4>& parentsModels = { }) {
-
-        if (parentsModels.empty()) {
-            glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &model[0][0]);
-        } else {
-            auto m = accumulate(parentsModels.begin() + 1, parentsModels.end(), parentsModels.front(),
-                multiplies<mat4>()) * model;
-            glUniformMatrix4fv(ts.uModel, 1, GL_FALSE, &m[0][0]);
-        }
-
-        GLint textureUnit = 0;
-        glActiveTexture(GL_TEXTURE0 + textureUnit);
-        glBindTexture(GL_TEXTURE_2D, texture.textureId);
-        glUniform1i(ts.uTexture, textureUnit);
-
-        glBindVertexArray(VAO);
-        glDrawElements(drawMode, indexes, GL_UNSIGNED_SHORT, 0);
-        glBindVertexArray(0);
-    }
-
-    vector<GLuint> vbos;
-    GLuint vboTexCoords = 0;
-    Texture texture;
-};
-
-/*
-
-Array of Structure
-[{pos, col, texcoord, normal}, {pos, col, texcoord, normal}, {pos, col, texcoord, normal}, ... ]
-
-Structure of Arrays
-{
-    [{pos}     , {pos}     , {pos}     , ... ],
-    [{col}     , {col}     , {col}     , ... ],
-    [{texcoord}, {texcoord}, {texcoord}, ... ],
-    [{normal}  , {normal}  , {normal}  , ... ],
-}
-
-*/
-
-template<typename T>
-struct FrameRange {
-    int32_t start, end;
-    T data;
-
-    bool inRange(int32_t frame) const {
-        return frame >= start && frame < end;
-    }
-};
-
-struct MeshData{
-
-    struct Attribute {
-        string attribute;
-        vector<FrameRange<vector<float>>> data;
-    };
-    struct Texture{
-        GLuint textureId;
-        GLuint unit;
-    };
-    struct Uniform {
-        string                           uniform;
-        vector<FrameRange<Texture>>      textures;
-    };
-
-    int                                  frames;
-
-    vector<Attribute>                    attributesData;
-    vector<Uniform>                      uniformsData;
-
-    vector<FrameRange<vector<uint16_t>>> indeces;
-    vector<FrameRange<GLenum>>           drawModes;
-};
-
-/*
-MeshData boxMeshData{
-    3,
-    {
-        {
-            "pos",
-            {
-                { 0, 3, {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,  } }
-            }
-        },
-        {
-            "texcoord",
-            {
-                { 0, 1, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  } },
-                { 1, 2, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  } },
-                { 2, 3, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  } },
-            }
-        }
-    },
-    {
-        {
-            "texture",
-            {
-                { 0, 3, {3, 0} }
-            }
-        },
-        {
-            "bump",
-            {
-                { 0, 3, {5, 0} }
-            }
-        }
-    },
-    {
-        { 0, 3, {0, 1, 2, 3} }
-    },
-    {
-        { 0, 3, GL_TRIANGLE_STRIP }
-    }
-};
-*/
-
-class Mesh {
-public:
-
-    Mesh(const Program& shaderProgram, const MeshData& mesh){
-
-        vaos = vector<GLuint>(mesh.frames);
-
-        glGenVertexArrays(vaos.size(), vaos.data());
-
-        for(size_t i = 0; i < mesh.frames; ++i){
-            glBindVertexArray(vaos.at(i));
-
-//            glGenBuffers(mesh.size(), vbos.data());
-//
-//            for(size_t i = 0; i < mesh.size(); ++i){
-//                glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i));
-//                glBufferData(GL_ARRAY_BUFFER, mesh.at(i).data.size() * mesh.at(i).size * sizeof(float), mesh.at(i).data.data(), GL_STATIC_DRAW);
-//
-//                auto attrib = shaderProgram.getAttribute(mesh.at(i).attributeName).attribute;
-//                glEnableVertexAttribArray(attrib);
-//                glVertexAttribPointer(attrib, mesh.at(i).size, GL_FLOAT, GL_FALSE, 0, 0);
-//            }
-//
-//            glGenBuffers(1, &IBO);
-//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-//            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indeces.size() * sizeof(uint16_t), indeces.data(), GL_STATIC_DRAW);
-
-            glBindVertexArray(0);
-        }
-    }
-
-    Mesh() {
-    }
-
-    virtual ~Mesh() {
-        glDeleteVertexArrays(vaos.size(), vaos.data());
-    }
-
-    void draw(size_t frame = 0, const std::vector<mat4>& models = { }) {
-
-        glBindVertexArray(vaos.at(frame));
-
-        glDrawElements(drawModes.at(frame), elementsCounts.at(frame), GL_UNSIGNED_SHORT, nullptr);
-
-        glBindVertexArray(0);
-    }
-
-    size_t getFrameCount() const {
-        return vaos.size();
-    }
-
-protected:
-    vector<GLuint> vaos;
-    vector<GLsizei> elementsCounts;
-    vector<GLenum>  drawModes;
-
-
-};
-
-unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
-unique_ptr<TexturedSprite> tBoxSprite, ship;
-
-unique_ptr<Program> coloredSh, texturedSh;
-
-unique_ptr<Mesh>
-    root,
-        bgMesh,
-        groundMesh,
-        boxMesh;
-
-mat4 proj, view;
 
 string base;
 string boxImage, shipImage;
@@ -853,28 +336,6 @@ void display(void) {
     glutSwapBuffers();
 }
 
-void timer(int time) {
-
-    glutPostRedisplay();
-
-    int delay = 1000 / 30;
-    glutTimerFunc(delay, timer, 0);
-}
-
-void mouse(int button, int action, int x, int y) {
-}
-
-void mouseMove(int x, int y) {
-}
-
-void key(unsigned char k, int x, int y) {
-    if (k == 27)
-        glutLeaveMainLoop();
-}
-
-void specKey ( int key, int x, int y ){
-}
-
 void deinit(){
     glDeleteProgram(cs.shader);
     glDeleteProgram(ts.shader);
@@ -886,66 +347,66 @@ void deinit(){
     tBoxSprite.reset();
 }
 
-void shaderInfo(GLuint shader){
-
-    static map<int, string> types = {
-        {GL_FLOAT        , "GL_FLOAT       "},
-        {GL_FLOAT_VEC2   , "GL_FLOAT_VEC2  "},
-        {GL_FLOAT_VEC3   , "GL_FLOAT_VEC3  "},
-        {GL_FLOAT_VEC4   , "GL_FLOAT_VEC4  "},
-        {GL_FLOAT_MAT2   , "GL_FLOAT_MAT2  "},
-        {GL_FLOAT_MAT3   , "GL_FLOAT_MAT3  "},
-        {GL_FLOAT_MAT4   , "GL_FLOAT_MAT4  "},
-        {GL_FLOAT_MAT2x3 , "GL_FLOAT_MAT2x3"},
-        {GL_FLOAT_MAT2x4 , "GL_FLOAT_MAT2x4"},
-        {GL_FLOAT_MAT3x2 , "GL_FLOAT_MAT3x2"},
-        {GL_FLOAT_MAT3x4 , "GL_FLOAT_MAT3x4"},
-        {GL_FLOAT_MAT4x2 , "GL_FLOAT_MAT4x2"},
-        {GL_FLOAT_MAT4x3 , "GL_FLOAT_MAT4x3"},
-        {GL_INT          , "GL_INT         "},
-        {GL_INT_VEC2     , "GL_INT_VEC2    "},
-        {GL_INT_VEC3     , "GL_INT_VEC3    "},
-        {GL_INT_VEC4     , "GL_INT_VEC4    "},
-        {GL_BOOL         , "GL_BOOL        "},
-        {GL_BOOL_VEC2    , "GL_BOOL_VEC2   "},
-        {GL_BOOL_VEC3    , "GL_BOOL_VEC3   "},
-        {GL_BOOL_VEC4    , "GL_BOOL_VEC4   "},
-        {GL_SAMPLER_2D   , "GL_SAMPLER_2D  "},
-        {GL_SAMPLER_CUBE , "GL_SAMPLER_CUBE"},
-    };
-
-    GLint activeAttributes = 0;
-    glGetProgramiv(shader, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
-    cout << "activeAttributes " << activeAttributes << endl;
-
-    for (GLint i = 0; i < activeAttributes; ++i) {
-
-        const GLsizei bufferSize = 100;
-
-        GLsizei lenght = 0;
-        GLint size = 0;
-        GLenum type = 0;
-        GLchar name[bufferSize];
-
-        glGetActiveAttrib(shader, i, bufferSize, &lenght, &size, &type, name);
-
-        cout << lenght << " " << size << " " << types[type] << " " << name << endl;
-    }
-
-    GLint activeUniforms = 0;
-    glGetProgramiv(shader, GL_ACTIVE_UNIFORMS, &activeUniforms);
-    cout << "activeUniforms " << activeUniforms << endl;
-
-    for (GLint i = 0; i < activeUniforms; ++i) {
-        const GLsizei bufferSize = 100;
-
-        GLsizei lenght = 0;
-        GLint size = 0;
-        GLenum type = 0;
-        GLchar name[bufferSize];
-
-        glGetActiveUniform(shader, i, bufferSize, &lenght, &size, &type, name);
-
-        cout << lenght << " " << size << " " << types[type] << " " << name << endl;
-    }
-}
+//void shaderInfo(GLuint shader){
+//
+//    static map<int, string> types = {
+//        {GL_FLOAT        , "GL_FLOAT       "},
+//        {GL_FLOAT_VEC2   , "GL_FLOAT_VEC2  "},
+//        {GL_FLOAT_VEC3   , "GL_FLOAT_VEC3  "},
+//        {GL_FLOAT_VEC4   , "GL_FLOAT_VEC4  "},
+//        {GL_FLOAT_MAT2   , "GL_FLOAT_MAT2  "},
+//        {GL_FLOAT_MAT3   , "GL_FLOAT_MAT3  "},
+//        {GL_FLOAT_MAT4   , "GL_FLOAT_MAT4  "},
+//        {GL_FLOAT_MAT2x3 , "GL_FLOAT_MAT2x3"},
+//        {GL_FLOAT_MAT2x4 , "GL_FLOAT_MAT2x4"},
+//        {GL_FLOAT_MAT3x2 , "GL_FLOAT_MAT3x2"},
+//        {GL_FLOAT_MAT3x4 , "GL_FLOAT_MAT3x4"},
+//        {GL_FLOAT_MAT4x2 , "GL_FLOAT_MAT4x2"},
+//        {GL_FLOAT_MAT4x3 , "GL_FLOAT_MAT4x3"},
+//        {GL_INT          , "GL_INT         "},
+//        {GL_INT_VEC2     , "GL_INT_VEC2    "},
+//        {GL_INT_VEC3     , "GL_INT_VEC3    "},
+//        {GL_INT_VEC4     , "GL_INT_VEC4    "},
+//        {GL_BOOL         , "GL_BOOL        "},
+//        {GL_BOOL_VEC2    , "GL_BOOL_VEC2   "},
+//        {GL_BOOL_VEC3    , "GL_BOOL_VEC3   "},
+//        {GL_BOOL_VEC4    , "GL_BOOL_VEC4   "},
+//        {GL_SAMPLER_2D   , "GL_SAMPLER_2D  "},
+//        {GL_SAMPLER_CUBE , "GL_SAMPLER_CUBE"},
+//    };
+//
+//    GLint activeAttributes = 0;
+//    glGetProgramiv(shader, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+//    cout << "activeAttributes " << activeAttributes << endl;
+//
+//    for (GLint i = 0; i < activeAttributes; ++i) {
+//
+//        const GLsizei bufferSize = 100;
+//
+//        GLsizei lenght = 0;
+//        GLint size = 0;
+//        GLenum type = 0;
+//        GLchar name[bufferSize];
+//
+//        glGetActiveAttrib(shader, i, bufferSize, &lenght, &size, &type, name);
+//
+//        cout << lenght << " " << size << " " << types[type] << " " << name << endl;
+//    }
+//
+//    GLint activeUniforms = 0;
+//    glGetProgramiv(shader, GL_ACTIVE_UNIFORMS, &activeUniforms);
+//    cout << "activeUniforms " << activeUniforms << endl;
+//
+//    for (GLint i = 0; i < activeUniforms; ++i) {
+//        const GLsizei bufferSize = 100;
+//
+//        GLsizei lenght = 0;
+//        GLint size = 0;
+//        GLenum type = 0;
+//        GLchar name[bufferSize];
+//
+//        glGetActiveUniform(shader, i, bufferSize, &lenght, &size, &type, name);
+//
+//        cout << lenght << " " << size << " " << types[type] << " " << name << endl;
+//    }
+//}
