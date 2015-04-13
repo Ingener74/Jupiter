@@ -241,6 +241,20 @@ MeshIn boxMeshData{
 class Mesh {
 public:
     struct MeshAttrib {
+        MeshAttrib(Program* shader, MeshIn::Attribute const& m){
+
+            attrib = shader->getAttribute(m.attribute).attribute;
+
+            vbos.resize(m.data.size());
+
+            for(size_t i = 0; i < vbos.size(); ++i){
+                glGenBuffers(1, &vbos.at(i).data);
+                glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i).data);
+
+                glBufferData(GL_ARRAY_BUFFER, m.data.at(i).data.size() * sizeof(float), nullptr, GL_STATIC_DRAW);
+            }
+        }
+
         GLint attrib;
         vector<Range<GLuint>> vbos;
     };
@@ -282,6 +296,8 @@ public:
 
     void bindBuffer(Program *shader, const MeshIn &mesh, size_t attribute, size_t frame) {
 
+        meshAttributes.at(attribute).attrib = shader->getAttribute(mesh.attributesData.at(attribute).attribute).attribute;
+
         auto it = meshAttributes.at(attribute).vbos.begin();
         while(!it->inRange(frame))
             ++it;
@@ -292,10 +308,10 @@ public:
             glGenBuffers(1, &it->data);
             glBindBuffer(GL_ARRAY_BUFFER, it->data);
 
-//            glBufferData(GL_ARRAY_BUFFER, );
-//
-//            glEnableVertexAttribArray(attrib);
-//            glVertexAttribPointer(attrib, , GL_FLOAT, GL_FALSE, 0, 0);
+            glBufferData(GL_ARRAY_BUFFER, );
+
+            glEnableVertexAttribArray(meshAttributes.at(attribute).attrib);
+            glVertexAttribPointer(attrib, , GL_FLOAT, GL_FALSE, 0, 0);
         }
     }
 
