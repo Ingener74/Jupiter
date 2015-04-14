@@ -80,14 +80,19 @@ GLint aPosition, aTexCoord, uProj, uView, uModel, uTexture;
 GLuint vaos[3];
 GLuint pos;
 GLuint texcoords[3];
-
 GLuint indeces_;
 GLuint indecesCount[] = {4, 4, 4};
 GLenum drawModes[] = {GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP};
-
-GLuint texture;
-
 Texture tex;
+
+/*
+struct Elements{
+    GLuint elementsBuffer;
+    GLsizei elementsCount;
+};
+Elements l;
+Elements* elementsFrames[] = {&l, &l, &l};
+*/
 
 mat4 proj, view, model;
 
