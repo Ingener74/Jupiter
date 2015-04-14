@@ -60,14 +60,14 @@ vector<GLfloat> pos012 = {
 };
 
 vector<GLfloat> texcoord0 = {
-    0.f, b0_off,           ts/bw, b0_off,
-    0.f, b0_off + bh/ts,   ts/bw, b0_off + bh/ts,
+    0.f, b0_off/ts,           bw/ts, b0_off/ts,
+    0.f, b0_off/ts + bh/ts,   bw/ts, b0_off/ts + bh/ts,
 }, texcoord1 = {
-    0.f, b1_off,           ts/bw, b1_off,
-    0.f, b1_off + bh/ts,   ts/bw, b1_off + bh/ts,
+    0.f, b1_off/ts,           bw/ts, b1_off/ts,
+    0.f, b1_off/ts + bh/ts,   bw/ts, b1_off/ts + bh/ts,
 }, texcoord2 = {
-    0.f, b2_off,           ts/bw, b2_off,
-    0.f, b2_off + bh/ts,   ts/bw, b2_off + bh/ts,
+    0.f, b2_off/ts,           bw/ts, b2_off/ts,
+    0.f, b2_off/ts + bh/ts,   bw/ts, b2_off/ts + bh/ts,
 };
 
 vector<uint16_t> indeces = {
@@ -181,8 +181,9 @@ void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
 
-    static int counter = 30, frame = 0;
+    static int counter = 60, frame = 0;
     if(!--counter){
+        counter = 60;
         if(++frame == 3)
             frame = 0;
     }
