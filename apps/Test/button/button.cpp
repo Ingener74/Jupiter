@@ -80,6 +80,8 @@ GLuint vaos[3];
 GLuint pos;
 GLuint texcoords[3];
 GLuint indeces_;
+GLuint indecesCount[] = {4, 4, 4};
+GLenum drawModes[] = {GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP};
 
 GLuint texture;
 
@@ -162,6 +164,18 @@ void init() {
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
+
+    static int counter = 100, frame = 0;
+    if(!--counter){
+        if(++frame == 3)
+            frame = 0;
+    }
+
+    glBindVertexArray(vaos[frame]);
+
+    glDrawElements(drawModes[frame], indecesCount[frame], GL_UNSIGNED_SHORT, 0);
+
+    glBindVertexArray(0);
 
     glFlush();
     glutSwapBuffers();
