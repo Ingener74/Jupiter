@@ -41,6 +41,9 @@ void main(){
 
 )";
 
+template <typename T>
+using Frames = vector<T>;
+
 class Attribute {
 public:
     Attribute(GLint attribute = 0, string attributeName = { }) :
@@ -176,7 +179,7 @@ struct MeshIn {
 
     struct Attribute {
         string attribute;
-        vector<Range<vector<float>>> data; // для одного аттрибута может быть несколько
+        vector<Range<vector<float>>> data;
     };
     struct Texture{
         GLuint textureId;
@@ -240,20 +243,26 @@ MeshIn boxMeshData{
 
 class Mesh {
 public:
-    struct MeshAttrib {
-        MeshAttrib(Program* shader, MeshIn::Attribute const& m){
+    struct Attribute {
+        Attribute(Program* shader, MeshIn::Attribute const& m){
 
             attrib = shader->getAttribute(m.attribute).attribute;
 
             vbos.resize(m.data.size());
 
             for(size_t i = 0; i < vbos.size(); ++i){
+                vbos.at(i).start = m.data.at(i).start;
+                vbos.at(i).end   = m.data.at(i).end;
+
                 glGenBuffers(1, &vbos.at(i).data);
                 glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i).data);
 
-                glBufferData(GL_ARRAY_BUFFER, m.data.at(i).data.size() * sizeof(float), nullptr, GL_STATIC_DRAW);
+                glBufferData(GL_ARRAY_BUFFER,
+                    m.data.at(i).data.size() * sizeof(float),
+                    m.data.at(i).data.data(), GL_STATIC_DRAW);
             }
         }
+        virtual ~Attribute(){}
 
         GLint attrib;
         vector<Range<GLuint>> vbos;
@@ -269,7 +278,7 @@ public:
 
             glBindVertexArray(vaos.at(i));
 
-            for (size_t j = 0; j < meshAttributes.size(); ++j)
+            for (size_t j = 0; j < attributes.size(); ++j)
                 bindBuffer(shaderProgram, mesh, j, i);
 
             bindIndexBuffer(shaderProgram, i, mesh);
@@ -296,23 +305,11 @@ public:
 
     void bindBuffer(Program *shader, const MeshIn &mesh, size_t attribute, size_t frame) {
 
-        meshAttributes.at(attribute).attrib = shader->getAttribute(mesh.attributesData.at(attribute).attribute).attribute;
-
-        auto it = meshAttributes.at(attribute).vbos.begin();
+        auto it = attributes.at(attribute).vbos.begin();
         while(!it->inRange(frame))
             ++it;
 
-        if(it->data){
-            glBindBuffer(GL_ARRAY_BUFFER, it->data);
-        }else{
-            glGenBuffers(1, &it->data);
-            glBindBuffer(GL_ARRAY_BUFFER, it->data);
-
-//            glBufferData(GL_ARRAY_BUFFER, );
-//
-//            glEnableVertexAttribArray(meshAttributes.at(attribute).attrib);
-//            glVertexAttribPointer(attrib, , GL_FLOAT, GL_FALSE, 0, 0);
-        }
+        glBindBuffer(GL_ARRAY_BUFFER, it->data);
     }
 
     void bindIndexBuffer(Program *shader, size_t frame, const MeshIn &mesh) {
@@ -334,10 +331,10 @@ public:
     }
 
 protected:
-    vector<GLuint>        vaos;
-    vector<GLsizei>       elementsCounts;
-    vector<GLenum>        drawModes;
-    vector<MeshAttrib>    meshAttributes;
+    Frames<GLuint>        vaos;
+    Frames<GLsizei>       elementsCounts;
+    Frames<GLenum>        drawModes;
+    vector<Attribute>     attributes;
     vector<Range<GLuint>> ibos;
 };
 
