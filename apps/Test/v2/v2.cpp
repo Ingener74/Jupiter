@@ -6,10 +6,27 @@
  */
 
 #include "main.h"
+#include "Attribute.h"
+#include "Uniform.h"
+#include "Program.h"
 
 using namespace std;
 using namespace glm;
 
+/*
+
+Array of Structure
+[{pos, col, texcoord, normal}, {pos, col, texcoord, normal}, {pos, col, texcoord, normal}, ... ]
+
+Structure of Arrays
+{
+    [{pos}     , {pos}     , {pos}     , ... ],
+    [{col}     , {col}     , {col}     , ... ],
+    [{texcoord}, {texcoord}, {texcoord}, ... ],
+    [{normal}  , {normal}  , {normal}  , ... ],
+}
+
+*/
 
 string vertex_color = R"(
 
@@ -40,130 +57,6 @@ void main(){
 }
 
 )";
-
-template <typename T>
-using Frames = vector<T>;
-
-class Attribute {
-public:
-    Attribute(GLint attribute = 0, string attributeName = { }) :
-        attribute(attribute), attributeName(attributeName) {
-    }
-
-    GLint attribute = 0;
-    string attributeName;
-
-    friend ostream& operator<<(ostream& out, const Attribute& r) {
-        return out << r.attributeName << ": " << r.attribute;
-    }
-};
-
-class Uniform {
-public:
-    Uniform(GLint uniform = 0, string uniformName = { }) :
-        uniform(uniform), uniformName(uniformName) {
-    }
-    GLint uniform = 0;
-    string uniformName;
-
-    friend ostream& operator<<(ostream& out, const Uniform& r) {
-        return out << r.uniformName << ": " << r.uniform;
-    }
-};
-
-class Program {
-public:
-    Program(const string& vertesShader, const string& fragmentShader) {
-        program = createProgram(vertesShader, fragmentShader);
-
-        GLint activeAttributes = 0;
-        glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
-
-        for (GLint i = 0; i < activeAttributes; ++i) {
-
-            const GLsizei bufferSize = 100;
-
-            GLsizei lenght = 0;
-            GLint size = 0;
-            GLenum type = 0;
-            GLchar name[bufferSize];
-
-            glGetActiveAttrib(program, i, bufferSize, &lenght, &size, &type, name);
-
-            attributes.emplace_back(glGetAttribLocation(program, name), name);
-        }
-
-        GLint activeUniforms = 0;
-        glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
-
-        for (GLint i = 0; i < activeUniforms; ++i) {
-            const GLsizei bufferSize = 100;
-
-            GLsizei lenght = 0;
-            GLint size = 0;
-            GLenum type = 0;
-            GLchar name[bufferSize];
-
-            glGetActiveUniform(program, i, bufferSize, &lenght, &size, &type, name);
-
-            uniforms.emplace_back(glGetUniformLocation(program, name), name);
-        }
-    }
-    virtual ~Program() {
-        glDeleteProgram(program);
-    }
-
-    GLuint program = 0;
-    vector<Attribute> attributes;
-    vector<Uniform> uniforms;
-
-    const Attribute& getAttribute(const string& attributeName) const {
-        auto it = find_if(attributes.begin(), attributes.end(),
-            [&](const Attribute& i) {return i.attributeName == attributeName;});
-        if (it == attributes.end())
-            throw runtime_error("no attribute with name " + attributeName);
-        return *it;
-    }
-
-    void setUniformMatrix4x4(const string& uniformName, const mat4& matrix) {
-        auto it = find_if(uniforms.begin(), uniforms.end(),
-            [&](const Uniform& i) {return i.uniformName == uniformName;});
-        if (it == uniforms.end())
-            throw runtime_error("no uniform");
-        glUniformMatrix4fv(it->uniform, 1, GL_FALSE, &matrix[0][0]);
-    }
-
-    friend ostream& operator<<(ostream& out, const Program& r) {
-        return out << "program id " << r.program << " attributes [ " << [&]() {
-            stringstream s;
-            for(auto i: r.attributes)
-            s << i << "; ";
-            return s.str();
-        }() << "], uniforms [ " << [&]() {
-            stringstream s;
-            for(auto i: r.uniforms)
-            s << i << "; ";
-            return s.str();
-        }() << "]";
-    }
-
-protected:
-};
-
-/*
-
-Array of Structure
-[{pos, col, texcoord, normal}, {pos, col, texcoord, normal}, {pos, col, texcoord, normal}, ... ]
-
-Structure of Arrays
-{
-    [{pos}     , {pos}     , {pos}     , ... ],
-    [{col}     , {col}     , {col}     , ... ],
-    [{texcoord}, {texcoord}, {texcoord}, ... ],
-    [{normal}  , {normal}  , {normal}  , ... ],
-}
-
-*/
 
 template<typename T>
 struct Range {
@@ -241,101 +134,123 @@ MeshIn boxMeshData{
 };
 */
 
+class GLBuffer {
+public:
+    virtual ~GLBuffer() = default;
+
+    virtual void bind() = 0;
+    virtual void unbind() = 0;
+};
+
+class VaoBuffer: public GLBuffer {
+public:
+};
+
+class VboBuffer: public GLBuffer {
+public:
+};
+
+class VioBuffer: public GLBuffer {
+public:
+    GLsizei getElementsCount() const;
+};
+
+class Frame {
+public:
+    GLenum drawMode;
+
+    VaoBuffer* vao;
+    vector<VboBuffer> attribBuffers;
+    VioBuffer* vio;
+};
+
 class Mesh {
 public:
-    struct Attribute {
-        Attribute(Program* shader, MeshIn::Attribute const& m){
-
-            attrib = shader->getAttribute(m.attribute).attribute;
-
-            vbos.resize(m.data.size());
-
-            for(size_t i = 0; i < vbos.size(); ++i){
-                vbos.at(i).start = m.data.at(i).start;
-                vbos.at(i).end   = m.data.at(i).end;
-
-                glGenBuffers(1, &vbos.at(i).data);
-                glBindBuffer(GL_ARRAY_BUFFER, vbos.at(i).data);
-
-                glBufferData(GL_ARRAY_BUFFER,
-                    m.data.at(i).data.size() * sizeof(float),
-                    m.data.at(i).data.data(), GL_STATIC_DRAW);
-            }
-        }
-        virtual ~Attribute(){}
-
-        GLint attrib;
-        vector<Range<GLuint>> vbos;
-    };
-
     Mesh(Program* shaderProgram, const MeshIn & mesh){
 
-        vaos = vector<GLuint>(mesh.frames);
-
-        glGenVertexArrays(vaos.size(), vaos.data());
-
-        for(size_t i = 0; i < mesh.frames; ++i){
-
-            glBindVertexArray(vaos.at(i));
-
-            for (size_t j = 0; j < attributes.size(); ++j)
-                bindBuffer(shaderProgram, mesh, j, i);
-
-            bindIndexBuffer(shaderProgram, i, mesh);
-
-            glBindVertexArray(0);
-        }
+//        vaos = vector<GLuint>(mesh.frames);
+//
+//        glGenVertexArrays(vaos.size(), vaos.data());
+//
+//        for(size_t i = 0; i < mesh.frames; ++i){
+//
+//            glBindVertexArray(vaos.at(i));
+//
+//            for (size_t j = 0; j < attributes.size(); ++j)
+//                bindBuffer(shaderProgram, mesh, j, i);
+//
+//            bindIndexBuffer(shaderProgram, i, mesh);
+//
+//            glBindVertexArray(0);
+//        }
     }
 
     Mesh() {
     }
 
     virtual ~Mesh() {
-        glDeleteVertexArrays(vaos.size(), vaos.data());
+//        glDeleteVertexArrays(vaos.size(), vaos.data());
     }
 
     void draw(size_t frame = 0, const vector<mat4>& models = { }) {
 
-        glBindVertexArray(vaos.at(frame));
+        frames.at(frame).vao->bind();
 
-        glDrawElements(drawModes.at(frame), elementsCounts.at(frame), GL_UNSIGNED_SHORT, nullptr);
+        glDrawElements(frames.at(frame).drawMode, frames.at(frame).vio->getElementsCount(), GL_UNSIGNED_SHORT, nullptr);
 
-        glBindVertexArray(0);
+        frames.at(frame).vao->unbind();
     }
 
-    void bindBuffer(Program *shader, const MeshIn &mesh, size_t attribute, size_t frame) {
-
-        auto it = attributes.at(attribute).vbos.begin();
-        while(!it->inRange(frame))
-            ++it;
-
-        glBindBuffer(GL_ARRAY_BUFFER, it->data);
-    }
-
-    void bindIndexBuffer(Program *shader, size_t frame, const MeshIn &mesh) {
-        auto it = ibos.begin();
-        while (!it->inRange(frame))
-            it++;
-
-        if (it->data) {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
-        } else {
-            glGenBuffers(1, &it->data);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t), nullptr, GL_STATIC_DRAW);
-        }
-    }
+//    void bindBuffer(Program *shader, const MeshIn &mesh, size_t attribute, size_t frame) {
+//
+//        auto it = attributes.at(attribute).vbos.begin();
+//        while(!it->inRange(frame))
+//            ++it;
+//
+//        glBindBuffer(GL_ARRAY_BUFFER, it->data);
+//    }
+//
+//    void bindIndexBuffer(Program *shader, size_t frame, const MeshIn &mesh) {
+//        auto it = ibos.begin();
+//        while (!it->inRange(frame))
+//            it++;
+//
+//        if (it->data) {
+//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
+//        } else {
+//            glGenBuffers(1, &it->data);
+//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
+//            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t), nullptr, GL_STATIC_DRAW);
+//        }
+//    }
 
     size_t getFrameCount() const {
-        return vaos.size();
+        return frames.size();
     }
 
 protected:
-    Frames<GLuint>        vaos;
-    Frames<GLsizei>       elementsCounts;
-    Frames<GLenum>        drawModes;
-    vector<Attribute>     attributes;
-    vector<Range<GLuint>> ibos;
+    vector<Frame> frames;
+
+
+    /*
+    vector<Attribute>                 attributesData;
+    vector<Uniform>                   uniformsData;
+
+    vector<Range<vector<uint16_t>>>   indeces;
+    vector<Range<GLenum>>             drawModes;
+    */
+    /*
+     * frames          0            1            3
+     *
+     * vao             5            6            7
+     *
+     * pos             12           12           12
+     * texcoord        13           14           16
+     *
+     * indexes         11           11           11
+     *
+     * texture
+     */
 };
 
 unique_ptr<Program> coloredSh, texturedSh;
