@@ -80,6 +80,7 @@ GLint aPosition, aTexCoord, uProj, uView, uModel, uTexture;
 GLuint vaos[3];
 GLuint pos;
 GLuint texcoords[3];
+
 GLuint indeces_;
 GLuint indecesCount[] = {4, 4, 4};
 GLenum drawModes[] = {GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP};
@@ -140,12 +141,12 @@ void init() {
         glBindVertexArray(vaos[0]);
 
         glBindBuffer(GL_ARRAY_BUFFER, pos);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(aPosition);
+        glVertexAttribPointer(aPosition, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ARRAY_BUFFER, texcoords[0]);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(aTexCoord);
+        glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indeces_);
     }
@@ -153,12 +154,12 @@ void init() {
         glBindVertexArray(vaos[1]);
 
         glBindBuffer(GL_ARRAY_BUFFER, pos);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(aPosition);
+        glVertexAttribPointer(aPosition, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ARRAY_BUFFER, texcoords[1]);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(aTexCoord);
+        glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indeces_);
     }
@@ -166,12 +167,12 @@ void init() {
         glBindVertexArray(vaos[2]);
 
         glBindBuffer(GL_ARRAY_BUFFER, pos);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(aPosition);
+        glVertexAttribPointer(aPosition, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ARRAY_BUFFER, texcoords[2]);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(aTexCoord);
+        glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indeces_);
     }
