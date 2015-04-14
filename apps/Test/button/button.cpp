@@ -75,6 +75,7 @@ vector<uint16_t> indeces = {
 };
 
 GLuint shader;
+GLint aPosition, aTexCoord, uProj, uView, uModel, uTexture;
 
 GLuint vaos[3];
 GLuint pos;
@@ -85,7 +86,9 @@ GLenum drawModes[] = {GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP};
 
 GLuint texture;
 
-mat4 proj, view;
+Texture tex;
+
+mat4 proj, view, model;
 
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
@@ -97,7 +100,20 @@ void reshape(int w, int h) {
 
 void init() {
 
+    tex = loadTexture(getBase() + "/Resources/button-1/pressme.png");
+
     shader = createProgram(vertex_color, fragment_color);
+
+    aPosition = glGetAttribLocation(shader, "position");
+    aTexCoord = glGetAttribLocation(shader, "texcoord");
+
+    uProj     = glGetUniformLocation(shader, "projection");
+    uView     = glGetUniformLocation(shader, "view");
+    uModel    = glGetUniformLocation(shader, "model");
+    uTexture  = glGetUniformLocation(shader, "texture");
+
+    cout << "aPosition " << aPosition << ", aTexCoord " << aTexCoord << ", " << endl <<
+        "uProj " << uProj << ", uView " << uView << ", uModel " << uModel << ", uTexture " << uTexture << endl;
 
     glGenBuffers(1, &pos);
     glBindBuffer(GL_ARRAY_BUFFER, pos);
@@ -165,11 +181,21 @@ void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
 
-    static int counter = 100, frame = 0;
+    static int counter = 30, frame = 0;
     if(!--counter){
         if(++frame == 3)
             frame = 0;
     }
+
+    glUseProgram(shader);
+
+    glUniformMatrix4fv(uProj, 1, GL_FALSE, &proj[0][0]);
+    glUniformMatrix4fv(uView, 1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(uModel, 1, GL_FALSE, &model[0][0]);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex.textureId);
+    glUniform1i(uTexture, 0);
 
     glBindVertexArray(vaos[frame]);
 
@@ -182,5 +208,6 @@ void display(void) {
 }
 
 void deinit() {
+
 }
 
