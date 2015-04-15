@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 #include <GL/glew.h>
 
@@ -58,9 +59,10 @@ Program::~Program() {
     glDeleteProgram(program);
 }
 
-const Attribute& Program::getAttribute(const std::string& attributeName) const {
-    auto it = find_if(attributes.begin(), attributes.end(),
-        [&](const Attribute& i) {return i.attributeName == attributeName;});
+const Attribute &Program::getAttribute(const std::string &attributeName) const {
+    auto it = find_if(attributes.begin(), attributes.end(), [&](const Attribute &i) {
+        return i.attributeName == attributeName;
+    });
     if (it == attributes.end())
         throw std::runtime_error("no attribute with name " + attributeName);
     return *it;
