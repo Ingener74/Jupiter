@@ -28,6 +28,42 @@ Structure of Arrays
 
 */
 
+template<typename T>
+struct Range {
+    size_t start, end;
+    T data;
+
+    bool inRange(int32_t i) const {
+        return i >= start && i < end;
+    }
+};
+
+template<typename T>
+class RangeVector{
+    std::vector<RangeVector<T>> v;
+public:
+    RangeVector(){
+    }
+    virtual ~RangeVector(){}
+
+    void push_back(const Range<T>& range){
+        if(range.start >= range.end)
+            throw invalid_argument("bad range");
+        if(v.empty() && !range.start)
+            throw invalid_argument("first range must start with 0");
+        if (!v.empty() && v.back().end != range.begin)
+            throw invalid_argument("error 2");
+
+        v.push_back(range);
+    }
+
+    size_t full_size() const {
+        return v.size();
+    }
+};
+
+
+
 string vertex_color = R"(
 
 #version 330
@@ -57,16 +93,6 @@ void main(){
 }
 
 )";
-
-template<typename T>
-struct Range {
-    int32_t start, end;
-    T data;
-
-    bool inRange(int32_t i) const {
-        return i >= start && i < end;
-    }
-};
 
 struct MeshIn {
 
@@ -217,28 +243,7 @@ public:
 
 class Mesh {
 public:
-    Mesh(Program* shaderProgram, const MeshIn & mesh){
-
-        frames.resize(mesh.frames);
-
-        for(size_t i = 0; i < mesh.frames; ++i){
-            Frame& frame = frames.at(i);
-
-            frame.attribBuffers.resize(mesh.attributesData.size());
-
-            auto vao = make_unique_<VaoBuffer>();
-            frame.vao = vao.get();
-            vertexArrays.push_back(move(vao));
-        }
-
-//        glGenVertexArrays(vaos.size(), vaos.data());
-//        for (size_t i = 0; i < mesh.frames; ++i) {
-//            glBindVertexArray(vaos.at(i));
-//            for (size_t j = 0; j < attributes.size(); ++j)
-//                bindBuffer(shaderProgram, mesh, j, i);
-//            bindIndexBuffer(shaderProgram, i, mesh);
-//            glBindVertexArray(0);
-//        }
+    Mesh(Program* shaderProgram, const MeshIn & mesh) {
     }
 
     Mesh() {
