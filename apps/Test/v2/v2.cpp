@@ -36,6 +36,10 @@ struct Range {
     bool inRange(int32_t i) const {
         return i >= start && i < end;
     }
+
+    size_t size() const{
+        return end - start;
+    }
 };
 
 template<typename T>
@@ -51,15 +55,22 @@ public:
             throw invalid_argument("bad range");
         if(v.empty() && !range.start)
             throw invalid_argument("first range must start with 0");
-        if (!v.empty() && v.back().end != range.begin)
-            throw invalid_argument("error 2");
+        if (!v.empty() && v.back().end != range.start)
+            throw invalid_argument("bad range 2");
 
         v.push_back(range);
     }
 
-    size_t full_size() const {
-        return v.size();
-    }
+//    size_t size() const {
+//        return v.size();
+//    }
+//    size_t full_size() const {
+//        return (size_t) accumulate(v.begin(), v.end(), 0, [](size_t res, const Range& r){
+//                    return res + r.size();
+//                });
+//    }
+
+
 };
 
 
