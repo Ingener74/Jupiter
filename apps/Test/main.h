@@ -22,18 +22,18 @@
 #include <climits>
 
 #include <GL/glew.h>
-#ifdef  _WIN32
-    #include <GL/wglew.h>
-#else
-    #include <GL/glxew.h>
-#endif
+//#ifdef  _WIN32
+//    #include <GL/wglew.h>
+//#else
+//    #include <GL/glxew.h>
+//#endif
 
-#include <GL/gl.h>
-#include <GL/glext.h>
+//#include <GL/gl.h>
+//#include <GL/glext.h>
 
 #include <GL/freeglut.h>
-#include <GL/freeglut_ext.h>
-#include <GL/freeglut_std.h>
+//#include <GL/freeglut_ext.h>
+//#include <GL/freeglut_std.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

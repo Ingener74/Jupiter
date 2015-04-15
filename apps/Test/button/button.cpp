@@ -75,7 +75,9 @@ vector<uint16_t> indeces = {
 };
 
 GLuint shader;
-GLint aPosition, aTexCoord, uProj, uView, uModel, uTexture;
+GLint uProj, uView, uModel, uTexture;
+GLint aTexCoord;
+GLint aPosition;
 
 GLuint vaos[3];
 GLuint pos;
@@ -85,14 +87,12 @@ GLuint indecesCount[] = {4, 4, 4};
 GLenum drawModes[] = {GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP, GL_TRIANGLE_STRIP};
 Texture tex;
 
-/*
 struct Elements{
     GLuint elementsBuffer;
     GLsizei elementsCount;
 };
 Elements l;
 Elements* elementsFrames[] = {&l, &l, &l};
-*/
 
 mat4 proj, view, model;
 

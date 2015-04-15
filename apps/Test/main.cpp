@@ -11,7 +11,7 @@ using namespace std;
 
 string base;
 
-float w = 400.f, h = 240.f, m = .3f;
+float w = 400.f, h = 240.f, m = .8f;
 float width = w * m, height = h * m;
 
 int main(int argc, char **argv) {
@@ -56,6 +56,8 @@ int main(int argc, char **argv) {
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         reshape(width, height);
         init();

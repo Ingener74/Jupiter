@@ -143,16 +143,67 @@ public:
 };
 
 class VaoBuffer: public GLBuffer {
+    GLuint buffer;
+
+    VaoBuffer(const VaoBuffer&);
+    VaoBuffer& operator=(const VaoBuffer&);
 public:
+    VaoBuffer() {
+        glGenVertexArrays(1, &buffer);
+    }
+    virtual ~VaoBuffer() {
+        glDeleteVertexArrays(1, &buffer);
+    }
+    virtual void bind() {
+        glBindVertexArray(buffer);
+    }
+    virtual void unbind() {
+        glBindVertexArray(0);
+    }
 };
 
-class VboBuffer: public GLBuffer {
+class ArrayBuffer: public GLBuffer {
+    GLuint buffer;
+
+    ArrayBuffer(const VaoBuffer&);
+    ArrayBuffer& operator=(const VaoBuffer&);
 public:
+    ArrayBuffer(const vector<float>& array) {
+        glGenBuffers(1,  &buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, array.size() * sizeof(float), array.data(), GL_STATIC_DRAW);
+    }
+    virtual ~ArrayBuffer() {
+        glDeleteBuffers(1, &buffer);
+    }
+    virtual void bind(){
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    }
+    virtual void unbind(){}
 };
 
-class VioBuffer: public GLBuffer {
+class ElementBuffer: public GLBuffer {
+    GLuint buffer, bufferCount;
+
+    ElementBuffer(const VaoBuffer&);
+    ElementBuffer& operator=(const VaoBuffer&);
 public:
-    GLsizei getElementsCount() const;
+    ElementBuffer(const vector<uint16_t>& elements): buffer(0), bufferCount(elements.size()){
+        glGenBuffers(1,  &buffer);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(uint16_t), elements.data(), GL_STATIC_DRAW);
+    }
+    virtual ~ElementBuffer(){
+        glDeleteBuffers(1, &buffer);
+    }
+    virtual void bind(){
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+    }
+    virtual void unbind(){}
+
+    GLsizei getElementsCount() const{
+        return bufferCount;
+    }
 };
 
 class Frame {
@@ -160,27 +211,32 @@ public:
     GLenum drawMode;
 
     VaoBuffer* vao;
-    vector<VboBuffer> attribBuffers;
-    VioBuffer* vio;
+    vector<ArrayBuffer*> attribBuffers;
+    ElementBuffer* vio;
 };
 
 class Mesh {
 public:
     Mesh(Program* shaderProgram, const MeshIn & mesh){
 
-//        vaos = vector<GLuint>(mesh.frames);
-//
+        frames.resize(mesh.frames);
+
+        for(size_t i = 0; i < mesh.frames; ++i){
+            Frame& frame = frames.at(i);
+
+            frame.attribBuffers.resize(mesh.attributesData.size());
+
+            auto vao = make_unique_<VaoBuffer>();
+            frame.vao = vao.get();
+            vertexArrays.push_back(move(vao));
+        }
+
 //        glGenVertexArrays(vaos.size(), vaos.data());
-//
-//        for(size_t i = 0; i < mesh.frames; ++i){
-//
+//        for (size_t i = 0; i < mesh.frames; ++i) {
 //            glBindVertexArray(vaos.at(i));
-//
 //            for (size_t j = 0; j < attributes.size(); ++j)
 //                bindBuffer(shaderProgram, mesh, j, i);
-//
 //            bindIndexBuffer(shaderProgram, i, mesh);
-//
 //            glBindVertexArray(0);
 //        }
     }
@@ -189,7 +245,6 @@ public:
     }
 
     virtual ~Mesh() {
-//        glDeleteVertexArrays(vaos.size(), vaos.data());
     }
 
     void draw(size_t frame = 0, const vector<mat4>& models = { }) {
@@ -201,29 +256,6 @@ public:
         frames.at(frame).vao->unbind();
     }
 
-//    void bindBuffer(Program *shader, const MeshIn &mesh, size_t attribute, size_t frame) {
-//
-//        auto it = attributes.at(attribute).vbos.begin();
-//        while(!it->inRange(frame))
-//            ++it;
-//
-//        glBindBuffer(GL_ARRAY_BUFFER, it->data);
-//    }
-//
-//    void bindIndexBuffer(Program *shader, size_t frame, const MeshIn &mesh) {
-//        auto it = ibos.begin();
-//        while (!it->inRange(frame))
-//            it++;
-//
-//        if (it->data) {
-//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
-//        } else {
-//            glGenBuffers(1, &it->data);
-//            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->data);
-//            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t), nullptr, GL_STATIC_DRAW);
-//        }
-//    }
-
     size_t getFrameCount() const {
         return frames.size();
     }
@@ -231,14 +263,15 @@ public:
 protected:
     vector<Frame> frames;
 
+    // frames
+    vector<unique_ptr<VaoBuffer>> vertexArrays;
 
-    /*
-    vector<Attribute>                 attributesData;
-    vector<Uniform>                   uniformsData;
+    // attrib  // frame ranges
+    vector<    vector<         unique_ptr<ArrayBuffer>>> dataArrays;
 
-    vector<Range<vector<uint16_t>>>   indeces;
-    vector<Range<GLenum>>             drawModes;
-    */
+    // frame ranges
+    vector<         unique_ptr<ElementBuffer>> elementArray;
+
     /*
      * frames          0            1            3
      *
