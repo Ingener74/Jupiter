@@ -1,8 +1,8 @@
-#Jupiter small game engine
+#Юпитер - игровой движок
 
-##How to build on Linux
+##Сборка под Linux
 
-###1. install dependencies
+###1. установка зависимостей
 
 1.1. install other dependencies
 
