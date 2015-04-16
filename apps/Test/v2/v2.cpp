@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <functional>
+
 #include "main.h"
 #include "Attribute.h"
 #include "Uniform.h"
@@ -40,13 +42,18 @@ struct Range {
     size_t size() const{
         return end - start;
     }
+
+    size_t operator+(const Range& r) {
+        return size() + r.size();
+    }
+
 };
 
 template<typename T>
 class RangeVector{
-    std::vector<RangeVector<T>> v;
+    std::vector<Range<T>> v;
 public:
-    RangeVector(){
+    RangeVector(size_t size): v(size) {
     }
     virtual ~RangeVector(){}
 
@@ -61,16 +68,23 @@ public:
         v.push_back(range);
     }
 
-//    size_t size() const {
-//        return v.size();
-//    }
-//    size_t full_size() const {
-//        return (size_t) accumulate(v.begin(), v.end(), 0, [](size_t res, const Range& r){
-//                    return res + r.size();
-//                });
-//    }
+    size_t size() const {
+        return v.size();
+    }
+    size_t full_size() const {
+        return accumulate(v.begin(), v.end(), 0, plus<Range<T>>());
+    }
 
+    Range<T>& at(size_t index) {
+        return v.at(index);
+    }
 
+    T& at_full(size_t index) {
+        auto it = v.begin();
+        while (!it->inRange(index))
+            ++it;
+        return it->data;
+    }
 };
 
 
@@ -105,46 +119,54 @@ void main(){
 
 )";
 
-struct MeshIn {
+template<typename T>
+using Frames = vector<T>;
+
+using VertexData = vector<float>;
+using Elements   = vector<uint16_t>;
+
+using DrawMode   = GLuint;
+
+struct Mesh {
+    int                               frames;
 
     struct Attribute {
         string attribute;
-        vector<Range<vector<float>>> data;
+        Frames<VertexData> data;
     };
+    vector<Attribute>                 attributesData;
+
     struct Texture{
         GLuint textureId;
         GLuint unit;
     };
     struct Uniform {
         string                        uniform;
-        vector<Range<Texture>>        textures;
+        Frames<Texture>               textures;
     };
-
-    int                               frames;
-
-    vector<Attribute>                 attributesData;
     vector<Uniform>                   uniformsData;
 
-    vector<Range<vector<uint16_t>>>   indeces;
-    vector<Range<GLenum>>             drawModes;
+    Frames<Elements>                  elements;
+    Frames<DrawMode>                  drawModes;
 };
 
-/*
-MeshIn boxMeshData{
+Mesh boxMeshData{
     3,
     {
         {
             "pos",
             {
-                { 0, 3, {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,  } }
+                {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,  },
+                {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,  },
+                {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f,  },
             }
         },
         {
             "texcoord",
             {
-                { 0, 1, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  } },
-                { 1, 2, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  } },
-                { 2, 3, {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  } },
+                {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  },
+                {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  },
+                {0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  0.f, 0.f,  },
             }
         }
     },
@@ -152,24 +174,31 @@ MeshIn boxMeshData{
         {
             "texture",
             {
-                { 0, 3, {3, 0} }
+                {3, 0},
+                {3, 0},
+                {3, 0},
             }
         },
         {
             "bump",
             {
-                { 0, 3, {5, 0} }
+                {5, 0},
+                {5, 0},
+                {5, 0},
             }
         }
     },
     {
-        { 0, 3, {0, 1, 2, 3} }
+        {0, 1, 2, 3},
+        {0, 1, 2, 3},
+        {0, 1, 2, 3},
     },
     {
-        { 0, 3, GL_TRIANGLE_STRIP }
+        GL_TRIANGLE_STRIP,
+        GL_TRIANGLE_STRIP,
+        GL_TRIANGLE_STRIP,
     }
 };
-*/
 
 class GLBuffer {
 public:
@@ -252,15 +281,30 @@ public:
     ElementBuffer* vio;
 };
 
-class Mesh {
+class Node {
 public:
-    Mesh(Program* shaderProgram, const MeshIn & mesh) {
+    Node(Program* shaderProgram, const Mesh & mesh) {
+
+//        for (size_t frame = 0; frame < mesh.frames; ++frame) {
+//            vertexArrays.push_back(make_unique_<VaoBuffer>());
+//        }
+//
+//        dataArrays.resize(mesh.attributesData.size());
+//        for(size_t attrib = 0; attrib < mesh.attributesData.size(); ++attrib){
+//
+//            auto attribId = shaderProgram->getAttribute(mesh.attributesData.at(attrib).attribute).attribute;
+//
+//            for(size_t i = 0; i < mesh.attributesData.at(attrib).data.size(); ++i){
+//                dataArrays.
+//            }
+//        }
+
     }
 
-    Mesh() {
+    Node() {
     }
 
-    virtual ~Mesh() {
+    virtual ~Node() {
     }
 
     void draw(size_t frame = 0, const vector<mat4>& models = { }) {
@@ -287,23 +331,10 @@ protected:
 
     // frame ranges
     vector<         unique_ptr<ElementBuffer>> elementArray;
-
-    /*
-     * frames          0            1            3
-     *
-     * vao             5            6            7
-     *
-     * pos             12           12           12
-     * texcoord        13           14           16
-     *
-     * indexes         11           11           11
-     *
-     * texture
-     */
 };
 
 unique_ptr<Program> coloredSh, texturedSh;
-unique_ptr<Mesh> root, bgMesh, groundMesh, boxMesh;
+unique_ptr<Node> button;
 
 mat4 proj, view;
 
