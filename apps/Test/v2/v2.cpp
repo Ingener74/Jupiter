@@ -30,62 +30,62 @@ Structure of Arrays
 
 */
 
-template<typename T>
-struct Range {
-    size_t start, end;
-    T data;
-
-    bool inRange(int32_t i) const {
-        return i >= start && i < end;
-    }
-
-    size_t size() const{
-        return end - start;
-    }
-
-    size_t operator+(const Range& r) {
-        return size() + r.size();
-    }
-
-};
-
-template<typename T>
-class RangeVector{
-    std::vector<Range<T>> v;
-public:
-    RangeVector(size_t size): v(size) {
-    }
-    virtual ~RangeVector(){}
-
-    void push_back(const Range<T>& range){
-        if(range.start >= range.end)
-            throw invalid_argument("bad range");
-        if(v.empty() && !range.start)
-            throw invalid_argument("first range must start with 0");
-        if (!v.empty() && v.back().end != range.start)
-            throw invalid_argument("bad range 2");
-
-        v.push_back(range);
-    }
-
-    size_t size() const {
-        return v.size();
-    }
-    size_t full_size() const {
-        return accumulate(v.begin(), v.end(), 0, plus<Range<T>>());
-    }
-
-    Range<T>& at(size_t index) {
-        return v.at(index);
-    }
-
-    T& at_full(size_t index) {
-        auto it = v.begin();
-        while (!it->inRange(index))
-            ++it;
-        return it->data;
-    }
-};
+//template<typename T>
+//struct Range {
+//    size_t start, end;
+//    T data;
+//
+//    bool inRange(int32_t i) const {
+//        return i >= start && i < end;
+//    }
+//
+//    size_t size() const{
+//        return end - start;
+//    }
+//
+//    size_t operator+(const Range& r) {
+//        return size() + r.size();
+//    }
+//
+//};
+//
+//template<typename T>
+//class RangeVector{
+//    std::vector<Range<T>> v;
+//public:
+//    RangeVector(size_t size): v(size) {
+//    }
+//    virtual ~RangeVector(){}
+//
+//    void push_back(const Range<T>& range){
+//        if(range.start >= range.end)
+//            throw invalid_argument("bad range");
+//        if(v.empty() && !range.start)
+//            throw invalid_argument("first range must start with 0");
+//        if (!v.empty() && v.back().end != range.start)
+//            throw invalid_argument("bad range 2");
+//
+//        v.push_back(range);
+//    }
+//
+//    size_t size() const {
+//        return v.size();
+//    }
+//    size_t full_size() const {
+//        return accumulate(v.begin(), v.end(), 0, plus<Range<T>>());
+//    }
+//
+//    Range<T>& at(size_t index) {
+//        return v.at(index);
+//    }
+//
+//    T& at_full(size_t index) {
+//        auto it = v.begin();
+//        while (!it->inRange(index))
+//            ++it;
+//        return it->data;
+//    }
+//};
 
 
 
