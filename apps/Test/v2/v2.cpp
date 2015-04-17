@@ -47,44 +47,80 @@ void main(){
 
 )";
 
-struct AttributeRaw{
-    string        name;
+struct AttributeRaw {
+    string name;
     vector<float> data;
 };
 
-struct AttributeGL{
-
-    AttributeGL(Program* program, const AttributeRaw& attrib){
+struct AttributeGL {
+    AttributeGL(Program* program, const AttributeRaw& attrib) {
         name = program->getAttribute(attrib.name).attribute;
 
         glGenBuffers(1, &data);
         glBindBuffer(GL_ARRAY_BUFFER, data);
         glBufferData(GL_ARRAY_BUFFER, attrib.data.size() * sizeof(float), attrib.data.data(), GL_STATIC_DRAW);
     }
+    virtual ~AttributeGL() {
+        glDeleteBuffers(1, &data);
+    }
 
-    GLint  name;
+    GLint name;
     GLuint data;
 };
 
-class FrameRaw{
+class TextureRaw {
 public:
-    vector<AttributeRaw> attributesData;
+    string     file;
+    string     uniform;
+    uint16_t   unit;
 };
 
-class FrameGL{
+class TextureGL {
+public:
+    TextureGL(Program* program, const TextureRaw& texture) {
+
+        uniform = program->getUniform(texture.uniform).uniform;
+
+        Texture tex = loadTexture(texture.file);
+
+        id = tex.textureId;
+        unit = texture.unit;
+    }
+    ~TextureGL(){
+        glDeleteTextures(1, &id);
+    }
+
+    GLuint     id      = 0;
+    GLint      uniform = 0;
+    GLuint     unit    = 0;
+};
+
+class FrameRaw {
+public:
+    vector<AttributeRaw> attributesData;
+    vector<TextureRaw>   textureData;
+};
+
+class FrameGL {
 public:
     FrameGL(Program* program, const FrameRaw& frame) {
         for (auto const& i : frame.attributesData) {
             attributesData.push_back( { program, i });
         }
+        for (auto const& i : frame.textureData) {
+            textureData.push_back( { program, i });
+        }
     }
 
     vector<AttributeGL> attributesData;
+    vector<TextureGL>   textureData;
 };
 
-class Mesh{
+class Mesh {
 public:
-    Mesh(const vector<FrameRaw>& frames): frames(frames){}
+    Mesh(const vector<FrameRaw>& frames) :
+        frames(frames) {
+    }
 
     vector<FrameRaw> frames;
 };
@@ -102,20 +138,22 @@ public:
     vector<FrameGL> frames;
 };
 
-class Node{
+class Node {
 public:
-    Node(Program* program, const mat4& model, const Mesh& mesh){
+    Node(Program* program, const mat4& model, const Mesh& mesh) {
 
-        Node::mesh = MeshGL{program, mesh};
+        Node::mesh = MeshGL { program, mesh };
 
     }
-    virtual ~Node(){}
+    virtual ~Node() {
+    }
 
-    virtual void draw(const vector<mat4>& models = {}){}
+    virtual void draw(const vector<mat4>& models = { }) {
+    }
 
     Program* program = nullptr;
-    mat4     model;
-    MeshGL   mesh;
+    mat4 model;
+    MeshGL mesh;
 };
 
 unique_ptr<Program>   texturedProgram;
@@ -149,11 +187,15 @@ void init() {
                         "texcoord",
                         {0.f, 0.f,   0.f, 0.f,   0.f, 0.f}
                     }
+                },
+                { // Uniforms
+                    { // Texture 0
+                        "Resources/button-1/pressme.png",
+                        "texture",
+                        0
+                    }
                 }
-            }/*,
-            {
-
-            }*/
+            }
         }
     };
 

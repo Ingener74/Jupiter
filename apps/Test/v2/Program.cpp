@@ -90,3 +90,18 @@ std::ostream& operator<<(std::ostream& out, const Program& r) {
     }() << "]";
 }
 
+const Uniform& Program::getUniform(const std::string& uniformName) const {
+    throw runtime_error("not implemented yet");
+}
+
+void Program::setUniform(const std::string& uniformName, GLuint uniformData) {
+    throw runtime_error("not implemented yet");
+}
+
+void Program::setUniform(GLuint uniformName, GLuint uniformData) {
+    throw runtime_error("not implemented yet");
+}
+
+void Program::setUniform(const Uniform& uniform, GLuint uniformData) {
+    throw runtime_error("not implemented yet");
+}

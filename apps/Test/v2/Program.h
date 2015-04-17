@@ -23,6 +23,12 @@ public:
     virtual ~Program();
 
     const Attribute& getAttribute(const std::string& attributeName) const;
+    const Uniform& getUniform(const std::string& uniformName) const;
+
+    void setUniform(const std::string& uniformName, GLuint uniformData);
+    void setUniform(GLuint uniformName, GLuint uniformData);
+    void setUniform(const Uniform& uniform, GLuint uniformData);
+
     void setUniformMatrix4x4(const std::string& uniformName, const glm::mat4& matrix);
 
     friend std::ostream& operator<<(std::ostream& out, const Program& r);
