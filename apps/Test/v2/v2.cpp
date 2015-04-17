@@ -47,7 +47,79 @@ void main(){
 
 )";
 
-unique_ptr<Program> texturedProgram;
+struct AttributeRaw{
+    string        name;
+    vector<float> data;
+};
+
+struct AttributeGL{
+
+    AttributeGL(Program* program, const AttributeRaw& attrib){
+        name = program->getAttribute(attrib.name).attribute;
+
+        glGenBuffers(1, &data);
+        glBindBuffer(GL_ARRAY_BUFFER, data);
+        glBufferData(GL_ARRAY_BUFFER, attrib.data.size() * sizeof(float), attrib.data.data(), GL_STATIC_DRAW);
+    }
+
+    GLint  name;
+    GLuint data;
+};
+
+class FrameRaw{
+public:
+    vector<AttributeRaw> attributesData;
+};
+
+class FrameGL{
+public:
+    FrameGL(Program* program, const FrameRaw& frame) {
+        for (auto const& i : frame.attributesData) {
+            attributesData.push_back( { program, i });
+        }
+    }
+
+    vector<AttributeGL> attributesData;
+};
+
+class Mesh{
+public:
+    Mesh(const vector<FrameRaw>& frames): frames(frames){}
+
+    vector<FrameRaw> frames;
+};
+
+class MeshGL {
+public:
+    MeshGL() {
+    }
+    MeshGL(Program* program, const Mesh& mesh) {
+        for (auto const& i : mesh.frames) {
+            frames.push_back( { program, i });
+        }
+    }
+
+    vector<FrameGL> frames;
+};
+
+class Node{
+public:
+    Node(Program* program, const mat4& model, const Mesh& mesh){
+
+        Node::mesh = MeshGL{program, mesh};
+
+    }
+    virtual ~Node(){}
+
+    virtual void draw(const vector<mat4>& models = {}){}
+
+    Program* program = nullptr;
+    mat4     model;
+    MeshGL   mesh;
+};
+
+unique_ptr<Program>   texturedProgram;
+unique_ptr<Node>      pressMe;
 
 mat4 proj, view;
 
@@ -64,11 +136,37 @@ void init() {
 
     texturedProgram->setUniformMatrix4x4("projection", proj);
     texturedProgram->setUniformMatrix4x4("view", view);
+
+    Mesh pressMeMesh{
+        { // Frames
+            { // Frame 0
+                { // Attributes
+                    { // Attrib 0
+                        "position",
+                        {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f}
+                    },
+                    {
+                        "texcoord",
+                        {0.f, 0.f,   0.f, 0.f,   0.f, 0.f}
+                    }
+                }
+            }/*,
+            {
+
+            }*/
+        }
+    };
+
+    pressMe = make_unique_<Node>(texturedProgram.get(), mat4{}, pressMeMesh);
+
+    cout << "mesh" << endl;
 }
 
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
+
+    pressMe->draw();
 
     glFlush();
     glutSwapBuffers();
