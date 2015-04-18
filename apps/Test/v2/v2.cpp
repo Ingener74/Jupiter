@@ -54,6 +54,10 @@ struct AttributeRaw {
 
 struct AttributeGL {
     AttributeGL(Program* program, const AttributeRaw& attrib) {
+
+        if (attrib.data.empty())
+            throw invalid_argument("attribute: data empty");
+
         name = program->getAttribute(attrib.name).attribute;
 
         glGenBuffers(1, &data);
@@ -95,10 +99,37 @@ public:
     GLuint     unit    = 0;
 };
 
+class ElementsRaw{
+public:
+    vector<uint16_t> elements;
+};
+
+class ElementsGL{
+public:
+    ElementsGL(const ElementsRaw& elements){
+        if(elements.elements.empty())
+            throw invalid_argument("elements empty");
+
+        glGenBuffers(1, &data);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.elements.size() * sizeof(uint16_t), elements.elements.data(), GL_STATIC_DRAW);
+    }
+
+    ElementsGL() { }
+
+    virtual ~ElementsGL() {
+        glDeleteBuffers(1, &data);
+    }
+
+    GLuint data = 0;
+    GLuint elementsCount = 0;
+};
+
 class FrameRaw {
 public:
     vector<AttributeRaw> attributesData;
     vector<TextureRaw>   textureData;
+    ElementsRaw          elements;
 };
 
 class FrameGL {
@@ -110,10 +141,12 @@ public:
         for (auto const& i : frame.textureData) {
             textureData.push_back( { program, i });
         }
+        elements = ElementsGL{frame.elements};
     }
 
     vector<AttributeGL> attributesData;
     vector<TextureGL>   textureData;
+    ElementsGL          elements;
 };
 
 class Mesh {
@@ -121,7 +154,6 @@ public:
     Mesh(const vector<FrameRaw>& frames) :
         frames(frames) {
     }
-
     vector<FrameRaw> frames;
 };
 
@@ -200,6 +232,10 @@ void init() {
                         "texture",
                         0
                     }
+                },
+                // Elements
+                {
+                    {0, 2, 1, 3}
                 }
             }
         }
