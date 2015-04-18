@@ -10,7 +10,7 @@
 using namespace std;
 using namespace glm;
 
-string vertex_color = R"(
+string vertex_texture = R"(
 
 #version 330
 
@@ -26,7 +26,7 @@ void main(){
     texcoord_ = texcoord;
 }
 
-)", fragment_color = R"(
+)", fragment_texture = R"(
 
 #version 330
 
@@ -108,7 +108,7 @@ void init() {
 
     tex = loadTexture(getBase() + "/Resources/button-1/pressme.png");
 
-    shader = createProgram(vertex_color, fragment_color);
+    shader = createProgram(vertex_texture, fragment_texture);
 
     aPosition = glGetAttribLocation(shader, "position");
     aTexCoord = glGetAttribLocation(shader, "texcoord");

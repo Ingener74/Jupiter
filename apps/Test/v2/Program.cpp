@@ -91,7 +91,12 @@ std::ostream& operator<<(std::ostream& out, const Program& r) {
 }
 
 const Uniform& Program::getUniform(const std::string& uniformName) const {
-    throw runtime_error("not implemented yet");
+    auto it = find_if(uniforms.begin(), uniforms.end(), [&](const Uniform& i){
+        return i.uniformName == uniformName;
+    });
+    if(it == uniforms.end())
+        throw runtime_error("can't find uniform: " + uniformName);
+    return (*it);
 }
 
 void Program::setUniform(const std::string& uniformName, GLuint uniformData) {

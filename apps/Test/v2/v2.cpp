@@ -15,7 +15,7 @@
 using namespace std;
 using namespace glm;
 
-string vertex_color = R"(
+string vertex_texture = R"(
 
 #version 330
 
@@ -31,7 +31,7 @@ void main(){
     texcoord_ = texcoord;
 }
 
-)", fragment_color = R"(
+)", fragment_texture = R"(
 
 #version 330
 
@@ -169,17 +169,21 @@ void reshape(int w, int h) {
 }
 
 void init() {
-    texturedProgram = make_unique_<Program>(vertex_color, fragment_color);
+    texturedProgram = make_unique_<Program>(vertex_texture, fragment_texture);
     cout << "shader: " << *texturedProgram << endl;
 
     texturedProgram->setUniformMatrix4x4("projection", proj);
     texturedProgram->setUniformMatrix4x4("view", view);
 
     Mesh pressMeMesh{
-        { // Frames
-            { // Frame 0
-                { // Attributes
-                    { // Attrib 0
+        // Frames
+        {
+            // Frame 0
+            {
+                // Attributes
+                {
+                    // Attrib 0
+                    {
                         "position",
                         {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f}
                     },
@@ -188,9 +192,11 @@ void init() {
                         {0.f, 0.f,   0.f, 0.f,   0.f, 0.f}
                     }
                 },
-                { // Uniforms
-                    { // Texture 0
-                        "Resources/button-1/pressme.png",
+                // Uniforms
+                {
+                    // Texture 0
+                    {
+                        getBase() + "/Resources/button-1/pressme.png",
                         "texture",
                         0
                     }
