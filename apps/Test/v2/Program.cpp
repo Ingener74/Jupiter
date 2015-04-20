@@ -69,8 +69,9 @@ const Attribute &Program::getAttribute(const std::string &attributeName) const {
 }
 
 void Program::setUniformMatrix4x4(const std::string& uniformName, const glm::mat4& matrix) {
-    auto it = find_if(uniforms.begin(), uniforms.end(),
-        [&](const Uniform& i) {return i.uniformName == uniformName;});
+    auto it = find_if(uniforms.begin(), uniforms.end(), [&](const Uniform& i) {
+        return i.uniformName == uniformName;
+    });
     if (it == uniforms.end())
         throw std::runtime_error("no uniform");
     glUniformMatrix4fv(it->uniform, 1, GL_FALSE, &matrix[0][0]);

@@ -213,14 +213,16 @@ public:
 class Node {
 public:
     Node(Program* program, const mat4& model, const Mesh& mesh) {
-
-        Node::mesh = MeshGL { program, mesh };
-
+        Node::program = program;
+        Node::mesh    = MeshGL { program, mesh };
+        Node::model   = model;
     }
     virtual ~Node() {
     }
 
     virtual void draw(const vector<mat4>& models = { }) {
+
+        program->setUniformMatrix4x4("model", {});
 
         auto frame = 0;
 
@@ -265,12 +267,22 @@ void init() {
                     {
                         "position",
                         3,
-                        {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f}
+                        {
+                            -4.f,  4.f, 0.f,
+                             4.f,  4.f, 0.f,
+                            -4.f, -4.f, 0.f,
+                             4.f, -4.f, 0.f
+                        }
                     },
                     {
                         "texcoord",
                         2,
-                        {0.f, 0.f,   0.f, 0.f,   0.f, 0.f}
+                        {
+                            -1.f,  1.f,
+                             1.f,  1.f,
+                            -1.f, -1.f,
+                             1.f, -1.f
+                        }
                     }
                 },
                 // Uniforms
