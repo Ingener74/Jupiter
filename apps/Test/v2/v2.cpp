@@ -49,6 +49,7 @@ void main(){
 
 struct AttributeRaw {
     string name;
+    int size;
     vector<float> data;
 };
 
@@ -59,6 +60,7 @@ struct AttributeGL {
             throw invalid_argument("attribute: data empty");
 
         name = program->getAttribute(attrib.name).attribute;
+        size = attrib.size;
 
         glGenBuffers(1, &data);
         glBindBuffer(GL_ARRAY_BUFFER, data);
@@ -68,7 +70,14 @@ struct AttributeGL {
         glDeleteBuffers(1, &data);
     }
 
+    void bind() const {
+        glBindBuffer(GL_ARRAY_BUFFER, data);
+        glEnableVertexAttribArray(name);
+        glVertexAttribPointer(name, size, GL_FLOAT, GL_FALSE, 0, 0);
+    }
+
     GLint name;
+    GLint size;
     GLuint data;
 };
 
@@ -92,6 +101,12 @@ public:
     }
     ~TextureGL(){
         glDeleteTextures(1, &id);
+    }
+
+    void bind() const {
+        glActiveTexture(unit);
+        glBindTexture(GL_TEXTURE_2D, id);
+        glUniform1i(uniform, unit);
     }
 
     GLuint     id      = 0;
@@ -121,6 +136,10 @@ public:
         glDeleteBuffers(1, &data);
     }
 
+    void bind(){
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data);
+    }
+
     GLuint data = 0;
     GLuint elementsCount = 0;
 };
@@ -130,6 +149,7 @@ public:
     vector<AttributeRaw> attributesData;
     vector<TextureRaw>   textureData;
     ElementsRaw          elements;
+    GLenum               drawMode;
 };
 
 class FrameGL {
@@ -142,11 +162,31 @@ public:
             textureData.push_back( { program, i });
         }
         elements = ElementsGL{frame.elements};
+        drawMode = frame.drawMode;
+
+        glGenVertexArrays(1, &vao);
+        glBindVertexArray(vao);
+
+        for(auto const& i: attributesData)
+            i.bind();
+
+        for(auto const& i: textureData)
+            i.bind();
+
+        elements.bind();
+
+        glBindVertexArray(0);
     }
 
+    void bind(){
+        glBindVertexArray(vao);
+    }
+
+    GLuint              vao;
     vector<AttributeGL> attributesData;
     vector<TextureGL>   textureData;
     ElementsGL          elements;
+    GLenum              drawMode;
 };
 
 class Mesh {
@@ -181,6 +221,13 @@ public:
     }
 
     virtual void draw(const vector<mat4>& models = { }) {
+
+        auto frame = 0;
+
+        mesh.frames.at(frame).bind();
+
+        glDrawElements(mesh.frames.at(frame).drawMode, mesh.frames.at(frame).elements.elementsCount, GL_UNSIGNED_SHORT, 0);
+
     }
 
     Program* program = nullptr;
@@ -217,10 +264,12 @@ void init() {
                     // Attrib 0
                     {
                         "position",
+                        3,
                         {0.f, 0.f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f, 0.f}
                     },
                     {
                         "texcoord",
+                        2,
                         {0.f, 0.f,   0.f, 0.f,   0.f, 0.f}
                     }
                 },
@@ -236,7 +285,9 @@ void init() {
                 // Elements
                 {
                     {0, 2, 1, 3}
-                }
+                },
+                // Draw mode
+                GL_TRIANGLE_STRIP
             }
         }
     };
