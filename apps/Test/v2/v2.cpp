@@ -104,7 +104,7 @@ public:
     }
 
     void bind() const {
-        glActiveTexture(unit);
+        glActiveTexture(GL_TEXTURE0 + unit);
         glBindTexture(GL_TEXTURE_2D, id);
         glUniform1i(uniform, unit);
     }
@@ -212,7 +212,7 @@ public:
 
 class Node {
 public:
-    Node(Program* program, const mat4& model, const Mesh& mesh) {
+    Node(Program* program, mat4 const& model, Mesh const& mesh) {
         Node::program = program;
         Node::mesh    = MeshGL { program, mesh };
         Node::model   = model;
@@ -220,7 +220,9 @@ public:
     virtual ~Node() {
     }
 
-    virtual void draw(const vector<mat4>& models = { }) {
+    virtual void draw(vector<mat4> const& models = { }) {
+
+        program->use();
 
         program->setUniformMatrix4x4("model", {});
 
@@ -305,8 +307,6 @@ void init() {
     };
 
     pressMe = make_unique_<Node>(texturedProgram.get(), mat4{}, pressMeMesh);
-
-    cout << "mesh" << endl;
 }
 
 void display(void) {

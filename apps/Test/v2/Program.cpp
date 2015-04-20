@@ -111,3 +111,7 @@ void Program::setUniform(GLuint uniformName, GLuint uniformData) {
 void Program::setUniform(const Uniform& uniform, GLuint uniformData) {
     throw runtime_error("not implemented yet");
 }
+
+void Program::use() {
+    glUseProgram(program);
+}
