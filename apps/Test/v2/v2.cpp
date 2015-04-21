@@ -128,6 +128,8 @@ public:
         glGenBuffers(1, &data);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.elements.size() * sizeof(uint16_t), elements.elements.data(), GL_STATIC_DRAW);
+
+        elementsCount = elements.elements.size();
     }
 
     ElementsGL() { }
@@ -170,15 +172,14 @@ public:
         for(auto const& i: attributesData)
             i.bind();
 
-//        for(auto const& i: textureData)
-//            i.bind();
-
         elements.bind();
 
         glBindVertexArray(0);
     }
 
     void bind() const {
+        for (auto const& i : textureData)
+            i.bind();
         glBindVertexArray(vao);
     }
 
@@ -213,34 +214,28 @@ public:
 class Node {
 public:
     Node(Program* program, mat4 const& model, Mesh const& mesh) {
-        Node::program = program;
-        Node::mesh    = MeshGL { program, mesh };
-        Node::model   = model;
+        _program = program;
+        _mesh    = MeshGL { program, mesh };
+        _model   = model;
     }
     virtual ~Node() {
     }
 
     virtual void draw(vector<mat4> const& models = { }) {
 
-        program->use();
+        _program->use();
+        _program->setUniformMatrix4x4("model", _model);
 
-        program->use();
-
-        program->setUniformMatrix4x4("model", {});
-
-        auto const& frame = mesh.frames.at(0);
-
-        for (auto const& i : frame.textureData)
-            i.bind();
+        auto const& frame = _mesh.frames.at(0);
 
         frame.bind();
 
         glDrawElements(frame.drawMode, frame.elements.elementsCount, GL_UNSIGNED_SHORT, 0);
     }
 
-    Program* program = nullptr;
-    mat4 model;
-    MeshGL mesh;
+    Program* _program = nullptr;
+    mat4     _model;
+    MeshGL   _mesh;
 };
 
 unique_ptr<Program>   texturedProgram;

@@ -78,12 +78,12 @@ void Program::setUniformMatrix4x4(const std::string& uniformName, const glm::mat
 }
 
 std::ostream& operator<<(std::ostream& out, const Program& r) {
-    return out << "program id " << r.program << " attributes [ " << [&]() {
+    return out << "program id " << r.program << " attributes [ " << [&] {
         std::stringstream s;
         for(auto i: r.attributes)
         s << i << "; ";
         return s.str();
-    }() << "], uniforms [ " << [&]() {
+    }() << "], uniforms [ " << [&]{
         std::stringstream s;
         for(auto i: r.uniforms)
         s << i << "; ";
