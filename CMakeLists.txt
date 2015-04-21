@@ -56,8 +56,11 @@ find_package(Box2D REQUIRED)
 
 # find Lua
 if(WITH_GANIMEDE)
-	find_package(Lua)
 endif()
+find_package(Lua)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(3rdparty)
 

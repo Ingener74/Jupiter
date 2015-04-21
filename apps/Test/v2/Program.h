@@ -35,8 +35,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const Program& r);
 
-protected:
     GLuint program = 0;
+protected:
     std::vector<Attribute> attributes;
     std::vector<Uniform> uniforms;
 };
