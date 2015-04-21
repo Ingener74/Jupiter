@@ -22,6 +22,8 @@ public:
     Program(const std::string& vertesShader, const std::string& fragmentShader);
     virtual ~Program();
 
+    void use();
+
     const Attribute& getAttribute(const std::string& attributeName) const;
     const Uniform& getUniform(const std::string& uniformName) const;
 

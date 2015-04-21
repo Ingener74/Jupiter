@@ -136,7 +136,7 @@ public:
         glDeleteBuffers(1, &data);
     }
 
-    void bind(){
+    void bind() const {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data);
     }
 
@@ -170,15 +170,15 @@ public:
         for(auto const& i: attributesData)
             i.bind();
 
-        for(auto const& i: textureData)
-            i.bind();
+//        for(auto const& i: textureData)
+//            i.bind();
 
         elements.bind();
 
         glBindVertexArray(0);
     }
 
-    void bind(){
+    void bind() const {
         glBindVertexArray(vao);
     }
 
@@ -222,14 +222,18 @@ public:
 
     virtual void draw(const vector<mat4>& models = { }) {
 
+        program->use();
+
         program->setUniformMatrix4x4("model", {});
 
-        auto frame = 0;
+        auto const& frame = mesh.frames.at(0);
 
-        mesh.frames.at(frame).bind();
+        for (auto const& i : frame.textureData)
+            i.bind();
 
-        glDrawElements(mesh.frames.at(frame).drawMode, mesh.frames.at(frame).elements.elementsCount, GL_UNSIGNED_SHORT, 0);
+        frame.bind();
 
+        glDrawElements(frame.drawMode, frame.elements.elementsCount, GL_UNSIGNED_SHORT, 0);
     }
 
     Program* program = nullptr;
