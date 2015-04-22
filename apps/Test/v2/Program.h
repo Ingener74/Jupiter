@@ -35,10 +35,33 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const Program& r);
 
-    GLuint program = 0;
+    GLuint getProgram() const;
+    void setProgram(GLuint program = 0);
+
+    GLint getAttribute_(const std::string& name) const;
+    GLint getUniform_(const std::string& name) const;
+
 protected:
+    GLuint program = 0;
+
     std::vector<Attribute> attributes;
     std::vector<Uniform> uniforms;
 };
+
+inline GLuint Program::getProgram() const {
+    return program;
+}
+
+inline void Program::setProgram(GLuint program) {
+    this->program = program;
+}
+
+inline GLint Program::getAttribute_(const std::string& name) const {
+    glGetAttribLocation(program, name.c_str());
+}
+
+inline GLint Program::getUniform_(const std::string& name) const {
+    glGetUniformLocation(program, name.c_str());
+}
 
 #endif /* APPS_TEST_V2_PROGRAM_H_ */

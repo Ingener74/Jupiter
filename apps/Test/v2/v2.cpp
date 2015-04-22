@@ -222,7 +222,6 @@ public:
     }
 
     virtual void draw(vector<mat4> const& models = { }) {
-
         _program->use();
         _program->setUniformMatrix4x4("model", _model);
 
@@ -254,6 +253,7 @@ void init() {
     texturedProgram = make_unique_<Program>(vertex_texture, fragment_texture);
     cout << "shader: " << *texturedProgram << endl;
 
+    texturedProgram->use();
     texturedProgram->setUniformMatrix4x4("projection", proj);
     texturedProgram->setUniformMatrix4x4("view", view);
 
@@ -311,6 +311,10 @@ void init() {
 void display(void) {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.1f, 1.f);
+
+    texturedProgram->use();
+    texturedProgram->setUniformMatrix4x4("projection", proj);
+    texturedProgram->setUniformMatrix4x4("view", view);
 
     pressMe->draw();
 
