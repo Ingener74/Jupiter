@@ -23,13 +23,14 @@
     #include <glm/gtc/type_ptr.hpp>
     #include <glm/gtc/matrix_transform.hpp>
 
-    #include "Jupiter/Controller.h"
-    #include "Jupiter/JupiterError.h"
+//    #include "Jupiter/Controller.h"
+//    #include "Jupiter/JupiterError.h"
 #endif
 
 namespace jupiter {
 
 class NodeVisitor;
+class Controller;
 
 class Node {
 public:

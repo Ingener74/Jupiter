@@ -41,9 +41,12 @@ namespace jupiter{
 
 %include "Jupiter/Texture.h"
 %include "Jupiter/ImageTexture.h"
+%include "Jupiter/ImageShape.h"
 
 %include "Jupiter/Image.h"
 %include "Jupiter/PngImage.h"
 
 %include "Jupiter/Shader.h"
 %include "Jupiter/FileShader.h"
+
+%include "Jupiter/RenderVisitor.h"

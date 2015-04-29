@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include "Jupiter/Controller.h"
+#include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/Node.h"
 

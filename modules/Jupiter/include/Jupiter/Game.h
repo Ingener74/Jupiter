@@ -11,14 +11,15 @@
 #ifdef SWIG
 #else
 
+    #include <list>
     #include <string>
 
 #endif
 
-#include "Jupiter/RenderVisitor.h"
-#include "Jupiter/Node.h"
-
 namespace jupiter {
+
+class Node;
+class NodeVisitor;
 
 class Game {
 public:
@@ -40,6 +41,8 @@ public:
 
     virtual Game* setVisitors(const std::list<NodeVisitor*>&);
     virtual const std::list<NodeVisitor*>& getVisitors() const;
+
+    virtual Game* addVisitor(NodeVisitor*);
 
 protected:
     std::list<NodeVisitor*> _visitors;

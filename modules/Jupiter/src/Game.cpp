@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Jupiter/JupiterError.h"
+#include "Jupiter/NodeVisitor.h"
 #include "Jupiter/Node.h"
 
 #include "Jupiter/Game.h"
@@ -70,6 +71,11 @@ Game* jupiter::Game::setVisitors(const std::list<NodeVisitor*>& visitors) {
 
 const std::list<NodeVisitor*>& jupiter::Game::getVisitors() const {
     return _visitors;
+}
+
+Game* jupiter::Game::addVisitor(NodeVisitor* nodeVisitor) {
+    _visitors.push_back(nodeVisitor);
+    return this;
 }
 
 } /* namespace jupiter */

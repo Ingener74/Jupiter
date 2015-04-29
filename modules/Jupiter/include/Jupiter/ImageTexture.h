@@ -12,9 +12,11 @@
 
 namespace jupiter {
 
+class Image;
+
 class ImageTexture: public Texture {
 public:
-    ImageTexture(class Image*);
+    ImageTexture(Image*);
     virtual ~ImageTexture();
 };
 

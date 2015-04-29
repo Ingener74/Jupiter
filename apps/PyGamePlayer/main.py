@@ -7,7 +7,7 @@ import math
 from OpenGL.GL   import *
 from OpenGL.GLU  import *
 from OpenGL.GLUT import *
-from PySide.QtGui import QApplication
+from PySide.QtGui import QApplication, QKeyEvent, QKeySequence
 from PySide.QtOpenGL import QGLWidget
 
 # Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py
@@ -34,21 +34,27 @@ class FallingBox(object):
         fs = j.File('Resources/sprite.fs')
         self.shader = j.FileShader(vs, fs)
         
-        print 'test'
-        
         self.render = j.RenderVisitor()
+        
+        self.rn = j.Node()
         
         self.bg_image = j.PngImage('Resources/bg.png')
         self.bg_texture = j.ImageTexture(self.bg_image)
         self.bg_shape = j.ImageShape(self.bg_image)
+        self.bg = j.Sprite()
+        self.bg.setProgram(self.shader).\
+                setTexture(self.bg_texture).\
+                setShape(self.bg_shape).\
+                setVisible(True).\
+                setParent(self.rn)
         
-        self.bg = j.Node()
-        
-        self.rn = j.Node()
         self.rn.addNode(self.bg)
         
         self.game = j.Game()
-        self.game.setRootNode(self.rn).setVisitors([self.render]).setWidth(WIDTH).setHeight(HEIGTH)
+        self.game.setRootNode(self.rn).\
+            addVisitor(self.render).\
+            setWidth(self.WIDTH).\
+            setHeight(self.HEIGHT)
         
     def getGame(self):
         return self.game
@@ -67,12 +73,18 @@ class MyOpenGLWidget(QGLWidget):
         except j.JupiterError as e:
             print e.what()
     
-    def paintGL(self, *args, **kwargs):
+    def paintGL(self):
         
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
         self.falling_box.getGame().draw()
+        
+        self.swapBuffers()
+    
+    def keyPressEvent(self, event):
+        if event.nativeScanCode() == 9:
+            raise SystemExit
 
 
 def main():
