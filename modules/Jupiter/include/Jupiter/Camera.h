@@ -8,15 +8,38 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_CAMERA_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_CAMERA_H_
 
+#ifdef SWIG
+#else
+
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+    #include <glm/gtc/type_ptr.hpp>
+    #include <glm/gtc/matrix_transform.hpp>
+
+#endif
+
+namespace jupiter {
+
 class Camera {
 public:
-    Camera(float eye[3], float center[3], float up[3]);
+    Camera(float fovy,
+        float width, float height,
+        float near, float far,
+        float eyex, float eyey, float eyez,
+        float centerx, float centery, float centerz,
+        float upx, float upy, float upz);
+    Camera(const glm::mat4& projection = {}, const glm::mat4& view = {});
     virtual ~Camera();
 
-    glm::mat4 getCameraMatrix() const;
+    const glm::mat4& getProjectionMatrix() const;
+    const glm::mat4& getViewMatrix() const;
+
+    void setViewMatrix(const glm::mat4&);
 
 protected:
-    float eye[3], center[3], up[3];
+    glm::mat4 _projection, _view;
 };
+
+}  // namespace jupiter
 
 #endif /* MODULES_JUPITER_INCLUDE_JUPITER_CAMERA_H_ */

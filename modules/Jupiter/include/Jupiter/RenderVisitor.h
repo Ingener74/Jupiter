@@ -10,25 +10,20 @@
 
 #ifdef SWIG
 #else
-
-    #define GLM_FORCE_RADIANS
-    #include <glm/glm.hpp>
-    #include <glm/gtc/type_ptr.hpp>
-    #include <glm/gtc/matrix_transform.hpp>
-
 #endif
 
 #include "Jupiter/NodeVisitor.h"
 
 namespace jupiter {
 
+class Camera;
+
 class RenderVisitor: public NodeVisitor {
 public:
     RenderVisitor() = default;
-    RenderVisitor(const glm::mat4& projection, const glm::mat4& view);
-    virtual ~RenderVisitor() = default;
+    RenderVisitor(Camera*);
 
-    void setView(const glm::mat4& view);
+    virtual ~RenderVisitor() = default;
 
     virtual void begin();
 
@@ -37,7 +32,7 @@ public:
     virtual void end();
 
 private:
-    glm::mat4 projection, view;
+    Camera* _camera = nullptr;
 };
 
 } /* namespace jupiter */

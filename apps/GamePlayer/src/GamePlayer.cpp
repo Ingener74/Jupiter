@@ -33,6 +33,7 @@ string title =R"(Jupiter Game Player)";
 
 unique_ptr<Game> game;
 
+Camera                      camera;
 unique_ptr<RenderVisitor>   render;
 unique_ptr<NodeVisitor>     physics;
 
@@ -94,7 +95,9 @@ bool createGameDirect(const variables_map& vm) {
 
     auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 
-    render = make_unique_<RenderVisitor>(proj, view);
+    camera = {proj, view};
+
+    render = make_unique_<RenderVisitor>(&camera);
 
 //    physics = make_unique_<PrintVisitor>();
     physics = make_unique_<NodeVisitor>();
@@ -256,7 +259,8 @@ void keyboard(uint8_t key) {
     float z = viewRadius * cos(xAngle);
 
     auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
-    render->setView(view);
+//    render->setView(view);
+    camera.setViewMatrix(view);
 }
 
 std::string getTitle() {

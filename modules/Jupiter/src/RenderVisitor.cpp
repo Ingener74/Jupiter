@@ -6,6 +6,8 @@
  */
 
 #include <iostream>
+
+#include "Jupiter/Camera.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
@@ -16,12 +18,8 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-RenderVisitor::RenderVisitor(const glm::mat4& projection, const glm::mat4& view) :
-    projection(projection), view(view) {
-}
-
-void RenderVisitor::setView(const glm::mat4& view) {
-    RenderVisitor::view = view;
+RenderVisitor::RenderVisitor(Camera* camera) {
+    _camera = camera;
 }
 
 void RenderVisitor::begin() {
@@ -47,10 +45,10 @@ void RenderVisitor::visit(Sprite* sprite) {
     textureCoords.set(sprite->getShape());
 
     auto uniformProjection = shader->getUniform("Projection");
-    uniformProjection.set(projection);
+    uniformProjection.set(_camera->getProjectionMatrix());
 
     auto uniformView = shader->getUniform("View");
-    uniformView.set(view);
+    uniformView.set(_camera->getViewMatrix());
 
     auto uniformModel = shader->getUniform("Model");
     uniformModel.set(sprite->getModel());
@@ -69,4 +67,3 @@ void RenderVisitor::end() {
 }
 
 } /* namespace jupiter */
-

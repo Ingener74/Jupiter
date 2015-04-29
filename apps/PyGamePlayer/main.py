@@ -33,8 +33,13 @@ class FallingBox(object):
         vs = j.File('Resources/sprite.vs')
         fs = j.File('Resources/sprite.fs')
         self.shader = j.FileShader(vs, fs)
+    
+        self.camera = j.Camera(45.0, 800.0, 480.0, 1.0, 1000.0, \
+                               0.0, 0.0, 100.0, \
+                               0.0, 0.0, 0.0, \
+                               0.0, 1.0, 0.0)
         
-        self.render = j.RenderVisitor()
+        self.render = j.RenderVisitor(self.camera)
         
         self.rn = j.Node()
         
@@ -43,10 +48,10 @@ class FallingBox(object):
         self.bg_shape = j.ImageShape(self.bg_image)
         self.bg = j.Sprite()
         self.bg.setProgram(self.shader).\
-                setTexture(self.bg_texture).\
-                setShape(self.bg_shape).\
-                setVisible(True).\
-                setParent(self.rn)
+            setTexture(self.bg_texture).\
+            setShape(self.bg_shape).\
+            setVisible(True).\
+            setParent(self.rn)
         
         self.rn.addNode(self.bg)
         

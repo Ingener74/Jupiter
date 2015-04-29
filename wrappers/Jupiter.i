@@ -50,3 +50,5 @@ namespace jupiter{
 %include "Jupiter/FileShader.h"
 
 %include "Jupiter/RenderVisitor.h"
+
+%include "Jupiter/Camera.h"

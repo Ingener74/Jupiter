@@ -29,6 +29,7 @@ set(SOURCES
     src/Sprite.cpp
     src/JsonSprite.cpp
 
+    src/Camera.cpp
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
     src/PrintVisitor.cpp

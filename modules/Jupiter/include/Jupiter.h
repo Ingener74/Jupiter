@@ -32,6 +32,8 @@
 
 #include "Jupiter/JsonGame.h"
 
+#include "Jupiter/Camera.h"
+
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/RenderVisitor.h"
 #include "Jupiter/PrintVisitor.h"
