@@ -5,8 +5,6 @@
  *      Author: ingener
  */
 
-#include <boost/filesystem.hpp>
-
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -23,23 +21,55 @@ using namespace std;
 using namespace glm;
 
 void Game::draw() {
-    if (!node)
+    if (!_node)
         throw JupiterError("no root node");
-    if (!render)
-        throw JupiterError("no render");
-    if(!physics)
-        throw JupiterError("no physics");
 
-    physics->begin();
-    node->accept(physics);
-    physics->end();
-
-    render->begin();
-    node->accept(render);
-    render->end();
+    for (auto i : _visitors) {
+        if (!i)
+            throw JupiterError("bad visitor");
+        i->begin();
+        _node->accept(i);
+        i->end();
+    }
 }
 
 void Game::input() {
+}
+
+int Game::getWidth() const {
+    return _width;
+}
+
+int Game::getHeight() const {
+    return _height;
+}
+
+Game* Game::setHeight(int height) {
+    _height = height;
+    return this;
+}
+
+Game* Game::setWidth(int width) {
+    _width = width;
+    return this;
+}
+
+Game* Game::setRootNode(Node* node) {
+    _node = node;
+    return this;
+}
+
+Node* Game::getRootNode() {
+    return _node;
+}
+
+Game* jupiter::Game::setVisitors(const std::list<NodeVisitor*>& visitors) {
+    _visitors = visitors;
+    return this;
+}
+
+const std::list<NodeVisitor*>& jupiter::Game::getVisitors() const {
+    return _visitors;
 }
 
 } /* namespace jupiter */

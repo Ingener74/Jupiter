@@ -8,7 +8,12 @@
 #ifndef NODEVISITOR_H_
 #define NODEVISITOR_H_
 
-#include <stack>
+#ifdef SWIG
+#else
+
+    #include <stack>
+
+#endif
 
 namespace jupiter {
 

@@ -8,12 +8,17 @@
 #ifndef RENDERVISITOR_H_
 #define RENDERVISITOR_H_
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#ifdef SWIG
+#else
 
-#include <Jupiter/NodeVisitor.h>
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+    #include <glm/gtc/type_ptr.hpp>
+    #include <glm/gtc/matrix_transform.hpp>
+
+#endif
+
+#include "Jupiter/NodeVisitor.h"
 
 namespace jupiter {
 

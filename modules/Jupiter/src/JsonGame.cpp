@@ -32,18 +32,16 @@ JsonGame::JsonGame(const std::string& fileName) {
 
     json_parser::read_json(file->getStream(), pt);
 
-    width = pt.get<int>("resolution.width");
-    height = pt.get<int>("resolution.height");
+    _width = pt.get<int>("resolution.width");
+    _height = pt.get<int>("resolution.height");
 //    render = new RenderVisitor{ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
 
     auto rootNode = pt.get_child("node");
 
-    node = new JsonNode(rootNode);
+    _node = new JsonNode(rootNode);
 }
 
 JsonGame::~JsonGame() {
-    delete render;
-    delete node;
 }
 
 } /* namespace jupiter */

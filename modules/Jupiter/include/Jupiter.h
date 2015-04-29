@@ -30,8 +30,6 @@
 #include "Jupiter/Shape.h"
 #include "Jupiter/ImageShape.h"
 
-#include "Jupiter/Rect.h"
-
 #include "Jupiter/JsonGame.h"
 
 #include "Jupiter/NodeVisitor.h"

@@ -12,10 +12,11 @@
 #else
 
     #include <string>
-    #include "Jupiter/RenderVisitor.h"
-    #include "Jupiter/Node.h"
 
 #endif
+
+#include "Jupiter/RenderVisitor.h"
+#include "Jupiter/Node.h"
 
 namespace jupiter {
 
@@ -37,64 +38,15 @@ public:
     virtual Game* setRootNode(Node*);
     virtual Node* getRootNode();
 
-    virtual Game* setRender(RenderVisitor*);
-    virtual RenderVisitor* getRender();
-
-    virtual Game* setPhysicsEngine(NodeVisitor*);
-    virtual NodeVisitor* getPhysicsEngine();
+    virtual Game* setVisitors(const std::list<NodeVisitor*>&);
+    virtual const std::list<NodeVisitor*>& getVisitors() const;
 
 protected:
-    RenderVisitor* render = nullptr;
-    NodeVisitor* physics = nullptr;
-    Node* node = nullptr;
-    int width = 0;
-    int height = 0;
+    std::list<NodeVisitor*> _visitors;
+    Node* _node = nullptr;
+    int _width = 0;
+    int _height = 0;
 };
-
-inline int Game::getWidth() const {
-    return width;
-}
-
-inline int Game::getHeight() const {
-    return height;
-}
-
-inline Game* Game::setHeight(int height) {
-    this->height = height;
-    return this;
-}
-
-inline Game* Game::setWidth(int width) {
-    this->width = width;
-    return this;
-}
-
-inline Game* Game::setRootNode(Node* node) {
-    Game::node = node;
-    return this;
-}
-
-inline Node* Game::getRootNode() {
-    return node;
-}
-
-inline Game* Game::setRender(RenderVisitor* render) {
-    Game::render = render;
-    return this;
-}
-
-inline RenderVisitor* Game::getRender() {
-    return render;
-}
-
-inline Game* Game::setPhysicsEngine(NodeVisitor* physicsEngine) {
-    physics = physicsEngine;
-    return this;
-}
-
-inline NodeVisitor* Game::getPhysicsEngine() {
-    return physics;
-}
 
 } /* namespace jupiter */
 

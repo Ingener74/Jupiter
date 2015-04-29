@@ -163,8 +163,7 @@ bool createGameDirect(const variables_map& vm) {
     game
 
         ->setRootNode(rootNode.get())
-        ->setRender(render.get())
-        ->setPhysicsEngine(physics.get())
+        ->setVisitors({physics.get(), render.get()})
         ->setWidth(width)
         ->setHeight(height)
     ;
