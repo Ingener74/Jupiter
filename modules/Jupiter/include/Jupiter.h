@@ -36,4 +36,10 @@
 #include "Jupiter/RenderVisitor.h"
 #include "Jupiter/PrintVisitor.h"
 
+namespace jupiter {
+
+void initJupiter() throw (JupiterError);
+
+}  // namespace jupiter
+
 #endif /* ENGINE_H_ */

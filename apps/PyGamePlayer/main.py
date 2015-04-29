@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from OpenGL.GL   import *
-from OpenGL.GLU  import *
-from OpenGL.GLUT import *
 import sys
 import math
 
+from OpenGL.GL   import *
+from OpenGL.GLU  import *
+from OpenGL.GLUT import *
+from PySide.QtGui import QApplication
+from PySide.QtOpenGL import QGLWidget
+
 # Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py
 import PyJupiter as j
+from PySide import QtOpenGL
 
 # class BackGround(j.Controller):
 #     def __init__(self):
@@ -50,65 +54,38 @@ class FallingBox(object):
         return self.game
 
 
-def init ():
-    glClearColor(0.0, 0.0, 0.0, 0.0)
-    glClearDepth(1.0)
-    glEnable(GL_DEPTH_TEST)
-    glEnable(GL_TEXTURE_2D)
+class MyOpenGLWidget(QGLWidget):
+    def __init__(self, parent=None):
+        super(MyOpenGLWidget, self).__init__(parent)
+        
+        self.makeCurrent()
 
-
-def reshape ( width, height ):
-    glViewport(0, 0, width, height)
-
-
-def display ():
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        try:
+            j.initJupiter()
+            self.falling_box = FallingBox()
+            
+        except j.JupiterError as e:
+            print e.what()
     
-    global falling_box
-    falling_box.getGame().draw()
-    
-    glutSwapBuffers()
-
-
-def keyPressed (*args):
-    if args [0] == '\033':
-        sys.exit ()
-
-
-def animate():
-    glutPostRedisplay ()
-
-
-def mouse( button, state, x, y ):
-#     global game
-#     game.input()
-    pass
+    def paintGL(self, *args, **kwargs):
+        
+        glClearColor(0.1, 0.3, 0.1, 1.0)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        
+        self.falling_box.getGame().draw()
 
 
 def main():
-    
-    print "Jupiter Python Game Player"
-    
-    glutInit(sys.argv)
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(800, 600)
-    glutInitWindowPosition(0, 0)
-    
-    glutCreateWindow("Jupiter game player")
-    glutDisplayFunc(display)
-    glutIdleFunc(animate)
-    glutReshapeFunc(reshape)
-    glutKeyboardFunc(keyPressed)
-    glutMouseFunc(mouse)
-    
-    init()
-    
-    
-    global falling_box
-    falling_box = FallingBox()
-    
-    
-    glutMainLoop()
+    app = QApplication(sys.argv)
+
+    glformat = QtOpenGL.QGLFormat()
+    glformat.setVersion(3, 3)
+    glformat.setProfile(QtOpenGL.QGLFormat.CoreProfile)
+
+    window = MyOpenGLWidget(glformat)
+    window.show()
+     
+    app.exec_()
 
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@ set(PROJECT_NAME Jupiter)
 project(${PROJECT_NAME})
 
 set(SOURCES
+    src/Jupiter.cpp
+
     src/File.cpp
     src/FileFactory.cpp
     

@@ -18,6 +18,10 @@ using namespace jupiter;
 
 %}
 
+namespace jupiter{
+    void initJupiter();
+}
+
 %include "std_string.i"
 %include "std_vector.i"
 
