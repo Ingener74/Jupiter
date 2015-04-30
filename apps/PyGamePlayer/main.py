@@ -8,6 +8,8 @@ from PySide.QtCore import *
 from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox
 from PySide.QtOpenGL import QGLWidget, QGLFormat
 
+PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
+
 try:
     from OpenGL.GL   import *
     from OpenGL.GLU  import *
@@ -15,7 +17,7 @@ try:
 except ImportError as e:
     app = QApplication(sys.argv)
     QMessageBox.critical(None, \
-                         u"Игровой плеер на движке Юпитер", \
+                         PLAYER_TITLE, \
                          u'Установи PyOpenGL', \
                          QMessageBox.Ok | QMessageBox.Default,\
                          QMessageBox.NoButton)
@@ -27,8 +29,8 @@ try:
 except ImportError as e:
     app = QApplication(sys.argv)
     QMessageBox.critical(None, \
-                         u"Игровой плеер на движке Юпитер", \
-                         u'Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py', \
+                         PLAYER_TITLE, \
+                         u'Установи в PYTHONPATH путь до библиотеки _Jupiter.{so, pyd, dll} и PyJupiter.py', \
                          QMessageBox.Ok | QMessageBox.Default,\
                          QMessageBox.NoButton)
     sys.exit(1)
@@ -53,7 +55,7 @@ class FallingBox(object):
                                0.0, 0.0, 0.0,   \
                                0.0, 1.0, 0.0)
         
-#         self.print_visitor = j.PrintVisitor()
+        # self.print_visitor = j.PrintVisitor()
         self.render = j.RenderVisitor(self.camera)
         
         self.rn = j.Node()
@@ -78,17 +80,15 @@ class FallingBox(object):
             setHeight(height)
             # addVisitor(self.print_visitor).\
 
-    def getGame(self):
-        return self.game
 
-
-class MyOpenGLWidget(QGLWidget):
+class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
-        super(MyOpenGLWidget, self).__init__(parent)
-        
+        super(OpenGLWidget, self).__init__(parent, None)
         self.falling_box = None
 
     def initializeGL(self):
+        self.setWindowTitle(PLAYER_TITLE)
+        
         glEnable(GL_TEXTURE_2D)
         glEnable(GL_DEPTH_TEST)
         
@@ -110,7 +110,7 @@ class MyOpenGLWidget(QGLWidget):
         if self.falling_box == None:
             pass
         else:
-            self.falling_box.getGame().draw()
+            self.falling_box.game.draw()
         
         self.swapBuffers()
     
@@ -124,12 +124,13 @@ class MyOpenGLWidget(QGLWidget):
 
 def main():
     app = QApplication(sys.argv)
+    
+    # format = QGLFormat()
+    # format.setVersion(3, 3)
+    # format.setProfile(QGLFormat.CoreProfile)
+    # window = OpenGLWidget(format)
 
-#     glformat = QGLFormat()
-#     glformat.setVersion(3, 3)
-#     glformat.setProfile(QGLFormat.CoreProfile)
-
-    window = MyOpenGLWidget()
+    window = OpenGLWidget()
     window.show()
      
     sys.exit(app.exec_())
