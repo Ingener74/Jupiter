@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <stdio.h>
+
 #include <vector>
 #include <iostream>
 #include <memory>
