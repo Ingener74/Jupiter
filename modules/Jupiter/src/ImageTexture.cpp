@@ -17,13 +17,6 @@ namespace jupiter {
 using namespace std;
 
 ImageTexture::ImageTexture(Image* image) {
-
-    auto context = glXGetCurrentContext();
-    cout << "context " << context << endl;
-
-    cout << "is texture " << boolalpha << bool(glIsEnabled(GL_TEXTURE_2D)) << endl;
-    CHECK_GL_ERROR
-
     glGenTextures(1, &textureID);
     CHECK_GL_ERROR
 
