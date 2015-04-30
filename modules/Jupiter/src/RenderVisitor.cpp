@@ -31,27 +31,36 @@ void RenderVisitor::visit(Sprite* sprite) {
 
     auto shader = sprite->getProgram();
 
+    CHECK_GL_ERROR
+
     shader->use();
+    CHECK_GL_ERROR
 
     auto uniformTexture = shader->getUniform("Texture");
     glActiveTexture(GL_TEXTURE0);
     sprite->getTexture()->bind();
     uniformTexture.set(0);          // texture unit not texture id
+    CHECK_GL_ERROR
 
     auto position = shader->getAttribute("VertexPosition");
     position.set(sprite->getShape());
+    CHECK_GL_ERROR
 
     auto textureCoords = shader->getAttribute("VertexTexCoord");
     textureCoords.set(sprite->getShape());
+    CHECK_GL_ERROR
 
     auto uniformProjection = shader->getUniform("Projection");
     uniformProjection.set(_camera->getProjectionMatrix());
+    CHECK_GL_ERROR
 
     auto uniformView = shader->getUniform("View");
     uniformView.set(_camera->getViewMatrix());
+    CHECK_GL_ERROR
 
     auto uniformModel = shader->getUniform("Model");
     uniformModel.set(sprite->getModel());
+    CHECK_GL_ERROR
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
@@ -61,6 +70,7 @@ void RenderVisitor::visit(Sprite* sprite) {
     };
 
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
+    CHECK_GL_ERROR
 }
 
 void RenderVisitor::end() {

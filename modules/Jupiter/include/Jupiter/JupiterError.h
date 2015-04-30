@@ -11,7 +11,7 @@
 #ifdef SWIG
     #pragma SWIG nowarn=401
 #else
-    // #include <execinfo.h>
+
     #include <stdlib.h>
     #include <sstream>
     #include <stdexcept>
@@ -39,29 +39,7 @@ public:
     virtual ~JupiterError() throw () = default;
 
 protected:
-    static std::string backtrace()
-    {
-#ifndef ANDROID
-//        using namespace std;
-
-//        const int buffer_size = 1000;
-//        void *buffer[buffer_size];
-//        int n = ::backtrace(buffer, buffer_size);
-
-//        char** strings = backtrace_symbols(buffer, n);
-//        if (strings == nullptr) return string("i can't print stack trace");
-
-//        stringstream res;
-//        res << endl << "Call stack" << endl;
-//        for (int i = 2; i < n; ++i)
-//        {
-//            res << i << ": " << strings[i] << endl;
-//        }
-//        free(strings);
-//        return res.str();
-#endif
-        return {};
-    }
+    static std::string backtrace();
 };
 
 }  // namespace jupiter

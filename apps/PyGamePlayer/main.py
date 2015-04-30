@@ -4,22 +4,34 @@
 import sys
 import math
 
-from OpenGL.GL   import *
-from OpenGL.GLU  import *
-from OpenGL.GLUT import *
-from PySide.QtGui import QApplication, QKeyEvent, QKeySequence
-from PySide.QtOpenGL import QGLWidget
+from PySide.QtCore import *
+from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox
+from PySide.QtOpenGL import QGLWidget, QGLFormat
 
-# Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py
-import PyJupiter as j
-from PySide import QtOpenGL
+try:
+    from OpenGL.GL   import *
+    from OpenGL.GLU  import *
+    from OpenGL.GLUT import *
+except ImportError as e:
+    app = QApplication(sys.argv)
+    QMessageBox.critical(None, \
+                         u"Игровой плеер на движке Юпитер", \
+                         u'Установи PyOpenGL', \
+                         QMessageBox.Ok | QMessageBox.Default,\
+                         QMessageBox.NoButton)
+    sys.exit(1)
 
-# class BackGround(j.Controller):
-#     def __init__(self):
-#         j.Controller.__init__(self)
-#         
-#     def update(self, elapsedTime):
-#         pass
+try:
+    # Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py
+    import PyJupiter as j
+except ImportError as e:
+    app = QApplication(sys.argv)
+    QMessageBox.critical(None, \
+                         u"Игровой плеер на движке Юпитер", \
+                         u'Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py', \
+                         QMessageBox.Ok | QMessageBox.Default,\
+                         QMessageBox.NoButton)
+    sys.exit(1)
 
 
 class FallingBox(object):
@@ -34,11 +46,14 @@ class FallingBox(object):
         fs = j.File('Resources/sprite.fs')
         self.shader = j.FileShader(vs, fs)
     
-        self.camera = j.Camera(45.0, 800.0, 480.0, 1.0, 1000.0, \
+        self.camera = j.Camera(45.0,            \
+                               800.0, 480.0,    \
+                               1.0, 1000.0,     \
                                0.0, 0.0, 100.0, \
-                               0.0, 0.0, 0.0, \
+                               0.0, 0.0, 0.0,   \
                                0.0, 1.0, 0.0)
         
+        self.print_visitor = j.PrintVisitor()
         self.render = j.RenderVisitor(self.camera)
         
         self.rn = j.Node()
@@ -57,10 +72,11 @@ class FallingBox(object):
         
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
+            addVisitor(self.print_visitor).\
             addVisitor(self.render).\
             setWidth(self.WIDTH).\
             setHeight(self.HEIGHT)
-        
+
     def getGame(self):
         return self.game
 
@@ -77,9 +93,16 @@ class MyOpenGLWidget(QGLWidget):
             
         except j.JupiterError as e:
             print e.what()
-    
+
+    def initializeGL(self):
+        self.makeCurrent()
+#         glViewport(0, 0, self.width(), self.height())
+        glEnable(GL_TEXTURE_2D)
+        glEnable(GL_DEPTH_TEST)
+
     def paintGL(self):
-        
+        self.makeCurrent()
+
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
@@ -95,14 +118,14 @@ class MyOpenGLWidget(QGLWidget):
 def main():
     app = QApplication(sys.argv)
 
-    glformat = QtOpenGL.QGLFormat()
+    glformat = QGLFormat()
     glformat.setVersion(3, 3)
-    glformat.setProfile(QtOpenGL.QGLFormat.CoreProfile)
+    glformat.setProfile(QGLFormat.CoreProfile)
 
     window = MyOpenGLWidget(glformat)
     window.show()
      
-    app.exec_()
+    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':

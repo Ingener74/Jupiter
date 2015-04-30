@@ -10,9 +10,17 @@
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/ImageTexture.h"
 
+#include <GL/glx.h>
+
 namespace jupiter {
 
+using namespace std;
+
 ImageTexture::ImageTexture(Image* image) {
+
+    auto context = glXGetCurrentContext();
+    cout << "context " << context << endl;
+
     glGenTextures(1, &textureID);
     CHECK_GL_ERROR
 

@@ -43,8 +43,16 @@ set(SOURCES
 )
 
 if(ANDROID)
+elseif(MINGW)
+    set(SOURCES ${SOURCES} 
+        src/File-default.cpp
+        src/JupiterError-mingw.cpp
+    )
 else()
-    set(SOURCES ${SOURCES} src/File-default.cpp)
+    set(SOURCES ${SOURCES} 
+        src/File-default.cpp
+        src/JupiterError-linux.cpp
+    )
 endif()
 
 if(MINGW)
