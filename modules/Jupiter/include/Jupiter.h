@@ -30,7 +30,7 @@
 #include "Jupiter/Shape.h"
 #include "Jupiter/ImageShape.h"
 
-#include "Jupiter/JsonGame.h"
+//#include "Jupiter/JsonGame.h"
 
 #include "Jupiter/Camera.h"
 

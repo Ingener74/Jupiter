@@ -20,7 +20,6 @@ set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/bin)
 set(SHARED_LIBS
     Jupiter 
     ${GL_LIBRARIES}
-    ${Boost_LIBRARIES}
 )
 
 # Lua

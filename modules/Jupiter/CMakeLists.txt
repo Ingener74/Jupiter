@@ -10,7 +10,7 @@ set(SOURCES
     src/FileFactory.cpp
     
     src/Game.cpp
-    src/JsonGame.cpp
+#    src/JsonGame.cpp
     
     src/Tools.cpp
     src/Texture.cpp
@@ -20,14 +20,14 @@ set(SOURCES
     src/PngImage.cpp
     
     src/Node.cpp
-    src/JsonNode.cpp
+#    src/JsonNode.cpp
     
     src/Shape.cpp
     src/VertexComponent.cpp
     src/ImageShape.cpp
     
     src/Sprite.cpp
-    src/JsonSprite.cpp
+#    src/JsonSprite.cpp
 
     src/Camera.cpp
     src/NodeVisitor.cpp
@@ -66,16 +66,8 @@ add_library(${PROJECT_NAME} ${SOURCES})
 set(LIBS
     ${GL_LIBRARIES}
     ${PNG_LIBRARIES}
-    ${Boost_LIBRARIES}
     lodepng
 )
-if(ANDROID)
-    set(LIBS ${LIBS}
-    )
-else()
-    set(LIBS ${LIBS}
-    )
-endif()
 
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 

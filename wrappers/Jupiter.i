@@ -31,7 +31,7 @@ namespace jupiter{
 %include "Jupiter/FileFactory.h"
 
 %include "Jupiter/Game.h"
-%include "Jupiter/JsonGame.h"
+// %include "Jupiter/JsonGame.h"
 
 %include "Jupiter/Node.h"
 

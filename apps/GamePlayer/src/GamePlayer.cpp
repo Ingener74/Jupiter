@@ -183,7 +183,7 @@ bool createGameJsonFile(const variables_map& vm) {
 
     File::setBase(to_string_(gameFile.parent_path().native()));
 
-    game = make_unique_<JsonGame>(to_string_(gameFile.filename().native()));
+//    game = make_unique_<JsonGame>(to_string_(gameFile.filename().native()));
 
     return true;
 }

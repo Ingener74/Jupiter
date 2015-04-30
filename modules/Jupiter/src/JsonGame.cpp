@@ -5,8 +5,8 @@
  *      Author: pavel
  */
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
+//#include <boost/property_tree/ptree.hpp>
+//#include <boost/property_tree/json_parser.hpp>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -24,21 +24,21 @@ using namespace glm;
 
 JsonGame::JsonGame(const std::string& fileName) {
 
-    unique_ptr<File> file(new File(fileName));
-
-    using namespace boost::property_tree;
-
-    ptree pt;
-
-    json_parser::read_json(file->getStream(), pt);
-
-    _width = pt.get<int>("resolution.width");
-    _height = pt.get<int>("resolution.height");
-//    render = new RenderVisitor{ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
-
-    auto rootNode = pt.get_child("node");
-
-    _node = new JsonNode(rootNode);
+//    unique_ptr<File> file(new File(fileName));
+//
+//    using namespace boost::property_tree;
+//
+//    ptree pt;
+//
+//    json_parser::read_json(file->getStream(), pt);
+//
+//    _width = pt.get<int>("resolution.width");
+//    _height = pt.get<int>("resolution.height");
+////    render = new RenderVisitor{ortho<float>(-width / 2, width / 2, -height / 2, height / 2, -100, 100)};
+//
+//    auto rootNode = pt.get_child("node");
+//
+//    _node = new JsonNode(rootNode);
 }
 
 JsonGame::~JsonGame() {

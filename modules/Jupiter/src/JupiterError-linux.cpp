@@ -31,6 +31,4 @@ string JupiterError::backtrace() {
     return res.str();
 }
 
-#pragma message("Jupiter error backtrace")
-
 }  // namespace jupiter

@@ -22,8 +22,12 @@ if(NOT USE_FREEGLUT AND NOT USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
 endif()
 
-# find boost
-find_package(Boost 1.53.0 REQUIRED system thread filesystem program_options)
+if(WITH_GAME_PLAYER)
+
+    # find boost
+    find_package(Boost 1.53.0 REQUIRED system filesystem program_options)
+
+endif()
 
 # find png
 find_package(PNG REQUIRED)
@@ -103,8 +107,6 @@ if(USE_FREEGLUT)
 elseif(USE_GLFW)
     set(GL_LIBRARIES ${GL_LIBRARIES} ${GLFW_LIBRARIES})
 endif()
-
-message(STATUS "found gl libraries = ${GL_LIBRARIES}")
 
 add_definitions(-std=c++11)
 

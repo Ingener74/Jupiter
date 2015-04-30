@@ -15,7 +15,5 @@ string JupiterError::backtrace() {
     return {};
 }
 
-#pragma message("Jupiter error default")
-
 }  // namespace jupiter
 
