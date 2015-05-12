@@ -3,7 +3,8 @@
 
 import sys
 import subprocess
-from PySide.QtGui import QApplication, QFileDialog, QMainWindow, QGroupBox, QLabel, QVBoxLayout, QHBoxLayout, QWidget
+from PySide.QtGui import QApplication, QFileDialog, QMainWindow, QGroupBox, QLabel, QVBoxLayout, QHBoxLayout, QWidget,\
+    QTextEdit
 from PySide import QtCore
 
 from prebuild import Linux, Downloader, Builder
@@ -37,7 +38,19 @@ class MainWindow(QWidget):
         horLayout = QHBoxLayout()
         horLayout.addWidget(environment)
         horLayout.addWidget(components)
-        self.setLayout(horLayout)
+        
+        consoleEdit = QTextEdit()
+        
+        consoleLayout = QVBoxLayout()
+        consoleLayout.addWidget(consoleEdit)
+        
+        console = QGroupBox(u'Консоль')
+        console.setLayout(consoleLayout)
+        
+        verLayout = QVBoxLayout()
+        verLayout.addLayout(horLayout)
+        verLayout.addWidget(console)
+        self.setLayout(verLayout)
         
         self.setWindowTitle(u'Сборка зависимостей')
     
