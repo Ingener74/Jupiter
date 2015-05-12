@@ -2,56 +2,87 @@
 # encoding: utf-8
 
 import sys
-from PySide.QtGui import QApplication
-from PySide.QtWebKit import QWebView
+import subprocess
+from PySide.QtGui import QApplication, QFileDialog, QMainWindow, QGroupBox, QLabel, QVBoxLayout, QHBoxLayout, QWidget,\
+    QTextEdit
+from PySide import QtCore
 
-class Downloader(QWebView):
-    def __init__(self, title, link):
-        super(Downloader, self).__init__()
+from prebuild import Linux, Downloader, Builder
 
-        self.load(link)
-
-        self.page().setForwardUnsupportedContent(True)
-        self.page().unsupportedContent.connect(self.content)
-        
-        self.setWindowTitle(title)
-
-    def content(self, reply):
-        self.file = reply.request().url().toString()
-        self.afterDownload()
-        
-    def afterDownload(self):
-        raise SystemExit(u'Отнаследуйся придурок это базовый класс: ' + self.file)
-
-class BoostDownloader(Downloader):
-    def __init__(self, title, link):
-        super(BoostDownloader, self).__init__(title, link)
+class BoostBuilder(Builder):
+    def __init__(self, downloader):
+        super(BoostBuilder, self).__init__(downloader)
     
-    def afterDownload(self):
-        print self.file
+    def build(self):
+        self.downloader.show()
+        
+        print 'after download'
 
 
-class Platform(object):
-    def __init__(self):
-        pass
+class MainWindow(QWidget):
+    MIN_SIZE = 600
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        
+        test = QLabel(u'Test')
+        envLayout = QVBoxLayout()
+        envLayout.addWidget(test)
+        
+        environment = QGroupBox(u'Окружение')
+        environment.setMinimumSize(self.MIN_SIZE, self.MIN_SIZE)
+        environment.setLayout(envLayout)
+        
+        components = QGroupBox(u'Компоненты')
+        components.setMinimumSize(self.MIN_SIZE, self.MIN_SIZE)
+        
+        horLayout = QHBoxLayout()
+        horLayout.addWidget(environment)
+        horLayout.addWidget(components)
+        
+        consoleEdit = QTextEdit()
+        
+        consoleLayout = QVBoxLayout()
+        consoleLayout.addWidget(consoleEdit)
+        
+        console = QGroupBox(u'Консоль')
+        console.setLayout(consoleLayout)
+        
+        verLayout = QVBoxLayout()
+        verLayout.addLayout(horLayout)
+        verLayout.addWidget(console)
+        self.setLayout(verLayout)
+        
+        self.setWindowTitle(u'Сборка зависимостей')
     
-    def downloadFile(self, file):
-        raise SystemExit(u'Неправильная платформа')
+    def keyPressEvent(self, e):
+        if e.key() == QtCore.Qt.Key_Escape:
+            raise SystemExit
 
-class Win(Platform):
-    def __init__(self):
-        super(Win, self).__init__()
-        pass
+
+def setStyle():
+    if sys.platform == 'win32':
+        QApplication.setStyle(u"windows")
+    elif sys.platform == 'linux2':
+        QApplication.setStyle(u"plastique")
+    else:
+        print u'Неизвестная система'
 
 def main():
+    setStyle()
     app = QApplication(sys.argv)
     
-    platform = Win()
+    mainWindow = MainWindow()
+    mainWindow.show()
     
-    boost_downloader = BoostDownloader(u'Скачай последнюю версию библиотеки Boost', 'http://sourceforge.net/projects/boost/files/boost/')
-    boost_downloader.show()
+#     downloadDirectory = QFileDialog.getExistingDirectory(None, u'Укажи директорию для закачки файлов')
+#     platform = Linux(downloadDirectory)
+#     
+#     boostBuilder = BoostBuilder(Downloader(u'Скачай последнюю версию библиотеки Boost', \
+#                                            'http://sourceforge.net/projects/boost/files/boost/', platform))
+#     boostBuilder.build()
     
     return app.exec_()
+
 
 if __name__ == '__main__':
     main()
