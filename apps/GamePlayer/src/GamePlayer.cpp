@@ -35,6 +35,7 @@ unique_ptr<Game> game;
 
 Camera                      camera;
 unique_ptr<RenderVisitor>   render;
+unique_ptr<NodeVisitor>     printVisitor;
 unique_ptr<NodeVisitor>     physics;
 
 unique_ptr<Shader>          spriteShader;
@@ -99,7 +100,7 @@ bool createGameDirect(const variables_map& vm) {
 
     render = make_unique_<RenderVisitor>(&camera);
 
-//    physics = make_unique_<PrintVisitor>();
+    printVisitor = make_unique_<PrintVisitor>();
     physics = make_unique_<NodeVisitor>();
 
     File vs { "Resources/sprite.vs" }, fs { "Resources/sprite.fs" };
@@ -166,7 +167,10 @@ bool createGameDirect(const variables_map& vm) {
     game
 
         ->setRootNode(rootNode.get())
-        ->setVisitors({physics.get(), render.get()})
+        ->setVisitors({
+//            printVisitor.get(),
+//            physics.get(),
+            render.get()})
         ->setWidth(width)
         ->setHeight(height)
     ;

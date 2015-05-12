@@ -27,7 +27,7 @@ Node* Node::addNode(Node* node) {
     if (!node)
         throw JupiterError("Node add nullptr node");
 
-    nodes.push_back(node);
+    nodes.push_back(node->setParent(this));
     return this;
 }
 

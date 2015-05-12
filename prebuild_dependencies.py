@@ -2,12 +2,33 @@
 # encoding: utf-8
 
 import sys
-from PySide.QtGui import QApplication
+import subprocess
+from PySide.QtGui import QApplication, QFileDialog
 from PySide.QtWebKit import QWebView
 
+from prebuild.Linux import Linux
+
+class Builder(object):
+    def __init__(self, downloader):
+        self.downloader = downloader
+    
+    def build(self):
+        raise SystemExit(u"not implemented")
+
+class BoostBuilder(Builder):
+    def __init__(self, downloader):
+        super(BoostBuilder, self).__init__(downloader)
+    
+    def build(self):
+        self.downloader.show()
+        
+        print 'after download'
+
 class Downloader(QWebView):
-    def __init__(self, title, link):
+    def __init__(self, title, link, platform):
         super(Downloader, self).__init__()
+        
+        self.platform = platform
 
         self.load(link)
 
@@ -21,35 +42,19 @@ class Downloader(QWebView):
         self.afterDownload()
         
     def afterDownload(self):
-        raise SystemExit(u'Отнаследуйся придурок это базовый класс: ' + self.file)
+        self.close()
+        self.platform.downloadFile(self.file)
 
-class BoostDownloader(Downloader):
-    def __init__(self, title, link):
-        super(BoostDownloader, self).__init__(title, link)
-    
-    def afterDownload(self):
-        print self.file
-
-
-class Platform(object):
-    def __init__(self):
-        pass
-    
-    def downloadFile(self, file):
-        raise SystemExit(u'Неправильная платформа')
-
-class Win(Platform):
-    def __init__(self):
-        super(Win, self).__init__()
-        pass
 
 def main():
     app = QApplication(sys.argv)
     
-    platform = Win()
+    downloadDirectory = QFileDialog.getExistingDirectory(None, u'Укажи директорию для закачки файлов')
+    platform = Linux(downloadDirectory)
     
-    boost_downloader = BoostDownloader(u'Скачай последнюю версию библиотеки Boost', 'http://sourceforge.net/projects/boost/files/boost/')
-    boost_downloader.show()
+    boostBuilder = BoostBuilder(Downloader(u'Скачай последнюю версию библиотеки Boost', \
+                                           'http://sourceforge.net/projects/boost/files/boost/', platform))
+    boostBuilder.build()
     
     return app.exec_()
 
