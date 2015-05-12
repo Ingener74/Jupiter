@@ -60,6 +60,7 @@ class MainWindow(QWidget):
 
 def main():
     app = QApplication(sys.argv)
+#     print QApplication.setStyle(u"plastique")
     
     mainWindow = MainWindow()
     mainWindow.show()
