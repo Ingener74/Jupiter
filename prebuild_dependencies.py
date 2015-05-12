@@ -58,9 +58,18 @@ class MainWindow(QWidget):
         if e.key() == QtCore.Qt.Key_Escape:
             raise SystemExit
 
+
+def setStyle():
+    if sys.platform == 'win32':
+        QApplication.setStyle(u"windows")
+    elif sys.platform == 'linux2':
+        QApplication.setStyle(u"plastique")
+    else:
+        print u'Неизвестная система'
+
 def main():
+    setStyle()
     app = QApplication(sys.argv)
-#     print QApplication.setStyle(u"plastique")
     
     mainWindow = MainWindow()
     mainWindow.show()
