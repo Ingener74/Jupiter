@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <string>
 
 #include <GL/glew.h>
 
@@ -26,7 +27,7 @@ void Tools::glError(const std::string& file, int line, const std::string& functi
         std::stringstream ss;
         ss <<
             (file.empty()       ? "" : file            ) << ":" <<
-            (-1 == line         ? "" : to_string(line) ) << ":" <<
+//            (-1 == line         ? "" : std::to_string(line) ) << ":" <<
             (function.empty()   ? "" : function        ) <<
             ":glGetError: " << std::hex << err << ", " << glGetString(err);
         throw JupiterError(ss.str());

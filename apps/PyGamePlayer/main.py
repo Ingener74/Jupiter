@@ -96,13 +96,13 @@ class OpenGLWidget(QGLWidget):
             j.initJupiter()
             self.falling_box = FallingBox(self.width(), self.height())
             
-            self.startTimer(1000.0 / 30.0)
+#             self.startTimer(1000.0 / 30.0)
             
         except j.JupiterError as e:
             print e.what()
 
     def paintGL(self):
-        self.makeCurrent()
+#         self.makeCurrent()
 
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
