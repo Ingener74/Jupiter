@@ -13,7 +13,7 @@ namespace jupiter {
 
 using namespace std;
 
-FileShader::FileShader(File* vertex, File* fragment) throw (JupiterError) {
+FileShader::FileShader(File* vertex, File* fragment) {
     if (!vertex)
         throw JupiterError("bad vertex file");
     if (!fragment)

@@ -40,7 +40,7 @@
 
 namespace jupiter {
 
-void initJupiter() throw (JupiterError);
+void initJupiter();
 
 }  // namespace jupiter
 

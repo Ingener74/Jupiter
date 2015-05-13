@@ -96,8 +96,8 @@ class OpenGLWidget(QGLWidget):
             
             self.startTimer(1000.0 / 30.0)
             
-        except j.JupiterError as e:
-            print e.what()
+        except RuntimeError, e:
+            raise SystemExit(str(e))
 
     def paintGL(self):
         self.makeCurrent()
@@ -137,8 +137,6 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except j.JupiterError as e:
-        print e.what()
-    except Exception as e:
+    except RuntimeError, e:
         print str(e)
 

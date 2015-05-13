@@ -14,7 +14,7 @@ namespace jupiter {
 
 class FileShader: public Shader {
 public:
-    FileShader(class File* vertex, class File* fragment) throw (JupiterError);
+    FileShader(class File* vertex, class File* fragment);
     virtual ~FileShader();
 };
 

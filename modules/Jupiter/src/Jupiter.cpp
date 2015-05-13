@@ -15,7 +15,7 @@ namespace jupiter {
 
 using namespace std;
 
-void initJupiter() throw (JupiterError) {
+void initJupiter() {
 
     /*
      * Eсли появляется ошибка: Missing GL version, значит для текущего окна контекст не установлен,
