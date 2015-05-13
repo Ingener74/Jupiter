@@ -44,10 +44,8 @@ class FallingBox(object):
     def __init__(self, width, height):
         j.File.setBase('../../samples/Box')
         
-        vs = j.File('Resources/sprite.vs')
-        fs = j.File('Resources/sprite.fs')
-        self.shader = j.FileShader(vs, fs)
-    
+        self.shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
+        
         self.camera = j.Camera(45.0,            \
                                width, height,   \
                                1.0, 1000.0,     \
@@ -60,13 +58,13 @@ class FallingBox(object):
         
         self.rn = j.Node()
         
-        self.bg_image = j.PngImage('Resources/bg.png')
-        self.bg_texture = j.ImageTexture(self.bg_image)
-        self.bg_shape = j.ImageShape(self.bg_image)
+        bgImage = j.PngImage('Resources/bg.png')
+        self.bgTexture = j.ImageTexture(bgImage)
+        self.bgShape = j.ImageShape(bgImage)
         self.bg = j.Sprite()
         self.bg.setProgram(self.shader).\
-            setTexture(self.bg_texture).\
-            setShape(self.bg_shape).\
+            setTexture(self.bgTexture).\
+            setShape(self.bgShape).\
             setVisible(True).\
             setParent(self.rn).\
             setScale(0.08, 0.08)
