@@ -24,6 +24,7 @@ namespace jupiter{
 
 %include "std_string.i"
 %include "std_vector.i"
+%include "exception.i"
 
 %include "Jupiter/JupiterError.h"
 
@@ -53,3 +54,13 @@ namespace jupiter{
 %include "Jupiter/PrintVisitor.h"
 
 %include "Jupiter/Camera.h"
+
+%exception{
+    try {
+        %action
+    } catch (JupiterError const& e) {
+        SWIG_exception(SWIG_RuntimeError, e.what());
+    } catch (...) {
+        SWIG_exception(SWIG_UnknownError, "Unknown error");
+    }
+}

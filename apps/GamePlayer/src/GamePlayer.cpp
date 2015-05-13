@@ -18,6 +18,9 @@ using namespace boost::program_options;
 //using namespace ganymede;
 using namespace jupiter;
 
+template<typename T>
+using up = unique_ptr<T>;
+
 string usage = R"(
 Usage  :
 Example: ./GamePlayer -h                                            - for help
@@ -31,30 +34,30 @@ string title =R"(Jupiter Game Player)";
  * Code
  */
 
-unique_ptr<Game> game;
+up<Game>            game;
 
-Camera                      camera;
-unique_ptr<RenderVisitor>   render;
-unique_ptr<NodeVisitor>     printVisitor;
-unique_ptr<NodeVisitor>     physics;
+Camera              camera;
+up<RenderVisitor>   render;
+up<NodeVisitor>     printVisitor;
+up<NodeVisitor>     physics;
 
-unique_ptr<Shader>          spriteShader;
+up<Shader>          spriteShader;
 
-unique_ptr<Node>            rootNode;
+up<Node>            rootNode;
 
-unique_ptr<Sprite>          bg,
-                            flour,
-                            box;
+up<Sprite>          bg,
+                    flour,
+                    box;
 
-unique_ptr<Shape>           bgShape,
-                            flourShape,
-                            boxShape;
+up<Shape>           bgShape,
+                    flourShape,
+                    boxShape;
 
-unique_ptr<Texture>         bgTexture,
-                            flourTexture,
-                            boxTexture;
+up<Texture>         bgTexture,
+                    flourTexture,
+                    boxTexture;
 
-unique_ptr<Controller>      boxController;
+up<Controller>      boxController;
 
 float viewRadius = 600.f;
 

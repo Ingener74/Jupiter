@@ -10,8 +10,6 @@
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/ImageTexture.h"
 
-#include <GL/glx.h>
-
 namespace jupiter {
 
 using namespace std;
