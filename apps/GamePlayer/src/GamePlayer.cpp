@@ -242,8 +242,6 @@ void input() {
 
 void keyboard(uint8_t key) {
 
-//    cout << "key " << key << endl;
-
     switch (key) {
     case 'w': // up
         yAngle += .01f;

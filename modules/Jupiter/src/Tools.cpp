@@ -19,7 +19,7 @@ namespace jupiter
 
 using namespace std;
 
-void Tools::glError(const std::string& file, int line, const std::string& function) throw (JupiterError)
+void Tools::glError(const std::string& file, int line, const std::string& function)
 {
     GLenum err = glGetError();
     if (err)
@@ -27,7 +27,7 @@ void Tools::glError(const std::string& file, int line, const std::string& functi
         std::stringstream ss;
         ss <<
             (file.empty()       ? "" : file            ) << ":" <<
-//            (-1 == line         ? "" : std::to_string(line) ) << ":" <<
+            (-1 == line         ? "" : std::to_string(line) ) << ":" <<
             (function.empty()   ? "" : function        ) <<
             ":glGetError: " << std::hex << err << ", " << glGetString(err);
         throw JupiterError(ss.str());
