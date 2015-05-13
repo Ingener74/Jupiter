@@ -27,7 +27,7 @@ void Tools::glError(const std::string& file, int line, const std::string& functi
         std::stringstream ss;
         ss <<
             (file.empty()       ? "" : file            ) << ":" <<
-            (-1 == line         ? "" : std::to_string(line) ) << ":" <<
+            // (-1 == line         ? "" : std::to_string(line) ) << ":" << // в MinGW нет to_string
             (function.empty()   ? "" : function        ) <<
             ":glGetError: " << std::hex << err << ", " << glGetString(err);
         throw JupiterError(ss.str());

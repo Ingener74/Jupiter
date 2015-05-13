@@ -25,6 +25,14 @@ endif()
 if(WITH_GAME_PLAYER)
 
     # find boost
+    set(Boost_USE_STATIC_LIBS    ON)
+    set(Boost_USE_MULTITHREADED  ON)
+    if(MINGW)
+        set(Boost_COMPILER -mgw48)
+    else()
+        set(Boost_COMPILER -gcc)
+    endif()
+    
     find_package(Boost 1.53.0 REQUIRED system filesystem program_options)
 
 endif()

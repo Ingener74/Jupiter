@@ -37,10 +37,6 @@ except ImportError as e:
 
 
 class FallingBox(object):
-    
-    WIDTH = 800
-    HEIGHT = 480
-    
     def __init__(self, width, height):
         j.File.setBase('../../samples/Box')
         
