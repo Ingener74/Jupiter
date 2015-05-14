@@ -4,7 +4,7 @@
 import sys
 import subprocess
 from PySide.QtGui import QApplication, QFileDialog, QMainWindow, QGroupBox, QLabel, QVBoxLayout, QHBoxLayout, QWidget,\
-    QTextEdit
+    QTextEdit, QIcon, QPixmap
 from PySide import QtCore
 
 from prebuild import Linux, Downloader, Builder
@@ -23,6 +23,8 @@ class MainWindow(QWidget):
     MIN_SIZE = 600
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
+        
+        self.setWindowIcon(QIcon(QPixmap('prebuild/png/office_building.png')))
         
         test = QLabel(u'Test')
         envLayout = QVBoxLayout()
