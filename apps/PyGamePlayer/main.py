@@ -45,7 +45,7 @@ class BgMove(j.MoveListener):
     def move(self, x, y, z):
         print '(', x, '; ', y, '; ',z, ')'
         if x > 2:
-            window.close()
+            self.window.close()
 
 class FallingBox(object):
     def __init__(self, window, width, height):
