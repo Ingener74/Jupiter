@@ -17,35 +17,34 @@ namespace jupiter {
 using namespace std;
 
 Texture* Sprite::getTexture() const {
-    return texture;
+    return _texture;
 }
 
 Sprite* Sprite::setTexture(Texture* texture) {
-    Sprite::texture = texture;
+    _texture = texture;
     return this;
 }
 
 Shape* Sprite::getShape() const {
-    return shape;
+    return _shape;
 }
 
 Sprite* Sprite::setShape(Shape* shape) {
-    Sprite::shape = shape;
+    _shape = shape;
     return this;
 }
 
 Shader* Sprite::getProgram() const {
-    return program;
+    return _program;
 }
 
 Sprite* Sprite::setProgram(Shader* program) {
-    Sprite::program = program;
+    _program = program;
     return this;
 }
 
 Sprite* Sprite::accept(NodeVisitor* nv) {
-    if (!nv)
-        throw JupiterError("Sprite: visitor is nullptr");
+    JASSERT(nv, "Sprite: visitor is nullptr");
 
     if (_visible) {
 
@@ -53,13 +52,12 @@ Sprite* Sprite::accept(NodeVisitor* nv) {
 
         nv->visit(this);
 
-        for (const auto& i : _nodes) {
+        for (auto i : _nodes) {
             i->accept(nv);
         }
 
         nv->pop();
     }
-
     return this;
 }
 

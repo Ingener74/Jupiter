@@ -44,10 +44,14 @@ class BgMove(j.MoveListener):
     
     def move(self, x, y, z):
         print '(', x, '; ', y, '; ',z, ')'
-        if x > 2:
+        if x > 1:
             self.window.close()
 
 class FallingBox(object):
+    
+    WIDTH  = 200 # 800
+    HEIGTH = WIDTH * 9.0 / 16.0
+    
     def __init__(self, window, width, height):
         
         j.File.setBase('../../samples/Box')
@@ -96,6 +100,7 @@ class OpenGLWidget(QGLWidget):
 
     def initializeGL(self):
         self.setWindowTitle(PLAYER_TITLE)
+        self.resize(FallingBox.WIDTH, FallingBox.HEIGTH)
         
         glEnable(GL_TEXTURE_2D)
         glEnable(GL_DEPTH_TEST)

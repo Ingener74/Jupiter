@@ -11,18 +11,16 @@
 #ifdef SWIG
     #pragma SWIG nowarn=401
 #else
-
     #include <stdlib.h>
     #include <sstream>
     #include <stdexcept>
     #include <string>
 
     namespace jupiter {
-        #define THROW_JUPITER_ERROR(message) \
-            throw JupiterError(std::string(__FILE__) + ":" std::string(__LINE__) + ": " + \
-                    std::string(__PRETTY_FUNCTION__) + ": " + message)
-    }  // namespace jupiter
-
+        #define JASSERT(condition, message) \
+            if(!(condition)) \
+                throw JupiterError(std::string(__FILE__) + ": " + std::to_string(__LINE__) + ": " + std::string(__PRETTY_FUNCTION__) + ": " + message);
+    }
 #endif
 
 namespace jupiter
@@ -41,6 +39,8 @@ public:
 protected:
     static std::string backtrace();
 };
+
+
 
 }  // namespace jupiter
 

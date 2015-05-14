@@ -33,6 +33,7 @@ set(SOURCES
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
     src/PrintVisitor.cpp
+    
 
     src/Shader.cpp
     src/Attribute.cpp
@@ -43,6 +44,9 @@ set(SOURCES
 
     src/Listener.cpp
     src/MoveListener.cpp
+    
+    src/Box2dNode.cpp
+    src/Box2DVisitor.cpp
 )
 
 if(ANDROID)

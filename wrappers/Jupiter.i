@@ -12,15 +12,12 @@
 %}
 
 %{
-
 #include "Jupiter.h"
 using namespace jupiter;
-
 %}
 
 %include std_string.i
 %include std_vector.i
-
 %include exception.i
 %exception{
     try {

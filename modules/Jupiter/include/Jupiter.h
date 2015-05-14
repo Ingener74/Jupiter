@@ -37,6 +37,7 @@
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/RenderVisitor.h"
 #include "Jupiter/PrintVisitor.h"
+#include "Jupiter/Box2DVisitor.h"
 
 #include "Jupiter/MoveListener.h"
 

@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+#include "Jupiter/Shader.h"
 #include "Jupiter/Camera.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Node.h"

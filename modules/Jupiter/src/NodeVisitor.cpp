@@ -20,10 +20,10 @@ NodeVisitor::~NodeVisitor() {
 void NodeVisitor::begin() {
 }
 
-void jupiter::NodeVisitor::push(Node*) {
+void NodeVisitor::push(Node*) {
 }
 
-void jupiter::NodeVisitor::pop() {
+void NodeVisitor::pop() {
 }
 
 void NodeVisitor::visit(Node*) {
@@ -32,7 +32,11 @@ void NodeVisitor::visit(Node*) {
 void NodeVisitor::visit(Sprite*) {
 }
 
+void NodeVisitor::visit(Box2dNode*) {
+}
+
 void NodeVisitor::end() {
 }
 
 } /* namespace jupiter */
+

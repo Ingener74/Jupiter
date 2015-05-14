@@ -13,15 +13,15 @@
     #include <memory>
 #endif
 
-#include "Jupiter/JupiterError.h"
 #include "Jupiter/Node.h"
-#include "Jupiter/Shader.h"
-#include "Jupiter/Texture.h"
-#include "Jupiter/Shape.h"
 
 namespace jupiter {
 
-class Sprite: public Node {
+class Shape;
+class Texture;
+class Shader;
+
+class Sprite: virtual public Node {
 public:
     Sprite() = default;
     virtual ~Sprite() = default;
@@ -37,9 +37,9 @@ public:
 
     virtual Sprite* accept(NodeVisitor* nv);
 private:
-    Texture* texture = nullptr;
-    Shape* shape = nullptr;
-    Shader* program = nullptr;
+    Texture* _texture = nullptr;
+    Shape*   _shape   = nullptr;
+    Shader*  _program = nullptr;
 };
 
 } /* namespace ndk_game */

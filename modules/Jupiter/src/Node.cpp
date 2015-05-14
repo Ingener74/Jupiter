@@ -25,8 +25,7 @@ Node::~Node() {
 }
 
 Node* Node::addNode(Node* node) {
-    if (!node)
-        throw JupiterError("Node add nullptr node");
+    JASSERT(node, "Node add nullptr node");
 
     _nodes.push_back(node->setParent(this));
     return this;
@@ -130,42 +129,29 @@ Node* Node::setPosition(float x, float y, float z) {
     _model[3].z = z;
     if (_controller)
         _controller->onPositionChanged(x, y, z);
-
+    if (_moveListener)
+        _moveListener->move(x, y, z);
     return this;
 }
 
 Node* Node::setPositionX(float x) {
-    _model[3].x = x;
-    if (_controller)
-        _controller->onPositionChanged(x, 0.f, 0.f);
-
-    return this;
+    return setPosition(x, 0.f, 0.f);
 }
 
 Node* Node::setPositionY(float y) {
-    _model[3].y = y;
-    if (_controller)
-        _controller->onPositionChanged(0.f, y, 0.f);
-
-    return this;
+    return setPosition(0.f, y, 0.f);
 }
 
 Node* Node::setPositionZ(float z) {
-    _model[3].z = z;
-    if (_controller)
-        _controller->onPositionChanged(0.f, 0.f, z);
-
-    return this;
+    return setPosition(0.f, 0.f, z);
 }
 
 Node* Node::translate(float x, float y, float z) {
     _model = glm::translate(_model, glm::vec3 { x, y, z });
     if (_controller)
         _controller->onMove(x, y, z);
-
-    if(_moveListener)
+    if (_moveListener)
         _moveListener->move(getPositionX(), getPositionY(), getPositionZ());
-
     return this;
 }
 
@@ -233,8 +219,7 @@ Node* Node::setVisible(bool isVisible) {
 }
 
 Node* Node::accept(NodeVisitor* nv) {
-    if (!nv)
-        throw JupiterError("Node: visitor is nullptr");
+    JASSERT(nv, "Node: visitor is nullptr");
 
     if (_visible) {
 
@@ -242,7 +227,7 @@ Node* Node::accept(NodeVisitor* nv) {
 
         nv->visit(this);
 
-        for (const auto& i : _nodes) {
+        for (auto i : _nodes) {
             i->accept(nv);
         }
 
@@ -268,7 +253,8 @@ Node* Node::setMoveListener(MoveListener* moveListener) {
 }
 
 MoveListener* Node::getMoveListener() {
-    return _moveListener ? _moveListener : throw JupiterError("no move listener");
+    JASSERT(_moveListener, "no move listener")
+    return _moveListener;
 }
 
 const glm::mat4& Node::getModel() const {

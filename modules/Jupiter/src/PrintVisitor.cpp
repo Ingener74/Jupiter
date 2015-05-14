@@ -5,9 +5,11 @@
  *      Author: ingener
  */
 
-#include <iostream>
+#include <sstream>
 #include <iomanip>
+#include <iostream>
 
+#include "Jupiter/Texture.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
 #include "Jupiter/PrintVisitor.h"
