@@ -6,12 +6,21 @@
  */
 
 #include <execinfo.h>
+//#include <cxxabi.h>
 
 #include "Jupiter/JupiterError.h"
 
 namespace jupiter {
 
 using namespace std;
+
+/*
+ * Возможные улучшения
+ * 1. https://panthema.net/2008/0901-stacktrace-demangled/
+ *
+ * 2. http://sourceforge.net/projects/libcsdbg/?source=navbar
+ *    http://libcsdbg.sourceforge.net/
+ */
 
 string JupiterError::backtrace() {
     const int buffer_size = 1000;

@@ -51,11 +51,11 @@ public:
     static void setBase(const std::string& base);
 
 private:
-    std::unique_ptr<Buffer> buffer;
-    std::istream i;
+    std::unique_ptr<Buffer> _buffer;
+    std::istream _i;
 
-    static BufferFactory* factory;
-    static std::string base;
+    static BufferFactory* _factory;
+    static std::string _base;
 };
 
 }  // namespace jupiter

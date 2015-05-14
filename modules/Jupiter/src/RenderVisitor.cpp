@@ -27,8 +27,7 @@ void RenderVisitor::begin() {
 }
 
 void RenderVisitor::visit(Sprite* sprite) {
-    if (!sprite)
-        throw JupiterError("Render visitor: sprite is nullptr");
+    jassert(sprite, "Render visitor: sprite is nullptr")
 
     auto shader = sprite->getProgram();
 

@@ -10,6 +10,7 @@
 
 #ifdef SWIG
     namespace jupiter {
+        #pragma SWIG nowarn=473
         %feature("director") Listener;
     }
 #else

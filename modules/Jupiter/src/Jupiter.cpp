@@ -23,11 +23,7 @@ void initJupiter() {
      */
 
     auto result = glewInit();
-    if (result != GLEW_OK) {
-        auto resultString = reinterpret_cast<const char*>(glewGetErrorString(result));
-        throw JupiterError(string { "glewInit error: " } + resultString);
-    }
-
+    jassert(GLEW_OK == result, string {"glewInit error: "} + reinterpret_cast<const char*>(glewGetErrorString(result)));
 }
 
 }  // namespace jupiter

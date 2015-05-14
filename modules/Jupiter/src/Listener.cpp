@@ -17,7 +17,8 @@ Listener::~Listener() {
 }
 
 Node* Listener::getNode() {
-    return _node ? _node : throw JupiterError("node is empty");
+    jassert(_node, "node is empty")
+    return _node;
 }
 
 Listener* Listener::setNode(Node* node) {

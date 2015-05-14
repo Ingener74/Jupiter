@@ -13,8 +13,8 @@ using namespace std;
 
 static FileFactory fileFactory;
 
-BufferFactory* File::factory = &fileFactory;
-string File::base = "";
+BufferFactory* File::_factory = &fileFactory;
+string File::_base = "";
 
 }  // namespace jupiter
 

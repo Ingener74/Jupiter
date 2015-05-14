@@ -27,8 +27,7 @@ public:
             if(df)
             fclose(df);
         });
-        if (!f)
-            throw JupiterError("can't open file " + fileName);
+        jassert(f, "can't open file " + fileName);
 
         fseek(f.get(), 0, SEEK_END);
         auto size = ftell(f.get());
@@ -40,8 +39,7 @@ public:
         ptr = reinterpret_cast<char*>(buffer.data());
 
         auto res = fread(ptr, sizeof(char), size, f.get());
-        if (res != size)
-            throw JupiterError("can't read file");
+        jassert(res == size, "can't read file");
 
         ptr = reinterpret_cast<char*>(buffer.data());
         setg(ptr, ptr, ptr + buffer.capacity());

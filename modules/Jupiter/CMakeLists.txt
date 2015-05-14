@@ -73,6 +73,7 @@ add_library(${PROJECT_NAME} ${SOURCES})
 set(LIBS
     ${GL_LIBRARIES}
     ${PNG_LIBRARIES}
+    ${BOX2D_LIBRARIES}
     lodepng
 )
 

@@ -25,7 +25,7 @@ Node::~Node() {
 }
 
 Node* Node::addNode(Node* node) {
-    JASSERT(node, "Node add nullptr node");
+    jassert(node, "Node add nullptr node");
 
     _nodes.push_back(node->setParent(this));
     return this;
@@ -219,7 +219,7 @@ Node* Node::setVisible(bool isVisible) {
 }
 
 Node* Node::accept(NodeVisitor* nv) {
-    JASSERT(nv, "Node: visitor is nullptr");
+    jassert(nv, "Node: visitor is nullptr");
 
     if (_visible) {
 
@@ -253,7 +253,7 @@ Node* Node::setMoveListener(MoveListener* moveListener) {
 }
 
 MoveListener* Node::getMoveListener() {
-    JASSERT(_moveListener, "no move listener")
+    jassert(_moveListener, "no move listener")
     return _moveListener;
 }
 

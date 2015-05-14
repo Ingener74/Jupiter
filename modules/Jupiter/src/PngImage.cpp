@@ -21,8 +21,7 @@ PngImage::PngImage(const std::string& fileName) :
     const auto& buf = file.getBuffer();
     type = Image::Type::RGBA;
     auto error = lodepng::decode(data, width, height, file.getBuffer(), LCT_RGBA);
-    if (error)
-        throw JupiterError(lodepng_error_text(error));
+    jassert(!error, lodepng_error_text(error));
 }
 
 } /* namespace jupiter */

@@ -36,7 +36,7 @@ void Box2DVisitor::pop() {
 }
 
 void Box2DVisitor::visit(Box2dNode* node) {
-    JASSERT(node, "node is empty")
+    jassert(node, "node is empty")
 
     node->setPosition(0.f, 0.f, 0.f);
 }
@@ -67,7 +67,7 @@ int32 Box2DVisitor::getVelocityIterations() const {
 }
 
 b2World* Box2DVisitor::getWorld() {
-    JASSERT(_world, "Box2D world is invalid")
+    jassert(_world, "Box2D world is invalid")
     return _world.get();
 }
 

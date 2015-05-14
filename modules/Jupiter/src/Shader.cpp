@@ -23,29 +23,28 @@ void Shader::use() const {
 Attribute Shader::getAttribute(const std::string& name) const {
     auto attribute = glGetAttribLocation(_program, name.c_str());
     CHECK_GL_ERROR
-    return Attribute { name,
-            INVALID != attribute ? attribute : throw JupiterError(name + " is not an active attribute in shader") };
+
+    jassert(INVALID != attribute, name + " is not an active attribute in shader")
+    return Attribute { name, attribute };
 }
 
 Uniform Shader::getUniform(const std::string& name) const {
     auto uniform = glGetUniformLocation(_program, name.c_str());
     CHECK_GL_ERROR
-    return Uniform { name,
-            INVALID != uniform ? uniform : throw JupiterError(name + " is not an active uniform in shader") };
+
+    jassert(INVALID != uniform, name + " is not an active uniform in shader")
+    return Uniform { name, uniform };
 }
 
 GLuint Shader::createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {
-    if (vertexShaderSource.empty())
-        throw JupiterError("vertex shader is empty");
-    if (fragmentShaderSource.empty())
-        throw JupiterError("fragment shader is empty");
+    jassert(!vertexShaderSource.empty(), "vertex shader is empty")
+    jassert(!fragmentShaderSource.empty(), "fragment shader is empty")
 
     GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource); // TODO surrount shaders to RAII
     GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     GLuint program = glCreateProgram();
-    if (!program)
-        throw JupiterError("can't create program");
+    jassert(program, "can't create program");
 
     glAttachShader(program, vertexShader);
     glAttachShader(program, fragmentShader);
@@ -72,8 +71,7 @@ GLuint Shader::createProgram(const string& vertexShaderSource, const string& fra
 
 GLuint Shader::createShader(GLenum shaderType, const string& source) {
     GLuint shader = glCreateShader(shaderType);
-    if (!shader)
-        throw JupiterError("can't create shader");
+    jassert(shader, "can't create shader");
 
     const char* sourceBuffer = source.c_str();
 
@@ -87,8 +85,7 @@ GLuint Shader::createShader(GLenum shaderType, const string& source) {
 
     GLint infoLen = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-    if (!infoLen)
-        throw JupiterError("error in create shader");
+    jassert(infoLen, "error in create shader");
 
     vector<char> buf(infoLen);
     glGetShaderInfoLog(shader, infoLen, 0, buf.data());

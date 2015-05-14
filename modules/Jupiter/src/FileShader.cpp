@@ -14,10 +14,8 @@ namespace jupiter {
 using namespace std;
 
 FileShader::FileShader(File* vertex, File* fragment) {
-    if (!vertex)
-        throw JupiterError("bad vertex file");
-    if (!fragment)
-        throw JupiterError("bad fragment file");
+    jassert(vertex, "bad vertex file");
+    jassert(fragment, "bad fragment file");
 
     string vertexShaderSource { (istreambuf_iterator<char>(vertex->getStream())), istreambuf_iterator<char>() };
     string fragmentShaderSource { (istreambuf_iterator<char>(fragment->getStream())), istreambuf_iterator<char>() };

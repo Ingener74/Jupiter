@@ -44,7 +44,7 @@ Sprite* Sprite::setProgram(Shader* program) {
 }
 
 Sprite* Sprite::accept(NodeVisitor* nv) {
-    JASSERT(nv, "Sprite: visitor is nullptr");
+    jassert(nv, "Sprite: visitor is nullptr");
 
     if (_visible) {
 

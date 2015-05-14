@@ -22,12 +22,11 @@ using namespace std;
 using namespace glm;
 
 void Game::draw() {
-    if (!_node)
-        throw JupiterError("no root node");
+    jassert(_node, "no root node");
 
     for (auto i : _visitors) {
-        if (!i)
-            throw JupiterError("bad visitor");
+        jassert(i, "bad visitor");
+
         i->begin();
         _node->accept(i);
         i->end();

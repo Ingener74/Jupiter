@@ -16,24 +16,24 @@ const vector<uint8_t>& Buffer::getBuffer() const {
 }
 
 File::File(const string& fileName) :
-    buffer(factory ? factory->create(base + (base.empty() ? "" : "/") + fileName) :
-            throw JupiterError("have no file buffer factory")), i(buffer.get()) {
+    _buffer(_factory ? _factory->create(_base + (_base.empty() ? "" : "/") + fileName) :
+            throw JupiterError("have no file buffer factory")), _i(_buffer.get()) {
 }
 
 istream& File::getStream() {
-    return i;
+    return _i;
 }
 
 const vector<uint8_t>& File::getBuffer() const {
-    return buffer->getBuffer();
+    return _buffer->getBuffer();
 }
 
 void File::setBase(const string& base) {
-    File::base = base;
+    _base = base;
 }
 
 void File::setBufferFactory(BufferFactory* factory) {
-    File::factory = move(factory);
+    _factory = move(factory);
 }
 
 }  // namespace jupiter

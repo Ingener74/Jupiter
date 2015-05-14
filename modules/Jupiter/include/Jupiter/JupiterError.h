@@ -17,7 +17,7 @@
     #include <string>
 
     namespace jupiter {
-        #define JASSERT(condition, message) \
+        #define jassert(condition, message) \
             if(!(condition)) \
                 throw JupiterError(std::string(__FILE__) + ": " + std::to_string(__LINE__) + ": " + std::string(__PRETTY_FUNCTION__) + ": " + message);
     }
