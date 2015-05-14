@@ -1,12 +1,12 @@
 /*
- * Engine.h
+ * Jupiter.h
  *
  *  Created on: 25 ��� 2014 �.
  *      Author: Admin
  */
 
-#ifndef ENGINE_H_
-#define ENGINE_H_
+#ifndef JUPITER_H_
+#define JUPITER_H_
 
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Tools.h"
@@ -44,4 +44,4 @@ void initJupiter();
 
 }  // namespace jupiter
 
-#endif /* ENGINE_H_ */
+#endif /* JUPITER_H_ */

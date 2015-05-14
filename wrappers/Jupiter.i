@@ -18,10 +18,6 @@ using namespace jupiter;
 
 %}
 
-namespace jupiter{
-    void initJupiter();
-}
-
 %include std_string.i
 %include std_vector.i
 
@@ -38,32 +34,4 @@ namespace jupiter{
     }
 }
 
-%include "Jupiter/JupiterError.h"
-
-%include "Jupiter/File.h"
-%include "Jupiter/FileFactory.h"
-
-%include "Jupiter/Game.h"
-// %include "Jupiter/JsonGame.h"
-
-%include "Jupiter/Node.h"
-
-%include "Jupiter/Sprite.h"
-
-%include "Jupiter/Controller.h"
-
-%include "Jupiter/Texture.h"
-%include "Jupiter/ImageTexture.h"
-%include "Jupiter/ImageShape.h"
-
-%include "Jupiter/Image.h"
-%include "Jupiter/PngImage.h"
-
-%include "Jupiter/Shader.h"
-%include "Jupiter/FileShader.h"
-
-%include "Jupiter/RenderVisitor.h"
-%include "Jupiter/PrintVisitor.h"
-
-%include "Jupiter/Camera.h"
-
+%include "Jupiter.h"
