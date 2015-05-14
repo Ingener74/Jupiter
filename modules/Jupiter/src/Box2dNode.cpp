@@ -12,7 +12,7 @@
 
 namespace jupiter {
 
-Box2dNode::Box2dNode(Box2DVisitor* v) {
+Box2dNode::Box2dNode(Box2dVisitor* v) {
 
     b2BodyDef bodyDef;
     bodyDef.position.Set(getPositionX(), getPositionY());

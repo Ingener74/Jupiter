@@ -16,10 +16,11 @@
     #include <stdexcept>
     #include <string>
 
+    #include "Tools.h"
     namespace jupiter {
         #define jassert(condition, message) \
             if(!(condition)) \
-                throw JupiterError(std::string(__FILE__) + ": " + std::to_string(__LINE__) + ": " + std::string(__PRETTY_FUNCTION__) + ": " + message);
+                throw JupiterError(std::string(__FILE__) + ": " + to_string(__LINE__) + ": " + std::string(__PRETTY_FUNCTION__) + ": " + message);
     }
 #endif
 

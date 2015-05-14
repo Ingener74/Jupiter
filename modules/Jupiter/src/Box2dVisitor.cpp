@@ -10,11 +10,11 @@
 #include "Jupiter/Tools.h"
 #include "Jupiter/Box2dNode.h"
 #include "Jupiter/Node.h"
-#include "Jupiter/Box2DVisitor.h"
+#include "Jupiter/Box2dVisitor.h"
 
 namespace jupiter {
 
-Box2DVisitor::Box2DVisitor(float timeStep, int32_t positionIterations, int32_t velocityIterations) :
+Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityIterations) :
     _timeStep(timeStep), _positionIterations(positionIterations), _velocityIterations(velocityIterations) {
 
     b2Vec2 gravity(0, 9.8);
@@ -22,56 +22,56 @@ Box2DVisitor::Box2DVisitor(float timeStep, int32_t positionIterations, int32_t v
     _world = make_unique_<b2World>(gravity);
 }
 
-Box2DVisitor::~Box2DVisitor() {
+Box2dVisitor::~Box2dVisitor() {
 }
 
-void Box2DVisitor::begin() {
+void Box2dVisitor::begin() {
     _world->Step(_timeStep, _velocityIterations, _positionIterations);
 }
 
-void Box2DVisitor::push(Node*) {
+void Box2dVisitor::push(Node*) {
 }
 
-void Box2DVisitor::pop() {
+void Box2dVisitor::pop() {
 }
 
-void Box2DVisitor::visit(Box2dNode* node) {
+void Box2dVisitor::visit(Box2dNode* node) {
     jassert(node, "node is empty")
 
     node->setPosition(0.f, 0.f, 0.f);
 }
 
-void Box2DVisitor::end() {
+void Box2dVisitor::end() {
 }
 
-int32_t Box2DVisitor::getPositionIterations() const {
+int Box2dVisitor::getPositionIterations() const {
     return _positionIterations;
 }
 
-Box2DVisitor* Box2DVisitor::setPositionIterations(int32_t positionIterations) {
+Box2dVisitor* Box2dVisitor::setPositionIterations(int positionIterations) {
     _positionIterations = positionIterations;
     return this;
 }
 
-float Box2DVisitor::getTimeStep() const {
+float Box2dVisitor::getTimeStep() const {
     return _timeStep;
 }
 
-Box2DVisitor* Box2DVisitor::setTimeStep(float timeStep) {
+Box2dVisitor* Box2dVisitor::setTimeStep(float timeStep) {
     _timeStep = timeStep;
     return this;
 }
 
-int32_t Box2DVisitor::getVelocityIterations() const {
+int Box2dVisitor::getVelocityIterations() const {
     return _velocityIterations;
 }
 
-b2World* Box2DVisitor::getWorld() {
+b2World* Box2dVisitor::getWorld() {
     jassert(_world, "Box2D world is invalid")
     return _world.get();
 }
 
-Box2DVisitor* Box2DVisitor::setVelocityIterations(int32_t velocityIterations) {
+Box2dVisitor* Box2dVisitor::setVelocityIterations(int velocityIterations) {
     _velocityIterations = velocityIterations;
     return this;
 }

@@ -27,6 +27,8 @@ Node::~Node() {
 Node* Node::addNode(Node* node) {
     jassert(node, "Node add nullptr node");
 
+//    jassert(false, "test")
+
     _nodes.push_back(node->setParent(this));
     return this;
 }

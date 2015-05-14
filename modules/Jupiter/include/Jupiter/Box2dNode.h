@@ -14,11 +14,11 @@ class b2Body;
 
 namespace jupiter {
 
-class Box2DVisitor;
+class Box2dVisitor;
 
 class Box2dNode: virtual public Node {
 public:
-    Box2dNode(Box2DVisitor*);
+    Box2dNode(Box2dVisitor*);
     virtual ~Box2dNode();
 
 private:

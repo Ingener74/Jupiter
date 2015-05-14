@@ -43,14 +43,26 @@ class BgMove(j.MoveListener):
         self.window = window
     
     def move(self, x, y, z):
-        print '(', x, '; ', y, '; ',z, ')'
-        if x > 1:
+        pass
+#         print '(', x, '; ', y, '; ',z, ')'
+#         if x > 2:
+#             self.window.close()
+
+class BoxMove(j.MoveListener):
+    def __init__(self, window):
+        super(BoxMove, self).__init__()
+        self.window = window
+    
+    def move(self, x, y, z):
+        if y < -30:
             self.window.close()
 
 class FallingBox(object):
     
-    WIDTH  = 200 # 800
-    HEIGTH = WIDTH * 9.0 / 16.0
+    WIDTH  = 800
+    HEIGTH = WIDTH * 3.0 / 5.0
+    
+    FPS    = 60.0
     
     def __init__(self, window, width, height):
         
@@ -66,6 +78,7 @@ class FallingBox(object):
                                0.0, 1.0, 0.0)
         
         # self.print_visitor = j.PrintVisitor()
+        self.physics = j.Box2dVisitor(1.0 / self.FPS)
         self.render = j.RenderVisitor(self.camera)
         
         self.rn = j.Node()
@@ -75,15 +88,44 @@ class FallingBox(object):
         self.bgShape = j.ImageShape(bgImage)
         self.bgMove = BgMove(window)
         self.bg = j.Sprite()
-        self.bg.setProgram(self.shader).\
+        self.bg.\
+            setProgram(self.shader).\
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
             setMoveListener(self.bgMove).\
             setVisible(True).\
-            setParent(self.rn).\
-            setScale(0.08, 0.08)
+            setScale(0.11, 0.11)
         
-        self.rn.addNode(self.bg)
+        self.boxMove = BoxMove(window)
+        boxImage = j.PngImage('Resources/box.png')
+        self.boxTex = j.ImageTexture(boxImage)
+        self.boxShape = j.ImageShape(boxImage)
+        self.box = j.Sprite()
+        self.box.\
+            setProgram(self.shader).\
+            setTexture(self.boxTex).\
+            setShape(self.boxShape).\
+            setMoveListener(self.boxMove).\
+            setVisible(True).\
+            translate(0.0, 40.0, 10.0).\
+            setScale(0.02, 0.02)
+        
+        groundImage = j.PngImage('Resources/ground.png')
+        self.groundTex = j.ImageTexture(groundImage)
+        self.groundShape = j.ImageShape(groundImage)
+        self.ground = j.Sprite()
+        self.ground.\
+            setProgram(self.shader).\
+            setTexture(self.groundTex).\
+            setShape(self.groundShape).\
+            setVisible(True).\
+            translate(0.0, -40.0, 10.0).\
+            setScale(0.1, 0.1)
+        
+        self.rn.\
+            addNode(self.bg).\
+            addNode(self.box).\
+            addNode(self.ground)
         
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
@@ -115,18 +157,23 @@ class OpenGLWidget(QGLWidget):
             raise SystemExit(str(e))
 
     def paintGL(self):
-        self.makeCurrent()
-
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
         if self.falling_box == None:
             pass
         else:
-            self.falling_box.bg.translateX(0.5)
+#             self.falling_box.bg.\
+#                 translateX(1).\
+#                 rotateZ(0.005)
+            self.falling_box.box.\
+                translateY(-20)
+#                 rotateZ(0.03).\
+            
             self.falling_box.game.draw()
-        
-        self.swapBuffers()
+    
+    def resizeGL(self, w, h):
+        glViewport(0, 0, w, h)
     
     def timerEvent(self, event):
         self.update()

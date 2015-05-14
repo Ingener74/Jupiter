@@ -13,6 +13,7 @@
     #include <memory>
     #include <utility>
     #include <iostream>
+    #include <string>
 
     #include "Jupiter/JupiterError.h"
 #endif
@@ -25,6 +26,13 @@ std::unique_ptr<T> make_unique_(Args ... args) {
     return ptr;
 }
 
+
+template<typename T> std::string to_string(const T& n) {
+    std::ostringstream stm;
+    stm << n;
+    return stm.str();
+}
+
 class Tools {
 public:
     Tools() = delete;
@@ -34,8 +42,8 @@ public:
     static void glError(const std::string& file = {}, int line = -1, const std::string& function = {});
 };
 
-//#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
-#define CHECK_GL_ERROR
+#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
+//#define CHECK_GL_ERROR
 
 } /* namespace ndk_game */
 

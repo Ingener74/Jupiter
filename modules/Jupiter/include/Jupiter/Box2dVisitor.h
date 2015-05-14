@@ -10,7 +10,6 @@
 
 #ifdef SWIG
 #else
-    #include <cstdint>
     #include <memory>
 #endif
 
@@ -20,10 +19,10 @@ class b2World;
 
 namespace jupiter {
 
-class Box2DVisitor: public NodeVisitor {
+class Box2dVisitor: public NodeVisitor {
 public:
-    Box2DVisitor(float timeStep, int32_t positionIterations = 2, int32_t velocityIterations = 6);
-    virtual ~Box2DVisitor();
+    Box2dVisitor(float timeStep, int positionIterations = 2, int velocityIterations = 6);
+    virtual ~Box2dVisitor();
 
     virtual void begin();
 
@@ -37,19 +36,19 @@ public:
     b2World* getWorld();
 
     float getTimeStep() const;
-    Box2DVisitor* setTimeStep(float timeStep = 0.f);
+    Box2dVisitor* setTimeStep(float timeStep = 0.f);
 
-    int32_t getPositionIterations() const;
-    Box2DVisitor* setPositionIterations(int32_t positionIterations = 2);
+    int getPositionIterations() const;
+    Box2dVisitor* setPositionIterations(int positionIterations = 2);
 
-    int32_t getVelocityIterations() const;
-    Box2DVisitor* setVelocityIterations(int32_t velocityIterations = 6);
+    int getVelocityIterations() const;
+    Box2dVisitor* setVelocityIterations(int velocityIterations = 6);
 
 private:
     std::unique_ptr<b2World> _world;
     float _timeStep = 0.f;
-    int32_t _positionIterations = 2;
-    int32_t _velocityIterations = 6;
+    int _positionIterations = 2;
+    int _velocityIterations = 6;
 };
 
 } /* namespace jupiter */
