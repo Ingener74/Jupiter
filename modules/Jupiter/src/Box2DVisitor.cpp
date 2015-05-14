@@ -14,7 +14,7 @@
 
 namespace jupiter {
 
-Box2DVisitor::Box2DVisitor(float timeStep, int32 positionIterations, int32 velocityIterations) :
+Box2DVisitor::Box2DVisitor(float timeStep, int32_t positionIterations, int32_t velocityIterations) :
     _timeStep(timeStep), _positionIterations(positionIterations), _velocityIterations(velocityIterations) {
 
     b2Vec2 gravity(0, 9.8);
@@ -44,11 +44,11 @@ void Box2DVisitor::visit(Box2dNode* node) {
 void Box2DVisitor::end() {
 }
 
-int32 Box2DVisitor::getPositionIterations() const {
+int32_t Box2DVisitor::getPositionIterations() const {
     return _positionIterations;
 }
 
-Box2DVisitor* Box2DVisitor::setPositionIterations(int32 positionIterations) {
+Box2DVisitor* Box2DVisitor::setPositionIterations(int32_t positionIterations) {
     _positionIterations = positionIterations;
     return this;
 }
@@ -62,7 +62,7 @@ Box2DVisitor* Box2DVisitor::setTimeStep(float timeStep) {
     return this;
 }
 
-int32 Box2DVisitor::getVelocityIterations() const {
+int32_t Box2DVisitor::getVelocityIterations() const {
     return _velocityIterations;
 }
 
@@ -71,7 +71,7 @@ b2World* Box2DVisitor::getWorld() {
     return _world.get();
 }
 
-Box2DVisitor* Box2DVisitor::setVelocityIterations(int32 velocityIterations) {
+Box2DVisitor* Box2DVisitor::setVelocityIterations(int32_t velocityIterations) {
     _velocityIterations = velocityIterations;
     return this;
 }
