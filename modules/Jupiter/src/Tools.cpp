@@ -27,7 +27,7 @@ void Tools::glError(const std::string& file, int line, const std::string& functi
         std::stringstream ss;
         ss <<
             (file.empty()       ? "" : file            ) << ":" <<
-            (-1 == line         ? "" : to_string(line) ) << ":" << // в MinGW нет to_string
+            (-1 == line         ? "" : to_string(line) ) << ":" << // в MinGW нет to_string, здесь кастомный
             (function.empty()   ? "" : function        ) <<
             ":glGetError: " << std::hex << err << ", " << glGetString(err);
         throw JupiterError(ss.str());
@@ -45,5 +45,5 @@ uint32_t Tools::upperPowerOfTwo(uint32_t v) {
     return v;
 }
 
-} /* namespace ndk_game */
+} /* namespace jupiter */
 

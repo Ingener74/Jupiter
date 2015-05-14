@@ -13,7 +13,6 @@
 namespace jupiter {
 
 Box2dNode::Box2dNode(Box2dVisitor* v) {
-
     b2BodyDef bodyDef;
     bodyDef.position.Set(getPositionX(), getPositionY());
 
@@ -22,7 +21,7 @@ Box2dNode::Box2dNode(Box2dVisitor* v) {
     b2PolygonShape box;
     box.SetAsBox(100, 100);
 
-//    _body->CreateFixture(&box, 0.f);
+    _body->CreateFixture(&box, 0.3f);
 }
 
 Box2dNode::~Box2dNode() {
