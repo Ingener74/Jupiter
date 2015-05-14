@@ -1,8 +1,8 @@
 
 #if defined(SWIGPYTHON)
-    %module PyJupiter
+    %module(directors="1") PyJupiter
 #elif defined(SWIGLUA)
-    %module LuaJupiter
+    %module(directors="1") LuaJupiter
 #else
     #warning no tupemaps
 #endif

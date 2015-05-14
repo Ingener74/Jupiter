@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include "Jupiter/JupiterError.h"
 #include "Jupiter/Listener.h"
 
 namespace jupiter {

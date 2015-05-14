@@ -47,13 +47,13 @@ Sprite* Sprite::accept(NodeVisitor* nv) {
     if (!nv)
         throw JupiterError("Sprite: visitor is nullptr");
 
-    if (visible) {
+    if (_visible) {
 
         nv->push(this);
 
         nv->visit(this);
 
-        for (const auto& i : nodes) {
+        for (const auto& i : _nodes) {
             i->accept(nv);
         }
 

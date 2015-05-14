@@ -17,7 +17,7 @@ using namespace boost::property_tree;
 JsonNode::JsonNode(const ptree& node) :
         Node(/*node.get<std::string>("name")*/) {
 
-    visible = node.get<bool>("visible");
+    _visible = node.get<bool>("visible");
 
     /*
      if (auto controller_ = node.get_optional<string>("controller")) {

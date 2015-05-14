@@ -38,6 +38,8 @@
 #include "Jupiter/RenderVisitor.h"
 #include "Jupiter/PrintVisitor.h"
 
+#include "Jupiter/MoveListener.h"
+
 namespace jupiter {
 
 void initJupiter();

@@ -36,8 +36,20 @@ except ImportError as e:
     sys.exit(1)
 
 
+class BgMove(j.MoveListener):
+    def __init__(self, window):
+        super(BgMove, self).__init__()
+        
+        self.window = window
+    
+    def move(self, x, y, z):
+        print '(', x, '; ', y, '; ',z, ')'
+        if x > 2:
+            window.close()
+
 class FallingBox(object):
-    def __init__(self, width, height):
+    def __init__(self, window, width, height):
+        
         j.File.setBase('../../samples/Box')
         
         self.shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
@@ -57,10 +69,12 @@ class FallingBox(object):
         bgImage = j.PngImage('Resources/bg.png')
         self.bgTexture = j.ImageTexture(bgImage)
         self.bgShape = j.ImageShape(bgImage)
+        self.bgMove = BgMove(window)
         self.bg = j.Sprite()
         self.bg.setProgram(self.shader).\
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
+            setMoveListener(self.bgMove).\
             setVisible(True).\
             setParent(self.rn).\
             setScale(0.08, 0.08)
@@ -88,7 +102,7 @@ class OpenGLWidget(QGLWidget):
         
         try:
             j.initJupiter()
-            self.falling_box = FallingBox(self.width(), self.height())
+            self.falling_box = FallingBox(self, self.width(), self.height())
             
             self.startTimer(1000.0 / 30.0)
             
@@ -104,6 +118,7 @@ class OpenGLWidget(QGLWidget):
         if self.falling_box == None:
             pass
         else:
+            self.falling_box.bg.translateX(0.5)
             self.falling_box.game.draw()
         
         self.swapBuffers()

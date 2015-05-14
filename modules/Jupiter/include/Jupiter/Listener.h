@@ -24,8 +24,8 @@ public:
     Listener();
     virtual ~Listener();
 
-    Node* getNode();
-    Listener* setNode(Node*);
+    virtual Node* getNode();
+    virtual Listener* setNode(Node*);
 
 private:
     Node* _node = nullptr;

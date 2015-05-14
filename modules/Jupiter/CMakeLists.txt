@@ -40,6 +40,9 @@ set(SOURCES
     src/FileShader.cpp
 
     src/Controller.cpp
+
+    src/Listener.cpp
+    src/MoveListener.cpp
 )
 
 if(ANDROID)

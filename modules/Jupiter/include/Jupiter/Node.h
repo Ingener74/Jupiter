@@ -26,6 +26,7 @@ namespace jupiter {
 
 class NodeVisitor;
 class Controller;
+class MoveListener;
 
 class Node {
 public:
@@ -83,15 +84,19 @@ public:
     Node* setController(Controller* controller);
     Controller* getController();
 
+    Node* setMoveListener(MoveListener*);
+    MoveListener* getMoveListener();
+
     const glm::mat4& getModel() const;
     Node* setModel(const glm::mat4& model);
 
 protected:
-    bool visible = true;
-    glm::mat4 model;
-    Controller* controller = nullptr;
-    Node* parent = nullptr;
-    std::list<Node*> nodes;
+    bool               _visible      = true;
+    glm::mat4          _model;
+    Controller*        _controller   = nullptr;
+    Node*              _parent       = nullptr;
+    std::list<Node*>   _nodes;
+    MoveListener*      _moveListener = nullptr;
 };
 
 } /* namespace jupiter */

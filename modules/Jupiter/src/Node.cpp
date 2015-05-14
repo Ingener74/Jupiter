@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "Jupiter/Controller.h"
+#include "Jupiter/MoveListener.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/Node.h"
@@ -27,17 +28,17 @@ Node* Node::addNode(Node* node) {
     if (!node)
         throw JupiterError("Node add nullptr node");
 
-    nodes.push_back(node->setParent(this));
+    _nodes.push_back(node->setParent(this));
     return this;
 }
 
 Node* Node::setParent(Node* parent) {
-    Node::parent = parent;
+    Node::_parent = parent;
     return this;
 }
 
 Node* Node::getParent() {
-    return parent;
+    return _parent;
 }
 
 float Node::getRotationX() const {
@@ -53,189 +54,180 @@ float Node::getRotationZ() const {
 }
 
 Node* Node::setRotation(float x, float y, float z) {
-    if (controller)
-        controller->onRotate(x, y, z);
+    if (_controller)
+        _controller->onRotate(x, y, z);
 
     return this;
 }
 
 Node* Node::setRotationX(float x) {
-    if (controller)
-        controller->onRotate(x, 0, 0);
+    if (_controller)
+        _controller->onRotate(x, 0, 0);
 
     return this;
 }
 
 Node* Node::setRotationY(float y) {
-    if (controller)
-        controller->onRotate(0, y, 0);
+    if (_controller)
+        _controller->onRotate(0, y, 0);
 
     return this;
 }
 
 Node* Node::setRotationZ(float z) {
-    if (controller)
-        controller->onRotate(0, 0, z);
+    if (_controller)
+        _controller->onRotate(0, 0, z);
 
     return this;
 }
 
 Node* Node::rotate(float x, float y, float z) {
-    if (controller)
-        controller->onRotate(x, y, z);
+    if (_controller)
+        _controller->onRotate(x, y, z);
 
     return this;
 }
 
 Node* Node::rotateX(float angle) {
-    model = glm::rotate(model, angle, glm::vec3(1.f, 0.f, 0.f));
-    if (controller)
-        controller->onRotate(angle, 0, 0);
+    _model = glm::rotate(_model, angle, glm::vec3(1.f, 0.f, 0.f));
+    if (_controller)
+        _controller->onRotate(angle, 0, 0);
 
     return this;
 }
 
 Node* Node::rotateY(float angle) {
-    model = glm::rotate(model, angle, glm::vec3(0.f, 1.f, 0.f));
-    if (controller)
-        controller->onRotate(0, angle, 0);
+    _model = glm::rotate(_model, angle, glm::vec3(0.f, 1.f, 0.f));
+    if (_controller)
+        _controller->onRotate(0, angle, 0);
 
     return this;
 }
 
 Node* Node::rotateZ(float angle) {
-    model = glm::rotate(model, angle, glm::vec3(0.f, 0.f, 1.f));
-    if (controller)
-        controller->onRotate(0, 0, angle);
+    _model = glm::rotate(_model, angle, glm::vec3(0.f, 0.f, 1.f));
+    if (_controller)
+        _controller->onRotate(0, 0, angle);
 
     return this;
 }
 
 float Node::getPositionX() const {
-    return model[3].x;
+    return _model[3].x;
 }
 
 float Node::getPositionY() const {
-    return model[3].y;
+    return _model[3].y;
 }
 
 float Node::getPositionZ() const {
-    return model[3].z;
+    return _model[3].z;
 }
 
 Node* Node::setPosition(float x, float y, float z) {
-    model[3].x = x;
-    model[3].y = y;
-    model[3].z = z;
-    if (controller)
-        controller->onPositionChanged(x, y, z);
+    _model[3].x = x;
+    _model[3].y = y;
+    _model[3].z = z;
+    if (_controller)
+        _controller->onPositionChanged(x, y, z);
 
     return this;
 }
 
 Node* Node::setPositionX(float x) {
-    model[3].x = x;
-    if (controller)
-        controller->onPositionChanged(x, 0.f, 0.f);
+    _model[3].x = x;
+    if (_controller)
+        _controller->onPositionChanged(x, 0.f, 0.f);
 
     return this;
 }
 
 Node* Node::setPositionY(float y) {
-    model[3].y = y;
-    if (controller)
-        controller->onPositionChanged(0.f, y, 0.f);
+    _model[3].y = y;
+    if (_controller)
+        _controller->onPositionChanged(0.f, y, 0.f);
 
     return this;
 }
 
 Node* Node::setPositionZ(float z) {
-    model[3].z = z;
-    if (controller)
-        controller->onPositionChanged(0.f, 0.f, z);
+    _model[3].z = z;
+    if (_controller)
+        _controller->onPositionChanged(0.f, 0.f, z);
 
     return this;
 }
 
 Node* Node::translate(float x, float y, float z) {
-    model = glm::translate(model, glm::vec3 { x, y, z });
-    if (controller)
-        controller->onMove(x, y, z);
+    _model = glm::translate(_model, glm::vec3 { x, y, z });
+    if (_controller)
+        _controller->onMove(x, y, z);
+
+    if(_moveListener)
+        _moveListener->move(getPositionX(), getPositionY(), getPositionZ());
 
     return this;
 }
 
 Node* Node::translateX(float x) {
-    model = glm::translate(model, glm::vec3 { x, 0.f, 0.f });
-    if (controller)
-        controller->onMove(x, 0, 0);
-
-    return this;
+    return translate(x, 0.f, 0.f);
 }
 
 Node* Node::translateY(float y) {
-    model = glm::translate(model, glm::vec3 { 0.f, y, 0.f });
-    if (controller)
-        controller->onMove(0, y, 0);
-
-    return this;
+    return translate(0.f, y, 0.f);
 }
 
 Node* Node::translateZ(float z) {
-    model = glm::translate(model, glm::vec3 { 0.f, 0.f, z });
-    if (controller)
-        controller->onMove(0, 0, z);
-
-    return this;
+    return translate(0.f, 0.f, z);
 }
 
 float Node::getScaleX() const {
-    return model[0].x;
+    return _model[0].x;
 }
 
 float Node::getScaleY() const {
-    return model[1].y;
+    return _model[1].y;
 }
 
 Node* Node::setScale(float x, float y) {
-    model[0].x = x;
-    model[1].y = y;
+    _model[0].x = x;
+    _model[1].y = y;
     return this;
 }
 
 Node* Node::setScaleX(float x) {
-    model[0].x = x;
+    _model[0].x = x;
     return this;
 }
 
 Node* Node::setScaleY(float y) {
-    model[1].y = y;
+    _model[1].y = y;
     return this;
 }
 
 Node* Node::scale(float x, float y) {
-    model = glm::scale(model, glm::vec3 { x, y, 0.f });
+    _model = glm::scale(_model, glm::vec3 { x, y, 0.f });
     return this;
 }
 
 Node* Node::scaleX(float x) {
-    model = glm::scale(model, glm::vec3 { x, 0.f, 0.f });
+    _model = glm::scale(_model, glm::vec3 { x, 0.f, 0.f });
     return this;
 }
 
 Node* Node::scaleY(float y) {
-    model = glm::scale(model, glm::vec3 { 0.f, y, 0.f });
+    _model = glm::scale(_model, glm::vec3 { 0.f, y, 0.f });
     return this;
 }
 
 bool Node::isVisible() const {
-    return visible;
+    return _visible;
 }
 
 Node* Node::setVisible(bool isVisible) {
-    visible = isVisible;
-    if (controller)
-        controller->onVisibleChanged(isVisible);
+    _visible = isVisible;
+    if (_controller)
+        _controller->onVisibleChanged(isVisible);
 
     return this;
 }
@@ -244,13 +236,13 @@ Node* Node::accept(NodeVisitor* nv) {
     if (!nv)
         throw JupiterError("Node: visitor is nullptr");
 
-    if (visible) {
+    if (_visible) {
 
         nv->push(this);
 
         nv->visit(this);
 
-        for (const auto& i : nodes) {
+        for (const auto& i : _nodes) {
             i->accept(nv);
         }
 
@@ -261,22 +253,31 @@ Node* Node::accept(NodeVisitor* nv) {
 }
 
 Node* Node::setController(Controller* controller) {
-    Node::controller = controller;
+    Node::_controller = controller;
     return this;
 }
 
 Controller* Node::getController() {
-    return controller;
+    return _controller;
+}
+
+Node* Node::setMoveListener(MoveListener* moveListener) {
+    _moveListener = moveListener;
+    _moveListener->setNode(this);
+    return this;
+}
+
+MoveListener* Node::getMoveListener() {
+    return _moveListener ? _moveListener : throw JupiterError("no move listener");
 }
 
 const glm::mat4& Node::getModel() const {
-    return model;
+    return _model;
 }
 
-Node* jupiter::Node::setModel(const glm::mat4& model) {
-    Node::model = model;
+Node* Node::setModel(const glm::mat4& model) {
+    Node::_model = model;
     return this;
 }
 
 } /* namespace jupiter */
-
