@@ -107,8 +107,9 @@ class FallingBox(object):
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
-        self.ground = j.Sprite()
-        self.ground.\
+        
+        self.ground1 = j.Sprite()
+        self.ground1.\
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
@@ -116,10 +117,20 @@ class FallingBox(object):
             translate(0.0, -40.0, 10.0).\
             scale(0.1)
         
+        self.ground2 = j.Sprite()
+        self.ground2.\
+            setProgram(self.shader).\
+            setTexture(self.groundTex).\
+            setShape(self.groundShape).\
+            setVisible(True).\
+            translate(40.0, -40.0, 10.0).\
+            scale(0.1)
+        
         self.rn.\
             addNode(self.bg).\
             addNode(self.box).\
-            addNode(self.ground)
+            addNode(self.ground1).\
+            addNode(self.ground2)
         
         self.game = j.Game()
         self.game.setRootNode(self.rn).\

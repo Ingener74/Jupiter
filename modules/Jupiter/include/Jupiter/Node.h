@@ -42,12 +42,12 @@ public:
     float getRotationY() const;
     float getRotationZ() const;
 
-    Node* setRotation(float x, float y, float z);
+    virtual Node* setRotation(float x, float y, float z);
     Node* setRotationX(float x);
     Node* setRotationY(float y);
     Node* setRotationZ(float z);
 
-    Node* rotate(float x, float y, float z);
+    virtual Node* rotate(float x, float y, float z);
     Node* rotateX(float angle);
     Node* rotateY(float y);
     Node* rotateZ(float z);

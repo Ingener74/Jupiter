@@ -21,39 +21,16 @@ public:
     virtual ~ContactListener() {
     }
 
-    /// Called when two fixtures begin to touch.
-    virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
-
-    /// Called when two fixtures cease to touch.
-    virtual void EndContact(b2Contact* contact) { B2_NOT_USED(contact); }
-
-    /// This is called after a contact is updated. This allows you to inspect a
-    /// contact before it goes to the solver. If you are careful, you can modify the
-    /// contact manifold (e.g. disable contact).
-    /// A copy of the old manifold is provided so that you can detect changes.
-    /// Note: this is called only for awake bodies.
-    /// Note: this is called even when the number of contact points is zero.
-    /// Note: this is not called for sensors.
-    /// Note: if you set the number of contact points to zero, you will not
-    /// get an EndContact callback. However, you may get a BeginContact callback
-    /// the next step.
-    virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
-    {
-        B2_NOT_USED(contact);
-        B2_NOT_USED(oldManifold);
+    virtual void BeginContact(b2Contact* contact) {
     }
 
-    /// This lets you inspect a contact after the solver is finished. This is useful
-    /// for inspecting impulses.
-    /// Note: the contact manifold does not include time of impact impulses, which can be
-    /// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
-    /// in a separate data structure.
-    /// Note: this is only called for contacts that are touching, solid, and awake.
-    virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
-    {
-        B2_NOT_USED(contact);
-        B2_NOT_USED(impulse);
+    virtual void EndContact(b2Contact* contact) {
+    }
 
+    virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
+    }
+
+    virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
         auto nodeA = static_cast<Box2dNode*>(contact->GetFixtureA()->GetBody()->GetUserData());
         jassert(nodeA, "bad node A")
 
@@ -73,7 +50,6 @@ Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityI
     _world = make_unique_<b2World>(gravity);
 
     _contactListener = make_unique_<ContactListener>();
-
     _world->SetContactListener(_contactListener.get());
 }
 
@@ -92,8 +68,7 @@ void Box2dVisitor::pop() {
 
 void Box2dVisitor::visit(Box2dNode* node) {
     jassert(node, "node is empty")
-
-    node->setPosition(0.f, 0.f, 0.f);
+    node->setPosition(node->getBox2dX(), node->getBox2dY(), node->getPositionZ());
 }
 
 void Box2dVisitor::end() {
