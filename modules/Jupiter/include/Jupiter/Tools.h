@@ -42,8 +42,8 @@ public:
     static void glError(const std::string& file = {}, int line = -1, const std::string& function = {});
 };
 
-#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
-//#define CHECK_GL_ERROR
+//#define CHECK_GL_ERROR Tools::glError(__FILE__, __LINE__, __FUNCTION__);
+#define CHECK_GL_ERROR
 
 } /* namespace ndk_game */
 

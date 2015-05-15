@@ -8,6 +8,13 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_COLLISIONLISTENER_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_COLLISIONLISTENER_H_
 
+#ifdef SWIG
+    namespace jupiter {
+        %feature("director") CollisionListener;
+    }
+#else
+#endif
+
 #include "Listener.h"
 
 namespace jupiter {

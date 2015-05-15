@@ -72,6 +72,16 @@ string to_string_(const T& wstr){
     return s;
 }
 
+class BoxMove: public MoveListener, public ScaleListener{
+public:
+    void move(float, float, float) {
+    }
+    void scale(float, float, float) {
+    }
+};
+
+BoxMove bm;
+
 bool createGameDirect(const variables_map& vm) {
 
     if (!vm.count("base"))
@@ -153,6 +163,8 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(boxTexture.get())
         ->setShape(boxShape.get())
         ->setController(boxController.get())
+        ->setMoveListener(&bm)
+        ->setScaleListener(&bm)
         ->setVisible(true)
         ->translate(0.f, 150.f, 20.f)
         ->scale(.1f)

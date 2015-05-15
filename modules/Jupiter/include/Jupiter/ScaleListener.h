@@ -8,6 +8,13 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_SCALELISTENER_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_SCALELISTENER_H_
 
+#ifdef SWIG
+    namespace jupiter {
+        %feature("director") ScaleListener;
+    }
+#else
+#endif
+
 #include "Listener.h"
 
 namespace jupiter {

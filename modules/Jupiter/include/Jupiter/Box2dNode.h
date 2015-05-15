@@ -25,6 +25,8 @@ public:
     virtual Box2dNode* setPosition(float x, float y, float z);
     virtual Box2dNode* translate(float x, float y, float z);
 
+    Box2dNode* collision(Box2dNode*);
+
 private:
     b2Body* _body = nullptr;
     CollisionListener* _collisionListener = nullptr;

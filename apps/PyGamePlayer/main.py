@@ -6,7 +6,7 @@ import math
 
 from PySide.QtCore import *
 from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox
-from PySide.QtOpenGL import QGLWidget, QGLFormat
+from PySide.QtOpenGL import QGLWidget, QGLFormat, QGLContext
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
@@ -36,18 +36,6 @@ except ImportError as e:
     sys.exit(1)
 
 
-class BgMove(j.MoveListener):
-    def __init__(self, window):
-        super(BgMove, self).__init__()
-        
-        self.window = window
-    
-    def move(self, x, y, z):
-        pass
-#         print '(', x, '; ', y, '; ',z, ')'
-#         if x > 2:
-#             self.window.close()
-
 class BoxMove(j.MoveListener):
     def __init__(self, window):
         super(BoxMove, self).__init__()
@@ -58,9 +46,14 @@ class BoxMove(j.MoveListener):
             self.window.close()
 
 
+class BoxScale(j.ScaleListener):
+    def scale(self, x, y, z):
+        print [x, y, z]
+
+
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 100 #800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -87,17 +80,16 @@ class FallingBox(object):
         bgImage = j.PngImage('Resources/bg.png')
         self.bgTexture = j.ImageTexture(bgImage)
         self.bgShape = j.ImageShape(bgImage)
-        self.bgMove = BgMove(window)
         self.bg = j.Sprite()
         self.bg.\
             setProgram(self.shader).\
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
-            setMoveListener(self.bgMove).\
             setVisible(True).\
             setScale(0.11)
         
         self.boxMove = BoxMove(window)
+        self.boxScale = BoxScale()
         boxImage = j.PngImage('Resources/box.png')
         self.boxTex = j.ImageTexture(boxImage)
         self.boxShape = j.ImageShape(boxImage)
@@ -107,6 +99,7 @@ class FallingBox(object):
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxMove).\
+            setScaleListener(self.boxScale).\
             setVisible(True).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
@@ -144,6 +137,11 @@ class OpenGLWidget(QGLWidget):
     def initializeGL(self):
         self.setWindowTitle(PLAYER_TITLE)
         self.resize(FallingBox.WIDTH, FallingBox.HEIGTH)
+        
+        print 'Vendor   ', str(glGetString(GL_VENDOR))
+        print 'Renderer ', str(glGetString(GL_RENDERER))
+        print 'OpenGL   ', str(glGetString(GL_VERSION))
+        print 'GLSL     ', str(glGetString(GL_SHADING_LANGUAGE_VERSION))
         
         glEnable(GL_TEXTURE_2D)
         glEnable(GL_DEPTH_TEST)
@@ -187,12 +185,14 @@ class OpenGLWidget(QGLWidget):
 def main():
     app = QApplication(sys.argv)
     
-    # format = QGLFormat()
-    # format.setVersion(3, 3)
-    # format.setProfile(QGLFormat.CoreProfile)
-    # window = OpenGLWidget(format)
+#     format = QGLFormat()
+#     format.setVersion(3, 3)
+#     format.setProfile(QGLFormat.CoreProfile)
+#     format.setSampleBuffers(True)
+#     window = OpenGLWidget(format)
 
     window = OpenGLWidget()
+    
     window.show()
      
     sys.exit(app.exec_())

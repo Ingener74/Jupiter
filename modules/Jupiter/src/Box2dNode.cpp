@@ -7,6 +7,7 @@
 
 #include <Box2D/Box2D.h>
 
+#include "Jupiter/CollisionListener.h"
 #include "Jupiter/Box2dVisitor.h"
 #include "Jupiter/Box2dNode.h"
 
@@ -22,6 +23,8 @@ Box2dNode::Box2dNode(Box2dVisitor* v) {
     box.SetAsBox(100, 100);
 
     _body->CreateFixture(&box, 0.3f);
+
+    _body->SetUserData(this);
 }
 
 Box2dNode::~Box2dNode() {
@@ -36,6 +39,12 @@ Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
     _body->SetTransform(b2Vec2(getPositionX(), getPositionY()), getRotationZ());
+    return this;
+}
+
+Box2dNode* Box2dNode::collision(Box2dNode* node) {
+    if (_collisionListener)
+        _collisionListener->collision(node);
     return this;
 }
 

@@ -21,6 +21,7 @@ public:
     virtual ~ContactListener() {
     }
 
+    /// Called when two fixtures begin to touch.
     virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
 
     /// Called when two fixtures cease to touch.
@@ -52,6 +53,15 @@ public:
     {
         B2_NOT_USED(contact);
         B2_NOT_USED(impulse);
+
+        auto nodeA = static_cast<Box2dNode*>(contact->GetFixtureA()->GetBody()->GetUserData());
+        jassert(nodeA, "bad node A")
+
+        auto nodeB = static_cast<Box2dNode*>(contact->GetFixtureB()->GetBody()->GetUserData());
+        jassert(nodeB, "bad node B")
+
+        nodeA->collision(nodeB);
+        nodeB->collision(nodeA);
     }
 };
 
