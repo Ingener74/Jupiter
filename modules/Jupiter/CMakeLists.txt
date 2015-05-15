@@ -44,9 +44,11 @@ set(SOURCES
 
     src/Listener.cpp
     src/MoveListener.cpp
+    src/ScaleListener.cpp
+    src/CollisionListener.cpp
     
     src/Box2dNode.cpp
-    src/Box2DVisitor.cpp
+    src/Box2dVisitor.cpp
 )
 
 if(ANDROID)

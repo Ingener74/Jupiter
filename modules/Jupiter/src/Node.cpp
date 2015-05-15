@@ -9,6 +9,7 @@
 
 #include "Jupiter/Controller.h"
 #include "Jupiter/MoveListener.h"
+#include "Jupiter/ScaleListener.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/Node.h"
@@ -26,9 +27,6 @@ Node::~Node() {
 
 Node* Node::addNode(Node* node) {
     jassert(node, "Node add nullptr node");
-
-//    jassert(false, "test")
-
     _nodes.push_back(node->setParent(this));
     return this;
 }
@@ -177,35 +175,56 @@ float Node::getScaleY() const {
     return _model[1].y;
 }
 
-Node* Node::setScale(float x, float y) {
+float Node::getScaleZ() const {
+    return _model[2].z;
+}
+
+Node* Node::setScale(float x, float y, float z) {
     _model[0].x = x;
     _model[1].y = y;
+    _model[2].z = z;
+    if (_scaleListener)
+        _scaleListener->scale(x, y, z);
     return this;
+}
+
+Node* Node::setScale(float scale) {
+    return setScale(scale, scale, scale);
 }
 
 Node* Node::setScaleX(float x) {
-    _model[0].x = x;
-    return this;
+    return setScale(x, 0.f, 0.f);
 }
 
 Node* Node::setScaleY(float y) {
-    _model[1].y = y;
+    return setScale(0.f, y, 0.f);
+}
+
+Node* Node::setScaleZ(float z) {
+    return setScale(0.f, 0.f, z);
+}
+
+Node* Node::scale(float x, float y, float z) {
+    _model = glm::scale(_model, glm::vec3 { x, y, z });
+    if (_scaleListener)
+        _scaleListener->scale(x, y, z);
     return this;
 }
 
-Node* Node::scale(float x, float y) {
-    _model = glm::scale(_model, glm::vec3 { x, y, 0.f });
-    return this;
+Node* Node::scale(float s) {
+    return scale(s, s, s);
 }
 
 Node* Node::scaleX(float x) {
-    _model = glm::scale(_model, glm::vec3 { x, 0.f, 0.f });
-    return this;
+    return scale(x, 0.f, 0.f);
 }
 
 Node* Node::scaleY(float y) {
-    _model = glm::scale(_model, glm::vec3 { 0.f, y, 0.f });
-    return this;
+    return scale(0.f, y, 0.f);
+}
+
+Node* Node::scaleZ(float z) {
+    return scale(0.f, 0.f, z);
 }
 
 bool Node::isVisible() const {
@@ -265,6 +284,16 @@ const glm::mat4& Node::getModel() const {
 
 Node* Node::setModel(const glm::mat4& model) {
     Node::_model = model;
+    return this;
+}
+
+ScaleListener* Node::getScaleListener() {
+    jassert(_scaleListener, "no scale listener")
+    return _scaleListener;
+}
+
+Node* Node::setScaleListener(ScaleListener* scaleListener) {
+    _scaleListener = scaleListener;
     return this;
 }
 

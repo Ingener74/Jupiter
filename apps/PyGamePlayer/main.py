@@ -57,6 +57,7 @@ class BoxMove(j.MoveListener):
         if y < -30:
             self.window.close()
 
+
 class FallingBox(object):
     
     WIDTH  = 800
@@ -94,7 +95,7 @@ class FallingBox(object):
             setShape(self.bgShape).\
             setMoveListener(self.bgMove).\
             setVisible(True).\
-            setScale(0.11, 0.11)
+            setScale(0.11)
         
         self.boxMove = BoxMove(window)
         boxImage = j.PngImage('Resources/box.png')
@@ -108,7 +109,7 @@ class FallingBox(object):
             setMoveListener(self.boxMove).\
             setVisible(True).\
             translate(0.0, 40.0, 10.0).\
-            setScale(0.02, 0.02)
+            setScale(0.02)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -120,7 +121,7 @@ class FallingBox(object):
             setShape(self.groundShape).\
             setVisible(True).\
             translate(0.0, -40.0, 10.0).\
-            setScale(0.1, 0.1)
+            scale(0.1)
         
         self.rn.\
             addNode(self.bg).\

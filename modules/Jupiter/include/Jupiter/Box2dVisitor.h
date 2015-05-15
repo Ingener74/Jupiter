@@ -16,6 +16,7 @@
 #include "NodeVisitor.h"
 
 class b2World;
+class b2ContactListener;
 
 namespace jupiter {
 
@@ -49,6 +50,7 @@ private:
     float _timeStep = 0.f;
     int _positionIterations = 2;
     int _velocityIterations = 6;
+    std::unique_ptr<b2ContactListener> _contactListener;
 };
 
 } /* namespace jupiter */

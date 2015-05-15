@@ -27,6 +27,7 @@ namespace jupiter {
 class NodeVisitor;
 class Controller;
 class MoveListener;
+class ScaleListener;
 
 class Node {
 public:
@@ -55,26 +56,31 @@ public:
     float getPositionY() const;
     float getPositionZ() const;
 
-    Node* setPosition(float x, float y, float z);
+    virtual Node* setPosition(float x, float y, float z);
     Node* setPositionX(float x);
     Node* setPositionY(float y);
     Node* setPositionZ(float z);
 
-    Node* translate(float x, float y, float z);
+    virtual Node* translate(float x, float y, float z);
     Node* translateX(float x);
     Node* translateY(float y);
     Node* translateZ(float z);
 
     float getScaleX() const;
     float getScaleY() const;
+    float getScaleZ() const;
 
-    Node* setScale(float x, float y);
+    virtual Node* setScale(float x, float y, float z);
+    Node* setScale(float scale);
     Node* setScaleX(float x);
     Node* setScaleY(float y);
+    Node* setScaleZ(float z);
 
-    Node* scale(float x, float y);
+    virtual Node* scale(float x, float y, float z);
+    Node* scale(float s);
     Node* scaleX(float x);
     Node* scaleY(float y);
+    Node* scaleZ(float z);
 
     bool isVisible() const;
     Node* setVisible(bool isVisible);
@@ -87,16 +93,20 @@ public:
     Node* setMoveListener(MoveListener*);
     MoveListener* getMoveListener();
 
+    Node* setScaleListener(ScaleListener* scaleListener);
+    ScaleListener* getScaleListener();
+
     const glm::mat4& getModel() const;
     Node* setModel(const glm::mat4& model);
 
 protected:
-    bool               _visible      = true;
+    bool               _visible         = true;
     glm::mat4          _model;
-    Controller*        _controller   = nullptr;
-    Node*              _parent       = nullptr;
+    Controller*        _controller      = nullptr;
+    Node*              _parent          = nullptr;
     std::list<Node*>   _nodes;
-    MoveListener*      _moveListener = nullptr;
+    MoveListener*      _moveListener    = nullptr;
+    ScaleListener*     _scaleListener   = nullptr;
 };
 
 } /* namespace jupiter */

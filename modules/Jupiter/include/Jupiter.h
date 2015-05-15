@@ -37,9 +37,13 @@
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/RenderVisitor.h"
 #include "Jupiter/PrintVisitor.h"
+
 #include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Box2dNode.h"
 
 #include "Jupiter/MoveListener.h"
+#include "Jupiter/ScaleListener.h"
+#include "Jupiter/CollisionListener.h"
 
 namespace jupiter {
 

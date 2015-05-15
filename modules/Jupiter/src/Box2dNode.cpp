@@ -7,7 +7,7 @@
 
 #include <Box2D/Box2D.h>
 
-#include "Jupiter/Box2DVisitor.h"
+#include "Jupiter/Box2dVisitor.h"
 #include "Jupiter/Box2dNode.h"
 
 namespace jupiter {
@@ -25,6 +25,18 @@ Box2dNode::Box2dNode(Box2dVisitor* v) {
 }
 
 Box2dNode::~Box2dNode() {
+}
+
+Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
+    Node::setPosition(x, y, z);
+    _body->SetTransform(b2Vec2(getPositionX(), getPositionY()), getRotationZ());
+    return this;
+}
+
+Box2dNode* Box2dNode::translate(float x, float y, float z) {
+    Node::translate(x, y, z);
+    _body->SetTransform(b2Vec2(getPositionX(), getPositionY()), getRotationZ());
+    return this;
 }
 
 } /* namespace jupiter */

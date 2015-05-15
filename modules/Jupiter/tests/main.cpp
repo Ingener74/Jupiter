@@ -187,7 +187,7 @@ TEST_F(ControllerTest, Test_scaleY){
 
 TEST_F(ControllerTest, Test_scale){
     EXPECT_CALL(c, onScale(10.f, 20.f, 0.f)).Times(1);
-    n.scale(10.f, 20.f);
+    n.scale(10.f, 20.f, 1.f);
 }
 
 TEST_F(ControllerTest, Test_scaleChangedX){
@@ -202,7 +202,7 @@ TEST_F(ControllerTest, Test_scaleChangedY){
 
 TEST_F(ControllerTest, Test_scaleChanged){
     EXPECT_CALL(c, onScaleChanged(10.f, 20.f, 0.f)).Times(1);
-    n.setScale(10.f, 20.f);
+    n.setScale(10.f, 20.f, 0.f);
 }
 
 TEST_F(ControllerTest, Test_visibleChangedTrue){
