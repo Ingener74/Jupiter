@@ -5,8 +5,10 @@ import sys
 import math
 
 from PySide.QtCore import *
-from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox
+from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox, QWidget
 from PySide.QtOpenGL import QGLWidget, QGLFormat, QGLContext
+
+from move import Ui_MoveDialog
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
@@ -48,12 +50,12 @@ class BoxMove(j.MoveListener):
 
 class BoxScale(j.ScaleListener):
     def scale(self, x, y, z):
-        print [x, y, z]
+        pass
 
 
 class FallingBox(object):
     
-    WIDTH  = 100 #800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -123,14 +125,24 @@ class FallingBox(object):
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
             setVisible(True).\
-            translate(40.0, -40.0, 10.0).\
+            translate(30.0, -40.0, 10.0).\
+            scale(0.1)
+        
+        self.ground3 = j.Sprite()
+        self.ground3.\
+            setProgram(self.shader).\
+            setTexture(self.groundTex).\
+            setShape(self.groundShape).\
+            setVisible(True).\
+            translate(-30.0, -40.0, 10.0).\
             scale(0.1)
         
         self.rn.\
             addNode(self.bg).\
             addNode(self.box).\
             addNode(self.ground1).\
-            addNode(self.ground2)
+            addNode(self.ground2).\
+            addNode(self.ground3)
         
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
@@ -139,6 +151,29 @@ class FallingBox(object):
             setHeight(height)
             # addVisitor(self.print_visitor).\
 
+
+class MoveWidget(QWidget, Ui_MoveDialog):
+    def __init__(self, game, parent=None):
+        super(MoveWidget, self).__init__(parent)
+        self.setupUi(self)
+        self.game = game
+        
+        self.pushButtonUp.clicked.connect(self.upClick)
+        self.pushButtonDown.clicked.connect(self.downClick)
+        self.pushButtonLeft.clicked.connect(self.leftClick)
+        self.pushButtonRight.clicked.connect(self.rightClick)
+        
+    def upClick(self):
+        self.game.box.translateY(10 ** self.comboBoxValue.currentIndex())
+    
+    def downClick(self):
+        self.game.box.translateY(-10 ** self.comboBoxValue.currentIndex())
+    
+    def leftClick(self):
+        self.game.box.translateX(-10 ** self.comboBoxValue.currentIndex())
+    
+    def rightClick(self):
+        self.game.box.translateX(10 ** self.comboBoxValue.currentIndex())
 
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
@@ -161,6 +196,9 @@ class OpenGLWidget(QGLWidget):
             j.initJupiter()
             self.falling_box = FallingBox(self, self.width(), self.height())
             
+            self.moveWindow = MoveWidget(self.falling_box)
+            self.moveWindow.show()
+            
             self.startTimer(1000.0 / 30.0)
             
         except RuntimeError, e:
@@ -176,8 +214,8 @@ class OpenGLWidget(QGLWidget):
 #             self.falling_box.bg.\
 #                 translateX(1).\
 #                 rotateZ(0.005)
-            self.falling_box.box.\
-                translateY(-20)
+#             self.falling_box.box.\
+#                 translateY(-20)
 #                 rotateZ(0.03).\
             
             self.falling_box.game.draw()
@@ -191,6 +229,9 @@ class OpenGLWidget(QGLWidget):
     def keyPressEvent(self, event):
         if event.nativeScanCode() == 9:
             raise SystemExit
+    
+    def closeEvent(self, e):
+        self.moveWindow.close()
 
 
 def main():
