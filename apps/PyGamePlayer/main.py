@@ -175,6 +175,7 @@ class MoveWidget(QWidget, Ui_MoveDialog):
     def rightClick(self):
         self.game.box.translateX(10 ** self.comboBoxValue.currentIndex())
 
+
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
         super(OpenGLWidget, self).__init__(parent, None)
