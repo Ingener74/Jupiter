@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PySide.QtGui import QWidget, QApplication
-from main_editor_window import Ui_EditorMain
+from PySide.QtGui import QWidget, QApplication, QMainWindow
 
-class MainEditorWindow(QWidget, Ui_EditorMain):
+from res import *
+
+class MainEditorWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainEditorWindow,self).__init__(parent)
         self.setupUi(self)

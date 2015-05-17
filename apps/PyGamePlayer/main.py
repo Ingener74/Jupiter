@@ -209,9 +209,7 @@ class OpenGLWidget(QGLWidget):
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        if self.falling_box == None:
-            pass
-        else:
+        if self.falling_box != None:
 #             self.falling_box.bg.\
 #                 translateX(1).\
 #                 rotateZ(0.005)
@@ -228,7 +226,7 @@ class OpenGLWidget(QGLWidget):
         self.update()
     
     def keyPressEvent(self, event):
-        if event.nativeScanCode() == 9:
+        if event.key() == Qt.Key_Escape:
             raise SystemExit
     
     def closeEvent(self, e):

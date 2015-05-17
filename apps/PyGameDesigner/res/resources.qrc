@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/">
+    <file>add.png</file>
+    <file>rb_full.png</file>
+    <file>stationery.png</file>
+    <file>qt_level_editor.png</file>
+  </qresource>
+</RCC>

@@ -12,3 +12,4 @@ libs
 .pyc
 
 /build-linux/
+/build-win/
