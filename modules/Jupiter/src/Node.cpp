@@ -299,7 +299,7 @@ Node* Node::setScaleListener(ScaleListener* scaleListener) {
 }
 
 void Node::calcModel() {
-    _model = glm::scale({}, _scale) * glm::translate({}, _position);
+    _model = glm::translate({}, _position) * glm::scale({}, _scale);
 }
 
 } /* namespace jupiter */

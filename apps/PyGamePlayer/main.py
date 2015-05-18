@@ -55,7 +55,7 @@ class BoxScale(j.ScaleListener):
 
 class FallingBox(object):
     
-    WIDTH  = 100 #800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -121,7 +121,7 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            translate(30.0, -40.0, 10.0).\
+            translate(34.0, -44.0, 10.0).\
             scale(0.1)
         
         self.ground3 = j.Sprite()
@@ -129,7 +129,7 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            translate(-30.0, -40.0, 10.0).\
+            translate(-34.0, -36.0, 10.0).\
             scale(0.1)
         
         self.rn.\
