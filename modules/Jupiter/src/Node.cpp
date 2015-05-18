@@ -55,35 +55,30 @@ float Node::getRotationZ() const {
 Node* Node::setRotation(float x, float y, float z) {
     if (_controller)
         _controller->onRotate(x, y, z);
-
     return this;
 }
 
 Node* Node::setRotationX(float x) {
     if (_controller)
         _controller->onRotate(x, 0, 0);
-
     return this;
 }
 
 Node* Node::setRotationY(float y) {
     if (_controller)
         _controller->onRotate(0, y, 0);
-
     return this;
 }
 
 Node* Node::setRotationZ(float z) {
     if (_controller)
         _controller->onRotate(0, 0, z);
-
     return this;
 }
 
 Node* Node::rotate(float x, float y, float z) {
     if (_controller)
         _controller->onRotate(x, y, z);
-
     return this;
 }
 
@@ -91,7 +86,6 @@ Node* Node::rotateX(float angle) {
     _model = glm::rotate(_model, angle, glm::vec3(1.f, 0.f, 0.f));
     if (_controller)
         _controller->onRotate(angle, 0, 0);
-
     return this;
 }
 
@@ -99,7 +93,6 @@ Node* Node::rotateY(float angle) {
     _model = glm::rotate(_model, angle, glm::vec3(0.f, 1.f, 0.f));
     if (_controller)
         _controller->onRotate(0, angle, 0);
-
     return this;
 }
 
@@ -112,21 +105,22 @@ Node* Node::rotateZ(float angle) {
 }
 
 float Node::getPositionX() const {
-    return _model[3].x;
+    return _position.x;
 }
 
 float Node::getPositionY() const {
-    return _model[3].y;
+    return _position.y;
 }
 
 float Node::getPositionZ() const {
-    return _model[3].z;
+    return _position.z;
 }
 
 Node* Node::setPosition(float x, float y, float z) {
-    _model[3].x = x;
-    _model[3].y = y;
-    _model[3].z = z;
+    _position.x = x;
+    _position.y = y;
+    _position.z = z;
+    calcModel();
     if (_controller)
         _controller->onPositionChanged(x, y, z);
     if (_moveListener)
@@ -147,7 +141,10 @@ Node* Node::setPositionZ(float z) {
 }
 
 Node* Node::translate(float x, float y, float z) {
-    _model = glm::translate(_model, glm::vec3 { x, y, z });
+    _position.x += x;
+    _position.y += y;
+    _position.z += z;
+    calcModel();
     if (_controller)
         _controller->onMove(x, y, z);
     if (_moveListener)
@@ -168,21 +165,22 @@ Node* Node::translateZ(float z) {
 }
 
 float Node::getScaleX() const {
-    return _model[0].x;
+    return _scale.x;
 }
 
 float Node::getScaleY() const {
-    return _model[1].y;
+    return _scale.y;
 }
 
 float Node::getScaleZ() const {
-    return _model[2].z;
+    return _scale.z;
 }
 
 Node* Node::setScale(float x, float y, float z) {
-    _model[0].x = x;
-    _model[1].y = y;
-    _model[2].z = z;
+    _scale.x = x;
+    _scale.y = y;
+    _scale.z = z;
+    calcModel();
     if (_scaleListener)
         _scaleListener->scale(x, y, z);
     return this;
@@ -205,7 +203,10 @@ Node* Node::setScaleZ(float z) {
 }
 
 Node* Node::scale(float x, float y, float z) {
-    _model = glm::scale(_model, glm::vec3 { x, y, z });
+    _scale.x *= x;
+    _scale.y *= y;
+    _scale.z *= z;
+    calcModel();
     if (_scaleListener)
         _scaleListener->scale(x, y, z);
     return this;
@@ -235,7 +236,6 @@ Node* Node::setVisible(bool isVisible) {
     _visible = isVisible;
     if (_controller)
         _controller->onVisibleChanged(isVisible);
-
     return this;
 }
 
@@ -296,6 +296,10 @@ ScaleListener* Node::getScaleListener() {
 Node* Node::setScaleListener(ScaleListener* scaleListener) {
     _scaleListener = scaleListener;
     return this;
+}
+
+void Node::calcModel() {
+    _model = glm::scale({}, _scale) * glm::translate({}, _position);
 }
 
 } /* namespace jupiter */

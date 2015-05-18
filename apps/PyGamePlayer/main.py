@@ -73,7 +73,7 @@ class FallingBox(object):
                                0.0, 0.0, 0.0,   \
                                0.0, 1.0, 0.0)
         
-        # self.print_visitor = j.PrintVisitor()
+        self.print_visitor = j.PrintVisitor()
         self.physics = j.Box2dVisitor(1.0 / self.FPS)
         self.render = j.RenderVisitor(self.camera)
         
@@ -87,7 +87,6 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
-            setVisible(True).\
             setScale(0.11)
         
         self.boxMove = BoxMove(window)
@@ -102,7 +101,6 @@ class FallingBox(object):
             setShape(self.boxShape).\
             setMoveListener(self.boxMove).\
             setScaleListener(self.boxScale).\
-            setVisible(True).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
         
@@ -141,12 +139,12 @@ class FallingBox(object):
             addNode(self.ground2).\
             addNode(self.ground3)
         
+        #addVisitor(self.print_visitor).\
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
             addVisitor(self.render).\
             setWidth(width).\
             setHeight(height)
-            # addVisitor(self.print_visitor).\
 
 
 class MoveWidget(QWidget, Ui_MoveDialog):
@@ -230,7 +228,16 @@ class OpenGLWidget(QGLWidget):
         self.moveWindow.close()
 
 
+def setStyle():
+    if sys.platform == 'win32':
+        QApplication.setStyle(u"windows")
+    elif sys.platform == 'linux2':
+        QApplication.setStyle(u"plastique")
+    else:
+        print u'Неизвестная система'
+
 def main():
+    setStyle()
     app = QApplication(sys.argv)
     
 #     format = QGLFormat()

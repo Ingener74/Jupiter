@@ -9,8 +9,6 @@
 #define MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 
 #ifdef SWIG
-    namespace jupiter {
-    }
 #else
     #include <set>
     #include <list>
@@ -49,8 +47,8 @@ public:
 
     virtual Node* rotate(float x, float y, float z);
     Node* rotateX(float angle);
-    Node* rotateY(float y);
-    Node* rotateZ(float z);
+    Node* rotateY(float angle);
+    Node* rotateZ(float angle);
 
     float getPositionX() const;
     float getPositionY() const;
@@ -103,7 +101,7 @@ protected:
     bool               _visible         = true;
 
     glm::mat4          _model;
-    glm::vec3          _position, _scale;
+    glm::vec3          _position, _scale{1.f, 1.f, 1.f};
     glm::quat          _rotation;
 
     Controller*        _controller      = nullptr;
@@ -111,6 +109,8 @@ protected:
     std::list<Node*>   _nodes;
     MoveListener*      _moveListener    = nullptr;
     ScaleListener*     _scaleListener   = nullptr;
+
+    void calcModel();
 };
 
 } /* namespace jupiter */
