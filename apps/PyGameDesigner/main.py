@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout
 from PySide.QtOpenGL import QGLWidget
 from PySide.QtCore import Qt
@@ -53,8 +54,17 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         print 'add sprite'
         
         
+def setStyle():
+    if sys.platform == 'win32':
+        QApplication.setStyle(u"windows")
+    elif sys.platform == 'linux2':
+        QApplication.setStyle(u"plastique")
+    else:
+        print u'Неизвестная система'
+
 def main():
     import sys
+    setStyle()
     app = QApplication(sys.argv)
     
     mainWindow = GameDesignerWindow()

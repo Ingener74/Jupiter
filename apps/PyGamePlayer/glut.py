@@ -25,14 +25,28 @@ def keyboard(key, x, y):
     #if key == GLUT_KEY_F1:
     glutLeaveMainLoop()
 
+def resize(w, h):
+    glViewport(0, 0, w, h)
+
 if __name__ == '__main__':
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH)
     glutInitWindowSize(WIDTH, HEIGHT)
+    
+    glutInitContextVersion(3, 3)
+    glutInitContextProfile(GLUT_CORE_PROFILE)
+    glutInitContextFlags(GLUT_FORWARD_COMPATIBLE)
+    
     glutCreateWindow(PLAYER_TITLE)
     
     glutDisplayFunc(display)
     glutSpecialFunc(special)
     glutKeyboardFunc(keyboard)
+    glutReshapeFunc(resize)
+    
+    print 'Vendor   ', str(glGetString(GL_VENDOR))
+    print 'Renderer ', str(glGetString(GL_RENDERER))
+    print 'OpenGL   ', str(glGetString(GL_VERSION))
+    print 'GLSL     ', str(glGetString(GL_SHADING_LANGUAGE_VERSION))
     
     glutMainLoop()

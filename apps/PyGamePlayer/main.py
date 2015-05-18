@@ -55,7 +55,7 @@ class BoxScale(j.ScaleListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 100 #800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -115,7 +115,6 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            setVisible(True).\
             translate(0.0, -40.0, 10.0).\
             scale(0.1)
         
@@ -124,7 +123,6 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            setVisible(True).\
             translate(30.0, -40.0, 10.0).\
             scale(0.1)
         
@@ -133,7 +131,6 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            setVisible(True).\
             translate(-30.0, -40.0, 10.0).\
             scale(0.1)
         
@@ -243,7 +240,6 @@ def main():
 #     window = OpenGLWidget(format)
 
     window = OpenGLWidget()
-    
     window.show()
      
     sys.exit(app.exec_())
