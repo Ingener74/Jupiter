@@ -101,7 +101,11 @@ public:
 
 protected:
     bool               _visible         = true;
+
     glm::mat4          _model;
+    glm::vec3          _position, _scale;
+    glm::quat          _rotation;
+
     Controller*        _controller      = nullptr;
     Node*              _parent          = nullptr;
     std::list<Node*>   _nodes;

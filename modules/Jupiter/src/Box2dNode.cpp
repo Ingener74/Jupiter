@@ -14,14 +14,14 @@
 
 namespace jupiter {
 
-Box2dNode::Box2dNode(Box2dVisitor* v, Image* image) {
+Box2dNode::Box2dNode(Box2dVisitor* v, int width, int height) {
     b2BodyDef bodyDef;
     bodyDef.position.Set(getPositionX(), getPositionY());
 
     _body = v->getWorld()->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
-    shape.SetAsBox(image->getWidth(), image->getHeight());
+    shape.SetAsBox(width, height);
 
     _body->CreateFixture(&shape, 0.3f);
 

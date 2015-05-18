@@ -20,7 +20,7 @@ class CollisionListener;
 
 class Box2dNode: virtual public Node {
 public:
-    Box2dNode(Box2dVisitor*, Image*);
+    Box2dNode(Box2dVisitor*, int width, int height);
     virtual ~Box2dNode();
 
     virtual Box2dNode* setPosition(float x, float y, float z);

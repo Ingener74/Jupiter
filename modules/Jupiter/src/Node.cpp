@@ -283,7 +283,8 @@ const glm::mat4& Node::getModel() const {
 }
 
 Node* Node::setModel(const glm::mat4& model) {
-    Node::_model = model;
+    jassert(false, "deprecated")
+//    Node::_model = model;
     return this;
 }
 
