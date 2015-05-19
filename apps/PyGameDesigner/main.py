@@ -2,19 +2,38 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import json
 from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout
 from PySide.QtOpenGL import QGLWidget
-from PySide.QtCore import Qt
+from PySide.QtCore import Qt, QPoint
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from res import *
 
+class NodeSettings(QWidget, Ui_NodeSettings):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
+
+
+class SpriteSettings(QWidget, Ui_SpriteSettings):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
+
 
 class GlWidget(QGLWidget):
+    
+    WIDTH = 800
+    HEIGHT = WIDTH * 3 / 5
+    
     def __init__(self, parent=None):
-        super(GlWidget, self).__init__(parent, None)
+        QGLWidget.__init__(self, parent, None)
+        self.setObjectName(u'EuropeGLWidget')
+        self.resize(self.WIDTH, self.HEIGHT)
+        self.setWindowTitle(u'Европа, редактор игр Юпитера')
         
     def initializeGL(self):
         print 'Vendor   ', str(glGetString(GL_VENDOR))
@@ -32,28 +51,55 @@ class GlWidget(QGLWidget):
         
         
 class GameDesignerWindow(QWidget, Ui_GameDesigner):
+    
+    CONFIG_NAME = 'config.json'
+    
     def __init__(self, parent=None):
-        super(GameDesignerWindow,self).__init__(parent)
+        QWidget.__init__(self, parent)
         self.setupUi(self)
         
-        self.glLayout.addWidget(GlWidget())
+        self._json = json.load(open(self.CONFIG_NAME))
         
-        self.addNodeMenu = QMenu()
-        self.addNodeMenu.addAction(u'Добавить спрайт', self.addSpriteAction)
-        self.addNodeButton.setMenu(self.addNodeMenu)
+        self.move(self.loadWidgetPosition(self))
         
+        self.glWidget = GlWidget()
+        self.glWidget.move(self.loadWidgetPosition(self.glWidget))
+        self.glWidget.show()
+        
+        self.nodeSettings = NodeSettings()
+        self.nodeSettings.move(self.loadWidgetPosition(self.nodeSettings))
+        self.nodeSettings.show()
+        
+        self.spriteSettings = SpriteSettings()
+        self.spriteSettings.move(self.loadWidgetPosition(self.spriteSettings))
+        self.spriteSettings.show()
         
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
             self.close()
+    
+    def closeEvent(self, e):
+        self.saveWidgetPosition(self)
         
-    def addSpriteAction(self):
-        print 'add sprite action'
+        self.saveWidgetPosition(self.glWidget)
+        self.glWidget.close()
         
-    def addSprite(self):
-        print 'add sprite'
+        self.saveWidgetPosition(self.nodeSettings)
+        self.nodeSettings.close()
         
-        
+        self.saveWidgetPosition(self.spriteSettings)
+        self.spriteSettings.close()
+    
+    def loadWidgetPosition(self, widget):
+        return QPoint(self._json[widget.objectName()]['x'], self._json[widget.objectName()]['y'])
+    
+    def saveWidgetPosition(self, window):
+        self._json[window.objectName().encode('ascii', 'ignore')]['x'] = window.x()
+        self._json[window.objectName().encode('ascii', 'ignore')]['y'] = window.y()
+        with open(self.CONFIG_NAME, 'w') as file:
+            json.dump(self._json, file, indent=4, separators=(',', ':'), sort_keys=True)
+
+
 def setStyle():
     if sys.platform == 'win32':
         QApplication.setStyle(u"windows")

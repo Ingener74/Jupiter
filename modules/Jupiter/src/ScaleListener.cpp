@@ -11,7 +11,6 @@
 namespace jupiter {
 
 ScaleListener::ScaleListener() {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 ScaleListener::~ScaleListener() {

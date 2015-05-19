@@ -72,10 +72,7 @@ float Node::getRotationZ() const {
 }
 
 Node* Node::setRotation(float x, float y, float z, float angle) {
-    _rotation.x = x;
-    _rotation.y = y;
-    _rotation.z = z;
-    _rotation.w = angle;
+    _rotation = glm::rotate(quat{}, angle, vec3(x, y, z));
     calcModel();
     if (_rotationListener)
         _rotationListener->rotate(x, y, z, angle);
@@ -95,10 +92,7 @@ Node* Node::setRotationZ(float angle) {
 }
 
 Node* Node::rotate(float x, float y, float z, float angle) {
-    _rotation.x = x;
-    _rotation.y = y;
-    _rotation.z = z;
-    _rotation.w = angle;
+    _rotation = glm::rotate(_rotation, angle, vec3(x, y, z));
     calcModel();
     if (_rotationListener)
         _rotationListener->rotate(x, y, z, angle);

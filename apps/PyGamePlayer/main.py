@@ -9,6 +9,7 @@ from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox, QWi
 from PySide.QtOpenGL import QGLWidget, QGLFormat, QGLContext
 
 from move import Ui_MoveDialog
+from nodebox.graphics.context import rotate
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
@@ -53,10 +54,14 @@ class Box(j.MoveListener, j.KeyboardListener, j.ScaleListener):
     
     def key(self, key):
         print 'key ', key
-        if key == 113:
+        if key == 331:
             self.getNode().translateX(-5)
-        if key == 114:
+        if key == 333:
             self.getNode().translateX(5)
+        if key == 336:
+            self.getNode().translateY(-5)
+        if key == 328:
+            self.getNode().translateY(5)
         
 
 class BgRotate(j.RotationListener):
@@ -65,7 +70,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 200 #800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -227,9 +232,9 @@ class OpenGLWidget(QGLWidget):
 #             self.falling_box.bg.\
 #                 translateX(1).\
 #                 rotateZ(0.005)
+            
 #             self.falling_box.box.\
-#                 translateY(-20)
-#                 rotateZ(0.03).\
+#                 rotateZ(0.06)
             
             self.falling_box.game.draw()
     
