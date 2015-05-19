@@ -9,6 +9,7 @@
 #define MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 
 #ifdef SWIG
+    #pragma SWIG nowarn=362
 #else
     #include <set>
     #include <list>
@@ -30,6 +31,8 @@ class Node {
 public:
     Node();
     virtual ~Node();
+
+    virtual Node* clone(Node*);
 
     Node* addNode(Node*);
     Node* removeNode(Node*);
@@ -112,6 +115,8 @@ protected:
     ScaleListener*     _scaleListener      = nullptr;
     RotationListener*  _rotationListener   = nullptr;
 
+    Node(const Node&) = default;
+    Node& operator=(const Node&) = default;
     void calcModel();
 };
 

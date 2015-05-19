@@ -31,6 +31,12 @@ Node::Node() {
 Node::~Node() {
 }
 
+Node* Node::clone(Node* node) {
+    jassert(node, "node is invalid")
+    *this = *node;
+    return this;
+}
+
 Node* Node::addNode(Node* node) {
     jassert(node, "node is nullptr")
     _nodes.push_back(node->setParent(this));

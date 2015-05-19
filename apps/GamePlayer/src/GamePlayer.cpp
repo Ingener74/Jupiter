@@ -47,6 +47,7 @@ up<Node>            rootNode;
 
 up<Sprite>          bg,
                     flour,
+                    flour1,
                     box;
 
 up<Shape>           bgShape,
@@ -153,6 +154,9 @@ bool createGameDirect(const variables_map& vm) {
         ->setParent(rootNode.get())
     ;
 
+    flour1 = make_unique_<Sprite>();
+    flour1->clone(flour.get())->translateX(-40.f);
+
     PngImage boxImage { "Resources/box.png" };
     boxTexture = make_unique_<ImageTexture>(&boxImage);
     boxShape = make_unique_<ImageShape>(&boxImage);
@@ -174,6 +178,7 @@ bool createGameDirect(const variables_map& vm) {
     rootNode
         ->addNode(bg.get())
         ->addNode(flour.get())
+        ->addNode(flour1.get())
         ->addNode(box.get())
         ->setVisible(true)
     ;

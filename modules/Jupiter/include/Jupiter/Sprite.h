@@ -26,6 +26,8 @@ public:
     Sprite() = default;
     virtual ~Sprite() = default;
 
+    virtual Sprite* clone(Sprite*);
+
     Texture* getTexture() const;
     Sprite* setTexture(Texture*);
 
@@ -40,6 +42,9 @@ private:
     Texture* _texture = nullptr;
     Shape*   _shape   = nullptr;
     Shader*  _program = nullptr;
+
+    Sprite(const Sprite&) = default;
+    Sprite& operator=(const Sprite&) = default;
 };
 
 } /* namespace ndk_game */

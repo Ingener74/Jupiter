@@ -121,19 +121,13 @@ class FallingBox(object):
         
         self.ground2 = j.Sprite()
         self.ground2.\
-            setProgram(self.shader).\
-            setTexture(self.groundTex).\
-            setShape(self.groundShape).\
-            translate(34.0, -44.0, 10.0).\
-            scale(0.1)
+            clone(self.ground1).\
+            translate(34.0, -4.0, 0.0)
         
         self.ground3 = j.Sprite()
         self.ground3.\
-            setProgram(self.shader).\
-            setTexture(self.groundTex).\
-            setShape(self.groundShape).\
-            translate(-34.0, -36.0, 10.0).\
-            scale(0.1)
+            clone(self.ground1).\
+            translate(-34.0, 4.0, 0.0)
         
         self.rn.\
             addNode(self.bg).\
