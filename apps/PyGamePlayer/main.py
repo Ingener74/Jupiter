@@ -37,21 +37,18 @@ except ImportError as e:
                          QMessageBox.NoButton)
     sys.exit(1)
 
-
-class BoxMove(j.MoveListener):
+class Box(j.MoveListener, j.ScaleListener):
     def __init__(self, window):
-        super(BoxMove, self).__init__()
+        j.MoveListener.__init__(self)
+        j.ScaleListener.__init__(self)
+        
         self.window = window
     
     def move(self, x, y, z):
-        pass
-        #if y < -30:
-            #self.window.close()
-
-
-class BoxScale(j.ScaleListener):
+        print 'move ',[x, y, z]
+    
     def scale(self, x, y, z):
-        pass
+        print 'scale ', [x, y, z]
 
 class BgRotate(j.RotationListener):
     def rotate(self, x, y, z, angle):
@@ -96,8 +93,7 @@ class FallingBox(object):
             setScale(0.11)#.\
             #setRotationZ(1.5)
         
-        self.boxMove = BoxMove(window)
-        self.boxScale = BoxScale()
+        self.boxTest = Box(window)
         boxImage = j.PngImage('Resources/box.png')
         self.boxTex = j.ImageTexture(boxImage)
         self.boxShape = j.ImageShape(boxImage)
@@ -106,8 +102,8 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
-            setMoveListener(self.boxMove).\
-            setScaleListener(self.boxScale).\
+            setMoveListener(self.boxTest).\
+            setScaleListener(self.boxTest).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
         
