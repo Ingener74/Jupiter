@@ -32,10 +32,10 @@ public:
 
     virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
         auto nodeA = static_cast<Box2dNode*>(contact->GetFixtureA()->GetBody()->GetUserData());
-        jassert(nodeA, "bad node A")
+        jassert(nodeA, "bad node A");
 
         auto nodeB = static_cast<Box2dNode*>(contact->GetFixtureB()->GetBody()->GetUserData());
-        jassert(nodeB, "bad node B")
+        jassert(nodeB, "bad node B");
 
         nodeA->collision(nodeB);
         nodeB->collision(nodeA);
@@ -67,7 +67,7 @@ void Box2dVisitor::pop() {
 }
 
 void Box2dVisitor::visit(Box2dNode* node) {
-    jassert(node, "node is empty")
+    jassert(node, "node is empty");
     node->setPosition(node->getBox2dX(), node->getBox2dY(), node->getPositionZ());
 }
 
@@ -97,7 +97,7 @@ int Box2dVisitor::getVelocityIterations() const {
 }
 
 b2World* Box2dVisitor::getWorld() {
-    jassert(_world, "Box2D world is invalid")
+    jassert(_world, "Box2D world is invalid");
     return _world.get();
 }
 

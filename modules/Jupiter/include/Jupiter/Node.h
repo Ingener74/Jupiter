@@ -87,6 +87,12 @@ public:
     bool isVisible() const;
     Node* setVisible(bool isVisible);
 
+    int getTag() const;
+    Node* setTag(int tag);
+
+    std::string getName() const;
+    Node* setName(std::string name);
+
     virtual Node* accept(NodeVisitor*);
 
     Node* setMoveListener(MoveListener*);
@@ -103,6 +109,9 @@ public:
 
 protected:
     bool               _visible            = true;
+
+    int                _tag                = -1;
+    std::string        _name;
 
     glm::mat4          _model;
     glm::vec3          _position;

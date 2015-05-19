@@ -47,6 +47,7 @@ set(SOURCES
     src/ScaleListener.cpp
     src/CollisionListener.cpp
     src/RotationListener.cpp
+    src/KeyboardListener.cpp
     
     src/Box2dNode.cpp
     src/Box2dVisitor.cpp

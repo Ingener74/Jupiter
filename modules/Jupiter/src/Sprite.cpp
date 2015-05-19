@@ -17,40 +17,40 @@ namespace jupiter {
 using namespace std;
 
 Sprite* Sprite::clone(Sprite* sprite) {
-    jassert(sprite, "sprite is invalid")
+    jassert(sprite, "sprite is invalid");
     *this = *sprite;
     return this;
 }
 
 Texture* Sprite::getTexture() const {
-    jassert(_texture, "no texture")
+    jassert(_texture, "no texture");
     return _texture;
 }
 
 Sprite* Sprite::setTexture(Texture* texture) {
-    jassert(texture, "texture is invalid")
+    jassert(texture, "texture is invalid");
     _texture = texture;
     return this;
 }
 
 Shape* Sprite::getShape() const {
-    jassert(_shape, "no shape")
+    jassert(_shape, "no shape");
     return _shape;
 }
 
 Sprite* Sprite::setShape(Shape* shape) {
-    jassert(shape, "shape is invalid")
+    jassert(shape, "shape is invalid");
     _shape = shape;
     return this;
 }
 
 Shader* Sprite::getProgram() const {
-    jassert(_program, "no shader")
+    jassert(_program, "no shader");
     return _program;
 }
 
 Sprite* Sprite::setProgram(Shader* program) {
-    jassert(program, "shader is invalid")
+    jassert(program, "shader is invalid");
     _program = program;
     return this;
 }

@@ -20,6 +20,7 @@ namespace jupiter {
 
 class Node;
 class NodeVisitor;
+class KeyboardListener;
 
 class Game {
 public:
@@ -28,7 +29,7 @@ public:
 
     virtual void draw();
 
-    virtual void input();
+    virtual void keyboard(int keyCode);
 
     virtual int getWidth() const;
     virtual int getHeight() const;
@@ -44,11 +45,14 @@ public:
 
     virtual Game* addVisitor(NodeVisitor*);
 
+    virtual Game* addKeyboardListener(KeyboardListener*);
+
 protected:
-    std::list<NodeVisitor*> _visitors;
-    Node* _node = nullptr;
-    int _width = 0;
-    int _height = 0;
+    std::list<NodeVisitor*>        _visitors;
+    std::list<KeyboardListener*>   _keyboardListeners;
+    Node*                          _node                 = nullptr;
+    int                            _width                = 0;
+    int                            _height               = 0;
 };
 
 } /* namespace jupiter */

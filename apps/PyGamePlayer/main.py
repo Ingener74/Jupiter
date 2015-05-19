@@ -37,10 +37,12 @@ except ImportError as e:
                          QMessageBox.NoButton)
     sys.exit(1)
 
-class Box(j.MoveListener, j.ScaleListener):
+#class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
+class Box(j.MoveListener, j.KeyboardListener):
     def __init__(self, window):
         j.MoveListener.__init__(self)
-        j.ScaleListener.__init__(self)
+        #j.ScaleListener.__init__(self)
+        j.KeyboardListener.__init__(self)
         
         self.window = window
     
@@ -49,6 +51,14 @@ class Box(j.MoveListener, j.ScaleListener):
     
     def scale(self, x, y, z):
         print 'scale ', [x, y, z]
+    
+    def key(self, key):
+        print 'key ', key
+        if key == 113:
+            self.getNode().translateX(-5)
+        if key == 114:
+            self.getNode().translateX(5)
+        
 
 class BgRotate(j.RotationListener):
     def rotate(self, x, y, z, angle):
@@ -93,6 +103,7 @@ class FallingBox(object):
             setScale(0.11)#.\
             #setRotationZ(1.5)
         
+            #setScaleListener(self.boxTest).\
         self.boxTest = Box(window)
         boxImage = j.PngImage('Resources/box.png')
         self.boxTex = j.ImageTexture(boxImage)
@@ -103,7 +114,6 @@ class FallingBox(object):
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
-            setScaleListener(self.boxTest).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
         
@@ -144,6 +154,7 @@ class FallingBox(object):
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
             addVisitor(self.render).\
+            addKeyboardListener(self.boxTest).\
             setWidth(width).\
             setHeight(height)
 
@@ -231,6 +242,7 @@ class OpenGLWidget(QGLWidget):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape:
             raise SystemExit
+        self.falling_box.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
         self.moveWindow.close()

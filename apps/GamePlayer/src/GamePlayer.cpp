@@ -254,7 +254,7 @@ void draw() {
 }
 
 void input() {
-    game->input();
+//    game->input();
 }
 
 void keyboard(uint8_t key) {

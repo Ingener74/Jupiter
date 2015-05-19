@@ -13,6 +13,7 @@
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/Node.h"
+#include "Jupiter/KeyboardListener.h"
 
 #include "Jupiter/Game.h"
 
@@ -33,7 +34,11 @@ void Game::draw() {
     }
 }
 
-void Game::input() {
+void Game::keyboard(int keyCode) {
+    for (auto i : _keyboardListeners) {
+        jassert(i, "keyboard listener is invalid");
+        i->key(keyCode);
+    }
 }
 
 int Game::getWidth() const {
@@ -72,8 +77,15 @@ const std::list<NodeVisitor*>& jupiter::Game::getVisitors() const {
     return _visitors;
 }
 
-Game* jupiter::Game::addVisitor(NodeVisitor* nodeVisitor) {
-    _visitors.push_back(nodeVisitor);
+Game* jupiter::Game::addVisitor(NodeVisitor* visitor) {
+    jassert(visitor, "visitor is invalid");
+    _visitors.push_back(visitor);
+    return this;
+}
+
+Game* Game::addKeyboardListener(KeyboardListener* listener) {
+    jassert(listener, "listener is invalid");
+    _keyboardListeners.push_back(listener);
     return this;
 }
 

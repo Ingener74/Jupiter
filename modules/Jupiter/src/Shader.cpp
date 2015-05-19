@@ -24,7 +24,7 @@ Attribute Shader::getAttribute(const std::string& name) const {
     auto attribute = glGetAttribLocation(_program, name.c_str());
     CHECK_GL_ERROR
 
-    jassert(INVALID != attribute, name + " is not an active attribute in shader")
+    jassert(INVALID != attribute, name + " is not an active attribute in shader");
     return Attribute { name, attribute };
 }
 
@@ -32,13 +32,13 @@ Uniform Shader::getUniform(const std::string& name) const {
     auto uniform = glGetUniformLocation(_program, name.c_str());
     CHECK_GL_ERROR
 
-    jassert(INVALID != uniform, name + " is not an active uniform in shader")
+    jassert(INVALID != uniform, name + " is not an active uniform in shader");
     return Uniform { name, uniform };
 }
 
 GLuint Shader::createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {
-    jassert(!vertexShaderSource.empty(), "vertex shader is empty")
-    jassert(!fragmentShaderSource.empty(), "fragment shader is empty")
+    jassert(!vertexShaderSource.empty(), "vertex shader is empty");
+    jassert(!fragmentShaderSource.empty(), "fragment shader is empty");
 
     GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource); // TODO surrount shaders to RAII
     GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);

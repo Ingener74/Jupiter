@@ -32,25 +32,25 @@ Node::~Node() {
 }
 
 Node* Node::clone(Node* node) {
-    jassert(node, "node is invalid")
+    jassert(node, "node is invalid");
     *this = *node;
     return this;
 }
 
 Node* Node::addNode(Node* node) {
-    jassert(node, "node is nullptr")
+    jassert(node, "node is nullptr");
     _nodes.push_back(node->setParent(this));
     return this;
 }
 
 Node* Node::removeNode(Node* node) {
-    jassert(node, "node is nullptr")
+    jassert(node, "node is nullptr");
     _nodes.remove(node);
     return this;
 }
 
 Node* Node::setParent(Node* parent) {
-    jassert(parent, "parent is nullptr")
+    jassert(parent, "parent is nullptr");
     Node::_parent = parent;
     return this;
 }
@@ -246,6 +246,24 @@ Node* Node::setVisible(bool isVisible) {
     return this;
 }
 
+int Node::getTag() const {
+    return _tag;
+}
+
+Node* Node::setTag(int tag) {
+    _tag = tag;
+    return this;
+}
+
+std::string Node::getName() const {
+    return _name;
+}
+
+Node* Node::setName(std::string name) {
+    _name = name;
+    return this;
+}
+
 Node* Node::accept(NodeVisitor* nv) {
     jassert(nv, "visitor is nullptr");
 
@@ -266,38 +284,38 @@ Node* Node::accept(NodeVisitor* nv) {
 }
 
 Node* Node::setMoveListener(MoveListener* moveListener) {
-    jassert(moveListener, "move listener is nullptr")
+    jassert(moveListener, "move listener is nullptr");
     _moveListener = moveListener;
     _moveListener->setNode(this);
     return this;
 }
 
 MoveListener* Node::getMoveListener() {
-    jassert(_moveListener, "no move listener")
+    jassert(_moveListener, "no move listener");
     return _moveListener;
 }
 
 Node* Node::setScaleListener(ScaleListener* listener) {
-    jassert(listener, "scale listener is nullptr")
+    jassert(listener, "scale listener is nullptr");
     _scaleListener = listener;
     _scaleListener->setNode(this);
     return this;
 }
 
 ScaleListener* Node::getScaleListener() {
-    jassert(_scaleListener, "no scale listener")
+    jassert(_scaleListener, "no scale listener");
     return _scaleListener;
 }
 
 Node* Node::setRotationListener(RotationListener* listener) {
-    jassert(listener, "rotation listener is nullptr")
+    jassert(listener, "rotation listener is nullptr");
     _rotationListener = listener;
     _rotationListener->setNode(this);
     return this;
 }
 
 RotationListener* Node::getRotationListener() {
-    jassert(_rotationListener, "rotation listener is nullptr")
+    jassert(_rotationListener, "rotation listener is nullptr");
     return _rotationListener;
 }
 
@@ -306,7 +324,7 @@ const glm::mat4& Node::getModel() const {
 }
 
 Node* Node::setModel(const glm::mat4& model) {
-    jassert(false, "deprecated")
+    jassert(false, "deprecated");
 //    _model = model;
     return this;
 }
@@ -319,4 +337,3 @@ void Node::calcModel() {
 }
 
 } /* namespace jupiter */
-

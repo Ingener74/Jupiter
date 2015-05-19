@@ -17,7 +17,7 @@ Listener::~Listener() {
 }
 
 Node* Listener::getNode() {
-    jassert(_node, "node is empty")
+    jassert(_node, "node is empty");
     return _node;
 }
 
