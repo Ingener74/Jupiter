@@ -74,9 +74,9 @@ class FallingBox(object):
                                0.0, 0.0, 0.0,   \
                                0.0, 1.0, 0.0)
         
-        self.print_visitor = j.PrintVisitor()
-        self.physics = j.Box2dVisitor(1.0 / self.FPS)
-        self.render = j.RenderVisitor(self.camera)
+        self.printVisitor  = j.PrintVisitor()
+        self.physics       = j.Box2dVisitor(1.0 / self.FPS)
+        self.render        = j.RenderVisitor(self.camera)
         
         self.rn = j.Node()
         
@@ -111,32 +111,36 @@ class FallingBox(object):
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
         
-        self.ground1 = j.Sprite()
-        self.ground1.\
+        self.grounds = [j.Sprite() for i in range(0, 4)]
+        
+        self.grounds[0].\
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
             translate(0.0, -40.0, 10.0).\
             scale(0.1)
         
-        self.ground2 = j.Sprite()
-        self.ground2.\
-            clone(self.ground1).\
+        self.grounds[1].\
+            clone(self.grounds[0]).\
             translate(34.0, -4.0, 0.0)
         
-        self.ground3 = j.Sprite()
-        self.ground3.\
-            clone(self.ground1).\
+        self.grounds[2].\
+            clone(self.grounds[0]).\
+            translate(-34.0, 4.0, 0.0)
+
+        self.grounds[3].\
+            clone(self.grounds[2]).\
             translate(-34.0, 4.0, 0.0)
         
         self.rn.\
             addNode(self.bg).\
             addNode(self.box).\
-            addNode(self.ground1).\
-            addNode(self.ground2).\
-            addNode(self.ground3)
+            addNode(self.grounds[0]).\
+            addNode(self.grounds[1]).\
+            addNode(self.grounds[2]).\
+            addNode(self.grounds[3])
         
-            #addVisitor(self.print_visitor).\
+            #addVisitor(self.printVisitor).\
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
             addVisitor(self.render).\
