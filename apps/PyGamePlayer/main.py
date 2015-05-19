@@ -9,7 +9,6 @@ from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox, QWi
 from PySide.QtOpenGL import QGLWidget, QGLFormat, QGLContext
 
 from move import Ui_MoveDialog
-from nodebox.graphics.context import rotate
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
@@ -104,8 +103,7 @@ class FallingBox(object):
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
             setRotationListener(self.bgRotate).\
-            setScale(0.11)#.\
-            #setRotationZ(1.5)
+            setScale(0.11)
         
             #setScaleListener(self.boxTest).\
         self.boxTest = Box(window)
@@ -198,7 +196,7 @@ class MoveWidget(QWidget, Ui_MoveDialog):
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, parent, None)
-        self.falling_box = None
+        self.fallingBox = None
 
     def initializeGL(self):
         self.setWindowTitle(PLAYER_TITLE)
@@ -214,9 +212,9 @@ class OpenGLWidget(QGLWidget):
         
         try:
             j.initJupiter()
-            self.falling_box = FallingBox(self, self.width(), self.height())
+            self.fallingBox = FallingBox(self, self.width(), self.height())
             
-            self.moveWindow = MoveWidget(self.falling_box)
+            self.moveWindow = MoveWidget(self.fallingBox)
             self.moveWindow.show()
             
             self.startTimer(1000.0 / 30.0)
@@ -228,15 +226,15 @@ class OpenGLWidget(QGLWidget):
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        if self.falling_box != None:
-#             self.falling_box.bg.\
+        if self.fallingBox != None:
+#             self.fallingBox.bg.\
 #                 translateX(1).\
 #                 rotateZ(0.005)
             
-#             self.falling_box.box.\
+#             self.fallingBox.box.\
 #                 rotateZ(0.06)
             
-            self.falling_box.game.draw()
+            self.fallingBox.game.draw()
     
     def resizeGL(self, w, h):
         glViewport(0, 0, w, h)
@@ -247,7 +245,7 @@ class OpenGLWidget(QGLWidget):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape:
             raise SystemExit
-        self.falling_box.game.keyboard(event.nativeScanCode())
+        self.fallingBox.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
         self.moveWindow.close()
