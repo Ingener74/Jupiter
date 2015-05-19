@@ -44,18 +44,22 @@ class BoxMove(j.MoveListener):
         self.window = window
     
     def move(self, x, y, z):
-        if y < -30:
-            self.window.close()
+        pass
+        #if y < -30:
+            #self.window.close()
 
 
 class BoxScale(j.ScaleListener):
     def scale(self, x, y, z):
         pass
 
+class BgRotate(j.RotationListener):
+    def rotate(self, x, y, z, angle):
+        print [x, y, z, angle]
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 200 #800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -79,6 +83,7 @@ class FallingBox(object):
         
         self.rn = j.Node()
         
+        self.bgRotate = BgRotate()
         bgImage = j.PngImage('Resources/bg.png')
         self.bgTexture = j.ImageTexture(bgImage)
         self.bgShape = j.ImageShape(bgImage)
@@ -87,7 +92,9 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
-            setScale(0.11)
+            setRotationListener(self.bgRotate).\
+            setScale(0.11)#.\
+            #setRotationZ(1.5)
         
         self.boxMove = BoxMove(window)
         self.boxScale = BoxScale()
@@ -139,7 +146,7 @@ class FallingBox(object):
             addNode(self.ground2).\
             addNode(self.ground3)
         
-        #addVisitor(self.print_visitor).\
+            #addVisitor(self.print_visitor).\
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
             addVisitor(self.render).\
@@ -160,15 +167,22 @@ class MoveWidget(QWidget, Ui_MoveDialog):
         
     def upClick(self):
         self.game.box.translateY(10 ** self.comboBoxValue.currentIndex())
+        self.printPos()
     
     def downClick(self):
         self.game.box.translateY(-10 ** self.comboBoxValue.currentIndex())
+        self.printPos()
     
     def leftClick(self):
         self.game.box.translateX(-10 ** self.comboBoxValue.currentIndex())
+        self.printPos()
     
     def rightClick(self):
         self.game.box.translateX(10 ** self.comboBoxValue.currentIndex())
+        self.printPos()
+    
+    def printPos(self):
+        print 'box position ',[self.game.box.getPositionX(), self.game.box.getPositionY(), self.game.box.getPositionZ()]
 
 
 class OpenGLWidget(QGLWidget):

@@ -162,7 +162,7 @@ bool createGameDirect(const variables_map& vm) {
         ->setProgram(spriteShader.get())
         ->setTexture(boxTexture.get())
         ->setShape(boxShape.get())
-        ->setController(boxController.get())
+//        ->setController(boxController.get())
         ->setMoveListener(&bm)
         ->setScaleListener(&bm)
         ->setVisible(true)

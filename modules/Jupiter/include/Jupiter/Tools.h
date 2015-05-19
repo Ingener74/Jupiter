@@ -15,6 +15,10 @@
     #include <iostream>
     #include <string>
 
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+    #include <glm/gtc/quaternion.hpp>
+
     #include "Jupiter/JupiterError.h"
 #endif
 
@@ -32,6 +36,10 @@ template<typename T> std::string to_string(const T& n) {
     stm << n;
     return stm.str();
 }
+
+std::ostream& operator<<(std::ostream& out, const glm::mat4& r);
+std::ostream& operator<<(std::ostream& out, const glm::vec3& r);
+std::ostream& operator<<(std::ostream& out, const glm::quat& r);
 
 class Tools {
 public:

@@ -16,23 +16,24 @@
 
     #define GLM_FORCE_RADIANS
     #include <glm/glm.hpp>
-    #include <glm/gtc/type_ptr.hpp>
-    #include <glm/gtc/matrix_transform.hpp>
+    #include <glm/gtc/quaternion.hpp>
 #endif
 
 namespace jupiter {
 
 class NodeVisitor;
-class Controller;
 class MoveListener;
 class ScaleListener;
+class RotationListener;
 
 class Node {
 public:
     Node();
     virtual ~Node();
 
-    Node* addNode(Node* node);
+    Node* addNode(Node*);
+    Node* removeNode(Node*);
+
     Node* setParent(Node*);
     Node* getParent();
 
@@ -40,12 +41,12 @@ public:
     float getRotationY() const;
     float getRotationZ() const;
 
-    virtual Node* setRotation(float x, float y, float z);
-    Node* setRotationX(float x);
-    Node* setRotationY(float y);
-    Node* setRotationZ(float z);
+    virtual Node* setRotation(float x, float y, float z, float angle);
+    Node* setRotationX(float angle);
+    Node* setRotationY(float angle);
+    Node* setRotationZ(float angle);
 
-    virtual Node* rotate(float x, float y, float z);
+    virtual Node* rotate(float x, float y, float z, float angle);
     Node* rotateX(float angle);
     Node* rotateY(float angle);
     Node* rotateZ(float angle);
@@ -83,32 +84,33 @@ public:
     bool isVisible() const;
     Node* setVisible(bool isVisible);
 
-    virtual Node* accept(NodeVisitor* nv);
-
-    Node* setController(Controller* controller);
-    Controller* getController();
+    virtual Node* accept(NodeVisitor*);
 
     Node* setMoveListener(MoveListener*);
     MoveListener* getMoveListener();
 
-    Node* setScaleListener(ScaleListener* scaleListener);
+    Node* setScaleListener(ScaleListener*);
     ScaleListener* getScaleListener();
+
+    Node* setRotationListener(RotationListener*);
+    RotationListener* getRotationListener();
 
     const glm::mat4& getModel() const;
     Node* setModel(const glm::mat4& model);
 
 protected:
-    bool               _visible         = true;
+    bool               _visible            = true;
 
     glm::mat4          _model;
-    glm::vec3          _position, _scale{1.f, 1.f, 1.f};
+    glm::vec3          _position;
+    glm::vec3          _scale              = {1.f, 1.f, 1.f};
     glm::quat          _rotation;
 
-    Controller*        _controller      = nullptr;
-    Node*              _parent          = nullptr;
     std::list<Node*>   _nodes;
-    MoveListener*      _moveListener    = nullptr;
-    ScaleListener*     _scaleListener   = nullptr;
+    Node*              _parent             = nullptr;
+    MoveListener*      _moveListener       = nullptr;
+    ScaleListener*     _scaleListener      = nullptr;
+    RotationListener*  _rotationListener   = nullptr;
 
     void calcModel();
 };

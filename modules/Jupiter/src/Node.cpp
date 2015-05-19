@@ -7,11 +7,17 @@
 
 #include <iostream>
 
-#include "Jupiter/Controller.h"
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 #include "Jupiter/MoveListener.h"
 #include "Jupiter/ScaleListener.h"
+#include "Jupiter/RotationListener.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
+#include "Jupiter/Tools.h"
 #include "Jupiter/Node.h"
 
 namespace jupiter {
@@ -26,12 +32,19 @@ Node::~Node() {
 }
 
 Node* Node::addNode(Node* node) {
-    jassert(node, "Node add nullptr node");
+    jassert(node, "node is nullptr")
     _nodes.push_back(node->setParent(this));
     return this;
 }
 
+Node* Node::removeNode(Node* node) {
+    jassert(node, "node is nullptr")
+    _nodes.remove(node);
+    return this;
+}
+
 Node* Node::setParent(Node* parent) {
+    jassert(parent, "parent is nullptr")
     Node::_parent = parent;
     return this;
 }
@@ -52,56 +65,50 @@ float Node::getRotationZ() const {
     return 0.f;
 }
 
-Node* Node::setRotation(float x, float y, float z) {
-    if (_controller)
-        _controller->onRotate(x, y, z);
+Node* Node::setRotation(float x, float y, float z, float angle) {
+    _rotation.x = x;
+    _rotation.y = y;
+    _rotation.z = z;
+    _rotation.w = angle;
+    calcModel();
+    if (_rotationListener)
+        _rotationListener->rotate(x, y, z, angle);
     return this;
 }
 
-Node* Node::setRotationX(float x) {
-    if (_controller)
-        _controller->onRotate(x, 0, 0);
-    return this;
+Node* Node::setRotationX(float angle) {
+    return setRotation(1.f, 0.f, 0.f, angle);
 }
 
-Node* Node::setRotationY(float y) {
-    if (_controller)
-        _controller->onRotate(0, y, 0);
-    return this;
+Node* Node::setRotationY(float angle) {
+    return setRotation(0.f, 1.f, 0.f, angle);
 }
 
-Node* Node::setRotationZ(float z) {
-    if (_controller)
-        _controller->onRotate(0, 0, z);
-    return this;
+Node* Node::setRotationZ(float angle) {
+    return setRotation(0.f, 0.f, 1.f, angle);
 }
 
-Node* Node::rotate(float x, float y, float z) {
-    if (_controller)
-        _controller->onRotate(x, y, z);
+Node* Node::rotate(float x, float y, float z, float angle) {
+    _rotation.x = x;
+    _rotation.y = y;
+    _rotation.z = z;
+    _rotation.w = angle;
+    calcModel();
+    if (_rotationListener)
+        _rotationListener->rotate(x, y, z, angle);
     return this;
 }
 
 Node* Node::rotateX(float angle) {
-    _model = glm::rotate(_model, angle, glm::vec3(1.f, 0.f, 0.f));
-    if (_controller)
-        _controller->onRotate(angle, 0, 0);
-    return this;
+    return rotate(1.f, 0.f, 0.f, angle);
 }
 
 Node* Node::rotateY(float angle) {
-    _model = glm::rotate(_model, angle, glm::vec3(0.f, 1.f, 0.f));
-    if (_controller)
-        _controller->onRotate(0, angle, 0);
-    return this;
+    return rotate(0.f, 1.f, 0.f, angle);
 }
 
 Node* Node::rotateZ(float angle) {
-    _model = glm::rotate(_model, angle, glm::vec3(0.f, 0.f, 1.f));
-    if (_controller)
-        _controller->onRotate(0, 0, angle);
-
-    return this;
+    return rotate(0.f, 0.f, 1.f, angle);
 }
 
 float Node::getPositionX() const {
@@ -121,8 +128,6 @@ Node* Node::setPosition(float x, float y, float z) {
     _position.y = y;
     _position.z = z;
     calcModel();
-    if (_controller)
-        _controller->onPositionChanged(x, y, z);
     if (_moveListener)
         _moveListener->move(x, y, z);
     return this;
@@ -145,8 +150,6 @@ Node* Node::translate(float x, float y, float z) {
     _position.y += y;
     _position.z += z;
     calcModel();
-    if (_controller)
-        _controller->onMove(x, y, z);
     if (_moveListener)
         _moveListener->move(getPositionX(), getPositionY(), getPositionZ());
     return this;
@@ -234,13 +237,11 @@ bool Node::isVisible() const {
 
 Node* Node::setVisible(bool isVisible) {
     _visible = isVisible;
-    if (_controller)
-        _controller->onVisibleChanged(isVisible);
     return this;
 }
 
 Node* Node::accept(NodeVisitor* nv) {
-    jassert(nv, "Node: visitor is nullptr");
+    jassert(nv, "visitor is nullptr");
 
     if (_visible) {
 
@@ -258,16 +259,8 @@ Node* Node::accept(NodeVisitor* nv) {
     return this;
 }
 
-Node* Node::setController(Controller* controller) {
-    Node::_controller = controller;
-    return this;
-}
-
-Controller* Node::getController() {
-    return _controller;
-}
-
 Node* Node::setMoveListener(MoveListener* moveListener) {
+    jassert(moveListener, "move listener is nullptr")
     _moveListener = moveListener;
     _moveListener->setNode(this);
     return this;
@@ -278,13 +271,10 @@ MoveListener* Node::getMoveListener() {
     return _moveListener;
 }
 
-const glm::mat4& Node::getModel() const {
-    return _model;
-}
-
-Node* Node::setModel(const glm::mat4& model) {
-    jassert(false, "deprecated")
-//    Node::_model = model;
+Node* Node::setScaleListener(ScaleListener* listener) {
+    jassert(listener, "scale listener is nullptr")
+    _scaleListener = listener;
+    _scaleListener->setNode(this);
     return this;
 }
 
@@ -293,13 +283,34 @@ ScaleListener* Node::getScaleListener() {
     return _scaleListener;
 }
 
-Node* Node::setScaleListener(ScaleListener* scaleListener) {
-    _scaleListener = scaleListener;
+Node* Node::setRotationListener(RotationListener* listener) {
+    jassert(listener, "rotation listener is nullptr")
+    _rotationListener = listener;
+    _rotationListener->setNode(this);
+    return this;
+}
+
+RotationListener* Node::getRotationListener() {
+    jassert(_rotationListener, "rotation listener is nullptr")
+    return _rotationListener;
+}
+
+const glm::mat4& Node::getModel() const {
+    return _model;
+}
+
+Node* Node::setModel(const glm::mat4& model) {
+    jassert(false, "deprecated")
+//    _model = model;
     return this;
 }
 
 void Node::calcModel() {
-    _model = glm::translate({}, _position) * glm::scale({}, _scale);
+//    auto rotation = ;
+//    cout << _rotation.x << " " << _rotation.y << " " << _rotation.z << " " << _rotation.w << " " << endl;
+//    cout << rotation << endl;
+    _model = glm::translate({}, _position) * glm::mat4_cast(_rotation) *  glm::scale({}, _scale);
 }
 
 } /* namespace jupiter */
+

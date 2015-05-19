@@ -44,6 +44,7 @@
 #include "Jupiter/MoveListener.h"
 #include "Jupiter/ScaleListener.h"
 #include "Jupiter/CollisionListener.h"
+#include "Jupiter/RotationListener.h"
 
 namespace jupiter {
 

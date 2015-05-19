@@ -46,6 +46,7 @@ set(SOURCES
     src/MoveListener.cpp
     src/ScaleListener.cpp
     src/CollisionListener.cpp
+    src/RotationListener.cpp
     
     src/Box2dNode.cpp
     src/Box2dVisitor.cpp
