@@ -37,11 +37,10 @@ except ImportError as e:
                          QMessageBox.NoButton)
     sys.exit(1)
 
-#class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
-class Box(j.MoveListener, j.KeyboardListener):
+class Box(j.MoveListener, j.KeyboardListener, j.ScaleListener):
     def __init__(self, window):
         j.MoveListener.__init__(self)
-        #j.ScaleListener.__init__(self)
+        j.ScaleListener.__init__(self)
         j.KeyboardListener.__init__(self)
         
         self.window = window
@@ -161,7 +160,8 @@ class FallingBox(object):
 
 class MoveWidget(QWidget, Ui_MoveDialog):
     def __init__(self, game, parent=None):
-        super(MoveWidget, self).__init__(parent)
+        QWidget.__init__(self, parent)
+        
         self.setupUi(self)
         self.game = game
         
@@ -192,7 +192,7 @@ class MoveWidget(QWidget, Ui_MoveDialog):
 
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
-        super(OpenGLWidget, self).__init__(parent, None)
+        QGLWidget.__init__(self, parent, None)
         self.falling_box = None
 
     def initializeGL(self):

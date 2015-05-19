@@ -5,11 +5,13 @@
  *      Author: pavel
  */
 
+#include <iostream>
 #include "Jupiter/ScaleListener.h"
 
 namespace jupiter {
 
 ScaleListener::ScaleListener() {
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 ScaleListener::~ScaleListener() {

@@ -37,13 +37,13 @@ public:
     b2World* getWorld();
 
     float getTimeStep() const;
-    Box2dVisitor* setTimeStep(float timeStep = 0.f);
+    Box2dVisitor* setTimeStep(float timeStep);
 
     int getPositionIterations() const;
-    Box2dVisitor* setPositionIterations(int positionIterations = 2);
+    Box2dVisitor* setPositionIterations(int positionIterations);
 
     int getVelocityIterations() const;
-    Box2dVisitor* setVelocityIterations(int velocityIterations = 6);
+    Box2dVisitor* setVelocityIterations(int velocityIterations);
 
 private:
     std::unique_ptr<b2World> _world;
