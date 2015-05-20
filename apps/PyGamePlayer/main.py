@@ -53,14 +53,14 @@ class Box(j.MoveListener, j.KeyboardListener, j.ScaleListener):
     
     def key(self, key):
         print 'key ', key
-        if key == 331:
-            self.getNode().translateX(-5)
-        if key == 333:
-            self.getNode().translateX(5)
-        if key == 336:
-            self.getNode().translateY(-5)
-        if key == 328:
+        if key == 111 or key == 328:
             self.getNode().translateY(5)
+        if key == 116 or key == 336:
+            self.getNode().translateY(-5)
+        if key == 113 or key == 331:
+            self.getNode().translateX(-5)
+        if key == 114 or key == 333:
+            self.getNode().translateX(5)
         
 
 class BgRotate(j.RotationListener):
@@ -69,7 +69,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 200 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -226,15 +226,19 @@ class OpenGLWidget(QGLWidget):
         glClearColor(0.1, 0.3, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        if self.fallingBox != None:
-#             self.fallingBox.bg.\
-#                 translateX(1).\
-#                 rotateZ(0.005)
-            
-#             self.fallingBox.box.\
-#                 rotateZ(0.06)
-            
-            self.fallingBox.game.draw()
+        try:
+            if self.fallingBox != None:
+    #             self.fallingBox.bg.\
+    #                 translateX(1).\
+    #                 rotateZ(0.005)
+                
+    #             self.fallingBox.box.\
+    #                 rotateZ(0.06)
+                
+                self.fallingBox.game.draw()
+                
+        except RuntimeError, e:
+            raise SystemExit(str(e))
     
     def resizeGL(self, w, h):
         glViewport(0, 0, w, h)

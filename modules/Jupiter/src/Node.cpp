@@ -51,7 +51,7 @@ Node* Node::removeNode(Node* node) {
 
 Node* Node::setParent(Node* parent) {
     jassert(parent, "parent is nullptr");
-    Node::_parent = parent;
+    _parent = parent;
     return this;
 }
 
@@ -60,15 +60,19 @@ Node* Node::getParent() {
 }
 
 float Node::getRotationX() const {
-    return 0.f;
+    return glm::axis(_rotation).x;
 }
 
 float Node::getRotationY() const {
-    return 0.f;
+    return glm::axis(_rotation).y;
 }
 
 float Node::getRotationZ() const {
-    return 0.f;
+    return glm::axis(_rotation).z;
+}
+
+float Node::getRotationAngle() const {
+    return glm::angle(_rotation);
 }
 
 Node* Node::setRotation(float x, float y, float z, float angle) {
@@ -129,7 +133,7 @@ Node* Node::setPosition(float x, float y, float z) {
     _position.z = z;
     calcModel();
     if (_moveListener)
-        _moveListener->move(x, y, z);
+        _moveListener->move(_position.x, _position.y, _position.z);
     return this;
 }
 
@@ -151,7 +155,7 @@ Node* Node::translate(float x, float y, float z) {
     _position.z += z;
     calcModel();
     if (_moveListener)
-        _moveListener->move(getPositionX(), getPositionY(), getPositionZ());
+        _moveListener->move(_position.x, _position.y, _position.z);
     return this;
 }
 
@@ -185,7 +189,7 @@ Node* Node::setScale(float x, float y, float z) {
     _scale.z = z;
     calcModel();
     if (_scaleListener)
-        _scaleListener->scale(x, y, z);
+        _scaleListener->scale(_scale.x, _scale.y, _scale.z);
     return this;
 }
 
@@ -211,7 +215,7 @@ Node* Node::scale(float x, float y, float z) {
     _scale.z *= z;
     calcModel();
     if (_scaleListener)
-        _scaleListener->scale(x, y, z);
+        _scaleListener->scale(_scale.x, _scale.y, _scale.z);
     return this;
 }
 
@@ -260,20 +264,15 @@ Node* Node::setName(std::string name) {
 
 Node* Node::accept(NodeVisitor* nv) {
     jassert(nv, "visitor is nullptr");
-
     if (_visible) {
-
         nv->push(this);
-
         nv->visit(this);
-
         for (auto i : _nodes) {
+            jassert(i, "invalid node");
             i->accept(nv);
         }
-
         nv->pop();
     }
-
     return this;
 }
 
@@ -319,15 +318,11 @@ const glm::mat4& Node::getModel() const {
 
 Node* Node::setModel(const glm::mat4& model) {
     jassert(false, "deprecated");
-//    _model = model;
     return this;
 }
 
 void Node::calcModel() {
-//    auto rotation = ;
-//    cout << _rotation.x << " " << _rotation.y << " " << _rotation.z << " " << _rotation.w << " " << endl;
-//    cout << rotation << endl;
-    _model = glm::translate({}, _position) * glm::mat4_cast(_rotation) *  glm::scale({}, _scale);
+    _model = glm::translate( { }, _position) * glm::mat4_cast(_rotation) * glm::scale( { }, _scale);
 }
 
 } /* namespace jupiter */

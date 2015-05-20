@@ -43,6 +43,7 @@ public:
     float getRotationX() const;
     float getRotationY() const;
     float getRotationZ() const;
+    float getRotationAngle() const;
 
     virtual Node* setRotation(float x, float y, float z, float angle);
     Node* setRotationX(float angle);
