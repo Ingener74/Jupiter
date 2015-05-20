@@ -26,6 +26,8 @@ public:
 
     virtual Box2dNode* clone(Box2dNode*);
 
+    virtual Box2dNode* setRotation(float x, float y, float z, float angle);
+    virtual Box2dNode* rotate(float x, float y, float z, float angle);
     virtual Box2dNode* setPosition(float x, float y, float z);
     virtual Box2dNode* translate(float x, float y, float z);
     virtual Box2dNode* setScale(float x, float y, float z);

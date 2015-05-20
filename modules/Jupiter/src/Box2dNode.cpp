@@ -39,15 +39,27 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     return this;
 }
 
+Box2dNode* Box2dNode::setRotation(float x, float y, float z, float angle) {
+    Node::setRotation(x, y, z, angle);
+    jassert(false, "not implemented");
+    return this;
+}
+
+Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
+    Node::rotate(x, y, z, angle);
+    jassert(false, "not implemented");
+    return this;
+}
+
 Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
-    _body->SetTransform(b2Vec2(getPositionX(), getPositionY()), getRotationZ());
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _position.z);
     return this;
 }
 
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
-    _body->SetTransform(b2Vec2(getPositionX(), getPositionY()), getRotationZ());
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _position.z);
     return this;
 }
 
@@ -62,6 +74,7 @@ Box2dNode* Box2dNode::setScale(float x, float y, float z) {
 
 Box2dNode* Box2dNode::scale(float x, float y, float z) {
     Node::scale(x, y, z);
+    jassert(false, "not implemented");
     return this;
 }
 
@@ -71,6 +84,7 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
         nv->push(this);
         nv->visit(this);
         for (auto i : _nodes) {
+            jassert(i, "node is invalid");
             i->accept(nv);
         }
         nv->pop();
@@ -97,3 +111,4 @@ float Box2dNode::getBox2dAngle() const {
 }
 
 } /* namespace jupiter */
+

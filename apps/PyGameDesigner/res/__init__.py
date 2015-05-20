@@ -5,3 +5,4 @@
 from GameDesignerAlt import *
 from NodeSettings import *
 from SpriteSettings import *
+from Box2dBodySettings import *

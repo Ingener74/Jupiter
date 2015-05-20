@@ -69,7 +69,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 200 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -155,6 +155,7 @@ class FallingBox(object):
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
         self.game.setRootNode(self.rn).\
+            addVisitor(self.physics).\
             addVisitor(self.render).\
             addKeyboardListener(self.boxTest).\
             setWidth(width).\

@@ -1,18 +1,22 @@
 {
+    "Box2dBodySettings":{
+        "x":1339,
+        "y":848
+    },
     "EuropeGLWidget":{
-        "x":480,
-        "y":243
+        "x":485,
+        "y":293
     },
     "GameDesigner":{
         "x":32,
         "y":101
     },
     "NodeSettings":{
-        "x":1330,
-        "y":345
+        "x":1336,
+        "y":346
     },
     "SpriteSettings":{
-        "x":894,
-        "y":773
+        "x":1337,
+        "y":591
     }
 }

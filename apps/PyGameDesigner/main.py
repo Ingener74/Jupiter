@@ -5,20 +5,40 @@ import sys
 import json
 from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout
 from PySide.QtOpenGL import QGLWidget
-from PySide.QtCore import Qt, QPoint
+from PySide.QtCore import Qt, QPoint, QSettings
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from res import *
 
+
+COMPANY = 'Jupiter Organisation'
+APPNAME = 'Europe Game Designer'
+
+
 class NodeSettings(QWidget, Ui_NodeSettings):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
+        
+        self.settings = None
+        
+    def closeEvent(self, e):
+        # Альтернативный способ сохранения геометрии окна
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.settings.setValue('geometry', self.saveGeometry())
+        print self.settings.fileName()
+        QWidget.closeEvent(self, e)
+
+
+class SpriteSettings(QWidget, Ui_SpriteSettings):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
 
 
-class SpriteSettings(QWidget, Ui_SpriteSettings):
+class Box2dBodySettings(QWidget, Ui_Box2dBodySettings):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
@@ -48,8 +68,8 @@ class GlWidget(QGLWidget):
         
     def resizeGL(self, w, h):
         glViewport(0, 0, w, h)
-        
-        
+
+
 class GameDesignerWindow(QWidget, Ui_GameDesigner):
     
     CONFIG_NAME = 'config.json'
@@ -74,6 +94,10 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         self.spriteSettings.move(self.loadWidgetPosition(self.spriteSettings))
         self.spriteSettings.show()
         
+        self.box2dBodySettings = Box2dBodySettings()
+        self.box2dBodySettings.move(self.loadWidgetPosition(self.box2dBodySettings))
+        self.box2dBodySettings.show()
+        
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
             self.close()
@@ -89,7 +113,10 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         
         self.saveWidgetPosition(self.spriteSettings)
         self.spriteSettings.close()
-    
+        
+        self.saveWidgetPosition(self.box2dBodySettings)
+        self.box2dBodySettings.close()
+        
     def loadWidgetPosition(self, widget):
         return QPoint(self._json[widget.objectName()]['x'], self._json[widget.objectName()]['y'])
     
