@@ -42,6 +42,7 @@ public:
     float getBox2dAngle() const;
 
 private:
+    Box2dVisitor* _visitor = nullptr;
     b2Body* _body = nullptr;
     CollisionListener* _collisionListener = nullptr;
 

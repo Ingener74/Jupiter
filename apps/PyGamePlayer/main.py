@@ -37,7 +37,7 @@ except ImportError as e:
                          QMessageBox.NoButton)
     sys.exit(1)
 
-class Box(j.MoveListener, j.KeyboardListener, j.ScaleListener):
+class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
     def __init__(self, window):
         j.MoveListener.__init__(self)
         j.ScaleListener.__init__(self)
@@ -69,7 +69,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 200 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -215,8 +215,8 @@ class OpenGLWidget(QGLWidget):
             j.initJupiter()
             self.fallingBox = FallingBox(self, self.width(), self.height())
             
-            self.moveWindow = MoveWidget(self.fallingBox)
-            self.moveWindow.show()
+            #self.moveWindow = MoveWidget(self.fallingBox)
+            #self.moveWindow.show()
             
             self.startTimer(1000.0 / 30.0)
             
@@ -253,7 +253,8 @@ class OpenGLWidget(QGLWidget):
         self.fallingBox.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
-        self.moveWindow.close()
+        #self.moveWindow.close()
+        pass
 
 
 def setStyle():

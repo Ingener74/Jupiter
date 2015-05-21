@@ -41,25 +41,29 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
 
 Box2dNode* Box2dNode::setRotation(float x, float y, float z, float angle) {
     Node::setRotation(x, y, z, angle);
-    jassert(false, "not implemented");
+    jassert(b2_epsilon > _position.x, "wrong plane");
+    jassert(b2_epsilon > _position.y, "wrong plane");
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
     return this;
 }
 
 Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
     Node::rotate(x, y, z, angle);
-    jassert(false, "not implemented");
+    jassert(b2_epsilon > _position.x, "wrong plane");
+    jassert(b2_epsilon > _position.y, "wrong plane");
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
     return this;
 }
 
 Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _position.z);
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
     return this;
 }
 
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _position.z);
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
     return this;
 }
 
