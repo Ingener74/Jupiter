@@ -8,7 +8,7 @@ from PySide.QtCore import *
 from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox, QWidget
 from PySide.QtOpenGL import QGLWidget, QGLFormat, QGLContext
 
-from move import Ui_MoveDialog
+from res import *
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
@@ -69,7 +69,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 200 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -215,8 +215,8 @@ class OpenGLWidget(QGLWidget):
             j.initJupiter()
             self.fallingBox = FallingBox(self, self.width(), self.height())
             
-            #self.moveWindow = MoveWidget(self.fallingBox)
-            #self.moveWindow.show()
+#             self.moveWindow = MoveWidget(self.fallingBox)
+#             self.moveWindow.show()
             
             self.startTimer(1000.0 / 30.0)
             
@@ -253,7 +253,24 @@ class OpenGLWidget(QGLWidget):
         self.fallingBox.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
-        #self.moveWindow.close()
+#         self.moveWindow.close()
+        pass
+
+
+class Select(QWidget, Ui_SelectImpl):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
+        
+        self.PySideButton.clicked.connect(self.pySide)
+        self.FreeGlutButton.clicked.connect(self.glut)
+        
+    def pySide(self):
+        window = OpenGLWidget()
+        window.show()
+        self.close()
+    
+    def glut(self):
         pass
 
 
@@ -269,17 +286,16 @@ def main():
     setStyle()
     app = QApplication(sys.argv)
     
+    select = Select()
+    select.show()
+    
 #     format = QGLFormat()
 #     format.setVersion(3, 3)
 #     format.setProfile(QGLFormat.CoreProfile)
 #     format.setSampleBuffers(True)
 #     window = OpenGLWidget(format)
 
-    window = OpenGLWidget()
-    window.show()
-     
     sys.exit(app.exec_())
-
 
 if __name__ == '__main__':
     try:

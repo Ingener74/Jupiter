@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/PyGamePlayer/res/move.ui'
+# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/IoGamePlayer/res/move.ui'
 #
-# Created: Sun May 17 13:57:56 2015
+# Created: Thu May 21 20:12:29 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!

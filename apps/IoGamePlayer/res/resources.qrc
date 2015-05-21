@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>pysidelogo.png</file>
+    <file>freeglut_logo.png</file>
     <file>back.png</file>
     <file>down.png</file>
     <file>forward.png</file>
