@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/IoGamePlayer/res/SelectImplementation.ui'
 #
-# Created: Thu May 21 20:25:48 2015
+# Created: Thu May 21 22:17:00 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
