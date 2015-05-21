@@ -28,6 +28,7 @@ public:
     virtual void begin();
 
     virtual void visit(Sprite*);
+    virtual void visit(Box2dNode*);
 
     virtual void end();
 

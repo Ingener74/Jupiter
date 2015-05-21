@@ -5,7 +5,7 @@ import sys
 import json
 from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout
 from PySide.QtOpenGL import QGLWidget
-from PySide.QtCore import Qt, QPoint, QSettings
+from PySide.QtCore import Qt, QPoint, QSettings, QAbstractItemModel
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -15,6 +15,14 @@ from res import *
 
 COMPANY = 'Jupiter Organisation'
 APPNAME = 'Europe Game Designer'
+
+
+class NodeTreeModel(QAbstractItemModel):
+    def __init__(self):
+        QAbstractItemModel.__init__()
+        
+    def test(self):
+        self.createIndex()
 
 
 class NodeSettings(QWidget, Ui_NodeSettings):
