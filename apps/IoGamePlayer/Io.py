@@ -5,7 +5,7 @@ import sys
 import math
 
 from PySide.QtCore import *
-from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox, QWidget
+from PySide.QtGui import QApplication, QKeyEvent, QKeySequence, QMessageBox, QWidget, QIcon, QPixmap
 from PySide.QtOpenGL import QGLWidget, QGLFormat, QGLContext
 
 from res import *
@@ -197,6 +197,8 @@ class MoveWidget(QWidget, Ui_MoveDialog):
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, parent, None)
+        self.setWindowIcon(QIcon(QPixmap('res/main.png')))
+        
         self.fallingBox = None
 
     def initializeGL(self):

@@ -5,7 +5,7 @@ import sys
 import json
 from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout
 from PySide.QtOpenGL import QGLWidget
-from PySide.QtCore import Qt, QPoint, QSettings, QAbstractItemModel
+from PySide.QtCore import Qt, QPoint, QSettings, QAbstractItemModel, QModelIndex
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -19,10 +19,25 @@ APPNAME = 'Europe Game Designer'
 
 class NodeTreeModel(QAbstractItemModel):
     def __init__(self):
-        QAbstractItemModel.__init__()
+        QAbstractItemModel.__init__(self)
         
-    def test(self):
-        self.createIndex()
+        self.simpleList = [u'Паша', u'Какаша']
+        
+    def columnCount(self, parent):
+        return 1
+    
+    def rowCount(self, parent):
+        return len(self.simpleList)
+        
+    def index(self, row, column, parent):
+        return self.createIndex(row, column, 'data')
+    
+    def data(self, index, role=Qt.DisplayRole):
+        row = index.row()
+        return self.simpleList[row]
+    
+    def parent(self, child):
+        return QModelIndex()
 
 
 class NodeSettings(QWidget, Ui_NodeSettings):
@@ -85,6 +100,11 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        
+        
+        nodeTreeModel = NodeTreeModel()
+        self.nodeTreeView.setModel(nodeTreeModel)
+        
         
         self._json = json.load(open(self.CONFIG_NAME))
         

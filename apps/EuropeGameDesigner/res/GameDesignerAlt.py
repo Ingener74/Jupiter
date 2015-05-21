@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/PyGameDesigner/res/GameDesignerAlt.ui'
+# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/EuropeGameDesigner/res/GameDesignerAlt.ui'
 #
-# Created: Tue May 19 21:04:18 2015
+# Created: Thu May 21 22:37:39 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,17 +30,17 @@ class Ui_GameDesigner(object):
         self.resourcesGroupBox.setObjectName("resourcesGroupBox")
         self.verticalLayout = QtGui.QVBoxLayout(self.resourcesGroupBox)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.treeView_2 = QtGui.QTreeView(self.resourcesGroupBox)
-        self.treeView_2.setObjectName("treeView_2")
-        self.verticalLayout.addWidget(self.treeView_2)
+        self.resourceTreeView = QtGui.QTreeView(self.resourcesGroupBox)
+        self.resourceTreeView.setObjectName("resourceTreeView")
+        self.verticalLayout.addWidget(self.resourceTreeView)
         self.verticalLayout_3.addWidget(self.resourcesGroupBox)
         self.nodeTreeGroupBox = QtGui.QGroupBox(GameDesigner)
         self.nodeTreeGroupBox.setObjectName("nodeTreeGroupBox")
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.nodeTreeGroupBox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.treeView = QtGui.QTreeView(self.nodeTreeGroupBox)
-        self.treeView.setObjectName("treeView")
-        self.verticalLayout_2.addWidget(self.treeView)
+        self.nodeTreeView = QtGui.QTreeView(self.nodeTreeGroupBox)
+        self.nodeTreeView.setObjectName("nodeTreeView")
+        self.verticalLayout_2.addWidget(self.nodeTreeView)
         self.verticalLayout_3.addWidget(self.nodeTreeGroupBox)
 
         self.retranslateUi(GameDesigner)
