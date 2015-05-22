@@ -42,12 +42,12 @@ public:
     float getBox2dAngle() const;
 
 private:
-    Box2dVisitor* _visitor = nullptr;
-    b2Body* _body = nullptr;
-    CollisionListener* _collisionListener = nullptr;
+    Box2dVisitor*       _visitor            = nullptr;
+    b2Body*             _body               = nullptr;
+    CollisionListener*  _collisionListener  = nullptr;
 
-    Box2dNode(const Box2dNode&) = default;
-    Box2dNode& operator=(const Box2dNode&) = default;
+    Box2dNode(const Box2dNode&)             = default;
+    Box2dNode& operator=(const Box2dNode&)  = default;
 };
 
 } /* namespace jupiter */

@@ -63,9 +63,6 @@ void RenderVisitor::visit(Sprite* sprite) {
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
 }
 
-void RenderVisitor::visit(Box2dNode* body) {
-}
-
 void RenderVisitor::end() {
 }
 

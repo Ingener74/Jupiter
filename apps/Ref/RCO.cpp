@@ -5,21 +5,23 @@
 
 using namespace std;
 
+#define log cout << __func__ << " " << _counter << endl;
+
 RCO::RCO(){
-    cout << __func__ << " " << _counter << endl;
+    log
 }
 
 RCO::~RCO(){
-    cout << __func__ << " " << _counter << endl;
+    log
 }
 
 void RCO::addRef(){
-    cout << __func__ << " " << _counter << endl;
     _counter++;
+    log
 }
 
 void RCO::removeRef(){
-    cout << __func__ << " " << _counter << endl;
+    log
     if(!--_counter){
         delete this;
     }
