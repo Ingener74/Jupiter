@@ -13,6 +13,6 @@ else()
 
     add_subdirectory(Test)
     
-#    add_executable(ref_test Ref/main.cpp)
+    add_executable(ref_test Ref/main.cpp Ref/RCO.cpp)
     
 endif()

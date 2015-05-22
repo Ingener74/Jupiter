@@ -8,56 +8,64 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "RCO.h"
+
 using namespace std;
 
-template<typename T>
 class Ref {
 public:
-
-    template<typename ... Args>
-    Ref(Args&&... args) {
-        core = new Core;
-        core->counter++;
-        core->data = new T(args...);
+    Ref(RCO* r = nullptr): _rco(r){
+        if (_rco)
+            _rco->addRef();
     }
-    Ref(const Ref& r) {
-        *this = r;
-    }
-    Ref& operator=(const Ref& r) {
-        core = r.core;
-        core->counter++;
-        return *this;
+    Ref(const Ref& ref){
+        if(_rco)
+            _rco->removeRef();
+        _rco = ref._rco;
+        if(_rco)
+            _rco->addRef();
     }
     virtual ~Ref() {
-        if (!core->counter--) {
-            delete core->data;
-            delete core;
-        }
+        if (_rco)
+            _rco->removeRef();
     }
 
     friend ostream& operator<<(ostream& o, const Ref& r) {
-        return o << "Ref{" << r.core->counter << "}";
+        return o << "Ref{" << r._rco->refCount() << "}";
     }
 
 private:
-    struct Core {
-        T* data = nullptr;
-        int counter = 0;
-    };
-    Core* core = nullptr;
+    RCO* _rco = nullptr;
 };
 
-class Test {
+class Test: public RCO {
 public:
     Test() {
+        cout << __func__ << " " << endl;
     }
     virtual ~Test() {
+        cout << __func__ << " " << endl;
     }
+};
+
+class RcoUser{
+public:
+    RcoUser(){
+    }
+    virtual ~RcoUser(){
+    }
+    
+    void testRco(RCO* rco){
+        _rco = Ref(rco);
+    }
+    
+private:
+    Ref _rco;
 };
 
 int main(int argc, char **argv) {
     try {
-        Ref<Test> t1{};
+        Ref t1{new Test};
 
         auto  t2 = t1;
 
@@ -66,6 +74,9 @@ int main(int argc, char **argv) {
         cout << t1 << endl;
         cout << t2 << endl;
         cout << t3 << endl;
+        
+        RcoUser t5;
+        t5.testRco(new Test);
 
     } catch (exception const& e) {
         cerr << e.what() << endl;
