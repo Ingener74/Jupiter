@@ -1,7 +1,7 @@
 
 #version 330
 
-in vec2 color_;
+in vec4 color_;
 
 out vec4 fragColor;
 
