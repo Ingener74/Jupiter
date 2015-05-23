@@ -30,11 +30,12 @@ class NodeTreeModel(QAbstractItemModel):
         return len(self.simpleList)
         
     def index(self, row, column, parent):
-        return self.createIndex(row, column, 'data')
+        return self.createIndex(row, column, self.simpleList[row])
     
     def data(self, index, role=Qt.DisplayRole):
-        row = index.row()
-        return self.simpleList[row]
+        
+        if role == Qt.DisplayRole:
+            return index.internalPointer()
     
     def parent(self, child):
         return QModelIndex()
@@ -51,7 +52,6 @@ class NodeSettings(QWidget, Ui_NodeSettings):
         # Альтернативный способ сохранения геометрии окна
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
         self.settings.setValue('geometry', self.saveGeometry())
-        print self.settings.fileName()
         QWidget.closeEvent(self, e)
 
 
