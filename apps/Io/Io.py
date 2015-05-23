@@ -63,7 +63,14 @@ class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
             self.getNode().translateX(-5)
         if key == 114 or key == 333:
             self.getNode().translateX(5)
+
+class BoxCollision(j.CollisionListener):
+    def __init__(self):
+        j.CollisionListener.__init__(self)
         
+    def collision(self, node):
+#         print u'Я столкнулся с ', node.getName(), u' тег ', node.getTag()
+        pass
 
 class BgRotate(j.RotationListener):
     def rotate(self, x, y, z, angle):
@@ -75,6 +82,8 @@ class FallingBox(object):
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
+    
+    GROUND = 2
     
     def __init__(self, window, width, height):
         
@@ -107,7 +116,8 @@ class FallingBox(object):
             setShape(self.bgShape).\
             setRotationListener(self.bgRotate).\
             setScale(0.11)
-        
+            
+            
             #setScaleListener(self.boxTest).\
         self.boxTest = Box(window)
         boxImage = j.PngImage('Resources/box.png')
@@ -121,7 +131,10 @@ class FallingBox(object):
             setMoveListener(self.boxTest).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
-        self.box.setAngularVelocity(1.)
+        self.box.setRotation(0., 0., 1., 0.3)
+        
+        self.boxCollision = BoxCollision()
+        self.box.setCollisionListener(self.boxCollision)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -134,7 +147,9 @@ class FallingBox(object):
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
             translate(0.0, -40.0, 10.0).\
-            scale(0.1)
+            scale(0.1).\
+            setName('flour').\
+            setTag(self.GROUND)
         
 #         self.grounds[1].\
 #             clone(self.grounds[0]).\
@@ -224,7 +239,7 @@ class OpenGLWidget(QGLWidget):
 #             self.moveWindow = MoveWidget(self.fallingBox)
 #             self.moveWindow.show()
             
-            self.startTimer(1000.0 / 60.0)
+            self.startTimer(1000.0 / self.fallingBox.FPS)
             
         except RuntimeError, e:
             raise SystemExit(u'Ошибка старта ' + str(e))

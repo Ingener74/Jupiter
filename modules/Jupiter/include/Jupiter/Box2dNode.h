@@ -47,6 +47,9 @@ public:
     Box2dNode* setLinearVelocity(float x, float y);
     Box2dNode* setAngularVelocity(float angularVel);
 
+    CollisionListener* getCollisionListener();
+    Box2dNode* setCollisionListener(CollisionListener*);
+
 private:
     Box2dVisitor*       _visitor            = nullptr;
     b2Body*             _body               = nullptr;

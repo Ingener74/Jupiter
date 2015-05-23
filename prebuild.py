@@ -7,7 +7,7 @@ from PySide.QtGui import QApplication, QFileDialog, QMainWindow, QGroupBox, QLab
     QTextEdit, QIcon, QPixmap
 from PySide import QtCore
 
-from prebuild import Linux, Downloader, Builder
+from prebuild import *
 
 class BoostBuilder(Builder):
     def __init__(self, downloader):
@@ -19,43 +19,14 @@ class BoostBuilder(Builder):
         print 'after download'
 
 
-class MainWindow(QWidget):
+class MainWindow(QWidget, Ui_Main):
     MIN_SIZE = 600
     def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
         
-        self.setWindowIcon(QIcon(QPixmap('prebuild/png/office_building.png')))
         
-        test = QLabel(u'Test')
-        envLayout = QVBoxLayout()
-        envLayout.addWidget(test)
         
-        environment = QGroupBox(u'Окружение')
-        environment.setMinimumSize(self.MIN_SIZE, self.MIN_SIZE)
-        environment.setLayout(envLayout)
-        
-        components = QGroupBox(u'Компоненты')
-        components.setMinimumSize(self.MIN_SIZE, self.MIN_SIZE)
-        
-        horLayout = QHBoxLayout()
-        horLayout.addWidget(environment)
-        horLayout.addWidget(components)
-        
-        consoleEdit = QTextEdit()
-        
-        consoleLayout = QVBoxLayout()
-        consoleLayout.addWidget(consoleEdit)
-        
-        console = QGroupBox(u'Консоль')
-        console.setLayout(consoleLayout)
-        
-        verLayout = QVBoxLayout()
-        verLayout.addLayout(horLayout)
-        verLayout.addWidget(console)
-        self.setLayout(verLayout)
-        
-        self.setWindowTitle(u'Сборка зависимостей')
-    
     def keyPressEvent(self, e):
         if e.key() == QtCore.Qt.Key_Escape:
             raise SystemExit

@@ -11,11 +11,14 @@
 #include "Jupiter/Box2dNode.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/CollisionListener.h"
+#include "Jupiter/MoveListener.h"
+#include "Jupiter/RotationListener.h"
 #include "Jupiter/Box2dVisitor.h"
 
 namespace jupiter {
 
 using namespace std;
+using namespace glm;
 
 class ContactListener: public b2ContactListener {
 public:
@@ -74,11 +77,22 @@ void Box2dVisitor::pop() {
 
 void Box2dVisitor::visit(Box2dNode* node) {
     jassert(node, "node is empty");
-    node->setPosition(node->_body->GetPosition().x, node->_body->GetPosition().y, node->getPositionZ());
+//    node->setPosition(node->_body->GetPosition().x, node->_body->GetPosition().y, node->_position.z);
+//    node->setRotation(0.f, 0.f, 1.f, node->_body->GetAngle());
 
-    cout << "angle " << node->_body->GetAngle() << endl;
+    float x = node->_body->GetPosition().x;
+    float y = node->_body->GetPosition().y;
+    float z = node->_position.z;
+    float a = node->_body->GetAngle();
 
-    node->setRotation(0.f, 0.f, 1.f, node->_body->GetAngle());
+    node->_position.x = x;
+    node->_position.y = y;
+    node->_rotation = glm::rotate(quat { }, a, vec3 { 0.f, 0.f, 1.f });
+    node->calcModel();
+    if (node->_moveListener)
+        node->_moveListener->move(x, y, z);
+    if (node->_rotationListener)
+        node->_rotationListener->rotate(0.f, 0.f, 1.f, a);
 }
 
 void Box2dVisitor::end() {

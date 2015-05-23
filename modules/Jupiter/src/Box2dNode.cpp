@@ -32,7 +32,7 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
 }
 
 Box2dNode::~Box2dNode() {
-    _body->DestroyFixture(_body->GetFixtureList());
+    jassert(_body, "no body");
     _body->GetWorld()->DestroyBody(_body); // возможно тут будет ошибка
 }
 
@@ -50,30 +50,35 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
 
 Box2dNode* Box2dNode::setRotation(float x, float y, float z, float angle) {
     Node::setRotation(x, y, z, angle);
+    jassert(_body, "no body");
     _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
     Node::rotate(x, y, z, angle);
+    jassert(_body, "no body");
     _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
+    jassert(_body, "no body");
     _body->SetTransform(b2Vec2(_position.x, _position.y), _body->GetAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
+    jassert(_body, "no body");
     _body->SetTransform(b2Vec2(_position.x, _position.y), _body->GetAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::setScale(float x, float y, float z) {
     Node::setScale(x, y, z);
+    jassert(_body, "no body");
     auto shape = dynamic_cast<b2PolygonShape*>(_body->GetFixtureList()->GetShape());
     shape->SetAsBox(_width * _scale.x, _height * _scale.y);
     return this;
@@ -81,6 +86,7 @@ Box2dNode* Box2dNode::setScale(float x, float y, float z) {
 
 Box2dNode* Box2dNode::scale(float x, float y, float z) {
     Node::scale(x, y, z);
+    jassert(_body, "no body");
     auto shape = dynamic_cast<b2PolygonShape*>(_body->GetFixtureList()->GetShape());
     shape->SetAsBox(_width * _scale.x, _height * _scale.y);
     return this;
@@ -101,12 +107,25 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
 }
 
 Box2dNode* Box2dNode::setLinearVelocity(float x, float y) {
+    jassert(_body, "no body");
     _body->SetLinearVelocity(b2Vec2(x, y));
     return this;
 }
 
 Box2dNode* Box2dNode::setAngularVelocity(float velocity) {
+    jassert(_body, "no body");
     _body->SetAngularVelocity(velocity);
+    return this;
+}
+
+CollisionListener* Box2dNode::getCollisionListener() {
+    jassert(_collisionListener, "no listener");
+    return _collisionListener;
+}
+
+Box2dNode* Box2dNode::setCollisionListener(CollisionListener* listener) {
+    jassert(listener, "invalid listener");
+    _collisionListener = listener;
     return this;
 }
 
