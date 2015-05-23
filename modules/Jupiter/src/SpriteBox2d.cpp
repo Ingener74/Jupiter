@@ -9,7 +9,8 @@
 
 namespace jupiter {
 
-SpriteBox2d::SpriteBox2d(Box2dVisitor* nv, float width, float height, BodyType bodyType): Sprite(), Box2dNode(nv, width, height, bodyType){
+SpriteBox2d::SpriteBox2d(Box2dVisitor* nv, float width, float height, BodyType bodyType) :
+    Sprite(), Box2dNode(nv, width, height, bodyType) {
 }
 
 SpriteBox2d::~SpriteBox2d() {

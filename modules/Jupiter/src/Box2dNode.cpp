@@ -32,12 +32,19 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
 }
 
 Box2dNode::~Box2dNode() {
+    _body->DestroyFixture(_body->GetFixtureList());
+    _body->GetWorld()->DestroyBody(_body); // возможно тут будет ошибка
 }
 
 Box2dNode* Box2dNode::clone(Box2dNode* node) {
     jassert(node, "node is invalid");
     *this = *node;
     jassert(false, "Нельзя просто так копировать физическое тело / not implemented body copy");
+
+
+
+//    _body = _body->GetWorld()->CreateBody()
+
     return this;
 }
 
@@ -55,13 +62,13 @@ Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
 
 Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
-    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _body->GetAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
-    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
+    _body->SetTransform(b2Vec2(_position.x, _position.y), _body->GetAngle());
     return this;
 }
 
@@ -93,22 +100,14 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
     return this;
 }
 
-Box2dNode* Box2dNode::collision(Box2dNode* node) {
-    if (_collisionListener)
-        _collisionListener->collision(node);
+Box2dNode* Box2dNode::setLinearVelocity(float x, float y) {
+    _body->SetLinearVelocity(b2Vec2(x, y));
     return this;
 }
 
-float Box2dNode::getBox2dX() const {
-    return _body->GetPosition().x;
-}
-
-float Box2dNode::getBox2dY() const {
-    return _body->GetPosition().y;
-}
-
-float Box2dNode::getBox2dAngle() const {
-    return _body->GetAngle();
+Box2dNode* Box2dNode::setAngularVelocity(float velocity) {
+    _body->SetAngularVelocity(velocity);
+    return this;
 }
 
 } /* namespace jupiter */

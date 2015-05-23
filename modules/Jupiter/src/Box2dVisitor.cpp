@@ -10,6 +10,7 @@
 #include "Jupiter/Tools.h"
 #include "Jupiter/Box2dNode.h"
 #include "Jupiter/Node.h"
+#include "Jupiter/CollisionListener.h"
 #include "Jupiter/Box2dVisitor.h"
 
 namespace jupiter {
@@ -18,7 +19,8 @@ using namespace std;
 
 class ContactListener: public b2ContactListener {
 public:
-    ContactListener() {
+    ContactListener(Box2dVisitor* visitor) :
+        _visitor(visitor) {
     }
     virtual ~ContactListener() {
     }
@@ -39,9 +41,11 @@ public:
         auto nodeB = static_cast<Box2dNode*>(contact->GetFixtureB()->GetBody()->GetUserData());
         jassert(nodeB, "bad node B");
 
-        nodeA->collision(nodeB);
-        nodeB->collision(nodeA);
+        _visitor->collide(nodeA, nodeB);
     }
+
+private:
+    Box2dVisitor* _visitor = nullptr;
 };
 
 Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityIterations) :
@@ -51,7 +55,7 @@ Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityI
 
     _world = make_unique_<b2World>(gravity);
 
-    _contactListener = make_unique_<ContactListener>();
+    _contactListener = make_unique_<ContactListener>(this);
     _world->SetContactListener(_contactListener.get());
 }
 
@@ -70,8 +74,11 @@ void Box2dVisitor::pop() {
 
 void Box2dVisitor::visit(Box2dNode* node) {
     jassert(node, "node is empty");
-    node->setPosition(node->getBox2dX(), node->getBox2dY(), node->getPositionZ());
-    node->setRotation(0.f, 0.f, 1.f, node->getBox2dAngle());
+    node->setPosition(node->_body->GetPosition().x, node->_body->GetPosition().y, node->getPositionZ());
+
+    cout << "angle " << node->_body->GetAngle() << endl;
+
+    node->setRotation(0.f, 0.f, 1.f, node->_body->GetAngle());
 }
 
 void Box2dVisitor::end() {
@@ -109,5 +116,11 @@ Box2dVisitor* Box2dVisitor::setVelocityIterations(int velocityIterations) {
     return this;
 }
 
-} /* namespace jupiter */
+void Box2dVisitor::collide(Box2dNode* a, Box2dNode* b) {
+    if (a->_collisionListener)
+        a->_collisionListener->collision(b);
+    if (b->_collisionListener)
+        b->_collisionListener->collision(a);
+}
 
+} /* namespace jupiter */

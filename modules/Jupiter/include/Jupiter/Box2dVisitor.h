@@ -45,6 +45,8 @@ public:
     int getVelocityIterations() const;
     Box2dVisitor* setVelocityIterations(int velocityIterations);
 
+    void collide(Box2dNode* a, Box2dNode* b);
+
 private:
     std::unique_ptr<b2World> _world;
     float _timeStep = 0.f;

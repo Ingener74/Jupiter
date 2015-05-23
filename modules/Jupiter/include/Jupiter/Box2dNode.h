@@ -21,6 +21,8 @@ class NodeVisitor;
 
 class Box2dNode: virtual public Node {
 public:
+    friend class Box2dVisitor;
+
     enum BodyType
     {
         StaticBody = 0,
@@ -42,11 +44,8 @@ public:
 
     virtual Box2dNode* accept(NodeVisitor*);
 
-    Box2dNode* collision(Box2dNode*);
-
-    float getBox2dX() const;
-    float getBox2dY() const;
-    float getBox2dAngle() const;
+    Box2dNode* setLinearVelocity(float x, float y);
+    Box2dNode* setAngularVelocity(float angularVel);
 
 private:
     Box2dVisitor*       _visitor            = nullptr;

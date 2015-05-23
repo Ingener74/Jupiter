@@ -121,6 +121,7 @@ class FallingBox(object):
             setMoveListener(self.boxTest).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
+        self.box.setAngularVelocity(1.)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
