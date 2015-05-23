@@ -14,6 +14,8 @@
 
 namespace jupiter {
 
+using namespace std;
+
 class ContactListener: public b2ContactListener {
 public:
     ContactListener() {
@@ -45,7 +47,7 @@ public:
 Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityIterations) :
     _timeStep(timeStep), _positionIterations(positionIterations), _velocityIterations(velocityIterations) {
 
-    b2Vec2 gravity(0, 9.8);
+    b2Vec2 gravity(0, -9.8);
 
     _world = make_unique_<b2World>(gravity);
 
@@ -69,6 +71,7 @@ void Box2dVisitor::pop() {
 void Box2dVisitor::visit(Box2dNode* node) {
     jassert(node, "node is empty");
     node->setPosition(node->getBox2dX(), node->getBox2dY(), node->getPositionZ());
+    node->setRotation(0.f, 0.f, 1.f, node->getBox2dAngle());
 }
 
 void Box2dVisitor::end() {

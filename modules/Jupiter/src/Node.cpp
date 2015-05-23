@@ -26,6 +26,7 @@ using namespace std;
 using namespace glm;
 
 Node::Node() {
+    setRotation(0.f, 0.f, 1.f, 0.f);
 }
 
 Node::~Node() {

@@ -51,6 +51,8 @@ set(SOURCES
     
     src/Box2dNode.cpp
     src/Box2dVisitor.cpp
+    
+    src/SpriteBox2d.cpp
 )
 
 if(ANDROID)

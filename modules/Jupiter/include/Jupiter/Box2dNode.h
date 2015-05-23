@@ -21,7 +21,14 @@ class NodeVisitor;
 
 class Box2dNode: virtual public Node {
 public:
-    Box2dNode(Box2dVisitor*, int width, int height);
+    enum BodyType
+    {
+        StaticBody = 0,
+        KinematicBody,
+        DynamicBody
+    };
+
+    Box2dNode(Box2dVisitor*, float width, float height, BodyType/* = StaticBody*/);
     virtual ~Box2dNode();
 
     virtual Box2dNode* clone(Box2dNode*);
@@ -45,6 +52,9 @@ private:
     Box2dVisitor*       _visitor            = nullptr;
     b2Body*             _body               = nullptr;
     CollisionListener*  _collisionListener  = nullptr;
+
+    float               _width              = 0;
+    float               _height             = 0;
 
     Box2dNode(const Box2dNode&)             = default;
     Box2dNode& operator=(const Box2dNode&)  = default;

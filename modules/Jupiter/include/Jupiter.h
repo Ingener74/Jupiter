@@ -47,9 +47,12 @@
 #include "Jupiter/RotationListener.h"
 #include "Jupiter/KeyboardListener.h"
 
+#include "Jupiter/SpriteBox2d.h"
+
 namespace jupiter {
 
 void initJupiter();
+void deinitJupiter();
 
 }  // namespace jupiter
 

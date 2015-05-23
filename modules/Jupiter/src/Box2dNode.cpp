@@ -15,9 +15,13 @@
 
 namespace jupiter {
 
-Box2dNode::Box2dNode(Box2dVisitor* v, int width, int height) {
+Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyType): Node(), _visitor(v), _width(width), _height(height){
     b2BodyDef bodyDef;
-    bodyDef.position.Set(getPositionX(), getPositionY());
+    bodyDef.position.x = _position.x;
+    bodyDef.position.y = _position.y;
+    bodyDef.angle = glm::angle(_rotation);
+    bodyDef.type = static_cast<b2BodyType>(bodyType);
+    bodyDef.userData = this;
 
     _body = v->getWorld()->CreateBody(&bodyDef);
 
@@ -25,8 +29,6 @@ Box2dNode::Box2dNode(Box2dVisitor* v, int width, int height) {
     shape.SetAsBox(width, height);
 
     _body->CreateFixture(&shape, 0.3f);
-
-    _body->SetUserData(this);
 }
 
 Box2dNode::~Box2dNode() {
@@ -41,44 +43,39 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
 
 Box2dNode* Box2dNode::setRotation(float x, float y, float z, float angle) {
     Node::setRotation(x, y, z, angle);
-    jassert(b2_epsilon > _position.x, "wrong plane");
-    jassert(b2_epsilon > _position.y, "wrong plane");
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
+    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
     Node::rotate(x, y, z, angle);
-    jassert(b2_epsilon > _position.x, "wrong plane");
-    jassert(b2_epsilon > _position.y, "wrong plane");
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
+    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
+    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _rotation.w);
+    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::setScale(float x, float y, float z) {
     Node::setScale(x, y, z);
     auto shape = dynamic_cast<b2PolygonShape*>(_body->GetFixtureList()->GetShape());
-
-    jassert(false, "not implemented scale body shape");
-//    shape->SetAsBox()
+    shape->SetAsBox(_width * _scale.x, _height * _scale.y);
     return this;
 }
 
 Box2dNode* Box2dNode::scale(float x, float y, float z) {
     Node::scale(x, y, z);
-    jassert(false, "not implemented");
+    auto shape = dynamic_cast<b2PolygonShape*>(_body->GetFixtureList()->GetShape());
+    shape->SetAsBox(_width * _scale.x, _height * _scale.y);
     return this;
 }
 

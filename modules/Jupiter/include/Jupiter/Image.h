@@ -29,41 +29,20 @@ public:
 
     virtual ~Image() = default;
 
-    virtual uint32_t getWidth() const;
-    virtual uint32_t getHeight() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
     virtual void const* getData() const;
     virtual Image::Type getType() const;
 
     friend std::ostream& operator <<(std::ostream& out, const Image& r);
 
 protected:
-    uint32_t width = 0, height = 0;
+    int _width = 0, _height = 0;
     Image::Type type = Image::Type::RGB;
     std::vector<uint8_t> data;
 };
 
 inline Image::Image(const std::string& name) {
-}
-
-inline uint32_t Image::getWidth() const {
-    return width;
-}
-
-inline uint32_t Image::getHeight() const {
-    return height;
-}
-
-inline void const* Image::getData() const {
-    return data.data();
-}
-
-inline Image::Type Image::getType() const {
-    return type;
-}
-
-inline std::ostream& operator <<(std::ostream& out, const Image& r) {
-    return out << "Image: " << r.width << " x " << r.height << ", "
-            << (r.type == Image::Type::RGB ? std::string("RGB") : std::string("RGBA"));
 }
 
 }  // namespace ndk_game

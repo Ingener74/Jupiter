@@ -46,13 +46,15 @@ class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
         self.window = window
     
     def move(self, x, y, z):
-        print 'move ',[x, y, z]
+#         print 'move ',[x, y, z]
+        pass
     
     def scale(self, x, y, z):
-        print 'scale ', [x, y, z]
+#         print 'scale ', [x, y, z]
+        pass
     
     def key(self, key):
-        print 'key ', key
+#         print 'key ', key
         if key == 111 or key == 328:
             self.getNode().translateY(5)
         if key == 116 or key == 336:
@@ -111,7 +113,7 @@ class FallingBox(object):
         boxImage = j.PngImage('Resources/box.png')
         self.boxTex = j.ImageTexture(boxImage)
         self.boxShape = j.ImageShape(boxImage)
-        self.box = j.Sprite()
+        self.box = j.SpriteBox2d(self.physics, boxImage.getWidth() / 2, boxImage.getHeight() / 2, j.Box2dNode.DynamicBody)
         self.box.\
             setProgram(self.shader).\
             setTexture(self.boxTex).\
@@ -124,7 +126,7 @@ class FallingBox(object):
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
         
-        self.grounds = [j.Sprite() for i in range(0, 4)]
+        self.grounds = [j.SpriteBox2d(self.physics, groundImage.getWidth() / 2, groundImage.getHeight() / 2) for i in range(0, 1)]
         
         self.grounds[0].\
             setProgram(self.shader).\
@@ -133,25 +135,25 @@ class FallingBox(object):
             translate(0.0, -40.0, 10.0).\
             scale(0.1)
         
-        self.grounds[1].\
-            clone(self.grounds[0]).\
-            translate(34.0, -4.0, 0.0)
-        
-        self.grounds[2].\
-            clone(self.grounds[0]).\
-            translate(-34.0, 4.0, 0.0)
-
-        self.grounds[3].\
-            clone(self.grounds[2]).\
-            translate(-34.0, 4.0, 0.0)
+#         self.grounds[1].\
+#             clone(self.grounds[0]).\
+#             translate(34.0, -4.0, 0.0)
+#         
+#         self.grounds[2].\
+#             clone(self.grounds[0]).\
+#             translate(-34.0, 4.0, 0.0)
+# 
+#         self.grounds[3].\
+#             clone(self.grounds[2]).\
+#             translate(-34.0, 4.0, 0.0)
         
         self.rn.\
             addNode(self.bg).\
             addNode(self.box).\
-            addNode(self.grounds[0]).\
-            addNode(self.grounds[1]).\
-            addNode(self.grounds[2]).\
-            addNode(self.grounds[3])
+            addNode(self.grounds[0])#.\
+#             addNode(self.grounds[1]).\
+#             addNode(self.grounds[2]).\
+#             addNode(self.grounds[3])
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
@@ -221,10 +223,10 @@ class OpenGLWidget(QGLWidget):
 #             self.moveWindow = MoveWidget(self.fallingBox)
 #             self.moveWindow.show()
             
-            self.startTimer(1000.0 / 30.0)
+            self.startTimer(1000.0 / 60.0)
             
         except RuntimeError, e:
-            raise SystemExit(str(e))
+            raise SystemExit(u'Ошибка старта ' + str(e))
 
     def paintGL(self):
         glClearColor(0.1, 0.3, 0.1, 1.0)
