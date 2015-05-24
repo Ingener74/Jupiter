@@ -8,7 +8,7 @@ if(ANDROID)
 else()
     
     if(WITH_GAME_PLAYER)
-        add_subdirectory(GamePlayer)
+        add_subdirectory(Callisto)
     endif()
 
     add_subdirectory(Test)
