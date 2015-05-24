@@ -29,12 +29,37 @@ namespace jupiter {
 //    float near;
 //    float far;
 //};
-//
-//struct Ortho{
-//    float left, right, top, bottom;
-//    float _near;
-//
-//};
+
+#undef near
+#undef far
+
+struct Ortho {
+    Ortho(float left, float right, float top, float bottom, float near, float far) :
+        left(left), right(right), top(top), bottom(bottom), near(near), far(far) {
+    }
+    float left, right, top, bottom, near, far;
+};
+
+struct Perspective {
+    Perspective(float fovy, float aspect, float near, float far) :
+        fovy(fovy), aspect(aspect), near(near), far(far) {
+    }
+    float fovy, aspect, near, far;
+};
+
+struct Vec2 {
+    Vec2(float x, float y) :
+        x(x), y(y) {
+    }
+    float x, y;
+};
+
+struct Vec3 {
+    Vec3(float x, float y, float z) :
+        x(x), y(y), z(z) {
+    }
+    float x, y, z;
+};
 
 class Camera {
 public:
@@ -44,6 +69,10 @@ public:
         float eyex, float eyey, float eyez,
         float centerx, float centery, float centerz,
         float upx, float upy, float upz);
+
+    Camera(Ortho, Vec3, Vec3, Vec3){}
+    Camera(Perspective, Vec3, Vec3, Vec3){}
+
     Camera(const glm::mat4& projection = {}, const glm::mat4& view = {});
     virtual ~Camera();
 

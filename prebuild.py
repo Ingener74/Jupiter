@@ -26,7 +26,6 @@ class MainWindow(QWidget, Ui_Main):
         self.setupUi(self)
         
         
-        
     def keyPressEvent(self, e):
         if e.key() == QtCore.Qt.Key_Escape:
             raise SystemExit
