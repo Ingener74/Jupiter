@@ -8,13 +8,13 @@
 #ifndef TABLE_H_
 #define TABLE_H_
 
-#include <Ganymede/GanymedeCommon.h>
+#include <iostream>
 
-#include <Ganymede/String.h>
-#include <Ganymede/Number.h>
-#include <Ganymede/Function.h>
-#include <Ganymede/Boolean.h>
-#include <Ganymede/Nil.h>
+#include "Ganymede/String.h"
+#include "Ganymede/Number.h"
+#include "Ganymede/Function.h"
+#include "Ganymede/Boolean.h"
+#include "Ganymede/Nil.h"
 
 namespace ganymede
 {

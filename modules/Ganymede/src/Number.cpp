@@ -5,20 +5,17 @@
  *      Author: pavel
  */
 
-#include <Ganymede/Number.h>
+#include "Ganymede/Number.h"
 
 namespace ganymede
 {
 
 Number::Number()
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 Number::~Number()
 {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace ganymede */

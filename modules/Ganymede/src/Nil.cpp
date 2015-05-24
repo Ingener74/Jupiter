@@ -5,20 +5,17 @@
  *      Author: pavel
  */
 
-#include <Ganymede/Nil.h>
+#include "Ganymede/Nil.h"
 
 namespace ganymede
 {
 
 Nil::Nil()
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 Nil::~Nil()
 {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace ganymede */

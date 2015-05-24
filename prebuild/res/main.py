@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/prebuild/res/main.ui'
 #
-# Created: Sat May 23 22:28:00 2015
+# Created: Sun May 24 23:03:26 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_Main(object):
     def setupUi(self, Main):
         Main.setObjectName("Main")
-        Main.resize(1110, 841)
+        Main.resize(1306, 841)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/two_storied_house.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Main.setWindowIcon(icon)

@@ -5,20 +5,17 @@
  *      Author: pavel
  */
 
-#include <Ganymede/Boolean.h>
+#include "Ganymede/Boolean.h"
 
 namespace ganymede
 {
 
 Boolean::Boolean()
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 Boolean::~Boolean()
 {
-	// TODO Auto-generated destructor stub
 }
 
 Boolean::operator bool() const

@@ -5,20 +5,17 @@
  *      Author: pavel
  */
 
-#include <Ganymede/String.h>
+#include "Ganymede/String.h"
 
 namespace ganymede
 {
 
 String::String()
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 String::~String()
 {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace ganymede */

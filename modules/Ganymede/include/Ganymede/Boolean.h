@@ -8,8 +8,6 @@
 #ifndef BOOLEAN_H_
 #define BOOLEAN_H_
 
-#include <Ganymede/GanymedeCommon.h>
-
 namespace ganymede
 {
 

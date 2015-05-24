@@ -5,7 +5,7 @@
  *      Author: pavel
  */
 
-#include <Ganymede/Table.h>
+#include "Ganymede/Table.h"
 
 namespace ganymede
 {

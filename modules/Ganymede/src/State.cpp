@@ -5,7 +5,13 @@
  *      Author: pavel
  */
 
-#include <Ganymede/State.h>
+#include <iostream>
+
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+
+#include "Ganymede/State.h"
 
 namespace ganymede
 {

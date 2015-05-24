@@ -8,7 +8,9 @@
 #ifndef STATE_H_
 #define STATE_H_
 
-#include <Ganymede/GanymedeCommon.h>
+#include <string>
+
+struct lua_State;
 
 namespace ganymede
 {
