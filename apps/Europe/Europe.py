@@ -3,7 +3,7 @@
 
 import sys
 import json
-from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout
+from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout, QAbstractItemView
 from PySide.QtOpenGL import QGLWidget
 from PySide.QtCore import Qt, QPoint, QSettings, QAbstractItemModel, QModelIndex
 
@@ -21,23 +21,45 @@ class NodeTreeModel(QAbstractItemModel):
     def __init__(self):
         QAbstractItemModel.__init__(self)
         
+        self.__testMe = u'Попробуй'
+        
         self.simpleList = [u'Паша', u'Какаша']
         
     def columnCount(self, parent):
-        return 1
+        
+        print 'columtCount ', parent
+        
+        return 2
     
     def rowCount(self, parent):
+        
+        print 'rowCount ', parent
+        
         return len(self.simpleList)
         
     def index(self, row, column, parent):
+        
+        print 'index ', row, ' ', column, ' ', parent
+        
         return self.createIndex(row, column, self.simpleList[row])
     
     def data(self, index, role=Qt.DisplayRole):
         
+        print 'data ', index, ' ', role
+        
         if role == Qt.DisplayRole:
-            return index.internalPointer()
+            if index.column() == 0:
+                return index.internalPointer()
+            if index.column() == 1:
+                return "test"
+            
+        if role == Qt.EditRole:
+            return "new"
     
     def parent(self, child):
+        
+        print 'parent ', child
+        
         return QModelIndex()
 
 
@@ -104,6 +126,7 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         
         nodeTreeModel = NodeTreeModel()
         self.nodeTreeView.setModel(nodeTreeModel)
+        self.nodeTreeView.setEditTriggers(QAbstractItemView.DoubleClicked)
         
         
         self._json = json.load(open(self.CONFIG_NAME))

@@ -20,6 +20,22 @@
 
 namespace jupiter {
 
+//struct Perspective {
+//    Perspective (float fovy, float aspect, float near, float far) :
+//        fovy(fovy), aspect(aspect), near(near), far(far) {
+//    }
+//    float fovy;
+//    float aspect;
+//    float near;
+//    float far;
+//};
+//
+//struct Ortho{
+//    float left, right, top, bottom;
+//    float _near;
+//
+//};
+
 class Camera {
 public:
     Camera(float fovy,
