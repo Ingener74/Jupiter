@@ -33,7 +33,7 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
 
 Box2dNode::~Box2dNode() {
     jassert(_body, "no body");
-    _body->GetWorld()->DestroyBody(_body); // возможно тут будет ошибка
+    _body->GetWorld()->DestroyBody(_body);
 }
 
 Box2dNode* Box2dNode::clone(Box2dNode* node) {

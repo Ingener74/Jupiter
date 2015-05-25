@@ -30,7 +30,7 @@ public:
         DynamicBody
     };
 
-    Box2dNode(Box2dVisitor*, float width, float height, BodyType/* = StaticBody*/);
+    Box2dNode(Box2dVisitor*, float width, float height, BodyType = StaticBody);
     virtual ~Box2dNode();
 
     virtual Box2dNode* clone(Box2dNode*);
