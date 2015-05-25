@@ -105,8 +105,7 @@ public:
     Node* setRotationListener(RotationListener*);
     RotationListener* getRotationListener();
 
-    const glm::mat4& getModel() const;
-    Node* setModel(const glm::mat4& model);
+    glm::mat4 getModel() const;
 
 protected:
     bool               _visible            = true;
@@ -114,7 +113,6 @@ protected:
     int                _tag                = -1;
     std::string        _name;
 
-    glm::mat4          _model;
     glm::vec3          _position           = {0.f, 0.f, 0.f};
     glm::vec3          _scale              = {1.f, 1.f, 1.f};
     glm::quat          _rotation           = glm::rotate(glm::quat{}, 0.f, glm::vec3{0.f, 0.f, 1.f});
