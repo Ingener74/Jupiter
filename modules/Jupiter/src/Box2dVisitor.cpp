@@ -88,7 +88,7 @@ void Box2dVisitor::visit(Box2dNode* node) {
     node->_position.x = x;
     node->_position.y = y;
     node->_rotation = glm::rotate(quat { }, a, vec3 { 0.f, 0.f, 1.f });
-    node->calcModel();
+
     if (node->_moveListener)
         node->_moveListener->move(x, y, z);
     if (node->_rotationListener)

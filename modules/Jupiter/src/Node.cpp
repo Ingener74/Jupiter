@@ -77,7 +77,6 @@ float Node::getRotationAngle() const {
 
 Node* Node::setRotation(float x, float y, float z, float angle) {
     _rotation = glm::rotate(quat{}, angle, vec3(x, y, z));
-    calcModel();
     if (_rotationListener)
         _rotationListener->rotate(x, y, z, angle);
     return this;
@@ -97,7 +96,6 @@ Node* Node::setRotationZ(float angle) {
 
 Node* Node::rotate(float x, float y, float z, float angle) {
     _rotation = glm::rotate(_rotation, angle, vec3(x, y, z));
-    calcModel();
     if (_rotationListener)
         _rotationListener->rotate(x, y, z, angle);
     return this;
@@ -131,7 +129,6 @@ Node* Node::setPosition(float x, float y, float z) {
     _position.x = x;
     _position.y = y;
     _position.z = z;
-    calcModel();
     if (_moveListener)
         _moveListener->move(_position.x, _position.y, _position.z);
     return this;
@@ -153,7 +150,6 @@ Node* Node::translate(float x, float y, float z) {
     _position.x += x;
     _position.y += y;
     _position.z += z;
-    calcModel();
     if (_moveListener)
         _moveListener->move(_position.x, _position.y, _position.z);
     return this;
@@ -187,7 +183,6 @@ Node* Node::setScale(float x, float y, float z) {
     _scale.x = x;
     _scale.y = y;
     _scale.z = z;
-    calcModel();
     if (_scaleListener)
         _scaleListener->scale(_scale.x, _scale.y, _scale.z);
     return this;
@@ -213,7 +208,6 @@ Node* Node::scale(float x, float y, float z) {
     _scale.x *= x;
     _scale.y *= y;
     _scale.z *= z;
-    calcModel();
     if (_scaleListener)
         _scaleListener->scale(_scale.x, _scale.y, _scale.z);
     return this;
@@ -312,17 +306,8 @@ RotationListener* Node::getRotationListener() {
     return _rotationListener;
 }
 
-const glm::mat4& Node::getModel() const {
-    return _model;
-}
-
-Node* Node::setModel(const glm::mat4& model) {
-    jassert(false, "deprecated");
-    return this;
-}
-
-void Node::calcModel() {
-    _model = glm::translate( { }, _position) * glm::mat4_cast(_rotation) * glm::scale( { }, _scale);
+glm::mat4 Node::getModel() const {
+    return glm::translate( { }, _position) * glm::mat4_cast(_rotation) * glm::scale( { }, _scale);
 }
 
 } /* namespace jupiter */

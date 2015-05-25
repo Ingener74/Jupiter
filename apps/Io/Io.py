@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 200 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -132,9 +132,6 @@ class FallingBox(object):
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
         self.box.setRotation(0., 0., 1., 0.3)
-        
-        self.boxCollision = BoxCollision()
-        self.box.setCollisionListener(self.boxCollision)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)

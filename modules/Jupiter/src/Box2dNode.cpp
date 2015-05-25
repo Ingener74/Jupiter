@@ -28,7 +28,12 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
     b2PolygonShape shape;
     shape.SetAsBox(width, height);
 
-    _body->CreateFixture(&shape, 0.3f);
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 3.f;
+    fixtureDef.friction = .3f;
+
+    _body->CreateFixture(&fixtureDef);
 }
 
 Box2dNode::~Box2dNode() {
