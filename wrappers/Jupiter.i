@@ -23,6 +23,7 @@ using namespace jupiter;
     try {
         $action
     } catch (JupiterError const& e) {
+        // std::cout << e.what() << std::endl;
         SWIG_exception(SWIG_RuntimeError, e.what());
     } catch (std::exception const& e) {
         SWIG_exception(SWIG_RuntimeError, (std::string("std::exception: ") + e.what()).c_str());
