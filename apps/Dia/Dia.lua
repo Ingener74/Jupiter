@@ -14,7 +14,9 @@ g2.glfwWindowHint(g2.GLFW_CONTEXT_VERSION_MINOR, 3)
 g2.glfwWindowHint(g2.GLFW_OPENGL_PROFILE, g2.GLFW_OPENGL_CORE_PROFILE);
 g2.glfwWindowHint(g2.GLFW_OPENGL_COMPAT_PROFILE, g2.GLFW_OPENGL_FORWARD_COMPAT);
 
-local window = g2.glfwCreateWindow(800, 480, "Dia Lua Game Player", nil, nil)
+local window = g2.glfwCreateWindow(800, 480, "Dia - Lua Game Player for Jupiter", nil, nil)
+
+g2.glfwMakeContextCurrent(window)
 
 ok,res = pcall(function() j.initJupiter() end)
 if ok then
@@ -23,33 +25,39 @@ else
     error('init jupiter error: ' .. res)
 end
 
---[[
-local glewError = g3.glewInit()
-if glewError ~= g3.GLEW_OK then
-    print('glew error: ' .. g3.glewGetErrorString(glewError))
-end
-]]--
-
-g2.glfwMakeContextCurrent(window)
+g1.glViewport(0, 0, 800, 480)
+g1.glEnable(g1.GL_TEXTURE_2D)
+g1.glEnable(g1.GL_DEPTH_TEST)
 
 j.File.setBase('../../samples/Box')
 
-vs1 = j.File('Resources/sprite.vs')
-fs1 = j.File('Resources/sprite.fs')
---sh1 = j.FileShader(vs1, fs1)
+shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
 
-im1 = j.PngImage('Resources/bg.png')
+bgImage   = j.PngImage('Resources/bg.png')
+bgTexture = j.ImageTexture(bgImage)
+bgShape   = j.ImageShape(bgImage)
+bg        = j.Sprite()
+bg:setProgram(shader):setTexture(bgTexture):setShape(bgShape)
 
-print('OpenGL Version: '                  .. g1.glGetString(g1.GL_VERSION))
+rootNode = j.Node()
+rootNode:addNode(bg)
+
+camera   = j.Camera(45.0,   800.0, 480.0,   1.0, 1000.0,   0.0, 0.0, 100.0,   0.0, 0.0, 0.0,   0.0, 1.0, 0.0)
+renderer = j.RenderVisitor(camera)
+
+game = j.Game()
+game:setRootNode(rootNode):addVisitor(renderer):setWidth(800.0):setHeight(480.0)
+
+print('OpenGL Version:                  ' .. g1.glGetString(g1.GL_VERSION))
 print('OpenGL Shading Language Version: ' .. g1.glGetString(g1.GL_SHADING_LANGUAGE_VERSION))
-print('OpenGL Vendor: '                   .. g1.glGetString(g1.GL_VENDOR))
-print('OpenGL Renderer: '                 .. g1.glGetString(g1.GL_RENDERER))
+print('OpenGL Vendor:                   ' .. g1.glGetString(g1.GL_VENDOR))
+print('OpenGL Renderer:                 ' .. g1.glGetString(g1.GL_RENDERER))
 
 while g2.glfwWindowShouldClose(window) do
-    g1.glClear(g1.GL_COLOR_BUFFER_BIT | g1.GL_DEPTH_BUFFER_BIT)
+    g1.glClear(g1.GL_COLOR_BUFFER_BIT + g1.GL_DEPTH_BUFFER_BIT)
     g1.glClearColor(0.1, 0.3, 0.1, 1.)
 
-    -- draw();
+    game:draw()
 
     g2.glfwSwapBuffers(window)
     g2.glfwPollEvents()

@@ -32,20 +32,25 @@ int main(int argc, char **argv) {
     try {
         glfwSetErrorCallback(myErrorFun);
 
-        if (glewInit() != GLEW_OK)
-            throw runtime_error("glew init error");
-
         if(!glfwInit())
             throw runtime_error("can't init GLFW");
 
-        auto window = glfwCreateWindow(640, 480, getTitle().c_str(), nullptr, nullptr);
+//        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//        glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GLFW_OPENGL_FORWARD_COMPAT);
+
+        auto window = glfwCreateWindow(800, 480, getTitle().c_str(), nullptr, nullptr);
         if (!window) {
             glfwTerminate();
             throw runtime_error("can't create window");
         }
 
         glfwMakeContextCurrent(window);
-        glfwSwapInterval(1);
+        glfwSwapInterval(1000);
+
+//        if (glewInit() != GLEW_OK)
+//            throw runtime_error("glew init error");
 
         glfwSetKeyCallback(window, myKeyFun);
 
