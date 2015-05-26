@@ -15,14 +15,14 @@ option(WITH_GANIMEDE              "Build Ganimede"                  OFF)
 option(WITH_GAME_PLAYER           "Build with c++ game player"      ON)
 option(WITH_TESTS                 "Build tests"                     ON)
 
-option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper" ON)
-option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper" ON)
-
-option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper" ON)
-option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper" ON)
-
-option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper" ON)
-option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper" ON)
+option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"       ON)
+option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"          ON)
+                                                                    
+option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"       ON)
+option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"          ON)
+                                                                    
+option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"         ON)
+option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"            ON)
 
 if(USE_FREEGLUT AND USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")

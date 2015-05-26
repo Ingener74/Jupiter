@@ -10,7 +10,7 @@
 %{
 #include <GL/gl.h>
 #include <GL/glu.h>
-//#include <GL/glaux.h>
+#include <GL/glext.h>
 %}
 
 #define GL_VERSION_1_1   1
@@ -1395,6 +1395,7 @@ void glPopName( void );
 #define GL_MAX_3D_TEXTURE_SIZE			0x8073
 #define GL_TEXTURE_BINDING_3D			0x806A
 
+/*
 void glDrawRangeElements( GLenum mode, GLuint start,
 	GLuint end, GLsizei count, GLenum type, const GLvoid *indices );
 
@@ -1417,6 +1418,7 @@ void glCopyTexSubImage3D( GLenum target, GLint level,
                                              GLint zoffset, GLint x,
                                              GLint y, GLsizei width,
                                              GLsizei height );
+*/
 
 typedef void (PFNGLDRAWRANGEELEMENTSPROC) (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid *indices);
 typedef void (PFNGLTEXIMAGE3DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
@@ -1504,7 +1506,7 @@ typedef void (PFNGLCOPYTEXSUBIMAGE3DPROC) (GLenum target, GLint level, GLint xof
 #define GL_FUNC_REVERSE_SUBTRACT		0x800B
 #define GL_BLEND_COLOR				0x8005
 
-
+/*
 void glColorTable( GLenum target, GLenum internalformat,
                                     GLsizei width, GLenum format,
                                     GLenum type, const GLvoid *table );
@@ -1613,7 +1615,7 @@ void glSeparableFilter2D( GLenum target,
 void glGetSeparableFilter( GLenum target, GLenum format,
 	GLenum type, GLvoid *row, GLvoid *column, GLvoid *span );
 
-
+*/
 
 
 /*
@@ -1725,6 +1727,7 @@ void glGetSeparableFilter( GLenum target, GLenum format,
 /* texture_border_clamp */
 #define GL_CLAMP_TO_BORDER			0x812D
 
+/*
 void glActiveTexture( GLenum texture );
 
 void glClientActiveTexture( GLenum texture );
@@ -1817,7 +1820,7 @@ void glMultTransposeMatrixd( const GLdouble m[16] );
 void glMultTransposeMatrixf( const GLfloat m[16] );
 
 void glSampleCoverage( GLclampf value, GLboolean invert );
-
+*/
 
 typedef void (PFNGLACTIVETEXTUREPROC) (GLenum texture);
 typedef void (PFNGLSAMPLECOVERAGEPROC) (GLclampf value, GLboolean invert);
@@ -1873,6 +1876,7 @@ typedef void (PFNGLGETCOMPRESSEDTEXIMAGEPROC) (GLenum target, GLint level, GLvoi
 #define GL_CLIENT_ACTIVE_TEXTURE_ARB		0x84E1
 #define GL_MAX_TEXTURE_UNITS_ARB		0x84E2
 
+/*
 void glActiveTextureARB(GLenum texture);
 void glClientActiveTextureARB(GLenum texture);
 void glMultiTexCoord1dARB(GLenum target, GLdouble s);
@@ -1907,6 +1911,7 @@ void glMultiTexCoord4iARB(GLenum target, GLint s, GLint t, GLint r, GLint q);
 void glMultiTexCoord4ivARB(GLenum target, const GLint *v);
 void glMultiTexCoord4sARB(GLenum target, GLshort s, GLshort t, GLshort r, GLshort q);
 void glMultiTexCoord4svARB(GLenum target, const GLshort *v);
+*/
 
 typedef void (PFNGLACTIVETEXTUREARBPROC) (GLenum texture);
 typedef void (PFNGLCLIENTACTIVETEXTUREARBPROC) (GLenum texture);

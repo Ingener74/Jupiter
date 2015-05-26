@@ -5,10 +5,20 @@
  *      Author: pavel
  */
 
+#include <iostream>
+#include <sstream>
+
 #include "GamePlayer.h"
 #include <GLFW/glfw3.h>
 
 using namespace std;
+
+template<typename T>
+string to_string(T t){
+    stringstream s;
+    s << t;
+    return s.str();
+}
 
 void myErrorFun(int errorCode, const char* description) {
     throw runtime_error(to_string(errorCode) + " " + description);
