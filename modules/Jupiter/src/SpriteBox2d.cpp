@@ -5,15 +5,28 @@
  *      Author: Pavel
  */
 
+#include "Jupiter/JupiterError.h"
 #include "Jupiter/SpriteBox2d.h"
 
 namespace jupiter {
+
+SpriteBox2d::SpriteBox2d() :
+    Sprite(), Box2dNode() {
+}
 
 SpriteBox2d::SpriteBox2d(Box2dVisitor* nv, float width, float height, BodyType bodyType) :
     Sprite(), Box2dNode(nv, width, height, bodyType) {
 }
 
 SpriteBox2d::~SpriteBox2d() {
+}
+
+SpriteBox2d* SpriteBox2d::clone(SpriteBox2d* node) {
+    jassert(node, "node is invalid");
+    *this = *node;
+    Sprite::clone(node);
+    Box2dNode::clone(node);
+    return this;
 }
 
 SpriteBox2d* SpriteBox2d::accept(NodeVisitor* nv) {

@@ -30,6 +30,7 @@ public:
         DynamicBody
     };
 
+    Box2dNode();
     Box2dNode(Box2dVisitor*, float width, float height, BodyType = StaticBody);
     virtual ~Box2dNode();
 
@@ -50,8 +51,7 @@ public:
     CollisionListener* getCollisionListener();
     Box2dNode* setCollisionListener(CollisionListener*);
 
-private:
-    Box2dVisitor*       _visitor            = nullptr;
+protected:
     b2Body*             _body               = nullptr;
     CollisionListener*  _collisionListener  = nullptr;
 

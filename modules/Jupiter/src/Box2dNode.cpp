@@ -15,7 +15,12 @@
 
 namespace jupiter {
 
-Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyType): Node(), _visitor(v), _width(width), _height(height){
+using namespace std;
+
+Box2dNode::Box2dNode(): Node(){
+}
+
+Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyType): Node(), _width(width), _height(height){
     b2BodyDef bodyDef;
     bodyDef.position.x = _position.x;
     bodyDef.position.y = _position.y;
@@ -30,25 +35,40 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
-    fixtureDef.density = 3.f;
+    fixtureDef.density = 30.f;
     fixtureDef.friction = .3f;
 
     _body->CreateFixture(&fixtureDef);
 }
 
 Box2dNode::~Box2dNode() {
-    jassert(_body, "no body");
-    _body->GetWorld()->DestroyBody(_body);
+    if (_body)
+        _body->GetWorld()->DestroyBody(_body);
 }
 
 Box2dNode* Box2dNode::clone(Box2dNode* node) {
     jassert(node, "node is invalid");
     *this = *node;
-    jassert(false, "Нельзя просто так копировать физическое тело / not implemented body copy");
 
+    b2BodyDef bd;
+    bd.position.x = node->_body->GetPosition().x;
+    bd.position.y = node->_body->GetPosition().y;
+    bd.angle      = node->_body->GetAngle();
+    bd.type       = node->_body->GetType();
+    bd.userData   = this;
 
+    _body = node->_body->GetWorld()->CreateBody(&bd);
+    jassert(_body, "create body error");
 
-//    _body = _body->GetWorld()->CreateBody()
+    b2PolygonShape shape;
+    shape.SetAsBox(node->_width, node->_height);
+
+    b2FixtureDef fd;
+    fd.shape = &shape;
+    fd.density = node->_body->GetFixtureList()->GetDensity();
+    fd.friction = node->_body->GetFixtureList()->GetFriction();
+
+    _body->CreateFixture(&fd);
 
     return this;
 }

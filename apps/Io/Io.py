@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -131,7 +131,16 @@ class FallingBox(object):
             setMoveListener(self.boxTest).\
             translate(0.0, 40.0, 10.0).\
             setScale(0.02)
-        self.box.setRotation(0., 0., 1., 0.3)
+        #self.box.setRotation(0., 0., 1., 0.3)
+        
+        self.boxSmall = j.SpriteBox2d(self.physics, boxImage.getWidth() / 2, boxImage.getHeight() / 2, j.Box2dNode.DynamicBody)
+        self.boxSmall.\
+            setProgram(self.shader).\
+            setTexture(self.boxTex).\
+            setShape(self.boxShape).\
+            setMoveListener(self.boxTest).\
+            translate(-6.0, 10.0, 10.0).\
+            setScale(0.015)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -163,6 +172,7 @@ class FallingBox(object):
         self.rn.\
             addNode(self.bg).\
             addNode(self.box).\
+            addNode(self.boxSmall).\
             addNode(self.grounds[0])#.\
 #             addNode(self.grounds[1]).\
 #             addNode(self.grounds[2]).\
@@ -235,6 +245,7 @@ class OpenGLWidget(QGLWidget):
             
 #             self.moveWindow = MoveWidget(self.fallingBox)
 #             self.moveWindow.show()
+            
             
             self.startTimer(1000.0 / self.fallingBox.FPS)
             

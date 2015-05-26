@@ -38,7 +38,7 @@ public:
     Sprite* setProgram(Shader*);
 
     virtual Sprite* accept(NodeVisitor* nv);
-private:
+protected:
     Texture* _texture = nullptr;
     Shape*   _shape   = nullptr;
     Shader*  _program = nullptr;
