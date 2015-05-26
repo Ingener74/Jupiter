@@ -4,16 +4,25 @@ cmake_minimum_required(VERSION 2.8.11)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
 
 
-option(USE_FREEGLUT          "Use freeglut as window system"   ON)
-option(USE_GLFW              "Use GLFW as window system"       OFF)
+option(USE_FREEGLUT               "Use freeglut as window system"   ON)
+option(USE_GLFW                   "Use GLFW as window system"       OFF)
+                                  
+option(WITH_WRAPPERS              "Wrapper"                         ON)
+option(WITH_LUA_WRAPPER           "Lua wrapper"                     ON)
+option(WITH_PYTHON_WRAPPER        "Python wrapper"                  ON)
+                                  
+option(WITH_GANIMEDE              "Build Ganimede"                  OFF)
+option(WITH_GAME_PLAYER           "Build with c++ game player"      ON)
+option(WITH_TESTS                 "Build tests"                     ON)
 
-option(WITH_WRAPPERS         "Wrapper"                         ON)
-option(WITH_LUA_WRAPPER      "Lua wrapper"                     ON)
-option(WITH_PYTHON_WRAPPER   "Python wrapper"                  ON)
+option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper" ON)
+option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper" ON)
 
-option(WITH_GANIMEDE         "Build Ganimede"                  OFF)
-option(WITH_GAME_PLAYER      "Build with c++ game player"      ON)
-option(WITH_TESTS            "Build tests"                     ON)
+option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper" ON)
+option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper" ON)
+
+option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper" ON)
+option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper" ON)
 
 if(USE_FREEGLUT AND USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
