@@ -58,8 +58,8 @@ Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityI
 
     _world = make_unique_<b2World>(gravity);
 
-    _contactListener = make_unique_<ContactListener>(this);
-    _world->SetContactListener(_contactListener.get());
+//    _contactListener = make_unique_<ContactListener>(this);
+//    _world->SetContactListener(_contactListener.get());
 }
 
 Box2dVisitor::~Box2dVisitor() {

@@ -68,8 +68,8 @@ class BoxCollision(j.CollisionListener):
         j.CollisionListener.__init__(self)
         
     def collision(self, node):
-        print u'Я столкнулся с ', node.getName(), u' тег ', node.getTag()
-        self.getBox2dNode().applyForceToCenter(0., 3., True)
+        #print u'Я столкнулся с ', node.getName(), u' тег ', node.getTag()
+        #self.getBox2dNode().applyForceToCenter(0., 3., True)
         pass
 
 class BgRotate(j.RotationListener):
@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -191,38 +191,6 @@ class FallingBox(object):
             setHeight(height)
 
 
-class MoveWidget(QWidget, Ui_MoveDialog):
-    def __init__(self, game, parent=None):
-        QWidget.__init__(self, parent)
-        
-        self.setupUi(self)
-        self.game = game
-        
-        self.pushButtonUp.clicked.connect(self.upClick)
-        self.pushButtonDown.clicked.connect(self.downClick)
-        self.pushButtonLeft.clicked.connect(self.leftClick)
-        self.pushButtonRight.clicked.connect(self.rightClick)
-        
-    def upClick(self):
-        self.game.box.translateY(10 ** self.comboBoxValue.currentIndex())
-        self.printPos()
-    
-    def downClick(self):
-        self.game.box.translateY(-10 ** self.comboBoxValue.currentIndex())
-        self.printPos()
-    
-    def leftClick(self):
-        self.game.box.translateX(-10 ** self.comboBoxValue.currentIndex())
-        self.printPos()
-    
-    def rightClick(self):
-        self.game.box.translateX(10 ** self.comboBoxValue.currentIndex())
-        self.printPos()
-    
-    def printPos(self):
-        print 'box position ',[self.game.box.getPositionX(), self.game.box.getPositionY(), self.game.box.getPositionZ()]
-
-
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, parent, None)
@@ -248,7 +216,6 @@ class OpenGLWidget(QGLWidget):
             
 #             self.moveWindow = MoveWidget(self.fallingBox)
 #             self.moveWindow.show()
-            
             
             self.startTimer(1000.0 / self.fallingBox.FPS)
             

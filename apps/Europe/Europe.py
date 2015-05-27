@@ -11,7 +11,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from res import *
-
+from modules import *
 
 COMPANY = 'Jupiter Organisation'
 APPNAME = 'Europe Game Designer'
@@ -137,27 +137,20 @@ class GlWidget(QGLWidget):
 
 
 class GameDesignerWindow(QWidget, Ui_GameDesigner):
-    
-    CONFIG_NAME = 'config.json'
-    
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        print self.settings.fileName()
         self.restoreGeometry(self.settings.value(self.__class__.__name__))
         
         nodeTreeModel = NodeTreeModel()
         self.nodeTreeView.setModel(nodeTreeModel)
         self.nodeTreeView.setEditTriggers(QAbstractItemView.DoubleClicked)
         
-        
-        #self._json = json.load(open(self.CONFIG_NAME))
-        #self.move(self.loadWidgetPosition(self))
-        #self.glWidget.move(self.loadWidgetPosition(self.glWidget))
-        #self.nodeSettings.move(self.loadWidgetPosition(self.nodeSettings))
-        #self.spriteSettings.move(self.loadWidgetPosition(self.spriteSettings))
-        #self.box2dBodySettings.move(self.loadWidgetPosition(self.box2dBodySettings))
+        resourceModel = ResourceModel('base')
+        self.resourceTreeView.setModel(resourceModel)
         
         self.glWidget = GlWidget()
         self.glWidget.show()
@@ -179,24 +172,10 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
         self.settings.setValue(self.__class__.__name__, self.saveGeometry())
 
-        #self.saveWidgetPosition(self)
-        #self.saveWidgetPosition(self.glWidget)
-        #self.glWidget.close()
-        #self.saveWidgetPosition(self.nodeSettings)
-        #self.nodeSettings.close()
-        #self.saveWidgetPosition(self.spriteSettings)
-        #self.spriteSettings.close()
-        #self.saveWidgetPosition(self.box2dBodySettings)
-        #self.box2dBodySettings.close()
-        
-    def loadWidgetPosition(self, widget):
-        return QPoint(self._json[widget.objectName()]['x'], self._json[widget.objectName()]['y'])
-    
-    def saveWidgetPosition(self, window):
-        self._json[window.objectName().encode('ascii', 'ignore')]['x'] = window.x()
-        self._json[window.objectName().encode('ascii', 'ignore')]['y'] = window.y()
-        with open(self.CONFIG_NAME, 'w') as file:
-            json.dump(self._json, file, indent=4, separators=(',', ':'), sort_keys=True)
+        self.glWidget.close()
+        self.nodeSettings.close()
+        self.spriteSettings.close()
+        self.box2dBodySettings.close()
 
 
 def setStyle():
