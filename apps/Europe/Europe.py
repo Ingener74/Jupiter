@@ -27,25 +27,25 @@ class NodeTreeModel(QAbstractItemModel):
         
     def columnCount(self, parent):
         
-        print 'columtCount ', parent
+        #print 'columtCount ', parent
         
         return 2
     
     def rowCount(self, parent):
         
-        print 'rowCount ', parent
+        #print 'rowCount ', parent
         
         return len(self.simpleList)
         
     def index(self, row, column, parent):
         
-        print 'index ', row, ' ', column, ' ', parent
+        #print 'index ', row, ' ', column, ' ', parent
         
         return self.createIndex(row, column, self.simpleList[row])
     
     def data(self, index, role=Qt.DisplayRole):
         
-        print 'data ', index, ' ', role
+        #print 'data ', index, ' ', role
         
         if role == Qt.DisplayRole:
             if index.column() == 0:
@@ -58,7 +58,7 @@ class NodeTreeModel(QAbstractItemModel):
     
     def parent(self, child):
         
-        print 'parent ', child
+        #print 'parent ', child
         
         return QModelIndex()
 
@@ -68,25 +68,39 @@ class NodeSettings(QWidget, Ui_NodeSettings):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         
-        self.settings = None
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.restoreGeometry(self.settings.value(self.__class__.__name__))
         
     def closeEvent(self, e):
-        # Альтернативный способ сохранения геометрии окна
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
-        self.settings.setValue('geometry', self.saveGeometry())
-        QWidget.closeEvent(self, e)
+        self.settings.setValue(self.__class__.__name__, self.saveGeometry())
 
 
 class SpriteSettings(QWidget, Ui_SpriteSettings):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.restoreGeometry(self.settings.value(self.__class__.__name__))
+        
+    def closeEvent(self, e):
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.settings.setValue(self.__class__.__name__, self.saveGeometry())
+
 
 
 class Box2dBodySettings(QWidget, Ui_Box2dBodySettings):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.restoreGeometry(self.settings.value(self.__class__.__name__))
+        
+    def closeEvent(self, e):
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.settings.setValue(self.__class__.__name__, self.saveGeometry())
 
 
 class GlWidget(QGLWidget):
@@ -99,6 +113,13 @@ class GlWidget(QGLWidget):
         self.setObjectName(u'EuropeGLWidget')
         self.resize(self.WIDTH, self.HEIGHT)
         self.setWindowTitle(u'Европа, редактор игр Юпитера')
+        
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.restoreGeometry(self.settings.value(self.__class__.__name__))
+        
+    def closeEvent(self, e):
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.settings.setValue(self.__class__.__name__, self.saveGeometry())
         
     def initializeGL(self):
         print 'Vendor   ', str(glGetString(GL_VENDOR))
@@ -123,30 +144,31 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.restoreGeometry(self.settings.value(self.__class__.__name__))
         
         nodeTreeModel = NodeTreeModel()
         self.nodeTreeView.setModel(nodeTreeModel)
         self.nodeTreeView.setEditTriggers(QAbstractItemView.DoubleClicked)
         
         
-        self._json = json.load(open(self.CONFIG_NAME))
-        
-        self.move(self.loadWidgetPosition(self))
+        #self._json = json.load(open(self.CONFIG_NAME))
+        #self.move(self.loadWidgetPosition(self))
+        #self.glWidget.move(self.loadWidgetPosition(self.glWidget))
+        #self.nodeSettings.move(self.loadWidgetPosition(self.nodeSettings))
+        #self.spriteSettings.move(self.loadWidgetPosition(self.spriteSettings))
+        #self.box2dBodySettings.move(self.loadWidgetPosition(self.box2dBodySettings))
         
         self.glWidget = GlWidget()
-        self.glWidget.move(self.loadWidgetPosition(self.glWidget))
         self.glWidget.show()
         
         self.nodeSettings = NodeSettings()
-        self.nodeSettings.move(self.loadWidgetPosition(self.nodeSettings))
         self.nodeSettings.show()
         
         self.spriteSettings = SpriteSettings()
-        self.spriteSettings.move(self.loadWidgetPosition(self.spriteSettings))
         self.spriteSettings.show()
         
         self.box2dBodySettings = Box2dBodySettings()
-        self.box2dBodySettings.move(self.loadWidgetPosition(self.box2dBodySettings))
         self.box2dBodySettings.show()
         
     def keyPressEvent(self, e):
@@ -154,19 +176,18 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
             self.close()
     
     def closeEvent(self, e):
-        self.saveWidgetPosition(self)
-        
-        self.saveWidgetPosition(self.glWidget)
-        self.glWidget.close()
-        
-        self.saveWidgetPosition(self.nodeSettings)
-        self.nodeSettings.close()
-        
-        self.saveWidgetPosition(self.spriteSettings)
-        self.spriteSettings.close()
-        
-        self.saveWidgetPosition(self.box2dBodySettings)
-        self.box2dBodySettings.close()
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
+        self.settings.setValue(self.__class__.__name__, self.saveGeometry())
+
+        #self.saveWidgetPosition(self)
+        #self.saveWidgetPosition(self.glWidget)
+        #self.glWidget.close()
+        #self.saveWidgetPosition(self.nodeSettings)
+        #self.nodeSettings.close()
+        #self.saveWidgetPosition(self.spriteSettings)
+        #self.spriteSettings.close()
+        #self.saveWidgetPosition(self.box2dBodySettings)
+        #self.box2dBodySettings.close()
         
     def loadWidgetPosition(self, widget):
         return QPoint(self._json[widget.objectName()]['x'], self._json[widget.objectName()]['y'])
