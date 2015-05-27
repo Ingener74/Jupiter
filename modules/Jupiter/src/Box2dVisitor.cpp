@@ -77,8 +77,6 @@ void Box2dVisitor::pop() {
 
 void Box2dVisitor::visit(Box2dNode* node) {
     jassert(node, "node is empty");
-//    node->setPosition(node->_body->GetPosition().x, node->_body->GetPosition().y, node->_position.z);
-//    node->setRotation(0.f, 0.f, 1.f, node->_body->GetAngle());
 
     float x = node->_body->GetPosition().x;
     float y = node->_body->GetPosition().y;

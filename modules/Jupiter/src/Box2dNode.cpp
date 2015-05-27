@@ -30,13 +30,16 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
 
     _body = v->getWorld()->CreateBody(&bodyDef);
 
+    cout << width << " " << height << endl;
+
     b2PolygonShape shape;
     shape.SetAsBox(width, height);
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
-    fixtureDef.density = 30.f;
+    fixtureDef.density  = 3.f;
     fixtureDef.friction = .3f;
+    fixtureDef.restitution = .2f;
 
     _body->CreateFixture(&fixtureDef);
 }
@@ -90,14 +93,14 @@ Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
 Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
     jassert(_body, "no body");
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _body->GetAngle());
+    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
 Box2dNode* Box2dNode::translate(float x, float y, float z) {
     Node::translate(x, y, z);
     jassert(_body, "no body");
-    _body->SetTransform(b2Vec2(_position.x, _position.y), _body->GetAngle());
+    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
     return this;
 }
 
@@ -140,6 +143,11 @@ Box2dNode* Box2dNode::setLinearVelocity(float x, float y) {
 Box2dNode* Box2dNode::setAngularVelocity(float velocity) {
     jassert(_body, "no body");
     _body->SetAngularVelocity(velocity);
+    return this;
+}
+
+Box2dNode* Box2dNode::applyForceToCenter(float x, float y, bool wake) {
+    _body->ApplyForceToCenter( { x, y }, wake);
     return this;
 }
 

@@ -1,1 +1,5 @@
-print("i am external file")
+
+j = require 'JupiterLua'
+
+function move(x, y, z)
+end

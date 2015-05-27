@@ -2,7 +2,7 @@
 local g1 = require 'glLua'
 local g2 = require 'glfwLua'
 local g3 = require 'glewLua'
-local j = require 'LuaJupiter'
+local j = require 'JupiterLua'
 
 if not g2.glfwInit() then
     print ("glfw error")
@@ -14,7 +14,7 @@ g2.glfwWindowHint(g2.GLFW_CONTEXT_VERSION_MINOR, 3)
 g2.glfwWindowHint(g2.GLFW_OPENGL_PROFILE, g2.GLFW_OPENGL_CORE_PROFILE);
 g2.glfwWindowHint(g2.GLFW_OPENGL_COMPAT_PROFILE, g2.GLFW_OPENGL_FORWARD_COMPAT);
 
-local window = g2.glfwCreateWindow(800, 480, "Dia - Lua Game Player for Jupiter", nil, nil)
+local window = g2.glfwCreateWindow(800, 480, "Дия - плеер игр на Lua для Юпитера", nil, nil)
 
 g2.glfwMakeContextCurrent(window)
 

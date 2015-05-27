@@ -26,13 +26,12 @@ except ImportError as e:
     sys.exit(1)
 
 try:
-    # Установи в PYTHONPATH путь до библеотеки _Jupiter.{so, pyd, dll} и PyJupiter.py
-    import PyJupiter as j
+    import JupiterPython as j
 except ImportError as e:
     app = QApplication(sys.argv)
     QMessageBox.critical(None, \
                          PLAYER_TITLE, \
-                         u'Установи в PYTHONPATH путь до библиотеки _Jupiter.{so, pyd, dll} и PyJupiter.py', \
+                         u'Установи в PYTHONPATH путь до библиотеки _JupiterPython.{so, pyd, dll} и JupiterPython.py', \
                          QMessageBox.Ok | QMessageBox.Default,\
                          QMessageBox.NoButton)
     sys.exit(1)
@@ -69,7 +68,8 @@ class BoxCollision(j.CollisionListener):
         j.CollisionListener.__init__(self)
         
     def collision(self, node):
-#         print u'Я столкнулся с ', node.getName(), u' тег ', node.getTag()
+        print u'Я столкнулся с ', node.getName(), u' тег ', node.getTag()
+        self.getBox2dNode().applyForceToCenter(0., 3., True)
         pass
 
 class BgRotate(j.RotationListener):
@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -95,7 +95,7 @@ class FallingBox(object):
         self.camera = j.Camera(45.0,            \
                                width, height,   \
                                1.0, 1000.0,     \
-                               0.0, 0.0, 100.0, \
+                               0.0, 0.0, 10.0, \
                                0.0, 0.0, 0.0,   \
                                0.0, 1.0, 0.0)
         
@@ -115,11 +115,12 @@ class FallingBox(object):
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
             setRotationListener(self.bgRotate).\
-            setScale(0.11)
+            setScale(0.011)
             
             
             #setScaleListener(self.boxTest).\
         self.boxTest = Box(window)
+        self.boxCol = BoxCollision()
         boxImage = j.PngImage('Resources/box.png')
         self.boxTex = j.ImageTexture(boxImage)
         self.boxShape = j.ImageShape(boxImage)
@@ -129,9 +130,11 @@ class FallingBox(object):
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
-            translate(0.0, 40.0, 10.0).\
-            setScale(0.02)
-        #self.box.setRotation(0., 0., 1., 0.3)
+            translate(0.0, 4.0, 1.0).\
+            setScale(0.002)
+        self.box.setRotation(0., 0., 1., 0.3)
+        self.box.setCollisionListener(self.boxCol)
+#         self.box.setAngularVelocity(0.2)
         
         self.boxSmall = j.SpriteBox2d(self.physics, boxImage.getWidth() / 2, boxImage.getHeight() / 2, j.Box2dNode.DynamicBody)
         self.boxSmall.\
@@ -139,8 +142,8 @@ class FallingBox(object):
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
-            translate(-6.0, 10.0, 10.0).\
-            setScale(0.015)
+            translate(-0.6, 1.0, 1.0).\
+            setScale(0.0015)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -152,8 +155,8 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            translate(0.0, -40.0, 10.0).\
-            scale(0.1).\
+            translate(0.0, -4.0, 1.0).\
+            scale(0.01).\
             setName('flour').\
             setTag(self.GROUND)
         

@@ -20,16 +20,6 @@
 
 namespace jupiter {
 
-//struct Perspective {
-//    Perspective (float fovy, float aspect, float near, float far) :
-//        fovy(fovy), aspect(aspect), near(near), far(far) {
-//    }
-//    float fovy;
-//    float aspect;
-//    float near;
-//    float far;
-//};
-
 #undef near
 #undef far
 

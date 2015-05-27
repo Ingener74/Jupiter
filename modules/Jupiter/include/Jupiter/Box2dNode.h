@@ -48,6 +48,8 @@ public:
     Box2dNode* setLinearVelocity(float x, float y);
     Box2dNode* setAngularVelocity(float angularVel);
 
+    Box2dNode* applyForceToCenter(float x, float y, bool wake);
+
     CollisionListener* getCollisionListener();
     Box2dNode* setCollisionListener(CollisionListener*);
 

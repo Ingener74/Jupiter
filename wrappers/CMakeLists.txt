@@ -24,14 +24,14 @@ set(SHARED_LIBS
 
 # Lua
 if(WITH_LUA_WRAPPER)
-    SWIG_ADD_MODULE(LuaJupiter lua Jupiter.i)
-    SWIG_LINK_LIBRARIES(LuaJupiter ${SHARED_LIBS} ${LUA_LIBRARIES})
+    SWIG_ADD_MODULE(JupiterLua lua Jupiter.i)
+    SWIG_LINK_LIBRARIES(JupiterLua ${SHARED_LIBS} ${LUA_LIBRARIES})
 endif()
 
 # Python
 if(WITH_PYTHON_WRAPPER)
-    SWIG_ADD_MODULE(PyJupiter python Jupiter.i)
-    SWIG_LINK_LIBRARIES(PyJupiter ${SHARED_LIBS} ${PYTHON_LIBRARIES})
+    SWIG_ADD_MODULE(JupiterPython python Jupiter.i)
+    SWIG_LINK_LIBRARIES(JupiterPython ${SHARED_LIBS} ${PYTHON_LIBRARIES})
 endif()
 
 ################################################################################################
