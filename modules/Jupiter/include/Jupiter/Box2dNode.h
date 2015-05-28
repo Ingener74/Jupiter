@@ -64,6 +64,9 @@ protected:
 
     Box2dNode(const Box2dNode&)             = default;
     Box2dNode& operator=(const Box2dNode&)  = default;
+
+    void reshape();
+    void transform();
 };
 
 } /* namespace jupiter */

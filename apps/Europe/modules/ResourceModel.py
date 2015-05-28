@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 from PySide.QtCore import Qt, QAbstractItemModel, QModelIndex
+import os
 
 """
 
@@ -48,6 +49,8 @@ class ResourceModel(QAbstractItemModel):
     def __init__(self, base):
         QAbstractItemModel.__init__(self)
         
+        self.base = base
+        
         self.__data = []
         self.__data.append(Resource())
         
@@ -64,3 +67,13 @@ class ResourceModel(QAbstractItemModel):
         
     def index(self, row, column, parent=QModelIndex()):
         return QModelIndex()
+        
+    def refresh(self):
+        for dirname, dirnames, fileanames in os.walk(base):
+            print os.path.relpath(dirname, base)
+            for dirn in dirnames:
+                print dirn
+            for filen in fileanames:
+                print filen
+                
+                
