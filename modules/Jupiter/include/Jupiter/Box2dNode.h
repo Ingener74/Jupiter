@@ -8,10 +8,15 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_BOX2DNODE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_BOX2DNODE_H_
 
-#include "Node.h"
+//#include <Box2D/Dynamics/b2Body.h>
+//#include <Box2D/Dynamics/b2Fixture.h>
 
-class b2Body;
-class b2Fixture;
+#ifdef SWIG
+#else
+    #include <Box2D/Box2D.h>
+#endif
+
+#include "Node.h"
 
 namespace jupiter {
 
@@ -46,6 +51,9 @@ public:
 
     virtual Box2dNode* accept(NodeVisitor*);
 
+    Box2dNode* setBodyType(BodyType);
+    BodyType getBodyType();
+
     Box2dNode* setLinearVelocity(float x, float y);
     Box2dNode* setAngularVelocity(float angularVel);
 
@@ -55,17 +63,24 @@ public:
     Box2dNode* setCollisionListener(CollisionListener*);
 
 protected:
+    Box2dVisitor*       _visitor            = nullptr;
+
     b2Body*             _body               = nullptr;
     b2Fixture*          _fixture            = nullptr;
+
     CollisionListener*  _collisionListener  = nullptr;
 
     float               _width              = 0;
     float               _height             = 0;
 
+    b2BodyDef           _bodyDef;
+    b2FixtureDef        _fixtureDef;
+
     Box2dNode(const Box2dNode&)             = default;
     Box2dNode& operator=(const Box2dNode&)  = default;
 
-    void reshape();
+    void updateBody();
+    void updateFixture();
     void transform();
 };
 

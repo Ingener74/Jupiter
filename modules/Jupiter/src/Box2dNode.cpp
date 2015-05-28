@@ -5,8 +5,6 @@
  *      Author: pavel
  */
 
-#include <Box2D/Box2D.h>
-
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/CollisionListener.h"
@@ -20,17 +18,18 @@ using namespace std;
 Box2dNode::Box2dNode(): Node(){
 }
 
-Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyType): Node(), _width(width), _height(height){
-    b2BodyDef bodyDef;
-    bodyDef.position.x = _position.x;
-    bodyDef.position.y = _position.y;
-    bodyDef.angle = glm::angle(_rotation);
-    bodyDef.type = static_cast<b2BodyType>(bodyType);
-    bodyDef.userData = this;
+Box2dNode::Box2dNode(Box2dVisitor* visitor, float width, float height, BodyType bodyType) :
+    Node(), _visitor(visitor), _width(width), _height(height) {
 
-    _body = v->getWorld()->CreateBody(&bodyDef);
+    _bodyDef.position.x = _position.x;
+    _bodyDef.position.y = _position.y;
+    _bodyDef.angle = glm::angle(_rotation);
+    _bodyDef.type = static_cast<b2BodyType>(bodyType);
+    _bodyDef.userData = this;
 
-    reshape();
+    _body = visitor->getWorld()->CreateBody(&_bodyDef);
+
+//    updateBody(); // вернуть
 }
 
 Box2dNode::~Box2dNode() {
@@ -42,25 +41,27 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     jassert(node, "node is invalid");
     *this = *node;
 
-    b2BodyDef bd;
-    bd.position.x = node->_body->GetPosition().x;
-    bd.position.y = node->_body->GetPosition().y;
-    bd.angle      = node->_body->GetAngle();
-    bd.type       = node->_body->GetType();
-    bd.userData   = this;
+    jassert(false, "not implemented");
 
-    _body = node->_body->GetWorld()->CreateBody(&bd);
-    jassert(_body, "create body error");
-
-    b2PolygonShape shape;
-    shape.SetAsBox(node->_width, node->_height);
-
-    b2FixtureDef fd;
-    fd.shape = &shape;
-    fd.density = node->_body->GetFixtureList()->GetDensity();
-    fd.friction = node->_body->GetFixtureList()->GetFriction();
-
-    _body->CreateFixture(&fd);
+//    b2BodyDef bd;
+//    bd.position.x = node->_body->GetPosition().x;
+//    bd.position.y = node->_body->GetPosition().y;
+//    bd.angle      = node->_body->GetAngle();
+//    bd.type       = node->_body->GetType();
+//    bd.userData   = this;
+//
+//    _body = node->_body->GetWorld()->CreateBody(&bd);
+//    jassert(_body, "create body error");
+//
+//    b2PolygonShape shape;
+//    shape.SetAsBox(node->_width, node->_height);
+//
+//    b2FixtureDef fd;
+//    fd.shape = &shape;
+//    fd.density = node->_body->GetFixtureList()->GetDensity();
+//    fd.friction = node->_body->GetFixtureList()->GetFriction();
+//
+//    _body->CreateFixture(&fd);
 
     return this;
 }
@@ -91,13 +92,13 @@ Box2dNode* Box2dNode::translate(float x, float y, float z) {
 
 Box2dNode* Box2dNode::setScale(float x, float y, float z) {
     Node::setScale(x, y, z);
-    reshape();
+    updateFixture();
     return this;
 }
 
 Box2dNode* Box2dNode::scale(float x, float y, float z) {
     Node::scale(x, y, z);
-    reshape();
+    updateFixture();
     return this;
 }
 
@@ -113,6 +114,16 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
         nv->pop();
     }
     return this;
+}
+
+Box2dNode* Box2dNode::setBodyType(BodyType bodyType) {
+    _bodyDef.type = static_cast<b2BodyType>(bodyType);
+    updateBody();
+    return this;
+}
+
+Box2dNode::BodyType Box2dNode::getBodyType() {
+    return static_cast<BodyType>(_bodyDef.type);
 }
 
 Box2dNode* Box2dNode::setLinearVelocity(float x, float y) {
@@ -143,7 +154,23 @@ Box2dNode* Box2dNode::setCollisionListener(CollisionListener* listener) {
     return this;
 }
 
-void Box2dNode::reshape() {
+void Box2dNode::updateBody() {
+    jassert(_visitor, "no visitor");
+
+    if(_body)
+        _visitor->getWorld()->DestroyBody(_body);
+
+    _bodyDef.position.x = _position.x;
+    _bodyDef.position.y = _position.y;
+    _bodyDef.angle = glm::angle(_rotation);
+    _bodyDef.userData = this;
+
+    _body = _visitor->getWorld()->CreateBody(&_bodyDef);
+
+    updateFixture();
+}
+
+void Box2dNode::updateFixture() {
     jassert(_body, "no body");
     if(_fixture)
         _body->DestroyFixture(_fixture);
@@ -151,13 +178,10 @@ void Box2dNode::reshape() {
     b2PolygonShape shape;
     shape.SetAsBox(_width * _scale.x, _height * _scale.y);
 
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &shape;
-    fixtureDef.density  = 3.f;
-    fixtureDef.friction = .3f;
-    fixtureDef.restitution = .4f;
+    _fixtureDef.shape = &shape;
+    _fixtureDef.density = 1.f;
 
-    _fixture = _body->CreateFixture(&fixtureDef);
+    _fixture = _body->CreateFixture(&_fixtureDef);
 }
 
 void Box2dNode::transform() {
