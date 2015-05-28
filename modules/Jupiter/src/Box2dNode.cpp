@@ -56,8 +56,6 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     jassert(node, "node is invalid");
     *this = *node;
 
-//    jassert(false, "not implemented");
-
     _body    = nullptr;
     _fixture = nullptr;
     updateBody();
@@ -188,7 +186,6 @@ void Box2dNode::updateFixture() {
     shape.SetAsBox(_width * _scale.x, _height * _scale.y);
 
     _fixtureDef.shape = &shape;
-
     _fixture = _body->CreateFixture(&_fixtureDef);
 }
 

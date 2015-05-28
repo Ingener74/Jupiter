@@ -15,7 +15,7 @@ namespace jupiter {
 
 using namespace std;
 
-void initJupiter() {
+void startJupiter() {
 
     /*
      * Eсли появляется ошибка: Missing GL version, значит для текущего окна контекст не установлен,
@@ -26,7 +26,7 @@ void initJupiter() {
     jassert(GLEW_OK == result, string {"glewInit error: "} + reinterpret_cast<const char*>(glewGetErrorString(result)));
 }
 
-void deinitJupiter() {
+void endJupiter() {
 }
 
 }  // namespace jupiter

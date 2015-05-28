@@ -18,7 +18,7 @@ local window = g2.glfwCreateWindow(800, 480, "Дия - плеер игр на Lu
 
 g2.glfwMakeContextCurrent(window)
 
-ok,res = pcall(function() j.initJupiter() end)
+ok,res = pcall(function() j.startJupiter() end)
 if ok then
     print('init jupiter success')
 else
@@ -62,6 +62,8 @@ while g2.glfwWindowShouldClose(window) do
     g2.glfwSwapBuffers(window)
     g2.glfwPollEvents()
 end
+
+j.endJupiter()
 
 g2.glfwDestroyWindow(window)
 g2.glfwTerminate()

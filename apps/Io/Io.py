@@ -142,61 +142,43 @@ class FallingBox(object):
             setScale(0.002)
         self.box.setCollisionListener(self.boxCol)
         
-#         boxSmallDef = j.BodyDef()
-#         boxSmallDef.type = j.dynamicBody
-#         boxSmallFixDef = j.FixtureDef()
-#         boxSmallFixDef.density = 1.
-#         self.boxSmall = j.SpriteBox2d(self.physics, boxSmallDef, boxSmallFixDef)
-#         self.boxSmall.setPhysicsShape(boxImage)
-#         self.boxSmall.\
-#             setProgram(self.shader).\
-#             setTexture(self.boxTex).\
-#             setShape(self.boxShape).\
-#             setMoveListener(self.boxTest).\
-#             translate(-0.6, 1.0, 1.0).\
-#             setScale(0.0015)
-
         self.boxSmall = j.SpriteBox2d()
-        self.boxSmall.clone(self.box)
-        self.boxSmall.setPosition(-0.6, -2.0, 1.0).\
+        self.boxSmall.clone(self.box).\
+            setPosition(-0.6, -2.0, 1.0).\
             setScale(0.0015, 0.0015, 0.0015)
+        
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
         
-        self.grounds = [j.SpriteBox2d(self.physics, j.BodyDef(), j.FixtureDef()) for i in range(0, 1)]
-        self.grounds[0].setPhysicsShape(groundImage)
-        
-        self.grounds[0].\
-            setProgram(self.shader).\
+        groundProto = j.SpriteBox2d(self.physics, j.BodyDef(), j.FixtureDef())
+        groundProto.setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
-            translate(0.0, -4.0, 1.0).\
-            scale(0.01).\
             setName('flour').\
             setTag(self.GROUND)
         
-#         self.grounds[1].\
-#             clone(self.grounds[0]).\
-#             translate(34.0, -4.0, 0.0)
-#         
-#         self.grounds[2].\
-#             clone(self.grounds[0]).\
-#             translate(-34.0, 4.0, 0.0)
-# 
-#         self.grounds[3].\
-#             clone(self.grounds[2]).\
-#             translate(-34.0, 4.0, 0.0)
+        
+        self.grounds = [j.SpriteBox2d() for i in range(0, 4)]
+        for i in xrange(0, 4):
+            self.grounds[i].clone(groundProto).\
+                setPhysicsShape(groundImage).\
+                scale(0.01, 0.01, 0.01)
+        
+        self.grounds[0].translate(-2, -4.0, 1.0)
+        self.grounds[1].translate( 2, -4.0, 1.0)
+        self.grounds[2].translate(-6, -3.0, 1.0)
+        self.grounds[3].translate( 6, -3.0, 1.0)
         
         self.rn.\
             addNode(self.bg).\
             addNode(self.box).\
             addNode(self.boxSmall).\
-            addNode(self.grounds[0])#.\
-#             addNode(self.grounds[1]).\
-#             addNode(self.grounds[2]).\
-#             addNode(self.grounds[3])
+            addNode(self.grounds[0]).\
+            addNode(self.grounds[1]).\
+            addNode(self.grounds[2]).\
+            addNode(self.grounds[3])
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
@@ -228,11 +210,8 @@ class OpenGLWidget(QGLWidget):
         glEnable(GL_DEPTH_TEST)
         
         try:
-            j.initJupiter()
+            j.startJupiter()
             self.fallingBox = FallingBox(self, self.width(), self.height())
-            
-#             self.moveWindow = MoveWidget(self.fallingBox)
-#             self.moveWindow.show()
             
             self.startTimer(1000.0 / self.fallingBox.FPS)
             
@@ -245,13 +224,6 @@ class OpenGLWidget(QGLWidget):
         
         try:
             if self.fallingBox != None:
-    #             self.fallingBox.bg.\
-    #                 translateX(1).\
-    #                 rotateZ(0.005)
-                
-    #             self.fallingBox.box.\
-    #                 rotateZ(0.06)
-                
                 self.fallingBox.game.draw()
                 
         except RuntimeError, e:
@@ -269,8 +241,7 @@ class OpenGLWidget(QGLWidget):
         self.fallingBox.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
-#         self.moveWindow.close()
-        pass
+        j.endJupiter()
 
 
 class Select(QWidget, Ui_SelectImpl):

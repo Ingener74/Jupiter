@@ -88,7 +88,7 @@ bool createGameDirect(const variables_map& vm) {
     if (!vm.count("base"))
         throw runtime_error("base directory is invalid");
 
-    initJupiter();
+    startJupiter();
 
     File::setBase(vm["base"].as<string>());
 

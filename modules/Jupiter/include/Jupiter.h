@@ -51,8 +51,8 @@
 
 namespace jupiter {
 
-void initJupiter();
-void deinitJupiter();
+void startJupiter();
+void endJupiter();
 
 }  // namespace jupiter
 
