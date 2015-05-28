@@ -52,7 +52,8 @@ class ResourceModel(QAbstractItemModel):
         self.base = base
         
         self.__data = []
-        self.__data.append(Resource())
+        
+        self.refresh()
         
     def rowCount(self, parent=QModelIndex()):
         return len(self.__data)
@@ -69,11 +70,29 @@ class ResourceModel(QAbstractItemModel):
         return QModelIndex()
         
     def refresh(self):
-        for dirname, dirnames, fileanames in os.walk(base):
-            print os.path.relpath(dirname, base)
-            for dirn in dirnames:
-                print dirn
+        for dirname, dirnames, fileanames in os.walk(self.base):
+            resDir = os.path.relpath(dirname, self.base)
             for filen in fileanames:
-                print filen
-                
-                
+                filenFull, filenExt = os.path.splitext(filen)
+                if filenExt == '.png':
+                    print 
+                    self.addPngImage(resDir + '/' + filen)
+    
+    def addPngImage(self, pngImage):
+        
+        #Jupiter PngImage
+        
+        image = Resource(Resource.IMAGE, pngImage, ... )
+        self.__data.append(image)
+        
+        # Jupiter Texture
+        
+        imageTexture = Resource(Resource.TEXTURE, pngImage, ... , image)
+        
+        # Jupiter Shape
+        
+        imageShape = Resource(Resource.SHAPE, pngImage, ... , image)
+        
+    def addShader(self, vs, fs):
+        pass
+        
