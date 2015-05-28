@@ -16,8 +16,9 @@ class TreeView(QTreeView):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    
-    resModel = ResourceModel('/home/pavel/workspace/Jupiter/samples/Box')
+
+    dir = QFileDialog.getExistingDirectory(caption=u'Директория с ресурсами', options=QFileDialog.ShowDirsOnly)
+    resModel = ResourceModel(dir)
     
     treeView = TreeView()
     treeView.setModel(resModel)

@@ -75,23 +75,24 @@ class ResourceModel(QAbstractItemModel):
             for filen in fileanames:
                 filenFull, filenExt = os.path.splitext(filen)
                 if filenExt == '.png':
-                    print 
                     self.addPngImage(resDir + '/' + filen)
     
     def addPngImage(self, pngImage):
+        print pngImage
         
         #Jupiter PngImage
         
-        image = Resource(Resource.IMAGE, pngImage, ... )
-        self.__data.append(image)
+        #image = Resource(Resource.IMAGE, pngImage, ... )
+        #self.__data.append(image)
         
         # Jupiter Texture
         
-        imageTexture = Resource(Resource.TEXTURE, pngImage, ... , image)
+        #imageTexture = Resource(Resource.TEXTURE, pngImage, ... , image)
         
         # Jupiter Shape
         
-        imageShape = Resource(Resource.SHAPE, pngImage, ... , image)
+        #imageShape = Resource(Resource.SHAPE, pngImage, ... , image)
+        pass
         
     def addShader(self, vs, fs):
         pass

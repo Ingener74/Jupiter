@@ -8,14 +8,11 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_BOX2DNODE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_BOX2DNODE_H_
 
-//#include <Box2D/Dynamics/b2Body.h>
-//#include <Box2D/Dynamics/b2Fixture.h>
-
 #ifdef SWIG
 #else
-    #include <Box2D/Box2D.h>
 #endif
 
+#include "JupiterBox2d.h"
 #include "Node.h"
 
 namespace jupiter {
@@ -29,15 +26,8 @@ class Box2dNode: virtual public Node {
 public:
     friend class Box2dVisitor;
 
-    enum BodyType
-    {
-        StaticBody = 0,
-        KinematicBody,
-        DynamicBody
-    };
-
     Box2dNode();
-    Box2dNode(Box2dVisitor*, float width, float height, BodyType = StaticBody);
+    Box2dNode(Box2dVisitor*, BodyDef, FixtureDef);
     virtual ~Box2dNode();
 
     virtual Box2dNode* clone(Box2dNode*);
@@ -50,6 +40,8 @@ public:
     virtual Box2dNode* scale(float x, float y, float z);
 
     virtual Box2dNode* accept(NodeVisitor*);
+
+    Box2dNode* setPhysicsShape(Image*);
 
     Box2dNode* setBodyType(BodyType);
     BodyType getBodyType();
@@ -70,8 +62,8 @@ protected:
 
     CollisionListener*  _collisionListener  = nullptr;
 
-    float               _width              = 0;
-    float               _height             = 0;
+    float               _width              = 0.f;
+    float               _height             = 0.f;
 
     b2BodyDef           _bodyDef;
     b2FixtureDef        _fixtureDef;

@@ -18,6 +18,8 @@
 
 #endif
 
+#include "JupiterBox2d.h"
+
 namespace jupiter {
 
 #undef near
@@ -35,20 +37,6 @@ struct Perspective {
         fovy(fovy), aspect(aspect), near(near), far(far) {
     }
     float fovy, aspect, near, far;
-};
-
-struct Vec2 {
-    Vec2(float x, float y) :
-        x(x), y(y) {
-    }
-    float x, y;
-};
-
-struct Vec3 {
-    Vec3(float x, float y, float z) :
-        x(x), y(y), z(z) {
-    }
-    float x, y, z;
 };
 
 class Camera {

@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -125,33 +125,48 @@ class FallingBox(object):
         boxImage = j.PngImage('Resources/box.png')
         self.boxTex = j.ImageTexture(boxImage)
         self.boxShape = j.ImageShape(boxImage)
-        self.box = j.SpriteBox2d(self.physics, boxImage.getWidth() / 2, boxImage.getHeight() / 2, j.Box2dNode.DynamicBody)
+        
+        boxDef = j.BodyDef()
+        boxDef.type = j.dynamicBody;
+        boxFixDef = j.FixtureDef()
+        boxFixDef.density = 1.
+        
+        self.box = j.SpriteBox2d(self.physics, boxDef, boxFixDef)
+        self.box.setPhysicsShape(boxImage)
         self.box.\
             setProgram(self.shader).\
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
-            setRotation(0., 0., 1., 0.3).\
             translate(0.0, 4.0, 1.0).\
             setScale(0.002)
-            
         self.box.setCollisionListener(self.boxCol)
-        #self.box.setLinearVelocity(.4, 6.)
         
-        self.boxSmall = j.SpriteBox2d(self.physics, boxImage.getWidth() / 2, boxImage.getHeight() / 2, j.Box2dNode.DynamicBody)
-        self.boxSmall.\
-            setProgram(self.shader).\
-            setTexture(self.boxTex).\
-            setShape(self.boxShape).\
-            setMoveListener(self.boxTest).\
-            translate(-0.6, 1.0, 1.0).\
-            setScale(0.0015)
+#         boxSmallDef = j.BodyDef()
+#         boxSmallDef.type = j.dynamicBody
+#         boxSmallFixDef = j.FixtureDef()
+#         boxSmallFixDef.density = 1.
+#         self.boxSmall = j.SpriteBox2d(self.physics, boxSmallDef, boxSmallFixDef)
+#         self.boxSmall.setPhysicsShape(boxImage)
+#         self.boxSmall.\
+#             setProgram(self.shader).\
+#             setTexture(self.boxTex).\
+#             setShape(self.boxShape).\
+#             setMoveListener(self.boxTest).\
+#             translate(-0.6, 1.0, 1.0).\
+#             setScale(0.0015)
+
+        self.boxSmall = j.SpriteBox2d()
+        self.boxSmall.clone(self.box)
+        self.boxSmall.setPosition(-0.6, -2.0, 1.0).\
+            setScale(0.0015, 0.0015, 0.0015)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
         
-        self.grounds = [j.SpriteBox2d(self.physics, groundImage.getWidth() / 2, groundImage.getHeight() / 2) for i in range(0, 1)]
+        self.grounds = [j.SpriteBox2d(self.physics, j.BodyDef(), j.FixtureDef()) for i in range(0, 1)]
+        self.grounds[0].setPhysicsShape(groundImage)
         
         self.grounds[0].\
             setProgram(self.shader).\

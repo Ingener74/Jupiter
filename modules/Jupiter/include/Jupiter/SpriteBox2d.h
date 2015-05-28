@@ -23,7 +23,7 @@ class Box2dVisitor;
 class SpriteBox2d: public Sprite, public Box2dNode {
 public:
     SpriteBox2d();
-    SpriteBox2d(Box2dVisitor*, float width, float height, BodyType = StaticBody);
+    SpriteBox2d(Box2dVisitor*, BodyDef, FixtureDef);
     virtual ~SpriteBox2d();
 
     virtual SpriteBox2d* clone(SpriteBox2d*);
@@ -31,8 +31,8 @@ public:
     virtual SpriteBox2d* accept(NodeVisitor*);
 
 private:
-    SpriteBox2d(const SpriteBox2d&)             = default;
-    SpriteBox2d& operator=(const SpriteBox2d&)  = default;
+    SpriteBox2d(const SpriteBox2d&) = default;
+    SpriteBox2d& operator=(const SpriteBox2d&) = default;
 };
 
 } /* namespace jupiter */

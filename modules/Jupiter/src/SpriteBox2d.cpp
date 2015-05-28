@@ -14,8 +14,8 @@ SpriteBox2d::SpriteBox2d() :
     Sprite(), Box2dNode() {
 }
 
-SpriteBox2d::SpriteBox2d(Box2dVisitor* nv, float width, float height, BodyType bodyType) :
-    Sprite(), Box2dNode(nv, width, height, bodyType) {
+SpriteBox2d::SpriteBox2d(Box2dVisitor* visitor, BodyDef bodyDef, FixtureDef fixtureDef) :
+    Sprite(), Box2dNode(visitor, bodyDef, fixtureDef) {
 }
 
 SpriteBox2d::~SpriteBox2d() {
@@ -36,3 +36,4 @@ SpriteBox2d* SpriteBox2d::accept(NodeVisitor* nv) {
 }
 
 } /* namespace jupiter */
+
