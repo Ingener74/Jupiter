@@ -39,7 +39,10 @@ Box2dNode::Box2dNode(Box2dVisitor* v, float width, float height, BodyType bodyTy
     fixtureDef.friction = .3f;
     fixtureDef.restitution = .4f;
 
-    _body->CreateFixture(&fixtureDef);
+    _fixture = _body->CreateFixture(&fixtureDef);
+
+    b2MassData md;
+    _body->GetMassData(&md);
 }
 
 Box2dNode::~Box2dNode() {
@@ -105,16 +108,43 @@ Box2dNode* Box2dNode::translate(float x, float y, float z) {
 Box2dNode* Box2dNode::setScale(float x, float y, float z) {
     Node::setScale(x, y, z);
     jassert(_body, "no body");
-    auto shape = dynamic_cast<b2PolygonShape*>(_body->GetFixtureList()->GetShape());
-    shape->SetAsBox(_width * _scale.x, _height * _scale.y);
+
+    _body->DestroyFixture(_fixture);
+
+    b2PolygonShape shape;
+    shape.SetAsBox(_width * _scale.x, _height * _scale.y);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density  = 3.f;
+    fixtureDef.friction = .3f;
+    fixtureDef.restitution = .4f;
+
+    _fixture = _body->CreateFixture(&fixtureDef);
+
     return this;
 }
 
 Box2dNode* Box2dNode::scale(float x, float y, float z) {
     Node::scale(x, y, z);
     jassert(_body, "no body");
-    auto shape = dynamic_cast<b2PolygonShape*>(_body->GetFixtureList()->GetShape());
-    shape->SetAsBox(_width * _scale.x, _height * _scale.y);
+
+    _body->DestroyFixture(_fixture);
+
+    b2PolygonShape shape;
+    shape.SetAsBox(_width * _scale.x, _height * _scale.y);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density  = 3.f;
+    fixtureDef.friction = .3f;
+    fixtureDef.restitution = .4f;
+
+    _fixture = _body->CreateFixture(&fixtureDef);
+
+    b2MassData md;
+    _body->GetMassData(&md);
+
     return this;
 }
 

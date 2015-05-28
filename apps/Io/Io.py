@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -115,6 +115,7 @@ class FallingBox(object):
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
             setRotationListener(self.bgRotate).\
+            translate(0., 0., -1.).\
             setScale(0.011)
             
             
@@ -130,11 +131,12 @@ class FallingBox(object):
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
+            setRotation(0., 0., 1., 0.3).\
             translate(0.0, 4.0, 1.0).\
             setScale(0.002)
-        self.box.setRotation(0., 0., 1., 0.3)
+            
         self.box.setCollisionListener(self.boxCol)
-#         self.box.setAngularVelocity(0.2)
+        #self.box.setLinearVelocity(.4, 6.)
         
         self.boxSmall = j.SpriteBox2d(self.physics, boxImage.getWidth() / 2, boxImage.getHeight() / 2, j.Box2dNode.DynamicBody)
         self.boxSmall.\

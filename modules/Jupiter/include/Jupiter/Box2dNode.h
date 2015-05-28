@@ -11,6 +11,7 @@
 #include "Node.h"
 
 class b2Body;
+class b2Fixture;
 
 namespace jupiter {
 
@@ -55,6 +56,7 @@ public:
 
 protected:
     b2Body*             _body               = nullptr;
+    b2Fixture*          _fixture            = nullptr;
     CollisionListener*  _collisionListener  = nullptr;
 
     float               _width              = 0;
