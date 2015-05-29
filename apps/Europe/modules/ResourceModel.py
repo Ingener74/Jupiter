@@ -83,20 +83,23 @@ class ResourceModel(QAbstractItemModel):
             print i
         
     def rowCount(self, parent):
-        print 'rowCount ', parent
-        return len(self.__data)
+        print 'rowCount', parent
+        if not parent.isValid():
+            return len(self.__data)
+        else:
+            return len(parent.internalPointer().childCount())
         
     def columnCount(self, parent):
         print 'columnCount', parent
         return 2
     
     def data(self, index, role):
-        print 'role', index, role
+        print 'data', index, role
         if role == Qt.DisplayRole:
             if index.column == 0:
-                return self.__data[index.row()].getName()
+                return index.internalPointer().getName()
             else:
-                return self.__data[index.row()].getType()
+                return index.internalPointer().getType()
         return None
     
     def headerData(self, section, orientation, role):
@@ -115,11 +118,13 @@ class ResourceModel(QAbstractItemModel):
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
         
-        #if parent.isValid():
-        #    pass
-        #else:
-        #    return self.createIndex(row, column, self.__data[row])
-            
+        if not parent.isValid():
+            return QModelIndex()
+        else:
+            return self.createIndex(row, column, parent.internalPointer().child(row))
+        
+        return self.createIndex(row, column, self.__data[row])
+        
     def parent(self, child):
         print 'parent', child
         
