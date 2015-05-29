@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -116,7 +116,7 @@ class FallingBox(object):
             setShape(self.bgShape).\
             setRotationListener(self.bgRotate).\
             translate(0., 0., -1.).\
-            setScale(0.011)
+            setScale(0.012)
             
             
             #setScaleListener(self.boxTest).\

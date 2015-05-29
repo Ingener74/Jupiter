@@ -2,6 +2,7 @@
 
 from PySide.QtCore import Qt, QAbstractItemModel, QModelIndex
 import os
+from JupiterPython import *
 
 """
 
@@ -43,7 +44,19 @@ class Resource(object):
 
     def addChild(self, type, name, obj, parent):
         self.__childs.append(Resource(type, name, obj, parent))
-
+    def child(self, index):
+        return __childs[index]
+    def childCount(self):
+        return len(self.__data)
+    def getName(self):
+        return __name
+    def getType(self):
+        return __type
+        
+    def __str__(self):
+        return self.__type + ': ' + self.__name
+    def __repr__(self):
+        return str(self)
 
 class ResourceModel(QAbstractItemModel):
     def __init__(self, base):
@@ -51,23 +64,64 @@ class ResourceModel(QAbstractItemModel):
         
         self.base = base
         
+        #File.setBase(self.base)
+        
         self.__data = []
         
-        self.refresh()
+        r1 = Resource(Resource.IMAGE, 'Image1')
+        t1 = Resource(Resource.TEXTURE, 'Texture1', None, r1)
         
-    def rowCount(self, parent=QModelIndex()):
+        r2 = Resource(Resource.IMAGE, 'Image2')
+        t2 = Resource(Resource.TEXTURE, 'Texture2', None, r2)
+        
+        self.__data.append(r1)
+        self.__data.append(r2)
+        
+        #self.refresh()
+        
+        for i in self.__data:
+            print i
+        
+    def rowCount(self, parent):
+        print 'rowCount ', parent
         return len(self.__data)
         
-    def columnCount(self, parent=QModelIndex()):
-        return 1
+    def columnCount(self, parent):
+        print 'columnCount', parent
+        return 2
     
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role):
+        print 'role', index, role
         if role == Qt.DisplayRole:
-            return self.__data[index.row()]
+            if index.column == 0:
+                return self.__data[index.row()].getName()
+            else:
+                return self.__data[index.row()].getType()
         return None
+    
+    def headerData(self, section, orientation, role):
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                if section == 0:
+                    return 'Name'
+                if section == 1:
+                    return 'Type'
+            if orientation == Qt.Vertical:
+                return str(section)
+        return None
+    
+    def index(self, row, column, parent):
+        print 'index', row, column, parent
+        if not self.hasIndex(row, column, parent):
+            return QModelIndex()
         
-    def index(self, row, column, parent=QModelIndex()):
-        return QModelIndex()
+        #if parent.isValid():
+        #    pass
+        #else:
+        #    return self.createIndex(row, column, self.__data[row])
+            
+    def parent(self, child):
+        print 'parent', child
         
     def refresh(self):
         for dirname, dirnames, fileanames in os.walk(self.base):
@@ -81,18 +135,18 @@ class ResourceModel(QAbstractItemModel):
         print pngImage
         
         #Jupiter PngImage
+        jimage = PngImage(pngImage)
         
-        #image = Resource(Resource.IMAGE, pngImage, ... )
-        #self.__data.append(image)
+        image = Resource(Resource.IMAGE, pngImage, jimage)
+        self.__data.append(image)
         
         # Jupiter Texture
-        
-        #imageTexture = Resource(Resource.TEXTURE, pngImage, ... , image)
+        jtex = ImageTexture(jimage)
+        imageTexture = Resource(Resource.TEXTURE, pngImage, jimage, image)
         
         # Jupiter Shape
-        
-        #imageShape = Resource(Resource.SHAPE, pngImage, ... , image)
-        pass
+        jshape = ImageShape(jimage)
+        imageShape = Resource(Resource.SHAPE, pngImage, jshape, image)
         
     def addShader(self, vs, fs):
         pass
