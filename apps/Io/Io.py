@@ -78,7 +78,7 @@ class BgRotate(j.RotationListener):
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -144,8 +144,15 @@ class FallingBox(object):
         
         self.boxSmall = j.SpriteBox2d()
         self.boxSmall.clone(self.box).\
+            setAngularVelocity(-30).\
             setPosition(-0.6, -2.0, 1.0).\
             setScale(0.0015, 0.0015, 0.0015)
+        
+        self.box3 = j.SpriteBox2d()
+        self.box3.clone(self.box).\
+            setAngularVelocity(1).\
+            setPosition(0, 3, 1).\
+            setScale(0.001, 0.001, 0.001)
         
         
         groundImage = j.PngImage('Resources/ground.png')
@@ -175,6 +182,7 @@ class FallingBox(object):
             addNode(self.bg).\
             addNode(self.box).\
             addNode(self.boxSmall).\
+            addNode(self.box3).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
             addNode(self.grounds[2]).\

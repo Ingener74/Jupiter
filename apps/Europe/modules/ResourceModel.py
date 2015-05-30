@@ -35,23 +35,25 @@ class Resource(object):
     SHAPE       = "ImageShape"
     SHADER      = "Shader"
     
-    def __init__(self, type_=NONE, name="Noname", obj=None, parent=None):
+    def __init__(self, type_=NONE, name="Noname", parent=None, obj=None):
         self.__type     = type_
         self.__name     = name
-        self.__object   = obj
         self.__parent   = parent
         self.__childs   = []
+        self.__object   = obj
 
     def addChild(self, type, name, obj, parent):
         self.__childs.append(Resource(type, name, obj, parent))
     def child(self, index):
-        return __childs[index]
+        return self.__childs[index]
     def childCount(self):
-        return len(self.__data)
+        return len(self.__childs)
     def getName(self):
-        return __name
+        return self.__name
     def getType(self):
-        return __type
+        return self.__type
+    def getParent(self):
+        return self.__parent
         
     def __str__(self):
         return self.__type + ': ' + self.__name
@@ -64,18 +66,21 @@ class ResourceModel(QAbstractItemModel):
         
         self.base = base
         
-        #File.setBase(self.base)
+        File.setBase(self.base)
         
         self.__data = []
         
-        r1 = Resource(Resource.IMAGE, 'Image1')
-        t1 = Resource(Resource.TEXTURE, 'Texture1', None, r1)
+        root = Resource()
         
-        r2 = Resource(Resource.IMAGE, 'Image2')
-        t2 = Resource(Resource.TEXTURE, 'Texture2', None, r2)
+        r1 = Resource(Resource.IMAGE,   'Image1',   root)
+        t1 = Resource(Resource.TEXTURE, 'Texture1', r1)
+        s1 = Resource(Resource.SHAPE,   'Shape1',   r1)
         
-        self.__data.append(r1)
-        self.__data.append(r2)
+        r2 = Resource(Resource.IMAGE,   'Image2',   root)
+        t2 = Resource(Resource.TEXTURE, 'Texture2', r2)
+        s2 = Resource(Resource.SHAPE,   'Shape2',   r2)
+        
+        self.__data.append(root)
         
         #self.refresh()
         
@@ -83,20 +88,18 @@ class ResourceModel(QAbstractItemModel):
             print i
         
     def rowCount(self, parent):
-        print 'rowCount', parent
         if not parent.isValid():
             return len(self.__data)
         else:
-            return len(parent.internalPointer().childCount())
+            res = parent.internalPointer()
+            return res.childCount()
         
     def columnCount(self, parent):
-        print 'columnCount', parent
         return 2
     
     def data(self, index, role):
-        print 'data', index, role
         if role == Qt.DisplayRole:
-            if index.column == 0:
+            if index.column() == 0:
                 return index.internalPointer().getName()
             else:
                 return index.internalPointer().getType()
@@ -114,19 +117,19 @@ class ResourceModel(QAbstractItemModel):
         return None
     
     def index(self, row, column, parent):
-        print 'index', row, column, parent
-        if not self.hasIndex(row, column, parent):
-            return QModelIndex()
-        
         if not parent.isValid():
-            return QModelIndex()
+            parentRes = self.__data[row]
         else:
-            return self.createIndex(row, column, parent.internalPointer().child(row))
+            parentRes = parent.internalPointer()
         
-        return self.createIndex(row, column, self.__data[row])
+        return self.createIndex(row, column, parentRes)
         
     def parent(self, child):
-        print 'parent', child
+        childRes = child.internalPointer()
+        if childRes.getParent() == None:
+            return QModelIndex()
+        else:
+            return
         
     def refresh(self):
         for dirname, dirnames, fileanames in os.walk(self.base):

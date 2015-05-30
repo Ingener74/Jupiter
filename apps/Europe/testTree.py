@@ -35,12 +35,13 @@ class TestWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         
-        #d = QFileDialog.getExistingDirectory(caption=u'Директория с ресурсами', options=QFileDialog.ShowDirsOnly)
+#         d = QFileDialog.getExistingDirectory(caption=u'Директория с ресурсами', options=QFileDialog.ShowDirsOnly).encode('ascii', 'ignore')
         
         glWidget = GlWidget()
         treeView = QTreeView()
         
         resModel = ResourceModel('/home/pavel/workspace/Jupiter/samples/Box')
+#         resModel = ResourceModel(d)
         treeView.setModel(resModel)
         
         vbox = QVBoxLayout()
