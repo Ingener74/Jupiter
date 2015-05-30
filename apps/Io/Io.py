@@ -131,28 +131,37 @@ class FallingBox(object):
         boxFixDef = j.FixtureDef()
         boxFixDef.density = 1.
         
-        self.box = j.SpriteBox2d(self.physics, boxDef, boxFixDef)
-        self.box.setPhysicsShape(boxImage)
-        self.box.\
+        self.box1 = j.SpriteBox2d(self.physics, boxDef, boxFixDef)
+        self.box1.setPhysicsShape(boxImage)
+        self.box1.\
             setProgram(self.shader).\
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
-            translate(0.0, 4.0, 1.0).\
+            translate(0, 4, 1).\
             setScale(0.002)
-        self.box.setCollisionListener(self.boxCol)
+        self.box1.setCollisionListener(self.boxCol)
         
-        self.boxSmall = j.SpriteBox2d()
-        self.boxSmall.clone(self.box).\
+        self.box2 = j.SpriteBox2d()
+        self.box2.clone(self.box1).\
             setAngularVelocity(-30).\
-            setPosition(-0.6, -2.0, 1.0).\
-            setScale(0.0015, 0.0015, 0.0015)
+            setScale(.0015, .0015, .0015).\
+            setPosition(-.6, -2, 1)
         
         self.box3 = j.SpriteBox2d()
-        self.box3.clone(self.box).\
+        self.box3.clone(self.box1).\
             setAngularVelocity(1).\
             setPosition(0, 3, 1).\
-            setScale(0.001, 0.001, 0.001)
+            setScale(.001, .001, .001)
+        
+        self.box4 = j.SpriteBox2d()
+        self.box4.clone(self.box3).setPosition(-2, 2, 1)
+        
+        self.box5 = j.SpriteBox2d()
+        self.box5.clone(self.box3).setPosition(-3, 3, 1)
+        
+        self.box6 = j.SpriteBox2d()
+        self.box6.clone(self.box3).setScale(.002, .002, .002).setPosition(0, 3, 1)
         
         
         groundImage = j.PngImage('Resources/ground.png')
@@ -171,18 +180,21 @@ class FallingBox(object):
         for i in xrange(0, 4):
             self.grounds[i].clone(groundProto).\
                 setPhysicsShape(groundImage).\
-                scale(0.01, 0.01, 0.01)
+                scale(.01, .01, .01)
         
-        self.grounds[0].translate(-2, -4.0, 1.0)
-        self.grounds[1].translate( 2, -4.0, 1.0)
-        self.grounds[2].translate(-6, -3.0, 1.0)
-        self.grounds[3].translate( 6, -3.0, 1.0)
+        self.grounds[0].translate(-2, -4, 1)
+        self.grounds[1].translate( 2, -4, 1)
+        self.grounds[2].translate(-6, -3, 1)
+        self.grounds[3].translate( 6, -3, 1)
         
         self.rn.\
             addNode(self.bg).\
-            addNode(self.box).\
-            addNode(self.boxSmall).\
+            addNode(self.box1).\
+            addNode(self.box2).\
             addNode(self.box3).\
+            addNode(self.box4).\
+            addNode(self.box5).\
+            addNode(self.box6).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
             addNode(self.grounds[2]).\
