@@ -127,6 +127,8 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         
+#         self.setContextMenuPolicy(Qt.CustomContextMenu)
+        
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
         print self.settings.fileName()
         self.restoreGeometry(self.settings.value(self.__class__.__name__))
@@ -152,6 +154,14 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         self.box2dBodySettings = Box2dBodySettings()
         self.box2dBodySettings.show()
         
+    def contextMenuEvent(self, e):
+        menu = QMenu()
+        menu.addAction(u'Посмотреть', self.showItem)
+        menu.exec_(e.globalPos())
+        
+    def showItem(self):
+        print 'Посмотреть'
+    
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
             self.close()
