@@ -10,6 +10,7 @@
 
 #ifdef SWIG
 #else
+    #include <stack>
 #endif
 
 #include "Jupiter/NodeVisitor.h"
@@ -28,11 +29,15 @@ public:
     virtual void begin();
 
     virtual void visit(Sprite*);
+    virtual void visit(Camera*);
 
     virtual void end();
 
 private:
     Camera* _camera = nullptr;
+
+    std::stack<glm::mat4> _projectives;
+    std::stack<glm::mat4> _views;
 };
 
 } /* namespace jupiter */

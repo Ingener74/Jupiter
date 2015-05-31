@@ -22,8 +22,11 @@
 #endif
 
 #include "JupiterBox2d.h"
+#include "Node.h"
 
 namespace jupiter {
+
+class NodeVisitor;
 
 struct Ortho {
     Ortho(float left, float right, float top, float bottom, float near, float far) :
@@ -39,18 +42,22 @@ struct Perspective {
     float fovy, aspect, near, far;
 };
 
-class Camera {
+class Camera: virtual public Node {
 public:
     Camera(Ortho, Vec3 eye, Vec3 center, Vec3 up);
     Camera(Perspective, Vec3 eye, Vec3 center, Vec3 up);
 
-    Camera(glm::mat4 const& projection = {}, glm::mat4 const& view = {});
+    Camera(glm::mat4 const& projection = { }, glm::mat4 const& view = { });
     virtual ~Camera();
 
     glm::mat4 const& getProjectionMatrix() const;
     glm::mat4 const& getViewMatrix() const;
 
     void setViewMatrix(glm::mat4 const&);
+
+    virtual Camera* clone(Camera*);
+
+    virtual Camera* accept(NodeVisitor* nv);
 
 protected:
     glm::mat4 _projection, _view;

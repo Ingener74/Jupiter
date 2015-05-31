@@ -63,7 +63,11 @@ void RenderVisitor::visit(Sprite* sprite) {
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
 }
 
+void RenderVisitor::visit(Camera*) {
+}
+
 void RenderVisitor::end() {
 }
 
 } /* namespace jupiter */
+

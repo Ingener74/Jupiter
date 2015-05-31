@@ -35,6 +35,9 @@ void NodeVisitor::visit(Sprite*) {
 void NodeVisitor::visit(Box2dNode*) {
 }
 
+void NodeVisitor::visit(Camera*) {
+}
+
 void NodeVisitor::end() {
 }
 

@@ -186,10 +186,10 @@ class FallingBox(object):
                 setPhysicsShape(groundImage).\
                 scaleF(.01)
         
-        self.grounds[0].translate(-2, -4, 1)
-        self.grounds[1].translate( 2, -4, 1)
-        self.grounds[2].translate(-5.5, -3.3, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        self.grounds[3].translate( 5.5, -3.3, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
+        self.grounds[0].translate(-1.8, -4.2, 1)
+        self.grounds[1].translate( 1.8, -4.2, 1)
+        self.grounds[2].translate(-5.5, -3.1, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+        self.grounds[3].translate( 5.5, -3.1, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
         
         self.rn.\
             addNode(self.bg).\

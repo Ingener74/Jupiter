@@ -20,6 +20,7 @@ namespace jupiter {
 class Node;
 class Sprite;
 class Box2dNode;
+class Camera;
 
 class NodeVisitor {
 public:
@@ -34,6 +35,7 @@ public:
     virtual void visit(Node*);
     virtual void visit(Sprite*);
     virtual void visit(Box2dNode*);
+    virtual void visit(Camera*);
 
     virtual void end();
 
