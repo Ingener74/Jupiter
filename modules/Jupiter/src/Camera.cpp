@@ -24,13 +24,6 @@ Camera::Camera(Perspective perspective, Vec3 eye, Vec3 center, Vec3 up) :
     _view(lookAt(vec3(eye.x, eye.y, eye.z), vec3(center.x, center.y, center.z), vec3(up.x, up.y, up.z))) {
 }
 
-Camera::Camera(glm::mat4 const& projection, glm::mat4 const& view) :
-    _projection(projection), _view(view) {
-}
-
-Camera::~Camera() {
-}
-
 glm::mat4 const& Camera::getProjectionMatrix() const {
     return _projection;
 }

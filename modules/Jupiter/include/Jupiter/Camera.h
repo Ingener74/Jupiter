@@ -46,9 +46,7 @@ class Camera: virtual public Node {
 public:
     Camera(Ortho, Vec3 eye, Vec3 center, Vec3 up);
     Camera(Perspective, Vec3 eye, Vec3 center, Vec3 up);
-
-    Camera(glm::mat4 const& projection = { }, glm::mat4 const& view = { });
-    virtual ~Camera();
+    virtual ~Camera() = default;
 
     glm::mat4 const& getProjectionMatrix() const;
     glm::mat4 const& getViewMatrix() const;

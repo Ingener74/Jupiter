@@ -35,9 +35,6 @@ public:
 
 private:
     Camera* _camera = nullptr;
-
-    std::stack<glm::mat4> _projectives;
-    std::stack<glm::mat4> _views;
 };
 
 } /* namespace jupiter */
