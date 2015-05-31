@@ -1,7 +1,8 @@
 # encoding: utf-8
 
-from PySide.QtCore import Qt, QAbstractItemModel, QModelIndex
 import os
+import string
+from PySide.QtCore import Qt, QAbstractItemModel, QModelIndex
 from JupiterPython import *
 
 """
@@ -35,25 +36,40 @@ class Resource(object):
     SHAPE       = "ImageShape"
     SHADER      = "Shader"
     
-    def __init__(self, type_=NONE, name="Noname", parent=None, obj=None):
+    def __init__(self, type_=NONE, name="Noname", obj=None):
         self.__type     = type_
         self.__name     = name
-        self.__parent   = parent
+        self.__parent   = None
         self.__childs   = []
         self.__object   = obj
 
-    def addChild(self, type, name, obj, parent):
-        self.__childs.append(Resource(type, name, obj, parent))
-    def child(self, index):
-        return self.__childs[index]
+    def addChild(self, child):
+        child.setParent(self)
+        self.__childs.append(child)
+        
+    def child(self, indx):
+        return self.__childs[indx]
+    
     def childCount(self):
         return len(self.__childs)
+    
     def getName(self):
         return self.__name
+    
     def getType(self):
         return self.__type
+    
+    def setParent(self, parent):
+        self.__parent = parent
+        
     def getParent(self):
         return self.__parent
+    
+    def index(self, child):
+        return self.__childs.index(child)
+    
+    def getObject(self):
+        return self.__object
         
     def __str__(self):
         return self.__type + ': ' + self.__name
@@ -65,44 +81,55 @@ class ResourceModel(QAbstractItemModel):
         QAbstractItemModel.__init__(self)
         
         self.base = base
-        
         File.setBase(self.base)
         
-        self.__data = []
+        self.__root = Resource()
+#         
+#         r1 = Resource(Resource.IMAGE,   'Image1')
+#         t1 = Resource(Resource.TEXTURE, 'Texture1')
+#         s1 = Resource(Resource.SHAPE,   'Shape1')
+#         r1.addChild(t1)
+#         r1.addChild(s1)
+#         
+#         r2 = Resource(Resource.IMAGE,   'Image2')
+#         t2 = Resource(Resource.TEXTURE, 'Texture2')
+#         s2 = Resource(Resource.SHAPE,   'Shape2')
+#         r2.addChild(t2)
+#         r2.addChild(s2)
+#         
+#         self.__root.addChild(r1)
+#         self.__root.addChild(r2)
         
-        root = Resource()
-        
-        r1 = Resource(Resource.IMAGE,   'Image1',   root)
-        t1 = Resource(Resource.TEXTURE, 'Texture1', r1)
-        s1 = Resource(Resource.SHAPE,   'Shape1',   r1)
-        
-        r2 = Resource(Resource.IMAGE,   'Image2',   root)
-        t2 = Resource(Resource.TEXTURE, 'Texture2', r2)
-        s2 = Resource(Resource.SHAPE,   'Shape2',   r2)
-        
-        self.__data.append(root)
-        
-        #self.refresh()
-        
-        for i in self.__data:
-            print i
+        self.refresh()
         
     def rowCount(self, parent):
         if not parent.isValid():
-            return len(self.__data)
+            return self.__root.childCount()
         else:
-            res = parent.internalPointer()
-            return res.childCount()
+            return parent.internalPointer().childCount()
         
     def columnCount(self, parent):
-        return 2
+        return 4
     
     def data(self, index, role):
         if role == Qt.DisplayRole:
+            
+            R = index.internalPointer()
+            
             if index.column() == 0:
-                return index.internalPointer().getName()
-            else:
-                return index.internalPointer().getType()
+                return R.getName()
+            elif index.column() == 1:
+                return R.getType()
+            elif index.column() == 2:
+                if R.getType() == Resource.IMAGE:
+                    return R.getObject().getWidth()
+                else:
+                    return ''
+            elif index.column() == 3:
+                if R.getType() == Resource.IMAGE:
+                    return R.getObject().getHeight()
+                else:
+                    return ''
         return None
     
     def headerData(self, section, orientation, role):
@@ -112,24 +139,38 @@ class ResourceModel(QAbstractItemModel):
                     return 'Name'
                 if section == 1:
                     return 'Type'
+                if section == 2:
+                    return 'Width'
+                if section == 3:
+                    return 'Height'
             if orientation == Qt.Vertical:
                 return str(section)
         return None
     
     def index(self, row, column, parent):
         if not parent.isValid():
-            parentRes = self.__data[row]
+            parentRes = self.__root
         else:
             parentRes = parent.internalPointer()
         
-        return self.createIndex(row, column, parentRes)
+        child = parentRes.child(row)
+        
+        if child:
+            return self.createIndex(row, column, child)
+        else:
+            return QModelIndex()
         
     def parent(self, child):
+        if not child.isValid():
+            return QModelIndex()
+        
         childRes = child.internalPointer()
-        if childRes.getParent() == None:
+        parent = childRes.getParent()
+        
+        if parent == self.__root:
             return QModelIndex()
         else:
-            return
+            return self.createIndex(parent.index(childRes), 0, parent)
         
     def refresh(self):
         for dirname, dirnames, fileanames in os.walk(self.base):
@@ -137,24 +178,28 @@ class ResourceModel(QAbstractItemModel):
             for filen in fileanames:
                 filenFull, filenExt = os.path.splitext(filen)
                 if filenExt == '.png':
-                    self.addPngImage(resDir + '/' + filen)
+                    path_ = resDir + '/' + filen
+                    self.addPngImage(path_.translate(string.maketrans('\\', '/')))
     
     def addPngImage(self, pngImage):
         print pngImage
         
         #Jupiter PngImage
         jimage = PngImage(pngImage)
-        
         image = Resource(Resource.IMAGE, pngImage, jimage)
-        self.__data.append(image)
         
         # Jupiter Texture
         jtex = ImageTexture(jimage)
-        imageTexture = Resource(Resource.TEXTURE, pngImage, jimage, image)
+        imageTexture = Resource(Resource.TEXTURE, pngImage, jimage)
         
         # Jupiter Shape
         jshape = ImageShape(jimage)
-        imageShape = Resource(Resource.SHAPE, pngImage, jshape, image)
+        imageShape = Resource(Resource.SHAPE, pngImage, jshape)
+        
+        image.addChild(imageTexture)
+        image.addChild(imageShape)
+        
+        self.__root.addChild(image)
         
     def addShader(self, vs, fs):
         pass

@@ -163,6 +163,9 @@ class FallingBox(object):
         self.box6 = j.SpriteBox2d()
         self.box6.clone(self.box3).setScale(.002, .002, .002).setPosition(0, 3, 1)
         
+        self.box7 = j.SpriteBox2d()
+        self.box7.clone(self.box6).setPosition(4, 3, 1)
+        
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -195,6 +198,7 @@ class FallingBox(object):
             addNode(self.box4).\
             addNode(self.box5).\
             addNode(self.box6).\
+            addNode(self.box7).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
             addNode(self.grounds[2]).\

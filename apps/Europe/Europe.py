@@ -3,9 +3,9 @@
 
 import sys
 import json
-from PySide.QtGui import QWidget, QApplication, QMainWindow, QVBoxLayout, QMenu, QPushButton, QTreeView, QHBoxLayout, QAbstractItemView
-from PySide.QtOpenGL import QGLWidget
-from PySide.QtCore import Qt, QPoint, QSettings, QAbstractItemModel, QModelIndex
+from PySide.QtGui import *
+from PySide.QtOpenGL import *
+from PySide.QtCore import *
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -26,27 +26,15 @@ class NodeTreeModel(QAbstractItemModel):
         self.simpleList = [u'Паша', u'Какаша']
         
     def columnCount(self, parent):
-        
-        #print 'columtCount ', parent
-        
         return 2
     
     def rowCount(self, parent):
-        
-        #print 'rowCount ', parent
-        
         return len(self.simpleList)
         
     def index(self, row, column, parent):
-        
-        #print 'index ', row, ' ', column, ' ', parent
-        
         return self.createIndex(row, column, self.simpleList[row])
     
     def data(self, index, role=Qt.DisplayRole):
-        
-        #print 'data ', index, ' ', role
-        
         if role == Qt.DisplayRole:
             if index.column() == 0:
                 return index.internalPointer()
@@ -57,9 +45,6 @@ class NodeTreeModel(QAbstractItemModel):
             return "new"
     
     def parent(self, child):
-        
-        #print 'parent ', child
-        
         return QModelIndex()
 
 
@@ -113,6 +98,7 @@ class GlWidget(QGLWidget):
         self.setObjectName(u'EuropeGLWidget')
         self.resize(self.WIDTH, self.HEIGHT)
         self.setWindowTitle(u'Европа, редактор игр Юпитера')
+        self.setWindowIcon(QIcon(QPixmap(':/stationery.png')))
         
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
         self.restoreGeometry(self.settings.value(self.__class__.__name__))
@@ -149,7 +135,9 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         self.nodeTreeView.setModel(nodeTreeModel)
         self.nodeTreeView.setEditTriggers(QAbstractItemView.DoubleClicked)
         
-        resourceModel = ResourceModel('base')
+        self.__base = QFileDialog.getExistingDirectory(caption=u'Директория с ресурсами', options=QFileDialog.ShowDirsOnly).encode('ascii', 'ignore')
+        
+        resourceModel = ResourceModel(self.__base)
         self.resourceTreeView.setModel(resourceModel)
         
         self.glWidget = GlWidget()
@@ -186,6 +174,7 @@ def setStyle():
     else:
         print u'Неизвестная система'
 
+    
 def main():
     import sys
     setStyle()
