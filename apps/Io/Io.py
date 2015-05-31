@@ -95,12 +95,10 @@ class FallingBox(object):
         self.shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
         #self.box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
         
-        self.camera = j.Camera(45.0,            \
-                               width, height,   \
-                               1.0, 1000.0,     \
-                               0.0, 0.0, 10.0, \
-                               0.0, 0.0, 0.0,   \
-                               0.0, 1.0, 0.0)
+        self.camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
+                               j.Vec3(0.0, 0.0, 10.0),                                     \
+                               j.Vec3(0.0, 0.0, 0.0),                                      \
+                               j.Vec3(0.0, 1.0, 0.0))
         
         self.printVisitor  = j.PrintVisitor()
         self.physics       = j.Box2dVisitor(1.0 / self.FPS)

@@ -12,15 +12,14 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-Camera::Camera(float fovy,
-    float width, float height,
-    float near, float far,
-    float eyex, float eyey, float eyez,
-    float centerx, float centery, float centerz,
-    float upx, float upy, float upz) :
-        _projection(glm::perspective(fovy, width / height, near, far)),
-        _view(lookAt(vec3{eyex, eyey, eyez}, vec3{centerx, centery, centerz}, vec3{upx, upy, upz}))
-{
+Camera::Camera(Ortho ortho, Vec3 eye, Vec3 center, Vec3 up) :
+    _projection(glm::ortho(ortho.left, ortho.right, ortho.bottom, ortho.top, ortho.near, ortho.far)),
+    _view(glm::lookAt(vec3{eye.x, eye.y, eye.z}, vec3{center.x, center.y, center.z}, vec3{up.x, up.y, up.z})) {
+}
+
+Camera::Camera(Perspective perspective, Vec3 eye, Vec3 center, Vec3 up) :
+    _projection(glm::perspective(perspective.fovy, perspective.aspect, perspective.near, perspective.far)),
+    _view(lookAt(vec3(eye.x, eye.y, eye.z), vec3(center.x, center.y, center.z), vec3(up.x, up.y, up.z))) {
 }
 
 Camera::Camera(const glm::mat4& projection, const glm::mat4& view) :

@@ -16,14 +16,14 @@
     #include <glm/gtc/type_ptr.hpp>
     #include <glm/gtc/matrix_transform.hpp>
 
+    #undef near
+    #undef far
+
 #endif
 
 #include "JupiterBox2d.h"
 
 namespace jupiter {
-
-#undef near
-#undef far
 
 struct Ortho {
     Ortho(float left, float right, float top, float bottom, float near, float far) :
@@ -41,23 +41,16 @@ struct Perspective {
 
 class Camera {
 public:
-    Camera(float fovy,
-        float width, float height,
-        float near, float far,
-        float eyex, float eyey, float eyez,
-        float centerx, float centery, float centerz,
-        float upx, float upy, float upz);
+    Camera(Ortho, Vec3 eye, Vec3 center, Vec3 up);
+    Camera(Perspective, Vec3 eye, Vec3 center, Vec3 up);
 
-    Camera(Ortho, Vec3, Vec3, Vec3){}
-    Camera(Perspective, Vec3, Vec3, Vec3){}
-
-    Camera(const glm::mat4& projection = {}, const glm::mat4& view = {});
+    Camera(glm::mat4 const& projection = {}, glm::mat4 const& view = {});
     virtual ~Camera();
 
-    const glm::mat4& getProjectionMatrix() const;
-    const glm::mat4& getViewMatrix() const;
+    glm::mat4 const& getProjectionMatrix() const;
+    glm::mat4 const& getViewMatrix() const;
 
-    void setViewMatrix(const glm::mat4&);
+    void setViewMatrix(glm::mat4 const&);
 
 protected:
     glm::mat4 _projection, _view;
