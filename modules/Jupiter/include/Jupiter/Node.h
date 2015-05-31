@@ -74,13 +74,13 @@ public:
     float getScaleZ() const;
 
     virtual Node* setScale(float x, float y, float z);
-    Node* setScale(float scale);
+    Node* setScaleF(float scale);
     Node* setScaleX(float x);
     Node* setScaleY(float y);
     Node* setScaleZ(float z);
 
     virtual Node* scale(float x, float y, float z);
-    Node* scale(float s);
+    Node* scaleF(float s);
     Node* scaleX(float x);
     Node* scaleY(float y);
     Node* scaleZ(float z);

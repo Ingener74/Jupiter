@@ -188,7 +188,7 @@ Node* Node::setScale(float x, float y, float z) {
     return this;
 }
 
-Node* Node::setScale(float scale) {
+Node* Node::setScaleF(float scale) {
     return setScale(scale, scale, scale);
 }
 
@@ -213,7 +213,7 @@ Node* Node::scale(float x, float y, float z) {
     return this;
 }
 
-Node* Node::scale(float s) {
+Node* Node::scaleF(float s) {
     return scale(s, s, s);
 }
 

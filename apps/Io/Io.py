@@ -119,7 +119,7 @@ class FallingBox(object):
             setShape(self.bgShape).\
             setRotationListener(self.bgRotate).\
             translate(0., 0., -1.).\
-            setScale(0.012)
+            setScaleF(0.012)
             
             
             #setScaleListener(self.boxTest).\
@@ -142,20 +142,20 @@ class FallingBox(object):
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
             translate(0, 4, 1).\
-            setScale(0.002)
+            setScaleF(0.002)
         self.box1.setCollisionListener(self.boxCol)
         
         self.box2 = j.SpriteBox2d()
         self.box2.clone(self.box1).\
             setAngularVelocity(-30).\
-            setScale(.0015, .0015, .0015).\
+            setScaleF(.0015).\
             setPosition(-.6, -2, 1)
         
         self.box3 = j.SpriteBox2d()
         self.box3.clone(self.box1).\
             setAngularVelocity(1).\
             setPosition(0, 3, 1).\
-            setScale(.001, .001, .001)
+            setScaleF(.001)
         
         self.box4 = j.SpriteBox2d()
         self.box4.clone(self.box3).setPosition(-2, 2, 1)
@@ -164,11 +164,11 @@ class FallingBox(object):
         self.box5.clone(self.box3).setPosition(-3, 3, 1)
         
         self.box6 = j.SpriteBox2d()
-        self.box6.clone(self.box3).setScale(.002, .002, .002).setPosition(0, 3, 1)
+        self.box6.clone(self.box3).setScaleF(.002).setPosition(0, 3, 1)
         
         self.box7 = j.SpriteBox2d()
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
-        
+        self.box6.addNode(self.box7)
         
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -186,7 +186,7 @@ class FallingBox(object):
         for i in xrange(0, 4):
             self.grounds[i].clone(groundProto).\
                 setPhysicsShape(groundImage).\
-                scale(.01, .01, .01)
+                scaleF(.01)
         
         self.grounds[0].translate(-2, -4, 1)
         self.grounds[1].translate( 2, -4, 1)
@@ -201,7 +201,6 @@ class FallingBox(object):
             addNode(self.box4).\
             addNode(self.box5).\
             addNode(self.box6).\
-            addNode(self.box7).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
             addNode(self.grounds[2]).\
