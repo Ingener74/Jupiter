@@ -73,6 +73,7 @@ class Resource(object):
         
     def __str__(self):
         return self.__type + ': ' + self.__name
+    
     def __repr__(self):
         return str(self)
 
@@ -84,21 +85,6 @@ class ResourceModel(QAbstractItemModel):
         File.setBase(self.base)
         
         self.__root = Resource()
-#         
-#         r1 = Resource(Resource.IMAGE,   'Image1')
-#         t1 = Resource(Resource.TEXTURE, 'Texture1')
-#         s1 = Resource(Resource.SHAPE,   'Shape1')
-#         r1.addChild(t1)
-#         r1.addChild(s1)
-#         
-#         r2 = Resource(Resource.IMAGE,   'Image2')
-#         t2 = Resource(Resource.TEXTURE, 'Texture2')
-#         s2 = Resource(Resource.SHAPE,   'Shape2')
-#         r2.addChild(t2)
-#         r2.addChild(s2)
-#         
-#         self.__root.addChild(r1)
-#         self.__root.addChild(r2)
         
         self.refresh()
         
@@ -182,21 +168,15 @@ class ResourceModel(QAbstractItemModel):
                     self.addPngImage(path_.translate(string.maketrans('\\', '/')))
     
     def addPngImage(self, pngImage):
-        print pngImage
-        
-        #Jupiter PngImage
         jimage = PngImage(pngImage)
         image = Resource(Resource.IMAGE, pngImage, jimage)
         
-        # Jupiter Texture
         jtex = ImageTexture(jimage)
         imageTexture = Resource(Resource.TEXTURE, pngImage, jimage)
+        image.addChild(imageTexture)
         
-        # Jupiter Shape
         jshape = ImageShape(jimage)
         imageShape = Resource(Resource.SHAPE, pngImage, jshape)
-        
-        image.addChild(imageTexture)
         image.addChild(imageShape)
         
         self.__root.addChild(image)

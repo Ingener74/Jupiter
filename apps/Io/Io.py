@@ -76,6 +76,9 @@ class BgRotate(j.RotationListener):
     def rotate(self, x, y, z, angle):
         print [x, y, z, angle]
 
+DEG2RAD = 3.1415926 / 180.
+RAD2DEG = 180. / 3.1415926
+
 class FallingBox(object):
     
     WIDTH  = 800
@@ -164,7 +167,7 @@ class FallingBox(object):
         self.box6.clone(self.box3).setScale(.002, .002, .002).setPosition(0, 3, 1)
         
         self.box7 = j.SpriteBox2d()
-        self.box7.clone(self.box6).setPosition(4, 3, 1)
+        self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         
         groundImage = j.PngImage('Resources/ground.png')
@@ -187,8 +190,8 @@ class FallingBox(object):
         
         self.grounds[0].translate(-2, -4, 1)
         self.grounds[1].translate( 2, -4, 1)
-        self.grounds[2].translate(-6, -3, 1)
-        self.grounds[3].translate( 6, -3, 1)
+        self.grounds[2].translate(-5.5, -3.3, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+        self.grounds[3].translate( 5.5, -3.3, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
         
         self.rn.\
             addNode(self.bg).\
