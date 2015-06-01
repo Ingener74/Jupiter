@@ -56,7 +56,7 @@ public:
     Box2dNode* applyLinearImpulse(b2Vec2 const& impulse, b2Vec2 const& point, bool wake);
     Box2dNode* applyAngularImpulse(float impulse, bool wake);
     Box2dNode* applyForce(b2Vec2 const& force, b2Vec2 const& point, bool wake);
-    Box2dNode* applyForceToCenter(b2Vec2 const& force, bool wake);
+    Box2dNode* applyForceToCenter(Vec2 const& force, bool wake);
 
     float getMass() const;
     float getInertia() const;

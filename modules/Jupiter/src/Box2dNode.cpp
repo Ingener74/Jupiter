@@ -199,7 +199,10 @@ Box2dNode* Box2dNode::applyAngularImpulse(float impulse, bool wake) {
 Box2dNode* Box2dNode::applyForce(b2Vec2 const& force, b2Vec2 const& point, bool wake) {
 }
 
-Box2dNode* Box2dNode::applyForceToCenter(b2Vec2 const& force, bool wake) {
+Box2dNode* Box2dNode::applyForceToCenter(Vec2 const& force, bool wake) {
+    jassert(_body, "no body");
+    _body->ApplyForceToCenter( { force.x, force.y }, wake);
+    return this;
 }
 
 float Box2dNode::getMass() const {

@@ -62,6 +62,8 @@ class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
             self.getNode().translateX(-5)
         if key == 114 or key == 333:
             self.getNode().translateX(5)
+        if key == 57:
+            j.node2Box2dNode(self.getNode()).applyForceToCenter(j.Vec2(0, 300), True)
 
 class BoxCollision(j.CollisionListener):
     def __init__(self):
@@ -81,7 +83,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 400 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -153,13 +155,11 @@ class FallingBox(object):
         
         self.box2 = j.SpriteBox2d()
         self.box2.clone(self.box1).\
-            setAngularVelocity(-30).\
             setScaleF(.0015).\
             setPosition(-.6, -2, 1)
         
         self.box3 = j.SpriteBox2d()
         self.box3.clone(self.box1).\
-            setAngularVelocity(1).\
             setPosition(0, 3, 1).\
             setScaleF(.001)
         
@@ -177,7 +177,7 @@ class FallingBox(object):
         self.box6.addNode(self.box7)
         
         # Мячик
-        ballImage = j.PngImage('Resources/ball1.png')
+        ballImage = j.PngImage('Resources/ball2.png')
         self.ballTex = j.ImageTexture(ballImage)
         self.ballShape = j.ImageShape(ballImage)
         
@@ -190,7 +190,7 @@ class FallingBox(object):
         self.ball.setProgram(self.shader).\
             setTexture(self.ballTex).\
             setShape(self.ballShape).\
-            setScaleF(0.016).\
+            setScaleF(0.002).\
             setPosition(4, 3, 1)
         
         # Земля
