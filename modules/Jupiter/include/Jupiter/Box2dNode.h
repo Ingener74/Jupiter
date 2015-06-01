@@ -43,13 +43,53 @@ public:
 
     Box2dNode* setPhysicsShape(Image*);
 
+    // BodyDef
     Box2dNode* setBodyType(BodyType);
     BodyType getBodyType();
 
-    Box2dNode* setLinearVelocity(float x, float y);
-    Box2dNode* setAngularVelocity(float angularVel);
+    // Body
+    Box2dNode* setLinearVelocity(b2Vec2 const& velocity);
+    Vec3       getLinearVelocity() const;
 
-    Box2dNode* applyForceToCenter(float x, float y, bool wake);
+    Box2dNode* setAngularVelocity(float angularVelocity);
+    float getAngularVelocity() const;
+
+    Box2dNode* applyTorque(float torque, bool wake);
+    Box2dNode* applyLinearImpulse(b2Vec2 const& impulse, b2Vec2 const& point, bool wake);
+    Box2dNode* applyAngularImpulse(float impulse, bool wake);
+    Box2dNode* applyForce(b2Vec2 const& force, b2Vec2 const& point, bool wake);
+    Box2dNode* applyForceToCenter(b2Vec2 const& force, bool wake);
+
+    float getMass() const;
+    float getInertia() const;
+
+    float GetLinearDamping() const;
+    Box2dNode* SetLinearDamping(float linearDamping);
+
+    float GetAngularDamping() const;
+    Box2dNode* SetAngularDamping(float angularDamping);
+
+    float GetGravityScale() const;
+    Box2dNode* SetGravityScale(float scale);
+
+    b2BodyType GetType() const;
+    Box2dNode* SetType(b2BodyType type);
+
+    bool IsBullet() const;
+    Box2dNode* SetBullet(bool flag);
+
+    bool IsSleepingAllowed() const;
+    Box2dNode* SetSleepingAllowed(bool flag);
+
+    bool IsAwake() const;
+    Box2dNode* SetAwake(bool flag);
+
+    bool IsActive() const;
+    Box2dNode* SetActive(bool flag);
+
+    bool IsFixedRotation() const;
+    Box2dNode* SetFixedRotation(bool flag);
+
 
     CollisionListener* getCollisionListener();
     Box2dNode* setCollisionListener(CollisionListener*);

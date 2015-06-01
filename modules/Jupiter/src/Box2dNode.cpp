@@ -131,24 +131,6 @@ BodyType Box2dNode::getBodyType() {
     return static_cast<BodyType>(_bodyDef.type);
 }
 
-Box2dNode* Box2dNode::setLinearVelocity(float x, float y) {
-    jassert(_body && _fixture, "no body or no fixture");
-    _body->SetLinearVelocity(b2Vec2(x, y));
-    return this;
-}
-
-Box2dNode* Box2dNode::setAngularVelocity(float velocity) {
-    jassert(_body && _fixture, "no body or no fixture");
-    _body->SetAngularVelocity(velocity);
-    return this;
-}
-
-Box2dNode* Box2dNode::applyForceToCenter(float x, float y, bool wake) {
-    jassert(_body && _fixture, "no body or no fixture");
-    _body->ApplyForceToCenter( { x, y }, wake);
-    return this;
-}
-
 CollisionListener* Box2dNode::getCollisionListener() {
     jassert(_collisionListener, "no listener");
     return _collisionListener;

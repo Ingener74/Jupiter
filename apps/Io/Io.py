@@ -88,6 +88,14 @@ class FallingBox(object):
     
     GROUND = 2
     
+    """
+    - Надо добавить ещё разных тел с разной формой, в том числе сложной, составной, разрушающейся формой
+      и попробовать все Joint'ы, в рамках Ио до остальной разработки Европы
+    - Надо сделать 2-й тип элемента рисования на кадрах
+    - Анимация
+    
+    """
+    
     def __init__(self, window, width, height):
         
         j.File.setBase('../../samples/Box')
@@ -168,6 +176,24 @@ class FallingBox(object):
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         self.box6.addNode(self.box7)
         
+        # Мячик
+        ballImage = j.PngImage('Resources/ball1.png')
+        self.ballTex = j.ImageTexture(ballImage)
+        self.ballShape = j.ImageShape(ballImage)
+        
+        ballDef = j.BodyDef()
+        ballDef.type = j.dynamicBody
+        ballFixDef = j.FixtureDef()
+        ballFixDef.density = 2
+        self.ball = j.SpriteBox2d(self.physics, ballDef, ballFixDef)
+        self.ball.setPhysicsShape(ballImage)
+        self.ball.setProgram(self.shader).\
+            setTexture(self.ballTex).\
+            setShape(self.ballShape).\
+            setScaleF(0.016).\
+            setPosition(4, 3, 1)
+        
+        # Земля
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
@@ -199,6 +225,7 @@ class FallingBox(object):
             addNode(self.box4).\
             addNode(self.box5).\
             addNode(self.box6).\
+            addNode(self.ball).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
             addNode(self.grounds[2]).\
@@ -217,6 +244,9 @@ class FallingBox(object):
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, parent, None)
+        
+        self.format().setRgba(True)
+        
         self.setWindowIcon(QIcon(QPixmap('res/main.png')))
         
         self.fallingBox = None
