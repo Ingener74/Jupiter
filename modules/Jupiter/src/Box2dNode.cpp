@@ -171,6 +171,97 @@ void Box2dNode::updateFixture() {
     _fixture = _body->CreateFixture(&_fixtureDef);
 }
 
+Box2dNode* Box2dNode::setLinearVelocity(b2Vec2 const& velocity) {
+    jassert(_body, "no body");
+    _body->SetLinearVelocity( { velocity.x, velocity.y });
+}
+
+Vec3 Box2dNode::getLinearVelocity() const {
+    jassert(_body, "no body");
+    auto vel = _body->GetLinearVelocity();
+}
+
+Box2dNode* Box2dNode::setAngularVelocity(float angularVelocity) {
+}
+
+float Box2dNode::getAngularVelocity() const {
+}
+
+Box2dNode* Box2dNode::applyTorque(float torque, bool wake) {
+}
+
+Box2dNode* Box2dNode::applyLinearImpulse(b2Vec2 const& impulse, b2Vec2 const& point, bool wake) {
+}
+
+Box2dNode* Box2dNode::applyAngularImpulse(float impulse, bool wake) {
+}
+
+Box2dNode* Box2dNode::applyForce(b2Vec2 const& force, b2Vec2 const& point, bool wake) {
+}
+
+Box2dNode* Box2dNode::applyForceToCenter(b2Vec2 const& force, bool wake) {
+}
+
+float Box2dNode::getMass() const {
+}
+
+float Box2dNode::getInertia() const {
+}
+
+float Box2dNode::getLinearDamping() const {
+}
+
+Box2dNode* Box2dNode::setLinearDamping(float linearDamping) {
+}
+
+float Box2dNode::getAngularDamping() const {
+}
+
+Box2dNode* Box2dNode::setAngularDamping(float angularDamping) {
+}
+
+float Box2dNode::getGravityScale() const {
+}
+
+Box2dNode* Box2dNode::setGravityScale(float scale) {
+}
+
+b2BodyType Box2dNode::getType() const {
+}
+
+Box2dNode* Box2dNode::setType(b2BodyType type) {
+}
+
+bool Box2dNode::isBullet() const {
+}
+
+Box2dNode* Box2dNode::setBullet(bool flag) {
+}
+
+bool Box2dNode::isSleepingAllowed() const {
+}
+
+Box2dNode* Box2dNode::setSleepingAllowed(bool flag) {
+}
+
+bool Box2dNode::isAwake() const {
+}
+
+Box2dNode* Box2dNode::setAwake(bool flag) {
+}
+
+bool Box2dNode::isActive() const {
+}
+
+Box2dNode* Box2dNode::setActive(bool flag) {
+}
+
+bool Box2dNode::isFixedRotation() const {
+}
+
+Box2dNode* Box2dNode::setFixedRotation(bool flag) {
+}
+
 void Box2dNode::transform() {
     jassert(_body && _fixture, "no body or no fixture");
     _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());

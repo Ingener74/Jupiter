@@ -43,11 +43,9 @@ public:
 
     Box2dNode* setPhysicsShape(Image*);
 
-    // BodyDef
     Box2dNode* setBodyType(BodyType);
     BodyType getBodyType();
 
-    // Body
     Box2dNode* setLinearVelocity(b2Vec2 const& velocity);
     Vec3       getLinearVelocity() const;
 
@@ -63,33 +61,32 @@ public:
     float getMass() const;
     float getInertia() const;
 
-    float GetLinearDamping() const;
-    Box2dNode* SetLinearDamping(float linearDamping);
+    float getLinearDamping() const;
+    Box2dNode* setLinearDamping(float linearDamping);
 
-    float GetAngularDamping() const;
-    Box2dNode* SetAngularDamping(float angularDamping);
+    float getAngularDamping() const;
+    Box2dNode* setAngularDamping(float angularDamping);
 
-    float GetGravityScale() const;
-    Box2dNode* SetGravityScale(float scale);
+    float getGravityScale() const;
+    Box2dNode* setGravityScale(float scale);
 
-    b2BodyType GetType() const;
-    Box2dNode* SetType(b2BodyType type);
+    b2BodyType getType() const;
+    Box2dNode* setType(b2BodyType type);
 
-    bool IsBullet() const;
-    Box2dNode* SetBullet(bool flag);
+    bool isBullet() const;
+    Box2dNode* setBullet(bool flag);
 
-    bool IsSleepingAllowed() const;
-    Box2dNode* SetSleepingAllowed(bool flag);
+    bool isSleepingAllowed() const;
+    Box2dNode* setSleepingAllowed(bool flag);
 
-    bool IsAwake() const;
-    Box2dNode* SetAwake(bool flag);
+    bool isAwake() const;
+    Box2dNode* setAwake(bool flag);
 
-    bool IsActive() const;
-    Box2dNode* SetActive(bool flag);
+    bool isActive() const;
+    Box2dNode* setActive(bool flag);
 
-    bool IsFixedRotation() const;
-    Box2dNode* SetFixedRotation(bool flag);
-
+    bool isFixedRotation() const;
+    Box2dNode* setFixedRotation(bool flag);
 
     CollisionListener* getCollisionListener();
     Box2dNode* setCollisionListener(CollisionListener*);

@@ -51,6 +51,23 @@
 
 namespace jupiter {
 
+
+template<typename T>
+T* node2(Node* t) {
+    auto r = dynamic_cast<T*>(t);
+    jassert(r, "can't cast node");
+    return r;
+}
+
+#ifdef SWIG
+
+    %template(node2Sprite)        node2<Sprite>;
+    %template(node2SpriteBox2d)   node2<SpriteBox2d>;
+    %template(node2Box2d)         node2<Box2dNode>;
+    %template(node2Camera)        node2<Camera>;
+
+#endif
+
 void startJupiter();
 void endJupiter();
 
