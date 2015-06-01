@@ -95,7 +95,10 @@ class FallingBox(object):
       и попробовать все Joint'ы, в рамках Ио до остальной разработки Европы
     - Надо сделать 2-й тип элемента рисования на кадрах
     - Анимация
-    
+    - Звуки
+    - Spine
+    - import Tiled, tmx
+    - 3D Mesh
     """
     
     def __init__(self, window, width, height):
@@ -174,7 +177,6 @@ class FallingBox(object):
         
         self.box7 = j.SpriteBox2d()
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
-        self.box6.addNode(self.box7)
         
         # Мячик
         ballImage = j.PngImage('Resources/ball2.png')
@@ -225,6 +227,7 @@ class FallingBox(object):
             addNode(self.box4).\
             addNode(self.box5).\
             addNode(self.box6).\
+            addNode(self.box7).\
             addNode(self.ball).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
@@ -244,10 +247,7 @@ class FallingBox(object):
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, parent, None)
-        
-        self.format().setRgba(True)
-        
-        self.setWindowIcon(QIcon(QPixmap('res/main.png')))
+        self.setWindowIcon(QIcon(QPixmap(':/main.png')))
         
         self.fallingBox = None
 
@@ -329,12 +329,6 @@ def main():
     
     select = Select()
     select.show()
-    
-#     format = QGLFormat()
-#     format.setVersion(3, 3)
-#     format.setProfile(QGLFormat.CoreProfile)
-#     format.setSampleBuffers(True)
-#     window = OpenGLWidget(format)
 
     sys.exit(app.exec_())
 
