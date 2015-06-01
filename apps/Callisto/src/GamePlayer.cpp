@@ -95,24 +95,15 @@ bool createGameDirect(const variables_map& vm) {
     float width = 800, height = 480, depth = height;
     float div = 2.f;
 
-//    auto proj = ortho(
-//            -width/div,  width/div,
-//            -height/div, height/div,
-//            -depth/div,  depth/div);
-
-    auto proj = perspective<float>(45.f, width / height, 10.f, 10000.f);
-
-//    float z = viewRadius * sin(yAngle) * cos(xAngle);
-//    float x = viewRadius * sin(yAngle) * sin(xAngle);
-//    float y = viewRadius * cos(yAngle);
-
     float x = viewRadius * sin(xAngle);
     float y = viewRadius * sin(yAngle);
     float z = viewRadius * cos(xAngle);
 
-    auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
-
-    camera = {proj, view};
+    camera = {
+        Perspective{45.f, width / height, 10.f, 10000.f},
+        Vec3{x, y, z},
+        Vec3{0.f, 0.f, 0.f},
+        Vec3{0.f, 1.f, 0.f}};
 
     render = make_unique_<RenderVisitor>(&camera);
 

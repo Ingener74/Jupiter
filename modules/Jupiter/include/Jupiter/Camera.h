@@ -44,6 +44,7 @@ struct Perspective {
 
 class Camera: virtual public Node {
 public:
+    Camera() = default;
     Camera(Ortho, Vec3 eye, Vec3 center, Vec3 up);
     Camera(Perspective, Vec3 eye, Vec3 center, Vec3 up);
     virtual ~Camera() = default;

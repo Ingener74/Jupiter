@@ -127,10 +127,7 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         
-#         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
-        print self.settings.fileName()
         self.restoreGeometry(self.settings.value(self.__class__.__name__))
         
         nodeTreeModel = NodeTreeModel()
