@@ -10,9 +10,9 @@
 
 #ifdef SWIG
 #else
+    #include <Box2D/Box2D.h>
 #endif
 
-#include "JupiterBox2d.h"
 #include "Node.h"
 
 namespace jupiter {
@@ -27,7 +27,7 @@ public:
     friend class Box2dVisitor;
 
     Box2dNode();
-    Box2dNode(Box2dVisitor*, BodyDef, FixtureDef);
+    Box2dNode(Box2dVisitor*, b2BodyDef, b2FixtureDef);
     virtual ~Box2dNode();
 
     virtual Box2dNode* clone(Box2dNode*);
@@ -43,50 +43,8 @@ public:
 
     Box2dNode* setPhysicsShape(Image*);
 
-    Box2dNode* setBodyType(BodyType);
-    BodyType getBodyType();
-
-    Box2dNode* setLinearVelocity(b2Vec2 const& velocity);
-    Vec3       getLinearVelocity() const;
-
-    Box2dNode* setAngularVelocity(float angularVelocity);
-    float getAngularVelocity() const;
-
-    Box2dNode* applyTorque(float torque, bool wake);
-    Box2dNode* applyLinearImpulse(b2Vec2 const& impulse, b2Vec2 const& point, bool wake);
-    Box2dNode* applyAngularImpulse(float impulse, bool wake);
-    Box2dNode* applyForce(b2Vec2 const& force, b2Vec2 const& point, bool wake);
-    Box2dNode* applyForceToCenter(Vec2 const& force, bool wake);
-
-    float getMass() const;
-    float getInertia() const;
-
-    float getLinearDamping() const;
-    Box2dNode* setLinearDamping(float linearDamping);
-
-    float getAngularDamping() const;
-    Box2dNode* setAngularDamping(float angularDamping);
-
-    float getGravityScale() const;
-    Box2dNode* setGravityScale(float scale);
-
-    b2BodyType getType() const;
-    Box2dNode* setType(b2BodyType type);
-
-    bool isBullet() const;
-    Box2dNode* setBullet(bool flag);
-
-    bool isSleepingAllowed() const;
-    Box2dNode* setSleepingAllowed(bool flag);
-
-    bool isAwake() const;
-    Box2dNode* setAwake(bool flag);
-
-    bool isActive() const;
-    Box2dNode* setActive(bool flag);
-
-    bool isFixedRotation() const;
-    Box2dNode* setFixedRotation(bool flag);
+    b2Body* getPhysicsBody();
+    b2Fixture* getPhysicsFixture();
 
     CollisionListener* getCollisionListener();
     Box2dNode* setCollisionListener(CollisionListener*);

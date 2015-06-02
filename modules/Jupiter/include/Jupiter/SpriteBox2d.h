@@ -10,6 +10,7 @@
 
 #ifdef SWIG
 #else
+    #include <Box2D/Box2D.h>
 #endif
 
 #include "Box2dNode.h"
@@ -23,7 +24,7 @@ class Box2dVisitor;
 class SpriteBox2d: public Sprite, public Box2dNode {
 public:
     SpriteBox2d();
-    SpriteBox2d(Box2dVisitor*, BodyDef, FixtureDef);
+    SpriteBox2d(Box2dVisitor*, b2BodyDef, b2FixtureDef);
     virtual ~SpriteBox2d();
 
     virtual SpriteBox2d* clone(SpriteBox2d*);
