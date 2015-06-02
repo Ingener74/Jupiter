@@ -21,6 +21,7 @@ class Image;
 class Box2dVisitor;
 class CollisionListener;
 class NodeVisitor;
+class PhysicsShape;
 
 class Box2dNode: virtual public Node {
 public:
@@ -42,6 +43,7 @@ public:
     virtual Box2dNode* accept(NodeVisitor*);
 
     Box2dNode* setPhysicsShape(Image*);
+    Box2dNode* setPhysicsShape(PhysicsShape*);
 
     b2Body* getPhysicsBody();
     b2Fixture* getPhysicsFixture();

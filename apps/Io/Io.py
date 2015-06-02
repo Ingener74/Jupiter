@@ -56,13 +56,15 @@ class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
     def key(self, key):
 #         print 'key ', key
         if key == 111 or key == 328:
-            self.getNode().translateY(5)
+            self.getNode().translateY(1)
         if key == 116 or key == 336:
-            self.getNode().translateY(-5)
+            self.getNode().translateY(-1)
         if key == 113 or key == 331:
-            self.getNode().translateX(-5)
+            self.getNode().translateX(-1)
         if key == 114 or key == 333:
-            self.getNode().translateX(5)
+            self.getNode().translateX(1)
+        
+        j.node2Box2dNode(self.getNode()).getPhysicsBody().SetAwake(True)
         if key == 57 or key == 65:
             j.node2Box2dNode(self.getNode()).getPhysicsBody().ApplyForceToCenter(b.b2Vec2(0, 300), True)
 
@@ -84,7 +86,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -92,6 +94,8 @@ class FallingBox(object):
     GROUND = 2
     
     """
+    - Камера через положение и ориентацию/кватернион
+    - Сложная физическая форма из json
     - Надо добавить ещё разных тел с разной формой, в том числе сложной, составной, разрушающейся формой
       и попробовать все Joint'ы, в рамках Ио до остальной разработки Европы
     - Надо сделать 2-й тип элемента рисования на кадрах
@@ -210,8 +214,8 @@ class FallingBox(object):
             setTag(self.GROUND)
         
         
-        self.grounds = [j.SpriteBox2d() for i in range(0, 4)]
-        for i in xrange(0, 4):
+        self.grounds = [j.SpriteBox2d() for i in range(0, 5)]
+        for i in xrange(0, 5):
             self.grounds[i].clone(groundProto).\
                 setPhysicsShape(groundImage).\
                 scaleF(.01)
@@ -220,6 +224,8 @@ class FallingBox(object):
         self.grounds[1].translate( 1.8, -4.2, 1)
         self.grounds[2].translate(-5.5, -3.1, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
         self.grounds[3].translate( 5.5, -3.1, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
+
+        self.grounds[4].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
         
         self.rn.\
             addNode(self.bg).\
@@ -234,7 +240,8 @@ class FallingBox(object):
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
             addNode(self.grounds[2]).\
-            addNode(self.grounds[3])
+            addNode(self.grounds[3]).\
+            addNode(self.grounds[4])
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
@@ -264,6 +271,8 @@ class OpenGLWidget(QGLWidget):
         
         glEnable(GL_TEXTURE_2D)
         glEnable(GL_DEPTH_TEST)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         try:
             j.startJupiter()

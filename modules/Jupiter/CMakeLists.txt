@@ -53,6 +53,9 @@ set(SOURCES
     src/Box2dVisitor.cpp
     
     src/SpriteBox2d.cpp
+    
+    src/PhysicsShape.cpp
+    src/PoligonShape.cpp
 )
 
 if(ANDROID)

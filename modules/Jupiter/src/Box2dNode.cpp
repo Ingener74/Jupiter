@@ -106,6 +106,12 @@ Box2dNode* Box2dNode::setPhysicsShape(Image* image) {
     return this;
 }
 
+Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape*) {
+
+    return this;
+}
+
+
 b2Body* Box2dNode::getPhysicsBody() {
     jassert(_body, "no body");
     return _body;
