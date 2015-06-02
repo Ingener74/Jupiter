@@ -21,12 +21,28 @@
 
 #endif
 
-#include "JupiterBox2d.h"
 #include "Node.h"
 
 namespace jupiter {
 
 class NodeVisitor;
+
+struct Vec2
+{
+    Vec2() {}
+    Vec2(float x, float y) : x(x), y(y) {}
+
+    float x = 0, y = 0;
+};
+
+struct Vec3
+{
+    Vec3() {}
+
+    Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
+
+    float x = 0.f, y = 0.f, z = 0.f;
+};
 
 struct Ortho {
     Ortho(float left, float right, float top, float bottom, float near, float far) :

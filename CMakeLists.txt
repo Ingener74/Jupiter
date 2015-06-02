@@ -27,12 +27,14 @@ option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"            ON)
 option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"      ON)
 option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"         ON)
 
+
 if(USE_FREEGLUT AND USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
 endif()
 if(NOT USE_FREEGLUT AND NOT USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
 endif()
+
 
 if(WITH_GAME_PLAYER)
 

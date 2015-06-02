@@ -27,6 +27,7 @@ except ImportError as e:
 
 try:
     import JupiterPython as j
+    import Box2DPython as b
 except ImportError as e:
     app = QApplication(sys.argv)
     QMessageBox.critical(None, \
@@ -63,7 +64,7 @@ class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
         if key == 114 or key == 333:
             self.getNode().translateX(5)
         if key == 57 or key == 65:
-            j.node2Box2dNode(self.getNode()).applyForceToCenter(j.Vec2(0, 300), True)
+            j.node2Box2dNode(self.getNode()).getPhysicsBody().ApplyForceToCenter(b.b2Vec2(0, 300), True)
 
 class BoxCollision(j.CollisionListener):
     def __init__(self):
@@ -113,6 +114,7 @@ class FallingBox(object):
                                j.Vec3(0.0, 0.0, 0.0),                                      \
                                j.Vec3(0.0, 1.0, 0.0))
         
+        
         self.printVisitor  = j.PrintVisitor()
         self.physics       = j.Box2dVisitor(1.0 / self.FPS)
         self.render        = j.RenderVisitor(self.camera)
@@ -140,9 +142,9 @@ class FallingBox(object):
         self.boxTex = j.ImageTexture(boxImage)
         self.boxShape = j.ImageShape(boxImage)
         
-        boxDef = j.BodyDef()
-        boxDef.type = j.dynamicBody;
-        boxFixDef = j.FixtureDef()
+        boxDef = b.b2BodyDef()
+        boxDef.type = b.b2_dynamicBody;
+        boxFixDef = b.b2FixtureDef()
         boxFixDef.density = 1.
         
         self.box1 = j.SpriteBox2d(self.physics, boxDef, boxFixDef)
@@ -183,9 +185,9 @@ class FallingBox(object):
         self.ballTex = j.ImageTexture(ballImage)
         self.ballShape = j.ImageShape(ballImage)
         
-        ballDef = j.BodyDef()
-        ballDef.type = j.dynamicBody
-        ballFixDef = j.FixtureDef()
+        ballDef = b.b2BodyDef()
+        ballDef.type = b.b2_dynamicBody
+        ballFixDef = b.b2FixtureDef()
         ballFixDef.density = 2
         self.ball = j.SpriteBox2d(self.physics, ballDef, ballFixDef)
         self.ball.setPhysicsShape(ballImage)
@@ -200,7 +202,7 @@ class FallingBox(object):
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
         
-        groundProto = j.SpriteBox2d(self.physics, j.BodyDef(), j.FixtureDef())
+        groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), b.b2FixtureDef())
         groundProto.setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
