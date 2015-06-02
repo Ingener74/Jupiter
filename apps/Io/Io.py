@@ -27,6 +27,7 @@ except ImportError as e:
 
 try:
     import JupiterPython as j
+    import Box2DPython as b
 except ImportError as e:
     app = QApplication(sys.argv)
     QMessageBox.critical(None, \
@@ -112,6 +113,11 @@ class FallingBox(object):
                                j.Vec3(0.0, 0.0, 10.0),                                     \
                                j.Vec3(0.0, 0.0, 0.0),                                      \
                                j.Vec3(0.0, 1.0, 0.0))
+        
+        
+        v1 = b.b2Vec2(0.0, 0.0)
+        print v1.x, 'x', v1.y
+        
         
         self.printVisitor  = j.PrintVisitor()
         self.physics       = j.Box2dVisitor(1.0 / self.FPS)
