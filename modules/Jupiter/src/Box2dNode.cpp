@@ -20,24 +20,6 @@ Box2dNode::Box2dNode(): Node(){
 
 Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, b2FixtureDef fixtureDef) :
     _visitor(visitor) {
-//    _bodyDef.type               = static_cast<b2BodyType>(bodyDef.type);
-//    _bodyDef.angularVelocity    = bodyDef.angularVelocity;
-//    _bodyDef.linearDamping      = bodyDef.linearDamping  ;
-//    _bodyDef.angularDamping     = bodyDef.angularDamping ;
-//    _bodyDef.allowSleep         = bodyDef.allowSleep     ;
-//    _bodyDef.awake              = bodyDef.awake          ;
-//    _bodyDef.fixedRotation      = bodyDef.fixedRotation  ;
-//    _bodyDef.bullet             = bodyDef.bullet         ;
-//    _bodyDef.active             = bodyDef.active         ;
-//    _bodyDef.gravityScale       = bodyDef.gravityScale   ;
-//
-//    _bodyDef.linearVelocity.x   = bodyDef.linearVelocity.x;
-//    _bodyDef.linearVelocity.y   = bodyDef.linearVelocity.y;
-//
-//    _fixtureDef.friction        = fixtureDef.friction    ;
-//    _fixtureDef.restitution     = fixtureDef.restitution ;
-//    _fixtureDef.density         = fixtureDef.density     ;
-//    _fixtureDef.isSensor        = fixtureDef.isSensor    ;
 
     _bodyDef    = bodyDef;
     _fixtureDef = fixtureDef;
