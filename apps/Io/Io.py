@@ -62,7 +62,7 @@ class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
             self.getNode().translateX(-5)
         if key == 114 or key == 333:
             self.getNode().translateX(5)
-        if key == 57:
+        if key == 57 or key == 65:
             j.node2Box2dNode(self.getNode()).applyForceToCenter(j.Vec2(0, 300), True)
 
 class BoxCollision(j.CollisionListener):
@@ -83,7 +83,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0

@@ -13,7 +13,6 @@ set(CMAKE_SWIG_FLAGS "-c++")
 
 set_source_files_properties(Jupiter.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
-#set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor;-v") # swig verbose
 
 set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/bin)
 
@@ -80,6 +79,22 @@ endif()
 if(WITH_GL_PYTHON_WRAPPER)
     SWIG_ADD_MODULE(glPython python gl.i)
     SWIG_LINK_LIBRARIES(glPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+endif()
+
+################################################################################################
+# Box2D
+################################################################################################
+set_source_files_properties(Box2D.i PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(Box2D.i PROPERTIES SWIG_FLAGS "")
+
+if(WITH_BOX2D_LUA_WRAPPER)
+    SWIG_ADD_MODULE(Box2DLua lua Box2D.i)
+    SWIG_LINK_LIBRARIES(Box2DLua ${BOX2D_LIBRARIES} ${LUA_LIBRARIES})
+endif()
+
+if(WITH_BOX2D_PYTHON_WRAPPER)
+    SWIG_ADD_MODULE(Box2DPython python Box2D.i)
+    SWIG_LINK_LIBRARIES(Box2DPython ${BOX2D_LIBRARIES} ${PYTHON_LIBRARIES})
 endif()
 
 
