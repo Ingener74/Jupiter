@@ -160,7 +160,7 @@ class FallingBox(object):
             setTexture(self.boxTex).\
             setShape(self.boxShape).\
             setMoveListener(self.boxTest).\
-            translate(0, 4, 1).\
+            translate(0, 2, 1).\
             setScaleF(0.002)
         self.box1.setCollisionListener(self.boxCol)
         
@@ -204,7 +204,7 @@ class FallingBox(object):
             setTexture(self.ballTex).\
             setShape(self.ballShape).\
             setScaleF(0.01).\
-            setPosition(4, 3, 1)
+            setPosition(0, 3, 1)
         
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
@@ -213,26 +213,28 @@ class FallingBox(object):
         
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
         
-        groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), groundPhShape)
-        groundProto.setProgram(self.shader).\
+        self.groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), groundPhShape)
+        self.groundProto.setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
             setName('flour').\
-            setTag(self.GROUND)
+            setTag(self.GROUND).\
+            setScaleF(0.01).\
+            setPosition(0.1, -4, 1)
         
         
-        self.grounds = [j.SpriteBox2d() for i in range(0, 5)]
-        for i in xrange(0, 5):
-            self.grounds[i].clone(groundProto).\
-                setPhysicsShape(groundImage).\
-                scaleF(.01)
-        
-        self.grounds[0].translate(-1.8, -4.2, 1)
-        self.grounds[1].translate( 1.8, -4.2, 1)
-        self.grounds[2].translate(-5.5, -3.1, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        self.grounds[3].translate( 5.5, -3.1, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
-
-        self.grounds[4].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
+#         self.grounds = [j.SpriteBox2d() for i in range(0, 5)]
+#         for i in xrange(0, 5):
+#             self.grounds[i].clone(groundProto).\
+#                 setPhysicsShape(groundImage).\
+#                 scaleF(.01)
+#         
+#         self.grounds[0].translate(-1.8, -4.2, 1)
+#         self.grounds[1].translate( 1.8, -4.2, 1)
+#         self.grounds[2].translate(-5.5, -3.1, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+#         self.grounds[3].translate( 5.5, -3.1, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
+# 
+#         self.grounds[4].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
         
 #             addNode(self.box2).\
 #             addNode(self.box3).\
@@ -240,15 +242,16 @@ class FallingBox(object):
 #             addNode(self.box5).\
 #             addNode(self.box6).\
 #             addNode(self.box7).\
+#             addNode(self.grounds[0]).\
+#             addNode(self.grounds[1]).\
+#             addNode(self.grounds[2]).\
+#             addNode(self.grounds[3]).\
+#             addNode(self.grounds[4])
         self.rn.\
             addNode(self.bg).\
             addNode(self.box1).\
             addNode(self.ball).\
-            addNode(self.grounds[0]).\
-            addNode(self.grounds[1]).\
-            addNode(self.grounds[2]).\
-            addNode(self.grounds[3]).\
-            addNode(self.grounds[4])
+            addNode(self.groundProto)
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
