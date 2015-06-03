@@ -120,8 +120,6 @@ b2Body* Box2dNode::getPhysicsBody() {
 
 b2Fixture* Box2dNode::getPhysicsFixture() {
     jassert(false, "deprecated");
-//    jassert(_fixture, "no fixture");
-//    return _fixture;
 }
 
 CollisionListener* Box2dNode::getCollisionListener() {

@@ -86,7 +86,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -193,17 +193,17 @@ class FallingBox(object):
         ballDef = b.b2BodyDef()
         ballDef.type = b.b2_dynamicBody
         ballFixDef = b.b2FixtureDef()
-        ballFixDef.density = 2
+        ballFixDef.density = 4
+        ballFixDef.restitution = 0.7
         
         ballPhShape = j.CircleShape(ballImage, ballFixDef)
         
         self.ball = j.SpriteBox2d(self.physics, ballDef, ballPhShape)
-#         self.ball.setPhysicsShape(ballImage)
         self.ball.setProgram(self.shader).\
             setTexture(self.ballTex).\
             setShape(self.ballShape).\
             setScaleF(0.01).\
-            setPosition(4, 3, 1)
+            setPosition(-5, 3, 1)
         
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
@@ -212,8 +212,8 @@ class FallingBox(object):
         
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
         
-        self.groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), groundPhShape)
-        self.groundProto.setProgram(self.shader).\
+        groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), groundPhShape)
+        groundProto.setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
             setName('flour').\
@@ -223,7 +223,7 @@ class FallingBox(object):
         
         self.grounds = [j.SpriteBox2d() for i in range(0, 5)]
         for i in xrange(0, 5):
-            self.grounds[i].clone(self.groundProto)
+            self.grounds[i].clone(groundProto)
          
         self.grounds[0].translate(-1.8, -4.2, 1)
         self.grounds[1].translate( 1.8, -4.2, 1)
@@ -234,6 +234,11 @@ class FallingBox(object):
         
         self.rn.\
             addNode(self.bg).\
+            addNode(self.grounds[0]).\
+            addNode(self.grounds[1]).\
+            addNode(self.grounds[2]).\
+            addNode(self.grounds[3]).\
+            addNode(self.grounds[4]).\
             addNode(self.box1).\
             addNode(self.box2).\
             addNode(self.box3).\
@@ -241,13 +246,7 @@ class FallingBox(object):
             addNode(self.box5).\
             addNode(self.box6).\
             addNode(self.box7).\
-            addNode(self.ball).\
-            addNode(self.groundProto).\
-            addNode(self.grounds[0]).\
-            addNode(self.grounds[1]).\
-            addNode(self.grounds[2]).\
-            addNode(self.grounds[3]).\
-            addNode(self.grounds[4])
+            addNode(self.ball)
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
