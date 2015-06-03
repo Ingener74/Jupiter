@@ -22,10 +22,8 @@ public:
     PhysicsShape();
     virtual ~PhysicsShape();
 
-    b2Shape* getShape();
-
-protected:
-    std::unique_ptr<b2Shape> _shape;
+    virtual int shapesCount() const = 0;
+    virtual b2FixtureDef* getFixtureDef(int index) = 0;
 };
 
 } /* namespace jupiter */

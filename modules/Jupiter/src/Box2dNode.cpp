@@ -9,6 +9,7 @@
 #include "Jupiter/Image.h"
 #include "Jupiter/CollisionListener.h"
 #include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/PhysicsShape.h"
 #include "Jupiter/Box2dNode.h"
 
 namespace jupiter {
@@ -18,11 +19,12 @@ using namespace std;
 Box2dNode::Box2dNode(): Node(){
 }
 
-Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, b2FixtureDef fixtureDef) :
+Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
     _visitor(visitor) {
 
     _bodyDef    = bodyDef;
-    _fixtureDef = fixtureDef;
+    _shape      = shape;
+//    _fixtureDef = fixtureDef;
 
     _bodyDef.position.x         = _position.x;
     _bodyDef.position.y         = _position.y;
@@ -42,7 +44,10 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     *this = *node;
 
     _body    = nullptr;
-    _fixture = nullptr;
+//    _fixture = nullptr;
+
+    jassert(false, "not implemented");
+
     updateBody();
 
     return this;
@@ -100,17 +105,26 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
 
 Box2dNode* Box2dNode::setPhysicsShape(Image* image) {
     jassert(image, "invalid image");
-    _width  = _scale.x * (image->getWidth()  / 2);
-    _height = _scale.y * (image->getHeight() / 2) ;
+//    _width  = _scale.x * (image->getWidth()  / 2);
+//    _height = _scale.y * (image->getHeight() / 2) ;
+//    updateFixture();
+
+    jassert(false, "deprecated");
+
+    return this;
+}
+
+Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape* shape) {
+    jassert(shape, "invalid shape");
+    _shape = shape;
     updateFixture();
     return this;
 }
 
-Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape*) {
 
-    return this;
+PhysicsShape* Box2dNode::getPhysicsShape() {
+    jassert(_shape, "no shape");
 }
-
 
 b2Body* Box2dNode::getPhysicsBody() {
     jassert(_body, "no body");
@@ -118,8 +132,9 @@ b2Body* Box2dNode::getPhysicsBody() {
 }
 
 b2Fixture* Box2dNode::getPhysicsFixture() {
-    jassert(_fixture, "no fixture");
-    return _fixture;
+    jassert(false, "deprecated");
+//    jassert(_fixture, "no fixture");
+//    return _fixture;
 }
 
 CollisionListener* Box2dNode::getCollisionListener() {
@@ -146,24 +161,26 @@ void Box2dNode::updateBody() {
 
     _body = _visitor->getWorld()->CreateBody(&_bodyDef);
 
-    if (_width > 1e-6 && _height > 1e-6)
+    if (_shape)
         updateFixture();
 }
 
 void Box2dNode::updateFixture() {
     jassert(_body, "no body");
-    if(_fixture)
-        _body->DestroyFixture(_fixture);
+    jassert(_shape, "no shape");
 
-    b2PolygonShape shape;
-    shape.SetAsBox(_width * _scale.x, _height * _scale.y);
+    for (auto i : _fixtures)
+        _body->DestroyFixture(i);
 
-    _fixtureDef.shape = &shape;
-    _fixture = _body->CreateFixture(&_fixtureDef);
+    _fixtures.resize(_shape->shapesCount());
+
+    for (size_t i = 0; i < _shape->shapesCount(); ++i)
+        _fixtures.at(i) = _body->CreateFixture(_shape->getFixtureDef(i));
 }
 
 void Box2dNode::transform() {
-    jassert(_body && _fixture, "no body or no fixture");
+    jassert(_body, "no body");
+    jassert(_shape, "no shape");
     _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
 }
 

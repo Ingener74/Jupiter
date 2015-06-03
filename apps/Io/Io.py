@@ -86,7 +86,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -151,8 +151,10 @@ class FallingBox(object):
         boxFixDef = b.b2FixtureDef()
         boxFixDef.density = 1.
         
-        self.box1 = j.SpriteBox2d(self.physics, boxDef, boxFixDef)
-        self.box1.setPhysicsShape(boxImage)
+        boxPhShape = j.PoligonShape(boxImage, boxFixDef)
+        
+        self.box1 = j.SpriteBox2d(self.physics, boxDef, boxPhShape)
+#         self.box1.setPhysicsShape(boxImage)
         self.box1.\
             setProgram(self.shader).\
             setTexture(self.boxTex).\
@@ -162,27 +164,27 @@ class FallingBox(object):
             setScaleF(0.002)
         self.box1.setCollisionListener(self.boxCol)
         
-        self.box2 = j.SpriteBox2d()
-        self.box2.clone(self.box1).\
-            setScaleF(.0015).\
-            setPosition(-.6, -2, 1)
-        
-        self.box3 = j.SpriteBox2d()
-        self.box3.clone(self.box1).\
-            setPosition(0, 3, 1).\
-            setScaleF(.001)
-        
-        self.box4 = j.SpriteBox2d()
-        self.box4.clone(self.box3).setPosition(-2, 2, 1)
-        
-        self.box5 = j.SpriteBox2d()
-        self.box5.clone(self.box3).setPosition(-3, 3, 1)
-        
-        self.box6 = j.SpriteBox2d()
-        self.box6.clone(self.box3).setScaleF(.002).setPosition(0, 3, 1)
-        
-        self.box7 = j.SpriteBox2d()
-        self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
+#         self.box2 = j.SpriteBox2d()
+#         self.box2.clone(self.box1).\
+#             setScaleF(.0015).\
+#             setPosition(-.6, -2, 1)
+#         
+#         self.box3 = j.SpriteBox2d()
+#         self.box3.clone(self.box1).\
+#             setPosition(0, 3, 1).\
+#             setScaleF(.001)
+#         
+#         self.box4 = j.SpriteBox2d()
+#         self.box4.clone(self.box3).setPosition(-2, 2, 1)
+#         
+#         self.box5 = j.SpriteBox2d()
+#         self.box5.clone(self.box3).setPosition(-3, 3, 1)
+#         
+#         self.box6 = j.SpriteBox2d()
+#         self.box6.clone(self.box3).setScaleF(.002).setPosition(0, 3, 1)
+#         
+#         self.box7 = j.SpriteBox2d()
+#         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Мячик
         ballImage = j.PngImage('Resources/ball1.png')
@@ -193,8 +195,11 @@ class FallingBox(object):
         ballDef.type = b.b2_dynamicBody
         ballFixDef = b.b2FixtureDef()
         ballFixDef.density = 2
-        self.ball = j.SpriteBox2d(self.physics, ballDef, ballFixDef)
-        self.ball.setPhysicsShape(ballImage)
+        
+        ballPhShape = j.CircleShape(ballImage, ballFixDef)
+        
+        self.ball = j.SpriteBox2d(self.physics, ballDef, ballPhShape)
+#         self.ball.setPhysicsShape(ballImage)
         self.ball.setProgram(self.shader).\
             setTexture(self.ballTex).\
             setShape(self.ballShape).\
@@ -206,7 +211,9 @@ class FallingBox(object):
         self.groundTex = j.ImageTexture(groundImage)
         self.groundShape = j.ImageShape(groundImage)
         
-        groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), b.b2FixtureDef())
+        groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
+        
+        groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), groundPhShape)
         groundProto.setProgram(self.shader).\
             setTexture(self.groundTex).\
             setShape(self.groundShape).\
@@ -227,15 +234,15 @@ class FallingBox(object):
 
         self.grounds[4].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
         
+#             addNode(self.box2).\
+#             addNode(self.box3).\
+#             addNode(self.box4).\
+#             addNode(self.box5).\
+#             addNode(self.box6).\
+#             addNode(self.box7).\
         self.rn.\
             addNode(self.bg).\
             addNode(self.box1).\
-            addNode(self.box2).\
-            addNode(self.box3).\
-            addNode(self.box4).\
-            addNode(self.box5).\
-            addNode(self.box6).\
-            addNode(self.box7).\
             addNode(self.ball).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\

@@ -14,8 +14,8 @@ SpriteBox2d::SpriteBox2d() :
     Sprite(), Box2dNode() {
 }
 
-SpriteBox2d::SpriteBox2d(Box2dVisitor* visitor, b2BodyDef bodyDef, b2FixtureDef fixtureDef) :
-    Sprite(), Box2dNode(visitor, bodyDef, fixtureDef) {
+SpriteBox2d::SpriteBox2d(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
+    Sprite(), Box2dNode(visitor, bodyDef, shape) {
 }
 
 SpriteBox2d::~SpriteBox2d() {

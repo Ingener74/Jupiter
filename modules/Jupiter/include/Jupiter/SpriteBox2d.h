@@ -20,11 +20,12 @@ namespace jupiter {
 
 class NodeVisitor;
 class Box2dVisitor;
+class PhysicsShape;
 
 class SpriteBox2d: public Sprite, public Box2dNode {
 public:
     SpriteBox2d();
-    SpriteBox2d(Box2dVisitor*, b2BodyDef, b2FixtureDef);
+    SpriteBox2d(Box2dVisitor*, b2BodyDef, PhysicsShape*);
     virtual ~SpriteBox2d();
 
     virtual SpriteBox2d* clone(SpriteBox2d*);

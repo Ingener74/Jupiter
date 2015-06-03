@@ -56,6 +56,7 @@ set(SOURCES
     
     src/PhysicsShape.cpp
     src/PoligonShape.cpp
+    src/CircleShape.cpp
 )
 
 if(ANDROID)

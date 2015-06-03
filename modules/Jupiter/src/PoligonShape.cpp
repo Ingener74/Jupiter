@@ -11,14 +11,27 @@
 
 namespace jupiter {
 
-PoligonShape::PoligonShape(Image* image) {
-    _shape = make_unique_<b2PolygonShape>();
-    auto shape = dynamic_cast<b2PolygonShape*>(_shape.get());
+PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef) :
+    _fixtureDef(fixtureDef) {
+    jassert(image, "image invalid");
+    jassert(image->getWidth(), "image width invalid");
+    jassert(image->getHeight(), "image height invalid");
+    jassert(image->getData(), "image data invalid");
 
-    shape->SetAsBox(image->getWidth(), image->getHeight());
+    _shape.SetAsBox(image->getWidth() / 2, image->getHeight() / 2);
+    _fixtureDef.shape = &_shape;
 }
 
 PoligonShape::~PoligonShape() {
+}
+
+int PoligonShape::shapesCount() const {
+    return 1;
+}
+
+b2FixtureDef* PoligonShape::getFixtureDef(int index) {
+    jassert(index == 0, "invalid index");
+    return &_fixtureDef;
 }
 
 } /* namespace jupiter */

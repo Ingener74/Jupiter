@@ -14,6 +14,12 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
+Camera::Camera(Ortho ortho) {
+}
+
+Camera::Camera(Perspective perspective) {
+}
+
 Camera::Camera(Ortho ortho, Vec3 eye, Vec3 center, Vec3 up) :
     _projection(glm::ortho(ortho.left, ortho.right, ortho.bottom, ortho.top, ortho.near, ortho.far)),
     _view(glm::lookAt(vec3{eye.x, eye.y, eye.z}, vec3{center.x, center.y, center.z}, vec3{up.x, up.y, up.z})) {

@@ -45,14 +45,14 @@ struct Vec3
 };
 
 struct Ortho {
-    Ortho(float left, float right, float top, float bottom, float near, float far) :
+    Ortho(float left = -1, float right = 1, float top = 1, float bottom = -1, float near = -1, float far = 1) :
         left(left), right(right), top(top), bottom(bottom), near(near), far(far) {
     }
     float left, right, top, bottom, near, far;
 };
 
 struct Perspective {
-    Perspective(float fovy, float aspect, float near, float far) :
+    Perspective(float fovy = 45., float aspect = 4. / 3., float near = 1., float far = 1000.) :
         fovy(fovy), aspect(aspect), near(near), far(far) {
     }
     float fovy, aspect, near, far;
@@ -60,7 +60,9 @@ struct Perspective {
 
 class Camera: virtual public Node {
 public:
-    Camera() = default;
+    Camera(Ortho = {});
+    Camera(Perspective);
+
     Camera(Ortho, Vec3 eye, Vec3 center, Vec3 up);
     Camera(Perspective, Vec3 eye, Vec3 center, Vec3 up);
     virtual ~Camera() = default;

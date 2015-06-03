@@ -49,6 +49,9 @@
 
 #include "Jupiter/SpriteBox2d.h"
 
+#include "Jupiter/PoligonShape.h"
+#include "Jupiter/CircleShape.h"
+
 namespace jupiter {
 
 

@@ -15,8 +15,4 @@ PhysicsShape::PhysicsShape() {
 PhysicsShape::~PhysicsShape() {
 }
 
-b2Shape* PhysicsShape::getShape() {
-    return _shape.get();
-}
-
 } /* namespace jupiter */

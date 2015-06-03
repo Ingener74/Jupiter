@@ -28,7 +28,7 @@ public:
     friend class Box2dVisitor;
 
     Box2dNode();
-    Box2dNode(Box2dVisitor*, b2BodyDef, b2FixtureDef);
+    Box2dNode(Box2dVisitor*, b2BodyDef, PhysicsShape*);
     virtual ~Box2dNode();
 
     virtual Box2dNode* clone(Box2dNode*);
@@ -43,7 +43,9 @@ public:
     virtual Box2dNode* accept(NodeVisitor*);
 
     Box2dNode* setPhysicsShape(Image*);
+
     Box2dNode* setPhysicsShape(PhysicsShape*);
+    PhysicsShape* getPhysicsShape();
 
     b2Body* getPhysicsBody();
     b2Fixture* getPhysicsFixture();
@@ -52,18 +54,15 @@ public:
     Box2dNode* setCollisionListener(CollisionListener*);
 
 protected:
-    Box2dVisitor*       _visitor            = nullptr;
+    Box2dVisitor*             _visitor            = nullptr;
 
-    b2Body*             _body               = nullptr;
-    b2Fixture*          _fixture            = nullptr;
+    b2BodyDef                 _bodyDef;
+    b2Body*                   _body               = nullptr;
 
-    CollisionListener*  _collisionListener  = nullptr;
+    PhysicsShape*             _shape              = nullptr;
+    std::vector<b2Fixture*>   _fixtures;
 
-    float               _width              = 0.f;
-    float               _height             = 0.f;
-
-    b2BodyDef           _bodyDef;
-    b2FixtureDef        _fixtureDef;
+    CollisionListener*        _collisionListener  = nullptr;
 
     Box2dNode(const Box2dNode&)             = default;
     Box2dNode& operator=(const Box2dNode&)  = default;
