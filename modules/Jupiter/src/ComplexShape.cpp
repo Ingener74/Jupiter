@@ -7,7 +7,7 @@
 
 #include <vector>
 
-//#include <json.hpp>
+#include <json.hpp>
 
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/ComplexShape.h"
