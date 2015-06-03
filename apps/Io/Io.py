@@ -185,7 +185,7 @@ class FallingBox(object):
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Мячик
-        ballImage = j.PngImage('Resources/ball2.png')
+        ballImage = j.PngImage('Resources/ball1.png')
         self.ballTex = j.ImageTexture(ballImage)
         self.ballShape = j.ImageShape(ballImage)
         
@@ -198,7 +198,7 @@ class FallingBox(object):
         self.ball.setProgram(self.shader).\
             setTexture(self.ballTex).\
             setShape(self.ballShape).\
-            setScaleF(0.002).\
+            setScaleF(0.01).\
             setPosition(4, 3, 1)
         
         # Земля
