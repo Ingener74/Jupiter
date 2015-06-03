@@ -42,8 +42,6 @@ public:
 
     virtual Box2dNode* accept(NodeVisitor*);
 
-    Box2dNode* setPhysicsShape(Image*);
-
     Box2dNode* setPhysicsShape(PhysicsShape*);
     PhysicsShape* getPhysicsShape();
 
@@ -68,7 +66,7 @@ protected:
     Box2dNode& operator=(const Box2dNode&)  = default;
 
     void updateBody();
-    void updateFixture();
+    void updateFixtures();
     void transform();
 };
 

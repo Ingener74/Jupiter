@@ -24,7 +24,6 @@ Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape* sha
 
     _bodyDef    = bodyDef;
     _shape      = shape;
-//    _fixtureDef = fixtureDef;
 
     _bodyDef.position.x         = _position.x;
     _bodyDef.position.y         = _position.y;
@@ -44,9 +43,9 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     *this = *node;
 
     _body    = nullptr;
-//    _fixture = nullptr;
+    _fixtures.clear();
 
-    jassert(false, "not implemented");
+//    jassert(false, "not implemented");
 
     updateBody();
 
@@ -79,13 +78,13 @@ Box2dNode* Box2dNode::translate(float x, float y, float z) {
 
 Box2dNode* Box2dNode::setScale(float x, float y, float z) {
     Node::setScale(x, y, z);
-    updateFixture();
+    updateFixtures();
     return this;
 }
 
 Box2dNode* Box2dNode::scale(float x, float y, float z) {
     Node::scale(x, y, z);
-    updateFixture();
+    updateFixtures();
     return this;
 }
 
@@ -103,27 +102,17 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
     return this;
 }
 
-Box2dNode* Box2dNode::setPhysicsShape(Image* image) {
-    jassert(image, "invalid image");
-//    _width  = _scale.x * (image->getWidth()  / 2);
-//    _height = _scale.y * (image->getHeight() / 2) ;
-//    updateFixture();
-
-    jassert(false, "deprecated");
-
-    return this;
-}
-
 Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape* shape) {
     jassert(shape, "invalid shape");
     _shape = shape;
-    updateFixture();
+    updateFixtures();
     return this;
 }
 
 
 PhysicsShape* Box2dNode::getPhysicsShape() {
     jassert(_shape, "no shape");
+    return _shape;
 }
 
 b2Body* Box2dNode::getPhysicsBody() {
@@ -156,16 +145,16 @@ void Box2dNode::updateBody() {
 
     _bodyDef.position.x = _position.x;
     _bodyDef.position.y = _position.y;
-    _bodyDef.angle = glm::angle(_rotation);
-    _bodyDef.userData = this;
+    _bodyDef.angle      = glm::angle(_rotation);
+    _bodyDef.userData   = this;
 
     _body = _visitor->getWorld()->CreateBody(&_bodyDef);
 
     if (_shape)
-        updateFixture();
+        updateFixtures();
 }
 
-void Box2dNode::updateFixture() {
+void Box2dNode::updateFixtures() {
     jassert(_body, "no body");
     jassert(_shape, "no shape");
 
