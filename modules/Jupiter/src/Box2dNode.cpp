@@ -22,13 +22,13 @@ Box2dNode::Box2dNode(): Node(){
 Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
     _visitor(visitor) {
 
-    _bodyDef    = bodyDef;
-    _shape      = shape;
+    _bodyDef              = bodyDef;
+    _bodyDef.position.x   = _position.x;
+    _bodyDef.position.y   = _position.y;
+    _bodyDef.angle        = glm::angle(_rotation);
+    _bodyDef.userData     = this;
 
-    _bodyDef.position.x         = _position.x;
-    _bodyDef.position.y         = _position.y;
-    _bodyDef.angle              = glm::angle(_rotation);
-    _bodyDef.userData           = this;
+    _shape                = shape;
 
     updateBody();
 }

@@ -167,23 +167,23 @@ class FallingBox(object):
         self.box2.clone(self.box1).\
             setScaleF(.0015).\
             setPosition(-4, -2, 1)
-#         
-#         self.box3 = j.SpriteBox2d()
-#         self.box3.clone(self.box1).\
-#             setPosition(0, 3, 1).\
-#             setScaleF(.001)
-#         
-#         self.box4 = j.SpriteBox2d()
-#         self.box4.clone(self.box3).setPosition(-2, 2, 1)
-#         
-#         self.box5 = j.SpriteBox2d()
-#         self.box5.clone(self.box3).setPosition(-3, 3, 1)
-#         
-#         self.box6 = j.SpriteBox2d()
-#         self.box6.clone(self.box3).setScaleF(.002).setPosition(0, 3, 1)
-#         
-#         self.box7 = j.SpriteBox2d()
-#         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
+         
+        self.box3 = j.SpriteBox2d()
+        self.box3.clone(self.box1).\
+            setPosition(0, 3, 1).\
+            setScaleF(.001)
+         
+        self.box4 = j.SpriteBox2d()
+        self.box4.clone(self.box3).setPosition(-2, 2, 1)
+         
+        self.box5 = j.SpriteBox2d()
+        self.box5.clone(self.box3).setPosition(-3, 3, 1)
+         
+        self.box6 = j.SpriteBox2d()
+        self.box6.clone(self.box3).setScaleF(.002).setPosition(0, 3, 1)
+         
+        self.box7 = j.SpriteBox2d()
+        self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Мячик
         ballImage = j.PngImage('Resources/ball1.png')
@@ -232,15 +232,15 @@ class FallingBox(object):
  
         self.grounds[4].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
         
-#             addNode(self.box3).\
-#             addNode(self.box4).\
-#             addNode(self.box5).\
-#             addNode(self.box6).\
-#             addNode(self.box7).\
         self.rn.\
             addNode(self.bg).\
             addNode(self.box1).\
             addNode(self.box2).\
+            addNode(self.box3).\
+            addNode(self.box4).\
+            addNode(self.box5).\
+            addNode(self.box6).\
+            addNode(self.box7).\
             addNode(self.ball).\
             addNode(self.groundProto).\
             addNode(self.grounds[0]).\

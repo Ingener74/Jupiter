@@ -32,10 +32,6 @@ void PoligonShape::setScale(float x, float y) {
     _shape.SetAsBox(_width * x, _height * x);
 }
 
-void PoligonShape::setScale(float scale) {
-    setScale(scale, scale);
-}
-
 int PoligonShape::shapesCount() const {
     return 1;
 }

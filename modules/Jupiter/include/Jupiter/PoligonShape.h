@@ -25,7 +25,6 @@ public:
     virtual ~PoligonShape();
 
     virtual void setScale(float x, float y);
-    virtual void setScale(float scale);
     virtual int shapesCount() const;
     virtual b2FixtureDef* getFixtureDef(int index);
 

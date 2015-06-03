@@ -27,11 +27,7 @@ CircleShape::~CircleShape() {
 }
 
 void CircleShape::setScale(float x, float y) {
-    _shape.m_radius = _radius * ((x + y) / 2.f);
-}
-
-void CircleShape::setScale(float s) {
-    setScale(s, s);
+    _shape.m_radius = _radius * x;
 }
 
 int CircleShape::shapesCount() const {
