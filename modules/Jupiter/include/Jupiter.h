@@ -51,6 +51,7 @@
 
 #include "Jupiter/PoligonShape.h"
 #include "Jupiter/CircleShape.h"
+#include "Jupiter/ComplexShape.h"
 
 namespace jupiter {
 

@@ -24,6 +24,11 @@ public:
     virtual void setScale(float x, float y);
     virtual int shapesCount() const;
     virtual b2FixtureDef* getFixtureDef(int index);
+
+protected:
+    std::vector<std::vector<b2Vec2>>   _polygons;
+    std::vector<b2PolygonShape>        _polygonShapes;
+    b2FixtureDef                       _fixtureDef;
 };
 
 } /* namespace jupiter */

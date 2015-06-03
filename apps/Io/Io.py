@@ -123,6 +123,8 @@ class FallingBox(object):
         self.physics       = j.Box2dVisitor(1.0 / self.FPS)
         self.render        = j.RenderVisitor(self.camera)
         
+        self.boxComplexShape = j.ComplexShape()
+        
         self.rn = j.Node()
         
         self.bgRotate = BgRotate()
@@ -184,6 +186,9 @@ class FallingBox(object):
          
         self.box7 = j.SpriteBox2d()
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
+        
+        # Сложная физическая форма
+        self.boxComplexShape = j.ComplexShape(boxImage, j.File('Resources/Box.json'), 'BadBall', b.b2FixtureDef())
         
         # Мячик
         ballImage = j.PngImage('Resources/ball1.png')
