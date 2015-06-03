@@ -45,8 +45,6 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     _body    = nullptr;
     _fixtures.clear();
 
-//    jassert(false, "not implemented");
-
     updateBody();
 
     return this;

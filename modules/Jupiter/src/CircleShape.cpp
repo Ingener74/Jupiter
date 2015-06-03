@@ -18,9 +18,7 @@ CircleShape::CircleShape(Image* image, b2FixtureDef fixtureDef) :
     jassert(image->getHeight(), "image height invalid");
     jassert(image->getData(), "image data invalid");
 
-    int avg = (image->getWidth() + image->getHeight()) / 2.f;
-
-    _radius = avg /*/ 2.f*/;
+    _radius = (image->getWidth() + image->getHeight()) / 2.f;
     _shape.m_radius = _radius;
     _fixtureDef.shape = &_shape;
 }
@@ -29,7 +27,7 @@ CircleShape::~CircleShape() {
 }
 
 void CircleShape::setScale(float x, float y) {
-    _shape.m_radius = _radius * (((x + y) / 2.f) / 2.f);
+    _shape.m_radius = _radius * ((x + y) / 2.f);
 }
 
 void CircleShape::setScale(float s) {
