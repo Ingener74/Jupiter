@@ -24,10 +24,13 @@ public:
     CircleShape(Image*, b2FixtureDef);
     virtual ~CircleShape();
 
+    virtual void setScale(float x, float y);
+    virtual void setScale(float scale);
     virtual int shapesCount() const;
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
+    float _radius = 0.f;
     b2FixtureDef  _fixtureDef;
     b2CircleShape _shape;
 };

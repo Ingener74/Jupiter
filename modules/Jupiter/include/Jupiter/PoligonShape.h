@@ -24,10 +24,13 @@ public:
     PoligonShape(Image*, b2FixtureDef);
     virtual ~PoligonShape();
 
+    virtual void setScale(float x, float y);
+    virtual void setScale(float scale);
     virtual int shapesCount() const;
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
+    int _width = 0, _height = 0;
     b2FixtureDef   _fixtureDef;
     b2PolygonShape _shape;
 };

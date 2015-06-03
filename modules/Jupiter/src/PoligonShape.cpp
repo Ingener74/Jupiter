@@ -18,11 +18,22 @@ PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef) :
     jassert(image->getHeight(), "image height invalid");
     jassert(image->getData(), "image data invalid");
 
-    _shape.SetAsBox(image->getWidth() / 2, image->getHeight() / 2);
+    _width = image->getWidth() / 2;
+    _height = image->getHeight() / 2;
+
+    _shape.SetAsBox(_width, _height);
     _fixtureDef.shape = &_shape;
 }
 
 PoligonShape::~PoligonShape() {
+}
+
+void PoligonShape::setScale(float x, float y) {
+    _shape.SetAsBox(_width * x, _height * x);
+}
+
+void PoligonShape::setScale(float scale) {
+    setScale(scale, scale);
 }
 
 int PoligonShape::shapesCount() const {

@@ -172,6 +172,7 @@ void Box2dNode::updateFixture() {
     for (auto i : _fixtures)
         _body->DestroyFixture(i);
 
+    _shape->setScale(_scale.x, _scale.y);
     _fixtures.resize(_shape->shapesCount());
 
     for (size_t i = 0; i < _shape->shapesCount(); ++i)
