@@ -5,6 +5,9 @@
  *      Author: pavel
  */
 
+#include <fstream>
+#include <json.hpp>
+
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/CollisionListener.h"
@@ -15,6 +18,7 @@
 namespace jupiter {
 
 using namespace std;
+using namespace nlohmann;
 
 Box2dNode::Box2dNode(): Node(){
 }

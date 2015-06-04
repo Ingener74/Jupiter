@@ -30,11 +30,28 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
     jassert(file, "invalid file");
     jassert(!name.empty(), "invalid name");
 
-    json j;
-    ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Resources/Box.json");
-    f >> j;
+//    json j;
+////    ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Resources/Box.json");
+//    ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Box.json");
+//    f >> j;
+//
+//    string test = j["Test"];
+//    cout << "test " << test << endl;
+//
+//    int number = j["Number"];
+//    cout << "number" << number << endl;
+//
+//    float foo = j["Foo"];
+//    cout << "foo " << foo << endl;
+//
+//    jassert(false, "foo");
 
-//    file->getStream() >> j;
+//    ,
+//        "Number":100,
+//        "Foo":42.42
+
+    json j;
+    file->getStream() >> j;
 
     cout << "json " << endl << j << endl;
 

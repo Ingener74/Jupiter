@@ -8,6 +8,12 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_MOVEANIMATION_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_MOVEANIMATION_H_
 
+#ifdef SWIG
+#else
+    #define GLM_FORCE_RADIANS
+    #include <glm/glm.hpp>
+#endif
+
 #include "Animation.h"
 
 namespace jupiter {

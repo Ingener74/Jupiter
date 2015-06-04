@@ -15,6 +15,10 @@
 #include <Box2D/Box2D.h>
 %}
 
+// %rename(__add__) b2Vec2::operator+;
+// %rename(__sub__) b2Vec2::operator-;
+// %rename(__add__) b2Vec2::operator+;
+
 %include <Box2D/Common/b2Math.h>
 %include <Box2D/Common/b2Settings.h>
 
