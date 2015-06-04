@@ -58,6 +58,9 @@ set(SOURCES
     src/PoligonShape.cpp
     src/CircleShape.cpp
     src/ComplexShape.cpp
+    
+    src/Animations/Animation.cpp
+    src/Animations/MoveAnimation.cpp
 )
 
 if(ANDROID)

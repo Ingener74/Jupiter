@@ -53,6 +53,8 @@
 #include "Jupiter/CircleShape.h"
 #include "Jupiter/ComplexShape.h"
 
+#include "Jupiter/MoveAnimation.h"
+
 namespace jupiter {
 
 

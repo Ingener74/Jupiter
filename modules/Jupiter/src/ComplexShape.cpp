@@ -32,7 +32,6 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
 
     json j;
     ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Resources/Box.json");
-
     f >> j;
 
 //    file->getStream() >> j;
