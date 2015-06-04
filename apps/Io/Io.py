@@ -342,7 +342,8 @@ class OpenGLWidget(QGLWidget):
             self.fallingBox = FallingBox(self, self.width(), self.height())
         if event.key() == Qt.Key_Escape:
             raise SystemExit
-        self.fallingBox.game.keyboard(event.nativeScanCode())
+        if self.fallingBox.isReady():
+            self.fallingBox.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
         j.endJupiter()
