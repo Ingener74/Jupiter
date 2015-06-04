@@ -1,6 +1,0 @@
-[submodule "json"]
-	path = json
-	url = https://github.com/nlohmann/json.git
-[submodule "3rdparty/json"]
-	path = 3rdparty/json
-	url = git@github.com:Ingener74/json.git
