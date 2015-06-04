@@ -5,6 +5,7 @@
  *      Author: Pavel
  */
 
+#include <fstream>
 #include <vector>
 
 #include <json.hpp>
@@ -30,16 +31,23 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
     jassert(!name.empty(), "invalid name");
 
     json j;
-    file->getStream() >> j;
+    ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Resources/Box.json");
 
-    float w = image->getWidth(), h = image->getHeight();
+    f >> j;
 
-    for (auto rigidBody : j["rigidBodies"]) {
+//    file->getStream() >> j;
+
+    cout << "json " << endl << j << endl;
+
+    float w = image->getWidth();
+    float h = image->getHeight();
+
+    for (auto const& rigidBody : j["rigidBodies"]) {
         if (rigidBody["name"] == name) {
             float Ox = rigidBody["origin"]["x"];
             float Oy = rigidBody["origin"]["y"];
 
-            for (auto poligon : rigidBody["polygons"]) {
+            for (auto const& poligon : rigidBody["polygons"]) {
 
                 vector<b2Vec2> poly;
 
@@ -49,28 +57,34 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
                     poly.emplace_back(x * w, y * h);
                 }
 
-                cout << "---" << endl;
-                for(auto i: poly)
-                    cout << i.x << "," << i.y << endl;
-                cout << "---" << endl;
-
                 _polygons.push_back(poly);
 
-                b2PolygonShape shape;
-                shape.Set(poly.data(), poly.size());
-                _polygonShapes.push_back(shape);
+                setScale(1, 1);
             }
             return;
         }
     }
-    jassert(false, "no shape in file");
+    jassert(false, "no shape with name " + name);
 }
 
 ComplexShape::~ComplexShape() {
 }
 
 void ComplexShape::setScale(float x, float y) {
-    jassert(false, "not implemented");
+    jassert(!_polygons.empty(), "invalid polygons");
+    _polygonShapes.clear();
+
+    for (auto poligon : _polygons) {
+
+        vector<b2Vec2> poly;
+
+        for (auto point : poligon)
+            poly.emplace_back(point.x * x, point.y * y);
+
+        b2PolygonShape shape;
+        shape.Set(poly.data(), poly.size());
+        _polygonShapes.push_back(shape);
+    }
 }
 
 int ComplexShape::shapesCount() const {
