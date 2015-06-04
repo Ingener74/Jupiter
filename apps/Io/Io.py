@@ -86,7 +86,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0

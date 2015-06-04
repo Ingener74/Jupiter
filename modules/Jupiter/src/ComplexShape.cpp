@@ -49,6 +49,11 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
                     poly.emplace_back(x * w, y * h);
                 }
 
+                cout << "---" << endl;
+                for(auto i: poly)
+                    cout << i.x << "," << i.y << endl;
+                cout << "---" << endl;
+
                 _polygons.push_back(poly);
 
                 b2PolygonShape shape;
