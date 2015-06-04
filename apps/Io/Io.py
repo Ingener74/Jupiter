@@ -108,6 +108,8 @@ class FallingBox(object):
     
     def __init__(self, window, width, height):
         
+        self.__isReady = False
+        
         j.File.setBase('../../samples/Box')
         
         self.shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
@@ -282,6 +284,11 @@ class FallingBox(object):
             setWidth(width).\
             setHeight(height)
 
+        self.__isReady = True
+    
+    def isReady(self):
+        return self.__isReady
+
 
 class OpenGLWidget(QGLWidget):
     def __init__(self, parent=None):
@@ -318,7 +325,7 @@ class OpenGLWidget(QGLWidget):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
         try:
-            if self.fallingBox != None:
+            if self.fallingBox != None and self.fallingBox.isReady():
                 self.fallingBox.game.draw()
                 
         except RuntimeError, e:
@@ -331,6 +338,8 @@ class OpenGLWidget(QGLWidget):
         self.update()
     
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key_F5:
+            self.fallingBox = FallingBox(self, self.width(), self.height())
         if event.key() == Qt.Key_Escape:
             raise SystemExit
         self.fallingBox.game.keyboard(event.nativeScanCode())
