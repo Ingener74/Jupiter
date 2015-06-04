@@ -188,7 +188,7 @@ class FallingBox(object):
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Сложная физическая форма
-        #self.boxComplexShape = j.ComplexShape(boxImage, j.File('Resources/Box.json'), 'Ship', b.b2FixtureDef())
+        self.boxComplexShape = j.ComplexShape(boxImage, j.File('Resources/Box.json'), 'Ship', b.b2FixtureDef())
         
         # Мячик
         ballImage = j.PngImage('Resources/ball1.png')
