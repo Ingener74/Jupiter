@@ -86,7 +86,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -152,6 +152,7 @@ class FallingBox(object):
         boxDef.type = b.b2_dynamicBody;
         boxFixDef = b.b2FixtureDef()
         boxFixDef.density = 1.
+        boxFixDef.restitution = .5
         
         boxPhShape = j.PoligonShape(boxImage, boxFixDef)
         
@@ -188,7 +189,25 @@ class FallingBox(object):
         self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Сложная физическая форма
-        self.boxComplexShape = j.ComplexShape(boxImage, j.File('Resources/Box.json'), 'Ship', b.b2FixtureDef())
+        ship1Image = j.PngImage('Resources/ship1.png')
+        self.ship1Tex = j.ImageTexture(ship1Image)
+        self.ship1Shape = j.ImageShape(ship1Image)
+        
+        ship1FixDef = b.b2FixtureDef()
+        ship1FixDef.density = 4
+        ship1FixDef.restitution = .6
+        
+        self.boxComplexShape = j.ComplexShape(ship1Image, j.File('Resources/Box.json'), 'Ship', ship1FixDef)
+        
+        ship1Def = b.b2BodyDef()
+        ship1Def.type = b.b2_dynamicBody
+        
+        self.ship1 = j.SpriteBox2d(self.physics, ship1Def, self.boxComplexShape)
+        self.ship1.setProgram(self.shader).\
+            setTexture(self.ship1Tex).\
+            setShape(self.ship1Shape).\
+            setScaleF(0.01).\
+            setPosition(3, 3, 1)
         
         # Мячик
         ballImage = j.PngImage('Resources/ball1.png')
@@ -251,7 +270,8 @@ class FallingBox(object):
             addNode(self.box5).\
             addNode(self.box6).\
             addNode(self.box7).\
-            addNode(self.ball)
+            addNode(self.ball).\
+            addNode(self.ship1)
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()

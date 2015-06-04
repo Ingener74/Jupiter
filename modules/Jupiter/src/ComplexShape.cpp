@@ -30,32 +30,8 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
     jassert(file, "invalid file");
     jassert(!name.empty(), "invalid name");
 
-//    ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Resources/Box.json");
-    ifstream f("/home/pavel/workspace/Jupiter/samples/Box/Box.json");
     json j;
-    f >> j;
-
-    cout << j << endl;
-
-    string test = j["Test"];
-    cout << "test " << test << endl;
-
-//    int number = j["Number"];
-//    cout << "number" << number << endl;
-//
-//    float foo = j["Foo"];
-//    cout << "foo " << foo << endl;
-
-    jassert(false, "foo");
-
-//    ,
-//        "Number":100,
-//        "Foo":42.42
-
-//    json j;
-//    file->getStream() >> j;
-
-    cout << "json " << endl << j << endl;
+    file->getStream() >> j;
 
     float w = image->getWidth();
     float h = image->getHeight();
@@ -72,7 +48,7 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
                 for (auto point : poligon) {
                     float x = point["x"];
                     float y = point["y"];
-                    poly.emplace_back(x * w, y * h);
+                    poly.emplace_back(x * w - w / 2, y * h - h / 2);
                 }
 
                 _polygons.push_back(poly);
