@@ -30,6 +30,8 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
     jassert(file, "invalid file");
     jassert(!name.empty(), "invalid name");
 
+    setlocale(LC_NUMERIC, "C"); // Чинит парсинг файла в некоторых случаях
+
     json j;
     file->getStream() >> j;
 
@@ -48,6 +50,7 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
                 for (auto point : poligon) {
                     float x = point["x"];
                     float y = point["y"];
+
                     poly.emplace_back(x * w - w / 2, y * h - h / 2);
                 }
 
