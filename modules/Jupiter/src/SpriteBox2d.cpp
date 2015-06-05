@@ -21,6 +21,10 @@ SpriteBox2d::SpriteBox2d(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape*
 SpriteBox2d::~SpriteBox2d() {
 }
 
+SpriteBox2d::SpriteBox2d(const SpriteBox2d& sprite){
+    clone(const_cast<SpriteBox2d*>(&sprite));
+}
+
 SpriteBox2d* SpriteBox2d::clone(SpriteBox2d* node) {
     jassert(node, "node is invalid");
     *this = *node;

@@ -28,12 +28,12 @@ public:
     SpriteBox2d(Box2dVisitor*, b2BodyDef, PhysicsShape*);
     virtual ~SpriteBox2d();
 
+    SpriteBox2d(const SpriteBox2d&);
     virtual SpriteBox2d* clone(SpriteBox2d*);
 
     virtual SpriteBox2d* accept(NodeVisitor*);
 
 private:
-    SpriteBox2d(const SpriteBox2d&) = default;
     SpriteBox2d& operator=(const SpriteBox2d&) = default;
 };
 

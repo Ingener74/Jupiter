@@ -16,6 +16,10 @@ namespace jupiter {
 
 using namespace std;
 
+Sprite::Sprite(const Sprite& sprite){
+    clone(const_cast<Sprite*>(&sprite));
+}
+
 Sprite* Sprite::clone(Sprite* sprite) {
     jassert(sprite, "sprite is invalid");
     *this = *sprite;

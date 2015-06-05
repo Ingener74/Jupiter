@@ -31,6 +31,10 @@ Node::Node() {
 Node::~Node() {
 }
 
+Node::Node(const Node& node){
+    clone(const_cast<Node*>(&node));
+}
+
 Node* Node::clone(Node* node) {
     jassert(node, "node is invalid");
     *this = *node;

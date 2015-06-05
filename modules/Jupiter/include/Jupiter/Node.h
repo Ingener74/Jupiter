@@ -32,6 +32,7 @@ public:
     Node();
     virtual ~Node();
 
+    Node(const Node&);
     virtual Node* clone(Node*);
 
     Node* addNode(Node*);
@@ -123,9 +124,7 @@ protected:
     ScaleListener*     _scaleListener      = nullptr;
     RotationListener*  _rotationListener   = nullptr;
 
-    Node(const Node&) = default;
     Node& operator=(const Node&) = default;
-    void calcModel();
 };
 
 } /* namespace jupiter */

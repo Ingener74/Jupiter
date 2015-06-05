@@ -38,6 +38,10 @@ Box2dNode::~Box2dNode() {
         _body->GetWorld()->DestroyBody(_body);
 }
 
+Box2dNode::Box2dNode(const Box2dNode& body){
+    clone(const_cast<Box2dNode*>(&body));
+}
+
 Box2dNode* Box2dNode::clone(Box2dNode* node) {
     jassert(node, "node is invalid");
     *this = *node;

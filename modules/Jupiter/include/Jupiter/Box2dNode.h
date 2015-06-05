@@ -31,6 +31,7 @@ public:
     Box2dNode(Box2dVisitor*, b2BodyDef, PhysicsShape*);
     virtual ~Box2dNode();
 
+    Box2dNode(const Box2dNode&);
     virtual Box2dNode* clone(Box2dNode*);
 
     virtual Box2dNode* setRotation(float x, float y, float z, float angle);
@@ -62,7 +63,6 @@ protected:
 
     CollisionListener*        _collisionListener  = nullptr;
 
-    Box2dNode(const Box2dNode&)             = default;
     Box2dNode& operator=(const Box2dNode&)  = default;
 
     void updateBody();

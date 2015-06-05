@@ -26,6 +26,7 @@ public:
     Sprite() = default;
     virtual ~Sprite() = default;
 
+    Sprite(const Sprite&);
     virtual Sprite* clone(Sprite*);
 
     Texture* getTexture() const;
@@ -43,7 +44,6 @@ protected:
     Shape*   _shape   = nullptr;
     Shader*  _program = nullptr;
 
-    Sprite(const Sprite&) = default;
     Sprite& operator=(const Sprite&) = default;
 };
 

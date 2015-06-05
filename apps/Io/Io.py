@@ -37,36 +37,28 @@ except ImportError as e:
                          QMessageBox.NoButton)
     sys.exit(1)
 
-class Box(j.MoveListener, j.ScaleListener, j.KeyboardListener):
+class Box(j.MoveListener, j.KeyboardListener):
     def __init__(self, window):
         j.MoveListener.__init__(self)
-        j.ScaleListener.__init__(self)
         j.KeyboardListener.__init__(self)
         
         self.window = window
-    
+
     def move(self, x, y, z):
-#         print 'move ',[x, y, z]
         pass
-    
-    def scale(self, x, y, z):
-#         print 'scale ', [x, y, z]
-        pass
-    
+
     def key(self, key):
-#         print 'key ', key
+        body = j.node2Box2dNode(self.getNode()).getPhysicsBody()
         if key == 111 or key == 328:
-            self.getNode().translateY(1)
+            body.ApplyForceToCenter(b.b2Vec2(0, 100), True)
         if key == 116 or key == 336:
-            self.getNode().translateY(-1)
+            body.ApplyForceToCenter(b.b2Vec2(0, -100), True)
         if key == 113 or key == 331:
-            self.getNode().translateX(-1)
+            body.ApplyForceToCenter(b.b2Vec2(-100, 0), True)
         if key == 114 or key == 333:
-            self.getNode().translateX(1)
-        
-        j.node2Box2dNode(self.getNode()).getPhysicsBody().SetAwake(True)
+            body.ApplyForceToCenter(b.b2Vec2(100, 0), True)
         if key == 57 or key == 65:
-            j.node2Box2dNode(self.getNode()).getPhysicsBody().ApplyForceToCenter(b.b2Vec2(0, 300), True)
+            body.ApplyForceToCenter(b.b2Vec2(0, 300), True)
 
 class BoxCollision(j.CollisionListener):
     def __init__(self):
@@ -77,16 +69,12 @@ class BoxCollision(j.CollisionListener):
         #self.getBox2dNode().applyForceToCenter(0., 3., True)
         pass
 
-class BgRotate(j.RotationListener):
-    def rotate(self, x, y, z, angle):
-        print [x, y, z, angle]
-
 DEG2RAD = 3.1415926 / 180.
 RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -104,6 +92,11 @@ class FallingBox(object):
     - Spine
     - import Tiled, tmx
     - 3D Mesh
+    
+    На выходные
+    - подсчёт ссылок
+    - шарниры(joints)
+    - камера через положение и кватернион
     """
     
     def __init__(self, window, width, height):
@@ -127,7 +120,6 @@ class FallingBox(object):
         
         self.rn = j.Node()
         
-        self.bgRotate = BgRotate()
         bgImage = j.PngImage('Resources/bg.png')
         self.bgTexture = j.ImageTexture(bgImage)
         self.bgShape = j.ImageShape(bgImage)
@@ -136,7 +128,6 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
-            setRotationListener(self.bgRotate).\
             translate(0., 0., -1.).\
             setScaleF(0.012)
             
@@ -165,27 +156,23 @@ class FallingBox(object):
             setScaleF(0.002)
         self.box1.setCollisionListener(self.boxCol)
         
-        self.box2 = j.SpriteBox2d()
-        self.box2.clone(self.box1).\
-            setScaleF(.0015).\
-            setPosition(-4, -2, 1)
+        self.box2 = j.SpriteBox2d(self.box1)
+        self.box2.setScaleF(.0015).setPosition(-4, -2, 1)
          
-        self.box3 = j.SpriteBox2d()
-        self.box3.clone(self.box1).\
-            setPosition(0, 3, 1).\
-            setScaleF(.001)
+        self.box3 = j.SpriteBox2d(self.box1)
+        self.box3.setPosition(0, 3, 1).setScaleF(.001)
          
-        self.box4 = j.SpriteBox2d()
-        self.box4.clone(self.box3).setPosition(-2, 2, 1)
+        self.box4 = j.SpriteBox2d(self.box3)
+        self.box4.setPosition(-2, 2, 1)
          
-        self.box5 = j.SpriteBox2d()
-        self.box5.clone(self.box3).setPosition(-3, 3, 1)
+        self.box5 = j.SpriteBox2d(self.box3)
+        self.box5.setPosition(-3, 3, 1)
          
-        self.box6 = j.SpriteBox2d()
-        self.box6.clone(self.box3).setScaleF(.002).setPosition(0, 3, 1)
+        self.box6 = j.SpriteBox2d(self.box3)
+        self.box6.setScaleF(.002).setPosition(0, 3, 1)
          
-        self.box7 = j.SpriteBox2d()
-        self.box7.clone(self.box6).setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
+        self.box7 = j.SpriteBox2d(self.box6)
+        self.box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Сложная физическая форма
         ship1Image = j.PngImage('Resources/ship1.png')
@@ -244,9 +231,7 @@ class FallingBox(object):
             setScaleF(0.01)
         
         
-        self.grounds = [j.SpriteBox2d() for i in range(0, 5)]
-        for i in xrange(0, 5):
-            self.grounds[i].clone(groundProto)
+        self.grounds = [j.SpriteBox2d(groundProto) for i in range(0, 5)]
          
         self.grounds[0].translate(-1.8, -4.2, 1)
         self.grounds[1].translate( 1.8, -4.2, 1)
@@ -339,8 +324,8 @@ class OpenGLWidget(QGLWidget):
             self.fallingBox = FallingBox(self, self.width(), self.height())
         if event.key() == Qt.Key_Escape:
             raise SystemExit
-        if self.fallingBox.isReady():
-            self.fallingBox.game.keyboard(event.nativeScanCode())
+        #if self.fallingBox.isReady():
+        self.fallingBox.game.keyboard(event.nativeScanCode())
     
     def closeEvent(self, e):
         j.endJupiter()
