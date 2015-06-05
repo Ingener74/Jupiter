@@ -86,7 +86,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -124,8 +124,6 @@ class FallingBox(object):
         self.printVisitor  = j.PrintVisitor()
         self.physics       = j.Box2dVisitor(1.0 / self.FPS)
         self.render        = j.RenderVisitor(self.camera)
-        
-        self.boxComplexShape = j.ComplexShape()
         
         self.rn = j.Node()
         
@@ -201,15 +199,15 @@ class FallingBox(object):
         
         self.boxComplexShape = j.ComplexShape(ship1Image, j.File('Resources/Box.json'), 'Ship', ship1FixDef)
         
-        ship1Def = b.b2BodyDef()
-        ship1Def.type = b.b2_dynamicBody
-        
-        self.ship1 = j.SpriteBox2d(self.physics, ship1Def, self.boxComplexShape)
-        self.ship1.setProgram(self.shader).\
-            setTexture(self.ship1Tex).\
-            setShape(self.ship1Shape).\
-            setScaleF(0.01).\
-            setPosition(3, 3, 1)
+#         ship1Def = b.b2BodyDef()
+#         ship1Def.type = b.b2_dynamicBody
+#         
+#         self.ship1 = j.SpriteBox2d(self.physics, ship1Def, self.boxComplexShape)
+#         self.ship1.setProgram(self.shader).\
+#             setTexture(self.ship1Tex).\
+#             setShape(self.ship1Shape).\
+#             setScaleF(0.01).\
+#             setPosition(3, 3, 1)
         
         # Мячик
         ballImage = j.PngImage('Resources/ball1.png')
@@ -272,8 +270,8 @@ class FallingBox(object):
             addNode(self.box5).\
             addNode(self.box6).\
             addNode(self.box7).\
-            addNode(self.ball).\
-            addNode(self.ship1)
+            addNode(self.ball)#.\
+            #addNode(self.ship1)
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
