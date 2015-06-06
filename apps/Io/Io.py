@@ -94,9 +94,9 @@ class FallingBox(object):
     - 3D Mesh
     
     На выходные
-    - подсчёт ссылок
-    - шарниры(joints)
     - камера через положение и кватернион
+    - шарниры(joints)
+    - подсчёт ссылок
     """
     
     def __init__(self, window, width, height):
@@ -214,6 +214,26 @@ class FallingBox(object):
             setShape(self.ballShape).\
             setScaleF(0.01).\
             setPosition(-5, 3, 1)
+
+        # Пропеллер
+        propellerImage = j.PngImage('Resources/propeller3.png')
+        self.propellerTex = j.ImageTexture(propellerImage)
+        self.propellerShape = j.ImageShape(propellerImage)
+
+        propellerDef = b.b2BodyDef()
+        propellerDef.type = b.b2_dynamicBody
+
+        propellerFixDef = b.b2FixtureDef()
+        propellerFixDef.density = 1
+
+        self.propellerComplexShape = j.ComplexShape(propellerImage, j.File('Resources/Box.json'), 'Propeller3', propellerFixDef)
+        self.propeller = j.SpriteBox2d(self.physics, propellerDef, self.propellerComplexShape)
+        self.propeller.\
+            setProgram(self.shader).\
+            setTexture(self.propellerTex).\
+            setShape(self.propellerShape).\
+            setScaleF(0.005).\
+            setPosition(0, 5, 0.99)
         
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
@@ -255,6 +275,7 @@ class FallingBox(object):
             addNode(self.box6).\
             addNode(self.box7).\
             addNode(self.ball).\
+            addNode(self.propeller).\
             addNode(self.ship1)
         
             #addVisitor(self.printVisitor).\
