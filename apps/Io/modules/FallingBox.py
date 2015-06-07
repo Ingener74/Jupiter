@@ -86,7 +86,7 @@ class FallingBox(object):
         #self.box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
         
         self.camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
-                               j.Vec3(0.0, 0.0, 10.0),                                     \
+                               j.Vec3(0.0, 0.0, 18.0),                                     \
                                j.Vec3(0.0, 0.0, 0.0),                                      \
                                j.Vec3(0.0, 1.0, 0.0))
         
@@ -106,7 +106,7 @@ class FallingBox(object):
             setTexture(self.bgTexture).\
             setShape(self.bgShape).\
             translate(0., 0., -1.).\
-            setScaleF(0.012)
+            setScaleF(0.02)
             
             
         self.boxTest = Box(window)
@@ -192,6 +192,17 @@ class FallingBox(object):
             setScaleF(0.01).\
             setPosition(-5, 3, 1)
 
+        self.ball2 = j.SpriteBox2d(self.ball)
+        self.ball2.setPosition(-4, 3, 1)
+        self.ball3 = j.SpriteBox2d(self.ball)
+        self.ball3.setPosition(-5, 4, 1)
+        self.ball4 = j.SpriteBox2d(self.ball)
+        self.ball4.setPosition(-4, 4, 1)
+        self.ball5 = j.SpriteBox2d(self.ball)
+        self.ball5.setPosition(-6, 3, 1)
+        self.ball6 = j.SpriteBox2d(self.ball)
+        self.ball6.setPosition(-6, 4, 1)
+
         # Пропеллер
         propellerImage = j.PngImage('Resources/propeller3.png')
         self.propellerTex = j.ImageTexture(propellerImage)
@@ -209,9 +220,12 @@ class FallingBox(object):
             setProgram(self.shader).\
             setTexture(self.propellerTex).\
             setShape(self.propellerShape).\
-            setScaleF(0.005).\
-            setPosition(0, 5, 0.99)
-        
+            setScaleF(0.002).\
+            setPosition(5, 8, 0.99)
+
+        self.propeller2 = j.SpriteBox2d(self.propeller)
+        self.propeller2.setPosition(-4, 8, 0.99)
+
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
         self.groundTex = j.ImageTexture(groundImage)
@@ -228,14 +242,16 @@ class FallingBox(object):
             setScaleF(0.01)
         
         
-        self.grounds = [j.SpriteBox2d(groundProto) for i in range(0, 5)]
+        self.grounds = [j.SpriteBox2d(groundProto) for i in range(0, 7)]
          
-        self.grounds[0].translate(-1.8, -4.2, 1)
-        self.grounds[1].translate( 1.8, -4.2, 1)
-        self.grounds[2].translate(-5.5, -3.1, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        self.grounds[3].translate( 5.5, -3.1, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
+        self.grounds[0].translate( 2, -8, 1)
+        self.grounds[1].translate(-2, -8, 1)
+        self.grounds[2].translate( 4, -8, 1)
+        self.grounds[3].translate(-4, -8, 1)
+        self.grounds[4].translate(-7.5, -7.3, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+        self.grounds[5].translate( 7.5, -7.3, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
  
-        self.grounds[4].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
+        self.grounds[6].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
         
         self.rn.\
             addNode(self.bg).\
@@ -244,6 +260,8 @@ class FallingBox(object):
             addNode(self.grounds[2]).\
             addNode(self.grounds[3]).\
             addNode(self.grounds[4]).\
+            addNode(self.grounds[5]).\
+            addNode(self.grounds[6]).\
             addNode(self.box1).\
             addNode(self.box2).\
             addNode(self.box3).\
@@ -252,7 +270,13 @@ class FallingBox(object):
             addNode(self.box6).\
             addNode(self.box7).\
             addNode(self.ball).\
+            addNode(self.ball2).\
+            addNode(self.ball3).\
+            addNode(self.ball4).\
+            addNode(self.ball5).\
+            addNode(self.ball6).\
             addNode(self.propeller).\
+            addNode(self.propeller2).\
             addNode(self.ship1)
         
             #addVisitor(self.printVisitor).\

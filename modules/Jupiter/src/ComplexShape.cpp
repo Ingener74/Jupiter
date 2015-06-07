@@ -40,19 +40,11 @@ ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2
 
     for (auto const& rigidBody : j["rigidBodies"]) {
         if (rigidBody["name"] == name) {
-            float Ox = rigidBody["origin"]["x"];
-            float Oy = rigidBody["origin"]["y"];
-
             for (auto const& poligon : rigidBody["polygons"]) {
-
                 vector<b2Vec2> poly;
 
-                for (auto point : poligon) {
-                    float x = point["x"];
-                    float y = point["y"];
-
-                    poly.emplace_back(x * w - w / 2, y * h - h / 2);
-                }
+                for (auto point : poligon)
+                    poly.emplace_back(float(point["x"]) * w - w / 2, float(point["y"]) * h - h / 2);
 
                 _polygons.push_back(poly);
 

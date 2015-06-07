@@ -1,30 +1,29 @@
-
 #include <iostream>
 
 #include "RCO.h"
 
 using namespace std;
 
-#define log cout << __func__ << " " << _counter << endl;
+#define log cout << __PRETTY_FUNCTION__ << " " << _counter << endl;
 
-RCO::RCO(){
+RCO::RCO() {
     log
 }
 
-RCO::~RCO(){
+RCO::~RCO() {
     log
 }
 
-void RCO::addRef(){
-    _counter++;
+void RCO::addRef() {
+    ++_counter;
     log
 }
 
-void RCO::removeRef(){
+void RCO::removeRef() {
+    --_counter;
     log
-    if(!--_counter){
+    if (_counter == 0)
         delete this;
-    }
 }
 
 int RCO::refCount() const {

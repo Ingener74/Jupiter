@@ -18,6 +18,9 @@ public:
         if (_rco)
             _rco->addRef();
     }
+//    Ref(const Ref& ref) {
+//        *this = ref;
+//    }
     Ref(const Ref& ref){
         if(_rco)
             _rco->removeRef();
@@ -75,8 +78,8 @@ int main(int argc, char **argv) {
         cout << t2 << endl;
         cout << t3 << endl;
         
-        RcoUser t5;
-        t5.testRco(new Test);
+//        RcoUser t5;
+//        t5.testRco(new Test);
 
     } catch (exception const& e) {
         cerr << e.what() << endl;
