@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-RevoluteJoint::RevoluteJoint() {
+RevoluteJoint::RevoluteJoint(Box2dVisitor* visitor, b2RevoluteJoint jointDef): _visitor(visitor) {
 }
 
 RevoluteJoint::~RevoluteJoint() {

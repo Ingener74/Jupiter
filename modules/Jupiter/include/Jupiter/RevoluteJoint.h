@@ -17,13 +17,16 @@
 
 namespace jupiter {
 
+class Box2dVisitor;
+
 class RevoluteJoint: public Joint {
 public:
-    RevoluteJoint();
+    RevoluteJoint(Box2dVisitor*, b2RevoluteJoint);
     virtual ~RevoluteJoint();
 
 protected:
-    b2RevoluteJoint* _joint;
+    Box2dVisitor*      _visitor   = nullptr;
+    b2RevoluteJoint*   _joint     = nullptr;
 };
 
 } /* namespace jupiter */
