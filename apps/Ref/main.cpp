@@ -14,19 +14,21 @@ using namespace std;
 
 class Ref {
 public:
-    Ref(RCO* r = nullptr): _rco(r){
+    Ref(RCO* r = nullptr) :
+        _rco(r) {
         if (_rco)
             _rco->addRef();
     }
-//    Ref(const Ref& ref) {
-//        *this = ref;
-//    }
-    Ref(const Ref& ref){
-        if(_rco)
+    Ref(const Ref& ref) {
+        *this = ref;
+    }
+    Ref& operator=(const Ref& ref) {
+        if (_rco)
             _rco->removeRef();
         _rco = ref._rco;
-        if(_rco)
+        if (_rco)
             _rco->addRef();
+        return *this;
     }
     virtual ~Ref() {
         if (_rco)
@@ -51,36 +53,39 @@ public:
     }
 };
 
-class RcoUser{
+class RcoUser {
 public:
-    RcoUser(){
+    RcoUser() {
     }
-    virtual ~RcoUser(){
+    virtual ~RcoUser() {
     }
-    
-    void testRco(RCO* rco){
+
+    void testRco(RCO* rco) {
         _rco = Ref(rco);
     }
-    
+
 private:
     Ref _rco;
 };
 
 int main(int argc, char **argv) {
     try {
-        Ref t1{new Test};
+        {
+            Ref t1 { new Test };
 
-        auto  t2 = t1;
+            auto t2 = t1;
 
-        auto t3 = t2;
+            auto t3 = t2;
 
-        cout << t1 << endl;
-        cout << t2 << endl;
-        cout << t3 << endl;
-        
-//        RcoUser t5;
-//        t5.testRco(new Test);
+            cout << t1 << endl;
+            cout << t2 << endl;
+            cout << t3 << endl;
 
+            RcoUser t5;
+            t5.testRco(new Test);
+            cout << "objects " << RCO::objects() << endl;
+        }
+        cout << "objects " << RCO::objects() << endl;
     } catch (exception const& e) {
         cerr << e.what() << endl;
     }

@@ -12,8 +12,11 @@ public:
     
     int refCount() const;
 
+    static int objects();
+
 private:
     int _counter = 0;
+    static int _objects;
 };
 
 #endif /* __RCO_H__ */
