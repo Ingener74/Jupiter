@@ -51,7 +51,8 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 300 # 800
+    WIDTH  = 800
+    #WIDTH  = 300
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -74,6 +75,10 @@ class FallingBox(object):
     - камера через положение и кватернион
     - шарниры(joints)
     - подсчёт ссылок
+
+    Ключевые слова для поиска ресурсов для игр
+    platformer ground sprites
+    car profile sprites/images
     """
     
     def __init__(self, window, width, height):
@@ -286,9 +291,9 @@ class FallingBox(object):
             addNode(self.ship1).\
             addNode(self.propellerJoint)
         
-            #addVisitor(self.printVisitor).\
         self.game = j.Game()
-        self.game.setRootNode(self.rn).\
+        self.game.\
+            setRootNode(self.rn).\
             addVisitor(self.physics).\
             addVisitor(self.render).\
             addKeyboardListener(self.boxTest).\
