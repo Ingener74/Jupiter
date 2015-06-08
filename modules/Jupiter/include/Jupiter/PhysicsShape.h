@@ -13,11 +13,13 @@
     #include <Box2D/Box2D.h>
 #endif
 
+#include "RCO.h"
+
 class b2Shape;
 
 namespace jupiter {
 
-class PhysicsShape {
+class PhysicsShape: virtual public RCO{
 public:
     PhysicsShape();
     virtual ~PhysicsShape();

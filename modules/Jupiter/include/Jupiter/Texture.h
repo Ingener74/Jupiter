@@ -7,10 +7,12 @@
     #include <GL/glew.h>
 #endif
 
+#include "RCO.h"
+
 namespace jupiter
 {
 
-class Texture
+class Texture: virtual public RCO
 {
 public:
     friend class Uniform;

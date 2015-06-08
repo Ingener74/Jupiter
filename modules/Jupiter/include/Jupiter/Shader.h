@@ -16,14 +16,15 @@
     #include <GL/glew.h>
 #endif
 
-#include "Jupiter/Shape.h"
-#include "Jupiter/Texture.h"
-#include "Jupiter/Attribute.h"
-#include "Jupiter/Uniform.h"
+#include "RCO.h"
+#include "Shape.h"
+#include "Texture.h"
+#include "Attribute.h"
+#include "Uniform.h"
 
 namespace jupiter {
 
-class Shader {
+class Shader: virtual public RCO{
 public:
     Shader() = default;
     virtual ~Shader() = default;

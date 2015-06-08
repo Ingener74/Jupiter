@@ -14,13 +14,14 @@
         %feature("director") Listener;
     }
 #else
+    #include "RCO.h"
 #endif
 
 namespace jupiter {
 
 class Node;
 
-class Listener {
+class Listener: virtual public RCO {
 public:
     Listener();
     virtual ~Listener();

@@ -10,14 +10,17 @@
 
 #ifdef SWIG
 #else
-#include <Box2D/Box2D.h>
+    #include <Box2D/Box2D.h>
+
+
 #endif
 
+#include "Box2dVisitor.h"
 #include "Joint.h"
 
 namespace jupiter {
 
-class Box2dVisitor;
+//class Box2dVisitor;
 
 class RevoluteJoint: public Joint {
 public:
@@ -25,7 +28,7 @@ public:
     virtual ~RevoluteJoint();
 
 protected:
-    Box2dVisitor* _visitor = nullptr;
+    Ref<Box2dVisitor> _visitor;
     b2RevoluteJoint* _joint = nullptr;
 };
 

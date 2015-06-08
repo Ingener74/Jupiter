@@ -13,3 +13,5 @@ libs
 
 /build-linux/
 /build-win/
+/Jupiter.sublime-project
+/Jupiter.sublime-workspace

@@ -43,6 +43,8 @@ Box2dNode::Box2dNode(const Box2dNode& body){
 }
 
 Box2dNode* Box2dNode::clone(Box2dNode* node) {
+    Ref<Box2dNode>{node};
+
     jassert(node, "node is invalid");
     *this = *node;
 
@@ -114,7 +116,7 @@ Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape* shape) {
 
 PhysicsShape* Box2dNode::getPhysicsShape() {
     jassert(_shape, "no shape");
-    return _shape;
+    return _shape.get();
 }
 
 b2Body* Box2dNode::getPhysicsBody() {
@@ -128,7 +130,7 @@ b2Fixture* Box2dNode::getPhysicsFixture() {
 
 CollisionListener* Box2dNode::getCollisionListener() {
     jassert(_collisionListener, "no listener");
-    return _collisionListener;
+    return _collisionListener.get();
 }
 
 Box2dNode* Box2dNode::setCollisionListener(CollisionListener* listener) {

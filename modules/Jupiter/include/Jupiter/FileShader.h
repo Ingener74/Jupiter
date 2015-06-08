@@ -12,9 +12,11 @@
 
 namespace jupiter {
 
+class File;
+
 class FileShader: public Shader {
 public:
-    FileShader(class File* vertex, class File* fragment);
+    FileShader(File* vertex, File* fragment);
     virtual ~FileShader();
 };
 

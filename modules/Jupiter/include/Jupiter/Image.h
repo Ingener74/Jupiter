@@ -15,11 +15,13 @@
     #include <iostream>
     #include <vector>
     #include <memory>
+
+    #include "RCO.h"
 #endif
 
 namespace jupiter {
 
-class Image {
+class Image: virtual public RCO {
 public:
     enum class Type {
         RGB, RGBA

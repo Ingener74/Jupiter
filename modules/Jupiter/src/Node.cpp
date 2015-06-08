@@ -283,7 +283,7 @@ Node* Node::setMoveListener(MoveListener* moveListener) {
 
 MoveListener* Node::getMoveListener() {
     jassert(_moveListener, "no move listener");
-    return _moveListener;
+    return _moveListener.get();
 }
 
 Node* Node::setScaleListener(ScaleListener* listener) {
@@ -295,7 +295,7 @@ Node* Node::setScaleListener(ScaleListener* listener) {
 
 ScaleListener* Node::getScaleListener() {
     jassert(_scaleListener, "no scale listener");
-    return _scaleListener;
+    return _scaleListener.get();
 }
 
 Node* Node::setRotationListener(RotationListener* listener) {
@@ -307,7 +307,7 @@ Node* Node::setRotationListener(RotationListener* listener) {
 
 RotationListener* Node::getRotationListener() {
     jassert(_rotationListener, "rotation listener is nullptr");
-    return _rotationListener;
+    return _rotationListener.get();
 }
 
 glm::mat4 Node::getModel() const {

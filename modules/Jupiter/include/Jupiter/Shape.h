@@ -21,6 +21,8 @@
     #include "Jupiter/VertexComponent.h"
 #endif
 
+#include "RCO.h"
+
 namespace jupiter
 {
 
@@ -43,7 +45,7 @@ namespace jupiter
  * }
  */
 
-class Shape
+class Shape: public RCO
 {
 public:
     enum Type

@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
 #include "Jupiter/Camera.h"
@@ -43,6 +44,7 @@ void Camera::setViewMatrix(mat4 const& view) {
 }
 
 Camera* Camera::clone(Camera* camera) {
+    Ref<Camera>{camera};
     jassert(camera, "node is invalid");
     *this = *camera;
     return this;

@@ -10,10 +10,10 @@
 
 #ifdef SWIG
 #else
-
     #include <stack>
-
 #endif
+
+#include "RCO.h"
 
 namespace jupiter {
 
@@ -22,7 +22,7 @@ class Sprite;
 class Box2dNode;
 class Camera;
 
-class NodeVisitor {
+class NodeVisitor: virtual public RCO {
 public:
     NodeVisitor();
     virtual ~NodeVisitor();

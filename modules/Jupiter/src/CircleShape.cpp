@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/CircleShape.h"
@@ -13,6 +14,8 @@ namespace jupiter {
 
 CircleShape::CircleShape(Image* image, b2FixtureDef fixtureDef) :
     _fixtureDef(fixtureDef) {
+    Ref<Image>{image};
+
     jassert(image, "image invalid");
     jassert(image->getWidth(), "image width invalid");
     jassert(image->getHeight(), "image height invalid");

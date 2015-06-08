@@ -19,7 +19,8 @@
 
 #endif
 
-#include "Jupiter/JupiterError.h"
+#include "RCO.h"
+#include "JupiterError.h"
 
 namespace jupiter {
 
@@ -39,7 +40,7 @@ public:
     virtual std::unique_ptr<Buffer> create(const std::string& fileName) = 0;
 };
 
-class File {
+class File: virtual public RCO {
 public:
     File(const std::string& fileName);
     virtual ~File() = default;

@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/JupiterError.h"
@@ -15,6 +16,8 @@ namespace jupiter {
 using namespace std;
 
 ImageTexture::ImageTexture(Image* image) {
+    Ref<Image>{image};
+
     glGenTextures(1, &textureID);
     CHECK_GL_ERROR
 

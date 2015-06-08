@@ -13,15 +13,19 @@
     #include <Box2D/Box2D.h>
 #endif
 
+#include "Box2dVisitor.h"
+#include "PhysicsShape.h"
+#include "CollisionListener.h"
+
 #include "Node.h"
 
 namespace jupiter {
 
 class Image;
-class Box2dVisitor;
-class CollisionListener;
 class NodeVisitor;
-class PhysicsShape;
+//class Box2dVisitor;
+//class CollisionListener;
+//class PhysicsShape;
 
 class Box2dNode: virtual public Node {
 public:
@@ -53,15 +57,18 @@ public:
     Box2dNode* setCollisionListener(CollisionListener*);
 
 protected:
-    Box2dVisitor*             _visitor            = nullptr;
+//    Box2dVisitor*             _visitor            = nullptr;
+    Ref<Box2dVisitor>         _visitor;
 
     b2BodyDef                 _bodyDef;
     b2Body*                   _body               = nullptr;
 
-    PhysicsShape*             _shape              = nullptr;
+//    PhysicsShape*             _shape              = nullptr;
+    Ref<PhysicsShape>         _shape;
     std::vector<b2Fixture*>   _fixtures;
 
-    CollisionListener*        _collisionListener  = nullptr;
+    Ref<CollisionListener>    _collisionListener;
+//    CollisionListener*        _collisionListener  = nullptr;
 
     Box2dNode& operator=(const Box2dNode&)  = default;
 

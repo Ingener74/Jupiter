@@ -5,6 +5,7 @@
  *      Author: Pavel
  */
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/PoligonShape.h"
@@ -13,6 +14,8 @@ namespace jupiter {
 
 PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef) :
     _fixtureDef(fixtureDef) {
+    Ref<Image>{image};
+
     jassert(image, "image invalid");
     jassert(image->getWidth(), "image width invalid");
     jassert(image->getHeight(), "image height invalid");

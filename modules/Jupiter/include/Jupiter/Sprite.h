@@ -13,13 +13,16 @@
     #include <memory>
 #endif
 
+#include "Jupiter/Texture.h"
+#include "Jupiter/Shape.h"
+#include "Jupiter/Shader.h"
 #include "Jupiter/Node.h"
 
 namespace jupiter {
 
-class Shape;
-class Texture;
-class Shader;
+//class Shape;
+//class Texture;
+//class Shader;
 
 class Sprite: virtual public Node {
 public:
@@ -29,20 +32,20 @@ public:
     Sprite(const Sprite&);
     virtual Sprite* clone(Sprite*);
 
-    Texture* getTexture() const;
+    Texture* getTexture();
     Sprite* setTexture(Texture*);
 
-    Shape* getShape() const;
+    Shape* getShape();
     Sprite* setShape(Shape*);
 
-    Shader* getProgram() const;
+    Shader* getProgram();
     Sprite* setProgram(Shader*);
 
     virtual Sprite* accept(NodeVisitor* nv);
 protected:
-    Texture* _texture = nullptr;
-    Shape*   _shape   = nullptr;
-    Shader*  _program = nullptr;
+    Ref<Texture> _texture;
+    Ref<Shape>   _shape;
+    Ref<Shader>  _program;
 
     Sprite& operator=(const Sprite&) = default;
 };

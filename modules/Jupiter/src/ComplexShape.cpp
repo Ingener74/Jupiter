@@ -10,6 +10,7 @@
 
 #include <json.hpp>
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/File.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/JupiterError.h"
@@ -25,6 +26,9 @@ ComplexShape::ComplexShape() {
 
 ComplexShape::ComplexShape(Image* image, File* file, const std::string& name, b2FixtureDef fixtureDef) :
     _fixtureDef(fixtureDef) {
+
+    Ref<Image>{image};
+    Ref<File>{file};
 
     jassert(image, "invalid image");
     jassert(file, "invalid file");

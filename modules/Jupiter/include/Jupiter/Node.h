@@ -18,16 +18,22 @@
     #define GLM_FORCE_RADIANS
     #include <glm/glm.hpp>
     #include <glm/gtc/quaternion.hpp>
+
+    #include "Ref.h"
 #endif
+
+#include "Jupiter/MoveListener.h"
+#include "Jupiter/RotationListener.h"
+#include "Jupiter/ScaleListener.h"
 
 namespace jupiter {
 
 class NodeVisitor;
-class MoveListener;
-class ScaleListener;
-class RotationListener;
+//class MoveListener;
+//class ScaleListener;
+//class RotationListener;
 
-class Node {
+class Node: virtual public RCO {
 public:
     Node();
     virtual ~Node();
@@ -109,20 +115,20 @@ public:
     glm::mat4 getModel() const;
 
 protected:
-    bool               _visible            = true;
+    bool                    _visible            = true;
 
-    int                _tag                = -1;
-    std::string        _name;
+    int                     _tag                = -1;
+    std::string             _name;
 
-    glm::vec3          _position           = {0.f, 0.f, 0.f};
-    glm::vec3          _scale              = {1.f, 1.f, 1.f};
-    glm::quat          _rotation           = glm::rotate(glm::quat{}, 0.f, glm::vec3{0.f, 0.f, 1.f});
+    glm::vec3               _position           = {0.f, 0.f, 0.f};
+    glm::vec3               _scale              = {1.f, 1.f, 1.f};
+    glm::quat               _rotation           = glm::rotate(glm::quat{}, 0.f, glm::vec3{0.f, 0.f, 1.f});
 
-    std::list<Node*>   _nodes;
-    Node*              _parent             = nullptr;
-    MoveListener*      _moveListener       = nullptr;
-    ScaleListener*     _scaleListener      = nullptr;
-    RotationListener*  _rotationListener   = nullptr;
+    std::list<Node*>        _nodes;
+    Node*                   _parent             = nullptr;
+    Ref<MoveListener>       _moveListener;
+    Ref<ScaleListener>      _scaleListener;
+    Ref<RotationListener>   _rotationListener;
 
     Node& operator=(const Node&) = default;
 };

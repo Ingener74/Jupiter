@@ -13,7 +13,6 @@
 #include "Jupiter/Game.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
-#include "Jupiter/Controller.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/Texture.h"
 #include "Jupiter/File.h"

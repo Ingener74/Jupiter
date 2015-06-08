@@ -5,7 +5,9 @@ project(${PROJECT_NAME})
 
 set(SOURCES
     src/Jupiter.cpp
-
+    
+    src/RCO.cpp
+    
     src/File.cpp
     src/FileFactory.cpp
     
@@ -39,8 +41,6 @@ set(SOURCES
     src/Attribute.cpp
     src/Uniform.cpp
     src/FileShader.cpp
-
-    src/Controller.cpp
 
     src/Listener.cpp
     src/MoveListener.cpp

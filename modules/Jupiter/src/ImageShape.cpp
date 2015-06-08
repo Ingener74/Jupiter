@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Image.h"
@@ -21,6 +22,8 @@ using namespace std;
 using namespace glm;
 
 ImageShape::ImageShape(Image* image) {
+
+    Ref<Image>{image};
 
     /*
      * -w/2                  w/2

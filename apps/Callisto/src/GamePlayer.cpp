@@ -58,7 +58,7 @@ up<Texture>         bgTexture,
                     flourTexture,
                     boxTexture;
 
-up<Controller>      boxController;
+//up<Controller>      boxController;
 
 float viewRadius = 600.f;
 

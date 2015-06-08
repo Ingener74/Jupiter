@@ -32,4 +32,7 @@ using namespace jupiter;
     }
 }
 
+%feature("ref")   RCO "$this->addRef();"
+%feature("unref") RCO "$this->removeRef();"
+
 %include "Jupiter.h"
