@@ -55,6 +55,8 @@
 
 #include "Jupiter/MoveAnimation.h"
 
+#include "Jupiter/RevoluteJoint.h"
+
 namespace jupiter {
 
 

@@ -51,7 +51,7 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 800
+    WIDTH  = 300 # 800
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -221,7 +221,7 @@ class FallingBox(object):
             setTexture(self.propellerTex).\
             setShape(self.propellerShape).\
             setScaleF(0.002).\
-            setPosition(5, 8, 0.99)
+            setPosition(5, 4, 0.99)
 
         self.propeller2 = j.SpriteBox2d(self.propeller)
         self.propeller2.setPosition(-4, 8, 0.99)
@@ -252,6 +252,11 @@ class FallingBox(object):
         self.grounds[5].translate( 7.5, -7.3, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
  
         self.grounds[6].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
+
+        # Приделаем пропеллер к одной из земель
+        propJointDef = b.b2RevoluteJointDef()
+        propJointDef.Initialize(self.propeller.getPhysicsBody(), self.grounds[6].getPhysicsBody(), b.b2Vec2(5, 4))
+        self.propellerJoint = j.RevoluteJoint(self.physics, propJointDef)
         
         self.rn.\
             addNode(self.bg).\
@@ -277,7 +282,8 @@ class FallingBox(object):
             addNode(self.ball6).\
             addNode(self.propeller).\
             addNode(self.propeller2).\
-            addNode(self.ship1)
+            addNode(self.ship1).\
+            addNode(self.propellerJoint)
         
             #addVisitor(self.printVisitor).\
         self.game = j.Game()
