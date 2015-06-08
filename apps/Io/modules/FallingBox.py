@@ -221,7 +221,7 @@ class FallingBox(object):
             setTexture(self.propellerTex).\
             setShape(self.propellerShape).\
             setScaleF(0.002).\
-            setPosition(5, 4, 0.99)
+            setPosition(4.6, 3, 0.99)
 
         self.propeller2 = j.SpriteBox2d(self.propeller)
         self.propeller2.setPosition(-4, 8, 0.99)
@@ -244,20 +244,21 @@ class FallingBox(object):
         
         self.grounds = [j.SpriteBox2d(groundProto) for i in range(0, 7)]
          
-        self.grounds[0].translate( 2, -8, 1)
-        self.grounds[1].translate(-2, -8, 1)
-        self.grounds[2].translate( 4, -8, 1)
-        self.grounds[3].translate(-4, -8, 1)
-        self.grounds[4].translate(-7.5, -7.3, 1).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        self.grounds[5].translate( 7.5, -7.3, 1).setRotation(0, 0, 1,  30 * DEG2RAD)
- 
-        self.grounds[6].translate(6, 3, 1).setRotation(0, 0, 1,  45 * DEG2RAD)
+        self.grounds[0].translate( 2, -8, 0.98)
+        self.grounds[1].translate(-2, -8, 0.98)
+        self.grounds[2].translate( 4, -8, 0.98)
+        self.grounds[3].translate(-4, -8, 0.98)
+        self.grounds[4].translate(-7.5, -7.3, 0.98).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+        self.grounds[5].translate( 7.5, -7.3, 0.98).setRotation(0, 0, 1,  30 * DEG2RAD)
+
+        self.grounds[6].translate(6, 3, 0.98).setRotation(0, 0, 1,  45 * DEG2RAD)
 
         # Приделаем пропеллер к одной из земель
         propJointDef = b.b2RevoluteJointDef()
-        propJointDef.Initialize(self.propeller.getPhysicsBody(), self.grounds[6].getPhysicsBody(), b.b2Vec2(5, 4))
+        propJointDef.Initialize(self.propeller.getPhysicsBody(), self.grounds[6].getPhysicsBody(), b.b2Vec2(4.6, 2.7))
         self.propellerJoint = j.RevoluteJoint(self.physics, propJointDef)
         
+        # Добавляем все узлы в дерево
         self.rn.\
             addNode(self.bg).\
             addNode(self.grounds[0]).\
