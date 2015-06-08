@@ -16,14 +16,12 @@ class Test: public RCO {
 public:
     Test(string str, float f) :
         _str(str), _f(f) {
-        cout << __func__ << " " << endl;
     }
     virtual ~Test() {
-        cout << __func__ << " " << endl;
     }
 
     void test() {
-        cout << __PRETTY_FUNCTION__ << " test " << _str << " " << _f << endl;
+        cout << _str << " " << _f << endl;
     }
 
 private:

@@ -32,11 +32,7 @@ public:
     }
 
     Ref& operator=(const Ref& r) {
-        if (_ptr)
-            _ptr->removeRef();
-        _ptr = r._ptr;
-        if (_ptr)
-            _ptr->addRef();
+        return *this = const_cast<Ref&>(r).get();
     }
     Ref& operator=(T* r) {
         if (_ptr)
