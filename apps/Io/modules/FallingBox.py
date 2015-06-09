@@ -99,7 +99,7 @@ class FallingBox(object):
         
         camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
         camera.setPosition(0, 0, -20)#.setRotation(0, 1, 0, -0.3)
-        
+
         render        = j.RenderVisitor(camera)
         
         rn = j.Node()
@@ -221,6 +221,14 @@ class FallingBox(object):
 
         propeller2 = j.SpriteBox2d(propeller1)
         propeller2.setPosition(-4, 8, 0.99)
+        
+        # Соединим главную коробку и пропеллер
+        propBoxDef = b.b2DistanceJointDef()
+        propBoxDef.Initialize(box1.getPhysicsBody(), propeller2.getPhysicsBody(), \
+            box1.getPhysicsBody().GetPosition(), propeller2.getPhysicsBody().GetPosition())
+        propBoxDef.lenght = 2
+
+        propBox = j.DistanceJoint(physics, propBoxDef)
 
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
@@ -278,7 +286,8 @@ class FallingBox(object):
             addNode(propeller1).\
             addNode(propeller2).\
             addNode(ship1).\
-            addNode(propellerJoint)
+            addNode(propellerJoint).\
+            addNode(propBox)
 
         self.game = j.Game()
         self.game.\

@@ -55,6 +55,7 @@
 #include "Jupiter/MoveAnimation.h"
 
 #include "Jupiter/RevoluteJoint.h"
+#include "Jupiter/DistanceJoint.h"
 
 #ifdef SWIG
 #else
