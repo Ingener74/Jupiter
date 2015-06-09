@@ -226,7 +226,7 @@ class FallingBox(object):
         propBoxDef = b.b2DistanceJointDef()
         propBoxDef.Initialize(box1.getPhysicsBody(), propeller2.getPhysicsBody(), \
             box1.getPhysicsBody().GetPosition(), propeller2.getPhysicsBody().GetPosition())
-        propBoxDef.lenght = 2
+        propBoxDef.lenght = 1
 
         propBox = j.DistanceJoint(physics, propBoxDef)
 
