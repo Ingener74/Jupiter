@@ -10,19 +10,18 @@
 
 namespace jupiter {
 
-DistanceJoint::DistanceJoint(Box2dVisitor* v, b2DistanceJointDef jointDef) :
-    _visitor(v) {
-    _joint = dynamic_cast<b2DistanceJoint*>(_visitor->getWorld()->CreateJoint(&jointDef));
+DistanceJoint::DistanceJoint(Box2dVisitor* visitor, b2DistanceJointDef jointDef) :
+    Joint(visitor) {
+    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
 }
 
 DistanceJoint::~DistanceJoint() {
-    jassert(_visitor, "no visitor");
-    _visitor->getWorld()->DestroyJoint(_joint);
 }
 
 b2DistanceJoint* DistanceJoint::getDistanceJoint() {
-    jassert(_joint, "no joint");
-    return _joint;
+    auto joint = dynamic_cast<b2DistanceJoint*>(_joint);
+    jassert(joint, "invalid cast");
+    return joint;
 }
 
 } /* namespace jupiter */

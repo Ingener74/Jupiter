@@ -10,14 +10,11 @@
 
 #ifdef SWIG
 #else
-    #include <Box2D/Box2D.h>
 #endif
 
 #include "Joint.h"
 
 namespace jupiter {
-
-class Box2dVisitor;
 
 class RopeJoint: public Joint {
 public:
@@ -25,8 +22,6 @@ public:
     virtual ~RopeJoint();
 
     b2RopeJoint* getRopeJoint();
-protected:
-    b2RopeJoint* _joint = nullptr;
 };
 
 } /* namespace jupiter */

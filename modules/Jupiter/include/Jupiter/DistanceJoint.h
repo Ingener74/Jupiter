@@ -25,9 +25,6 @@ public:
     virtual ~DistanceJoint();
 
     b2DistanceJoint* getDistanceJoint();
-
-protected:
-    b2DistanceJoint*     _joint = nullptr;
 };
 
 } /* namespace jupiter */

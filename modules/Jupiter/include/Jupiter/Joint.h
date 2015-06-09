@@ -23,11 +23,12 @@ class Box2dVisitor;
 
 class Joint: virtual public Node {
 public:
-    Joint();
+    Joint(Box2dVisitor*);
     virtual ~Joint();
 
 protected:
     Ref<Box2dVisitor> _visitor;
+    b2Joint*          _joint = nullptr;
 };
 
 } /* namespace jupiter */

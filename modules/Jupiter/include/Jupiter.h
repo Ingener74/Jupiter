@@ -55,6 +55,8 @@
 #include "Jupiter/RevoluteJoint.h"
 #include "Jupiter/DistanceJoint.h"
 #include "Jupiter/RopeJoint.h"
+#include "Jupiter/MotorJoint.h"
+#include "Jupiter/GearJoint.h"
 
 #ifdef SWIG
 #else
@@ -62,10 +64,6 @@
 #endif
 
 namespace jupiter {
-
-void test(){
-    RevoluteJoint j;
-}
 
 template<typename T>
 T* node2(Node* t) {
@@ -84,6 +82,9 @@ T* node2(Node* t) {
     %template(node2Joint)         node2<Joint>;
     %template(node2RevoluteJoint) node2<RevoluteJoint>;
     %template(node2DistanceJoint) node2<DistanceJoint>;
+    %template(node2RopeJoint)     node2<RopeJoint>;
+    %template(node2GearJoint)     node2<GearJoint>;
+    %template(node2MotorJoint)    node2<MotorJoint>;
 
 #endif
 

@@ -12,13 +12,17 @@
 namespace jupiter {
 
 RevoluteJoint::RevoluteJoint(Box2dVisitor* visitor, b2RevoluteJointDef jointDef) :
-    _visitor(visitor) {
-    _joint = dynamic_cast<b2RevoluteJoint*>(_visitor->getWorld()->CreateJoint(&jointDef));
+    Joint(visitor) {
+    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
 }
 
 RevoluteJoint::~RevoluteJoint() {
-    jassert(_visitor, "no visitor");
-    _visitor->getWorld()->DestroyJoint(_joint);
+}
+
+b2RevoluteJoint* RevoluteJoint::getRevoluteJoint() {
+    auto joint = dynamic_cast<b2RevoluteJoint*>(_joint);
+    jassert(joint, "invalid cast");
+    return joint;
 }
 
 } /* namespace jupiter */
