@@ -51,8 +51,8 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 800
-    #WIDTH  = 300
+    # WIDTH  = 800
+    WIDTH  = 300
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -90,26 +90,25 @@ class FallingBox(object):
         self.shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
         #self.box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
         
-        self.camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
-                               j.Vec3(0.0, 0.0, 18.0),                                     \
-                               j.Vec3(0.0, 0.0, 0.0),                                      \
-                               j.Vec3(0.0, 1.0, 0.0))
+        # self.camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
+        #                        j.Vec3(0.0, 0.0, 18.0),                                     \
+        #                        j.Vec3(0.0, 0.0, 0.0),                                      \
+        #                        j.Vec3(0.0, 1.0, 0.0))
         
         
         self.printVisitor  = j.PrintVisitor()
         self.physics       = j.Box2dVisitor(1.0 / self.FPS)
-        self.render        = j.RenderVisitor(self.camera)
+        self.render        = j.RenderVisitor(j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
+                                             j.Vec3(0.0, 0.0, 18.0), j.Vec3(0.0, 0.0,  0.0), j.Vec3(0.0, 1.0,  0.0)))
         
-        self.rn = j.Node()
+        rn = j.Node()
         
         bgImage = j.PngImage('Resources/bg.png')
-        self.bgTexture = j.ImageTexture(bgImage)
-        self.bgShape = j.ImageShape(bgImage)
         self.bg = j.Sprite()
         self.bg.\
             setProgram(self.shader).\
-            setTexture(self.bgTexture).\
-            setShape(self.bgShape).\
+            setTexture(j.ImageTexture(bgImage)).\
+            setShape(j.ImageShape(bgImage)).\
             translate(0., 0., -1.).\
             setScaleF(0.02)
             
@@ -117,8 +116,6 @@ class FallingBox(object):
         self.boxTest = Box(window)
         self.boxCol = BoxCollision()
         boxImage = j.PngImage('Resources/box.png')
-        self.boxTex = j.ImageTexture(boxImage)
-        self.boxShape = j.ImageShape(boxImage)
         
         boxDef = b.b2BodyDef()
         boxDef.type = b.b2_dynamicBody;
@@ -131,8 +128,8 @@ class FallingBox(object):
         self.box1 = j.SpriteBox2d(self.physics, boxDef, boxPhShape)
         self.box1.\
             setProgram(self.shader).\
-            setTexture(self.boxTex).\
-            setShape(self.boxShape).\
+            setTexture(j.ImageTexture(boxImage)).\
+            setShape(j.ImageShape(boxImage)).\
             setMoveListener(self.boxTest).\
             translate(0, 2, 1).\
             setScaleF(0.002)
@@ -264,7 +261,7 @@ class FallingBox(object):
         self.propellerJoint = j.RevoluteJoint(self.physics, propJointDef)
         
         # Добавляем все узлы в дерево
-        self.rn.\
+        rn.\
             addNode(self.bg).\
             addNode(self.grounds[0]).\
             addNode(self.grounds[1]).\
@@ -290,10 +287,10 @@ class FallingBox(object):
             addNode(self.propeller2).\
             addNode(self.ship1).\
             addNode(self.propellerJoint)
-        
+
         self.game = j.Game()
         self.game.\
-            setRootNode(self.rn).\
+            setRootNode(rn).\
             addVisitor(self.physics).\
             addVisitor(self.render).\
             addKeyboardListener(self.boxTest).\

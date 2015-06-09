@@ -10,17 +10,21 @@
 
 #ifdef SWIG
 #else
-
     #include <list>
     #include <string>
 
+    #include "Ref.h"
 #endif
+
+#include "Node.h"
+#include "NodeVisitor.h"
+#include "KeyboardListener.h"
 
 namespace jupiter {
 
-class Node;
-class NodeVisitor;
-class KeyboardListener;
+//class Node;
+//class NodeVisitor;
+//class KeyboardListener;
 
 class Game {
 public:
@@ -41,18 +45,18 @@ public:
     virtual Node* getRootNode();
 
     virtual Game* setVisitors(const std::list<NodeVisitor*>&);
-    virtual const std::list<NodeVisitor*>& getVisitors() const;
+    virtual const std::list<Ref<NodeVisitor>>& getVisitors() const;
 
     virtual Game* addVisitor(NodeVisitor*);
 
     virtual Game* addKeyboardListener(KeyboardListener*);
 
 protected:
-    std::list<NodeVisitor*>        _visitors;
-    std::list<KeyboardListener*>   _keyboardListeners;
-    Node*                          _node                 = nullptr;
-    int                            _width                = 0;
-    int                            _height               = 0;
+    std::list<Ref<NodeVisitor>>        _visitors;
+    std::list<Ref<KeyboardListener>>   _keyboardListeners;
+    Ref<Node>                          _node;
+    int                                _width                = 0;
+    int                                _height               = 0;
 };
 
 } /* namespace jupiter */

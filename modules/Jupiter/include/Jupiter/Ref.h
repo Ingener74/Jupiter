@@ -52,7 +52,7 @@ public:
     }
 
     T* get() {
-        jassert(_ptr, "no ptr");
+//        jassert(_ptr, "no ptr"); // FIXME
         return _ptr;
     }
 

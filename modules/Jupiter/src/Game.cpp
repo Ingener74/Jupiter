@@ -29,7 +29,7 @@ void Game::draw() {
         jassert(i, "bad visitor");
 
         i->begin();
-        _node->accept(i);
+        _node->accept(i.get());
         i->end();
     }
 }
@@ -65,27 +65,33 @@ Game* Game::setRootNode(Node* node) {
 }
 
 Node* Game::getRootNode() {
-    return _node;
+    jassert(_node, "no root node");
+    return _node.get();
 }
 
 Game* jupiter::Game::setVisitors(const std::list<NodeVisitor*>& visitors) {
-    _visitors = visitors;
+    jassert(!visitors.empty(), "invalid visitors list");
+//    _visitors = visitors;
+
+    for (auto i : visitors)
+        _visitors.emplace_back(i);
+
     return this;
 }
 
-const std::list<NodeVisitor*>& jupiter::Game::getVisitors() const {
+const std::list<Ref<NodeVisitor>>& jupiter::Game::getVisitors() const {
     return _visitors;
 }
 
 Game* jupiter::Game::addVisitor(NodeVisitor* visitor) {
     jassert(visitor, "visitor is invalid");
-    _visitors.push_back(visitor);
+    _visitors.emplace_back(visitor);
     return this;
 }
 
 Game* Game::addKeyboardListener(KeyboardListener* listener) {
     jassert(listener, "listener is invalid");
-    _keyboardListeners.push_back(listener);
+    _keyboardListeners.emplace_back(listener);
     return this;
 }
 

@@ -11,13 +11,15 @@
 #ifdef SWIG
 #else
     #include <stack>
+
+    #include "Ref.h"
 #endif
 
 #include "Jupiter/NodeVisitor.h"
 
 namespace jupiter {
 
-class Camera;
+//class Camera;
 
 class RenderVisitor: public NodeVisitor {
 public:
@@ -34,7 +36,7 @@ public:
     virtual void end();
 
 private:
-    Camera* _camera = nullptr;
+    Ref<Camera> _camera; // TODO должна быть не здесь а в дереве узлов
 };
 
 } /* namespace jupiter */
