@@ -100,10 +100,7 @@ bool createGameDirect(const variables_map& vm) {
     float z = viewRadius * cos(xAngle);
 
     camera = {
-        Perspective{45.f, width / height, 10.f, 10000.f},
-        Vec3{x, y, z},
-        Vec3{0.f, 0.f, 0.f},
-        Vec3{0.f, 1.f, 0.f}};
+        Perspective{45.f, width / height, 10.f, 10000.f}};
 
     render = make_unique_<RenderVisitor>(&camera);
 

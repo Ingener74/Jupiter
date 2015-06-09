@@ -64,8 +64,8 @@ class FallingBox(object):
     GROUND = 2
     
     """
-    - Камера через положение и ориентацию/кватернион
-    - Сложная физическая форма из json
+    - Сложная физическая форма из json(отладка)
+    - Proxy узлы для отложенной загрузки
     - Надо добавить ещё разных тел с разной формой, в том числе сложной, составной, разрушающейся формой
       и попробовать все Joint'ы, в рамках Ио до остальной разработки Европы
     - Надо сделать 2-й тип элемента рисования на кадрах
@@ -76,13 +76,14 @@ class FallingBox(object):
     - 3D Mesh
     
     На выходные
-    - камера через положение и кватернион
     - шарниры(joints)
     - подсчёт ссылок
+    - стек матриц модели
 
     Ключевые слова для поиска ресурсов для игр
-    platformer ground sprites
-    car profile sprites/images
+    * platformer ground sprites
+    * car profile sprites/images
+    * explosion generators/ генераторы взрывов
     """
     
     def __init__(self, window, width, height):
@@ -95,19 +96,21 @@ class FallingBox(object):
         #box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
         
         physics       = j.Box2dVisitor(1.0 / self.FPS)
-        render        = j.RenderVisitor(j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
-                                        j.Vec3(0.0, 0.0, 18.0), j.Vec3(0.0, 0.0, 0.0), j.Vec3(0.0, 1.0, 0.0)))
+        
+        camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
+        camera.setPosition(0, 0, -20)#.setRotation(0, 1, 0, -0.3)
+        
+        render        = j.RenderVisitor(camera)
         
         rn = j.Node()
         
         bgImage = j.PngImage('Resources/bg.png')
         bg = j.Sprite()
-        bg.\
-            setProgram(shader).\
+        bg.setProgram(shader).\
             setTexture(j.ImageTexture(bgImage)).\
             setShape(j.ImageShape(bgImage)).\
             translate(0., 0., -1.).\
-            setScaleF(0.02)
+            setScaleF(0.022)
             
             
         self.boxTest = Box(window)
