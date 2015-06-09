@@ -5,7 +5,8 @@
  *      Author: pavel
  */
 
-#include <Jupiter/RopeJoint.h>
+#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/RopeJoint.h"
 
 namespace jupiter {
 

@@ -63,6 +63,9 @@ set(SOURCES
     src/Physics/Box2D/Joint.cpp
     src/Physics/Box2D/RevoluteJoint.cpp
     src/Physics/Box2D/DistanceJoint.cpp
+    src/Physics/Box2D/RopeJoint.cpp
+    src/Physics/Box2D/GearJoint.cpp
+    src/Physics/Box2D/MotorJoint.cpp
     
     src/Animations/Animation.cpp
     src/Animations/MoveAnimation.cpp

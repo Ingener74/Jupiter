@@ -5,7 +5,8 @@
  *      Author: pavel
  */
 
-#include <Jupiter/GearJoint.h>
+#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/GearJoint.h"
 
 namespace jupiter {
 
