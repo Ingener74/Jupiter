@@ -43,13 +43,13 @@ Node* Node::clone(Node* node) {
 
 Node* Node::addNode(Node* node) {
     jassert(node, "node is nullptr");
-    _nodes.push_back(node->setParent(this));
+    _nodes.emplace_back(node->setParent(this));
     return this;
 }
 
 Node* Node::removeNode(Node* node) {
     jassert(node, "node is nullptr");
-    _nodes.remove(node);
+//    _nodes.remove(node); // FIXME разобраться с этиим
     return this;
 }
 

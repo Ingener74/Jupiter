@@ -124,7 +124,7 @@ protected:
     glm::vec3               _scale              = {1.f, 1.f, 1.f};
     glm::quat               _rotation           = glm::rotate(glm::quat{}, 0.f, glm::vec3{0.f, 0.f, 1.f});
 
-    std::list<Node*>        _nodes;
+    std::list<Ref<Node>>    _nodes;
     Node*                   _parent             = nullptr;
     Ref<MoveListener>       _moveListener;
     Ref<ScaleListener>      _scaleListener;
