@@ -90,16 +90,9 @@ class FallingBox(object):
         shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
         #box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
         
-        # self.camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
-        #                        j.Vec3(0.0, 0.0, 18.0),                                     \
-        #                        j.Vec3(0.0, 0.0, 0.0),                                      \
-        #                        j.Vec3(0.0, 1.0, 0.0))
-        
-        
-        self.printVisitor  = j.PrintVisitor()
-        self.physics       = j.Box2dVisitor(1.0 / self.FPS)
-        self.render        = j.RenderVisitor(j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
-                                             j.Vec3(0.0, 0.0, 18.0), j.Vec3(0.0, 0.0,  0.0), j.Vec3(0.0, 1.0,  0.0)))
+        physics       = j.Box2dVisitor(1.0 / self.FPS)
+        render        = j.RenderVisitor(j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0), \
+                                        j.Vec3(0.0, 0.0, 18.0), j.Vec3(0.0, 0.0, 0.0), j.Vec3(0.0, 1.0, 0.0)))
         
         rn = j.Node()
         
@@ -125,7 +118,7 @@ class FallingBox(object):
         
         boxPhShape = j.PoligonShape(boxImage, boxFixDef)
         
-        box1 = j.SpriteBox2d(self.physics, boxDef, boxPhShape)
+        box1 = j.SpriteBox2d(physics, boxDef, boxPhShape)
         box1.\
             setProgram(shader).\
             setTexture(j.ImageTexture(boxImage)).\
@@ -165,7 +158,7 @@ class FallingBox(object):
         ship1Def = b.b2BodyDef()
         ship1Def.type = b.b2_dynamicBody
          
-        ship1 = j.SpriteBox2d(self.physics, ship1Def, shipComplexShape)
+        ship1 = j.SpriteBox2d(physics, ship1Def, shipComplexShape)
         ship1.setProgram(shader).\
             setTexture(j.ImageTexture(ship1Image)).\
             setShape(j.ImageShape(ship1Image)).\
@@ -183,7 +176,7 @@ class FallingBox(object):
         ballImage = j.PngImage('Resources/ball1.png')
         ballPhShape = j.CircleShape(ballImage, ballFixDef)
         
-        ball1 = j.SpriteBox2d(self.physics, ballDef, ballPhShape)
+        ball1 = j.SpriteBox2d(physics, ballDef, ballPhShape)
         ball1.setProgram(shader).\
             setTexture(j.ImageTexture(ballImage)).\
             setShape(j.ImageShape(ballImage)).\
@@ -211,7 +204,7 @@ class FallingBox(object):
         propellerImage = j.PngImage('Resources/propeller3.png')
 
         self.propellerComplexShape = j.ComplexShape(propellerImage, j.File('Resources/Box.json'), 'Propeller3', propellerFixDef)
-        propeller1 = j.SpriteBox2d(self.physics, propellerDef, self.propellerComplexShape)
+        propeller1 = j.SpriteBox2d(physics, propellerDef, self.propellerComplexShape)
         propeller1.\
             setProgram(shader).\
             setTexture(j.ImageTexture(propellerImage)).\
@@ -227,7 +220,7 @@ class FallingBox(object):
         
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
         
-        groundProto = j.SpriteBox2d(self.physics, b.b2BodyDef(), groundPhShape)
+        groundProto = j.SpriteBox2d(physics, b.b2BodyDef(), groundPhShape)
         groundProto.setProgram(shader).\
             setTexture(j.ImageTexture(groundImage)).\
             setShape(j.ImageShape(groundImage)).\
@@ -250,7 +243,7 @@ class FallingBox(object):
         # Приделаем пропеллер к одной из земель
         propJointDef = b.b2RevoluteJointDef()
         propJointDef.Initialize(propeller1.getPhysicsBody(), grounds[6].getPhysicsBody(), b.b2Vec2(4.6, 2.7))
-        propellerJoint = j.RevoluteJoint(self.physics, propJointDef)
+        propellerJoint = j.RevoluteJoint(physics, propJointDef)
         
         # Добавляем все узлы в дерево
         rn.\
@@ -283,8 +276,8 @@ class FallingBox(object):
         self.game = j.Game()
         self.game.\
             setRootNode(rn).\
-            addVisitor(self.physics).\
-            addVisitor(self.render).\
+            addVisitor(physics).\
+            addVisitor(render).\
             addKeyboardListener(self.boxTest).\
             setWidth(width).\
             setHeight(height)

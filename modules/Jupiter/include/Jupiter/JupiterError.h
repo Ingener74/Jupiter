@@ -27,6 +27,10 @@
 namespace jupiter
 {
 
+/*
+ * http://demangler.com/  - Если что здесь можно задеманглить то что выведет стек вызовов
+ */
+
 class JupiterError: public std::runtime_error
 {
 public:

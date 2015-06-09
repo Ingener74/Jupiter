@@ -24,23 +24,23 @@ private:
 };
 
 inline RCO::RCO() {
-    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
+//    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
     ++_objects;
 }
 
 inline RCO::~RCO() {
-    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
+//    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
     --_objects;
 }
 
 inline void RCO::addRef() {
     ++_counter;
-    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
+//    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
 }
 
 inline void RCO::removeRef() {
     --_counter;
-    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
+//    std::cout << __PRETTY_FUNCTION__ << " " << _counter << std::endl;
     if (_counter == 0)
         delete this;
 }
