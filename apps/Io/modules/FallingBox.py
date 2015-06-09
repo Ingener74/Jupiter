@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 #encoding: utf8
 
+import sys
+from PySide.QtGui import QApplication, QMessageBox
+
+PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
+
 try:
     import JupiterPython as j
     import Box2DPython as b
@@ -12,7 +17,6 @@ except ImportError as e:
                          QMessageBox.Ok | QMessageBox.Default,\
                          QMessageBox.NoButton)
     sys.exit(1)
-
 
 class Box(j.MoveListener, j.KeyboardListener):
     def __init__(self, window):

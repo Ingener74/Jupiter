@@ -16,15 +16,11 @@
     #include "Ref.h"
 #endif
 
-#include "Node.h"
-#include "NodeVisitor.h"
-#include "KeyboardListener.h"
-
 namespace jupiter {
 
-//class Node;
-//class NodeVisitor;
-//class KeyboardListener;
+class Node;
+class NodeVisitor;
+class KeyboardListener;
 
 class Game {
 public:

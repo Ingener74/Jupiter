@@ -5,6 +5,7 @@
  *      Author: Pavel
  */
 
+#include "Jupiter/Ref.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/SpriteBox2d.h"
 
@@ -26,6 +27,7 @@ SpriteBox2d::SpriteBox2d(const SpriteBox2d& sprite){
 }
 
 SpriteBox2d* SpriteBox2d::clone(SpriteBox2d* node) {
+    Ref<SpriteBox2d>{node};
     jassert(node, "node is invalid");
     *this = *node;
     Sprite::clone(node);

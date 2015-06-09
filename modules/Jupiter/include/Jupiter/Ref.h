@@ -16,53 +16,21 @@ namespace jupiter {
 template<typename T>
 class Ref {
 public:
-//    static_assert(std::is_base_of<RCO, T>::value, "It does not inherit from RCO");
-
-    explicit Ref(T* ptr = nullptr) :
-        _ptr(ptr) {
-        if (_ptr)
-            _ptr->addRef();
-    }
+    explicit Ref(T* ptr = nullptr);
 
     template<typename ... Args>
-    explicit Ref(Args&& ... args) {
-        _ptr = new T(std::forward<Args>(args)...);
-        _ptr->addRef();
-    }
+    explicit Ref(Args&& ... args);
 
-    Ref(const Ref& r) {
-        *this = r;
-    }
+    Ref(const Ref& r);
+    Ref& operator=(const Ref& r);
+    Ref& operator=(T* r);
 
-    Ref& operator=(const Ref& r) {
-        return *this = const_cast<Ref&>(r).get();
-    }
+    virtual ~Ref();
 
-    Ref& operator=(T* r) {
-        if (_ptr)
-            _ptr->removeRef();
-        _ptr = r;
-        if (_ptr)
-            _ptr->addRef();
-    }
+    T* get();
+    T* operator ->();
 
-    virtual ~Ref() {
-        if (_ptr)
-            _ptr->removeRef();
-    }
-
-    T* get() {
-//        jassert(_ptr, "no ptr"); // FIXME
-        return _ptr;
-    }
-
-    T* operator ->() {
-        return get();
-    }
-
-    operator bool() const {
-        return _ptr;
-    }
+    operator bool() const;
 
 private:
     T* _ptr = nullptr;

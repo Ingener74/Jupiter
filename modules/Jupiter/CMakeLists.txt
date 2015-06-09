@@ -7,6 +7,7 @@ set(SOURCES
     src/Jupiter.cpp
     
     src/RCO.cpp
+    src/Ref.cpp
     
     src/File.cpp
     src/FileFactory.cpp

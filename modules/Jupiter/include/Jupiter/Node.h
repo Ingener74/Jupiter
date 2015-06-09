@@ -22,16 +22,12 @@
     #include "Ref.h"
 #endif
 
-#include "Jupiter/MoveListener.h"
-#include "Jupiter/RotationListener.h"
-#include "Jupiter/ScaleListener.h"
-
 namespace jupiter {
 
 class NodeVisitor;
-//class MoveListener;
-//class ScaleListener;
-//class RotationListener;
+class MoveListener;
+class ScaleListener;
+class RotationListener;
 
 class Node: virtual public RCO {
 public:

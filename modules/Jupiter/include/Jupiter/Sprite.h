@@ -13,16 +13,13 @@
     #include <memory>
 #endif
 
-#include "Jupiter/Texture.h"
-#include "Jupiter/Shape.h"
-#include "Jupiter/Shader.h"
 #include "Jupiter/Node.h"
 
 namespace jupiter {
 
-//class Shape;
-//class Texture;
-//class Shader;
+class Shape;
+class Texture;
+class Shader;
 
 class Sprite: virtual public Node {
 public:

@@ -19,7 +19,7 @@
 
 namespace jupiter {
 
-//class Camera;
+class Camera;
 
 class RenderVisitor: public NodeVisitor {
 public:

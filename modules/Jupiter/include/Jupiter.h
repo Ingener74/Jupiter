@@ -56,6 +56,11 @@
 
 #include "Jupiter/RevoluteJoint.h"
 
+#ifdef SWIG
+#else
+    #include "Jupiter/Ref.h"
+#endif
+
 namespace jupiter {
 
 

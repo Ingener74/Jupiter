@@ -15,12 +15,11 @@
 
 #endif
 
-#include "Box2dVisitor.h"
 #include "Joint.h"
 
 namespace jupiter {
 
-//class Box2dVisitor;
+class Box2dVisitor;
 
 class RevoluteJoint: public Joint {
 public:
