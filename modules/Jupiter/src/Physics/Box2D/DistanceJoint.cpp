@@ -21,6 +21,7 @@ DistanceJoint::~DistanceJoint() {
 }
 
 b2DistanceJoint* DistanceJoint::getDistanceJoint() {
+    jassert(_joint, "no joint");
     return _joint;
 }
 

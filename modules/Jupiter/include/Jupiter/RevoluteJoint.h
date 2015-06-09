@@ -25,7 +25,6 @@ public:
     virtual ~RevoluteJoint();
 
 protected:
-    Ref<Box2dVisitor> _visitor;
     b2RevoluteJoint* _joint = nullptr;
 };
 

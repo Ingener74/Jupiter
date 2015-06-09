@@ -13,7 +13,6 @@ option(WITH_PYTHON_WRAPPER        "Python wrapper"                  ON)
                                   
 option(WITH_GANIMEDE              "Build Ganimede"                  OFF)
 option(WITH_GAME_PLAYER           "Build with c++ game player"      ON)
-option(WITH_TESTS                 "Build tests"                     ON)
 
 option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"       ON)
 option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"          ON)
@@ -108,9 +107,6 @@ include_directories(
     ${BOX2D_INCLUDE_DIR}
     
     ${LUA_INCLUDE_DIR}
-    
-    ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}
-    ${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR}
     
     3rdparty/json/src
     3rdparty/lodepng

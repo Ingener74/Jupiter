@@ -8,14 +8,26 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_JOINT_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_JOINT_H_
 
+#ifdef SWIG
+#else
+    #include <Box2D/Box2D.h>
+
+    #include "Ref.h"
+#endif
+
 #include "Node.h"
 
 namespace jupiter {
+
+class Box2dVisitor;
 
 class Joint: virtual public Node {
 public:
     Joint();
     virtual ~Joint();
+
+protected:
+    Ref<Box2dVisitor> _visitor;
 };
 
 } /* namespace jupiter */

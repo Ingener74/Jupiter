@@ -29,8 +29,6 @@
 #include "Jupiter/Shape.h"
 #include "Jupiter/ImageShape.h"
 
-//#include "Jupiter/JsonGame.h"
-
 #include "Jupiter/Camera.h"
 
 #include "Jupiter/NodeVisitor.h"
@@ -56,6 +54,7 @@
 
 #include "Jupiter/RevoluteJoint.h"
 #include "Jupiter/DistanceJoint.h"
+#include "Jupiter/RopeJoint.h"
 
 #ifdef SWIG
 #else
@@ -64,6 +63,9 @@
 
 namespace jupiter {
 
+void test(){
+    RevoluteJoint j;
+}
 
 template<typename T>
 T* node2(Node* t) {
@@ -78,6 +80,10 @@ T* node2(Node* t) {
     %template(node2SpriteBox2d)   node2<SpriteBox2d>;
     %template(node2Box2dNode)     node2<Box2dNode>;
     %template(node2Camera)        node2<Camera>;
+
+    %template(node2Joint)         node2<Joint>;
+    %template(node2RevoluteJoint) node2<RevoluteJoint>;
+    %template(node2DistanceJoint) node2<DistanceJoint>;
 
 #endif
 

@@ -27,7 +27,6 @@ public:
     b2DistanceJoint* getDistanceJoint();
 
 protected:
-    Ref<Box2dVisitor>    _visitor;
     b2DistanceJoint*     _joint = nullptr;
 };
 
