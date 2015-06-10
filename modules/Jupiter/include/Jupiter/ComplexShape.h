@@ -8,6 +8,10 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_COMPLEXSHAPE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_COMPLEXSHAPE_H_
 
+#ifdef SWIG
+#else
+    #include <json.hpp>
+#endif
 #include "PhysicsShape.h"
 
 namespace jupiter {
@@ -26,6 +30,9 @@ public:
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
+
+    void get(nlohmann::json j);
+
     std::vector<std::vector<b2Vec2>>   _polygons;
     std::vector<b2PolygonShape>        _polygonShapes;
     b2FixtureDef                       _fixtureDef;

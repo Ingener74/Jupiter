@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>europa.png</file>
+    <file>media_playback_start.png</file>
     <file>add.png</file>
     <file>rb_full.png</file>
     <file>stationery.png</file>

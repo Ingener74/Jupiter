@@ -24,6 +24,18 @@ class Camera;
 class SpriteBox2d;
 class Joint;
 
+class RevoluteJoint;
+class DistanceJoint;
+class RopeJoint;
+class MotorJoint;
+class GearJoint;
+class WheelJoint;
+class FrictionJoint;
+class MouseJoint;
+class PrismaticJoint;
+class PulleyJoint;
+class WeldJoint;
+
 class NodeVisitor: virtual public RCO {
 public:
     NodeVisitor();
