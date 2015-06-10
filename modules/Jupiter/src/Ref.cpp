@@ -104,5 +104,20 @@ template class Ref<PoligonShape>;
 template class Ref<CircleShape>;
 template class Ref<ComplexShape>;
 
+
+template class Ref<Joint>;
+
+template class Ref<RevoluteJoint>;
+template class Ref<DistanceJoint>;
+template class Ref<RopeJoint>;
+template class Ref<MotorJoint>;
+template class Ref<GearJoint>;
+template class Ref<WheelJoint>;
+template class Ref<FrictionJoint>;
+template class Ref<MouseJoint>;
+template class Ref<PrismaticJoint>;
+template class Ref<PulleyJoint>;
+template class Ref<WeldJoint>;
+
 }  // namespace jupiter
 
