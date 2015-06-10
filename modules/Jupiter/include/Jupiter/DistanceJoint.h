@@ -10,7 +10,6 @@
 
 #ifdef SWIG
 #else
-    #include <Box2D/Box2D.h>
 #endif
 
 #include "Joint.h"

@@ -11,8 +11,7 @@
 namespace jupiter {
 
 GearJoint::GearJoint(Box2dVisitor* visitor, b2GearJointDef jointDef) :
-    Joint(visitor) {
-    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
+    Joint(visitor, jointDef) {
 }
 
 GearJoint::~GearJoint() {

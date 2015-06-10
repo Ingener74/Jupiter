@@ -12,8 +12,7 @@
 namespace jupiter {
 
 RevoluteJoint::RevoluteJoint(Box2dVisitor* visitor, b2RevoluteJointDef jointDef) :
-    Joint(visitor) {
-    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
+    Joint(visitor, jointDef) {
 }
 
 RevoluteJoint::~RevoluteJoint() {

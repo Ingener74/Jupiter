@@ -10,9 +10,10 @@
 
 namespace jupiter {
 
-Joint::Joint(Box2dVisitor* visitor) :
+Joint::Joint(Box2dVisitor* visitor, b2JointDef jointDef) :
     _visitor(visitor) {
     jassert(_visitor, "invalid Box2D visitor");
+    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
 }
 
 Joint::~Joint() {

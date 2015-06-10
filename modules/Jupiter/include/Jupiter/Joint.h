@@ -23,7 +23,7 @@ class Box2dVisitor;
 
 class Joint: virtual public Node {
 public:
-    Joint(Box2dVisitor*);
+    Joint(Box2dVisitor*, b2JointDef);
     virtual ~Joint();
 
 protected:

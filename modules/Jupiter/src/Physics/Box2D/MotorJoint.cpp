@@ -11,8 +11,7 @@
 namespace jupiter {
 
 MotorJoint::MotorJoint(Box2dVisitor* visitor, b2MotorJointDef jointDef) :
-    Joint(visitor) {
-    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
+    Joint(visitor, jointDef) {
 }
 
 MotorJoint::~MotorJoint() {

@@ -11,8 +11,7 @@
 namespace jupiter {
 
 DistanceJoint::DistanceJoint(Box2dVisitor* visitor, b2DistanceJointDef jointDef) :
-    Joint(visitor) {
-    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
+    Joint(visitor, jointDef) {
 }
 
 DistanceJoint::~DistanceJoint() {

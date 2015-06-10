@@ -57,6 +57,12 @@
 #include "Jupiter/RopeJoint.h"
 #include "Jupiter/MotorJoint.h"
 #include "Jupiter/GearJoint.h"
+#include "Jupiter/WheelJoint.h"
+#include "Jupiter/FrictionJoint.h"
+#include "Jupiter/MouseJoint.h"
+#include "Jupiter/PrismaticJoint.h"
+#include "Jupiter/PulleyJoint.h"
+#include "Jupiter/WeldJoint.h"
 
 #ifdef SWIG
 #else

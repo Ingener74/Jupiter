@@ -11,8 +11,7 @@
 namespace jupiter {
 
 RopeJoint::RopeJoint(Box2dVisitor* visitor, b2RopeJointDef jointDef) :
-    Joint(visitor) {
-    _joint = _visitor->getWorld()->CreateJoint(&jointDef);
+    Joint(visitor, jointDef) {
 }
 
 RopeJoint::~RopeJoint() {

@@ -13,7 +13,6 @@ set(SOURCES
     src/FileFactory.cpp
     
     src/Game.cpp
-#    src/JsonGame.cpp
     
     src/Tools.cpp
     src/Texture.cpp
@@ -23,14 +22,12 @@ set(SOURCES
     src/PngImage.cpp
     
     src/Node.cpp
-#    src/JsonNode.cpp
     
     src/Shape.cpp
     src/VertexComponent.cpp
     src/ImageShape.cpp
     
     src/Sprite.cpp
-#    src/JsonSprite.cpp
 
     src/Camera.cpp
     src/NodeVisitor.cpp
@@ -66,6 +63,12 @@ set(SOURCES
     src/Physics/Box2D/RopeJoint.cpp
     src/Physics/Box2D/GearJoint.cpp
     src/Physics/Box2D/MotorJoint.cpp
+    src/Physics/Box2D/WheelJoint.cpp
+    src/Physics/Box2D/FrictionJoint.cpp
+    src/Physics/Box2D/MouseJoint.cpp
+    src/Physics/Box2D/PrismaticJoint.cpp
+    src/Physics/Box2D/PulleyJoint.cpp
+    src/Physics/Box2D/WeldJoint.cpp
     
     src/Animations/Animation.cpp
     src/Animations/MoveAnimation.cpp
