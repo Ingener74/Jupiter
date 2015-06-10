@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/Europe/res/Europe.ui'
+#
+# Created: Wed Jun 10 23:43:41 2015
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PySide import QtCore, QtGui
+
+class Ui_Europe(object):
+    def setupUi(self, Europe):
+        Europe.setObjectName("Europe")
+        Europe.resize(1307, 861)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/europa.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Europe.setWindowIcon(icon)
+        self.verticalLayout = QtGui.QVBoxLayout(Europe)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.tabWidget = QtGui.QTabWidget(Europe)
+        self.tabWidget.setObjectName("tabWidget")
+        self.EditorTab = QtGui.QWidget()
+        self.EditorTab.setObjectName("EditorTab")
+        self.resourcesGroupBox = QtGui.QGroupBox(self.EditorTab)
+        self.resourcesGroupBox.setGeometry(QtCore.QRect(20, 20, 276, 225))
+        self.resourcesGroupBox.setObjectName("resourcesGroupBox")
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.resourcesGroupBox)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.resources = QtGui.QTreeView(self.resourcesGroupBox)
+        self.resources.setObjectName("resources")
+        self.verticalLayout_2.addWidget(self.resources)
+        self.nodeTreeGroupBox = QtGui.QGroupBox(self.EditorTab)
+        self.nodeTreeGroupBox.setGeometry(QtCore.QRect(20, 420, 276, 225))
+        self.nodeTreeGroupBox.setObjectName("nodeTreeGroupBox")
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.nodeTreeGroupBox)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.nodeTree = QtGui.QTreeView(self.nodeTreeGroupBox)
+        self.nodeTree.setObjectName("nodeTree")
+        self.verticalLayout_3.addWidget(self.nodeTree)
+        self.previewGroupBox = QtGui.QGroupBox(self.EditorTab)
+        self.previewGroupBox.setGeometry(QtCore.QRect(330, 50, 591, 381))
+        self.previewGroupBox.setObjectName("previewGroupBox")
+        self.codeGroupBox = QtGui.QGroupBox(self.EditorTab)
+        self.codeGroupBox.setGeometry(QtCore.QRect(320, 460, 571, 291))
+        self.codeGroupBox.setObjectName("codeGroupBox")
+        self.verticalLayout_7 = QtGui.QVBoxLayout(self.codeGroupBox)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.textEdit_2 = QtGui.QTextEdit(self.codeGroupBox)
+        font = QtGui.QFont()
+        font.setFamily("Consolas")
+        self.textEdit_2.setFont(font)
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.verticalLayout_7.addWidget(self.textEdit_2)
+        self.tabWidget.addTab(self.EditorTab, "")
+        self.GameTab = QtGui.QWidget()
+        self.GameTab.setObjectName("GameTab")
+        self.verticalLayout_6 = QtGui.QVBoxLayout(self.GameTab)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.gameViewGroupBox = QtGui.QGroupBox(self.GameTab)
+        self.gameViewGroupBox.setObjectName("gameViewGroupBox")
+        self.verticalLayout_5 = QtGui.QVBoxLayout(self.gameViewGroupBox)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.graphicsView = QtGui.QGraphicsView(self.gameViewGroupBox)
+        self.graphicsView.setObjectName("graphicsView")
+        self.verticalLayout_5.addWidget(self.graphicsView)
+        self.verticalLayout_6.addWidget(self.gameViewGroupBox)
+        self.logGroupBox = QtGui.QGroupBox(self.GameTab)
+        self.logGroupBox.setObjectName("logGroupBox")
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.logGroupBox)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.textEdit = QtGui.QTextEdit(self.logGroupBox)
+        font = QtGui.QFont()
+        font.setFamily("Consolas")
+        self.textEdit.setFont(font)
+        self.textEdit.setObjectName("textEdit")
+        self.verticalLayout_4.addWidget(self.textEdit)
+        self.verticalLayout_6.addWidget(self.logGroupBox)
+        self.tabWidget.addTab(self.GameTab, "")
+        self.verticalLayout.addWidget(self.tabWidget)
+
+        self.retranslateUi(Europe)
+        self.tabWidget.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(Europe)
+
+    def retranslateUi(self, Europe):
+        Europe.setWindowTitle(QtGui.QApplication.translate("Europe", "Европа", None, QtGui.QApplication.UnicodeUTF8))
+        self.resourcesGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Ресурсы", None, QtGui.QApplication.UnicodeUTF8))
+        self.nodeTreeGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Дерево узлов", None, QtGui.QApplication.UnicodeUTF8))
+        self.previewGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Предпросмотр", None, QtGui.QApplication.UnicodeUTF8))
+        self.codeGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Редактор кода", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.EditorTab), QtGui.QApplication.translate("Europe", "Редактор", None, QtGui.QApplication.UnicodeUTF8))
+        self.gameViewGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Игра", None, QtGui.QApplication.UnicodeUTF8))
+        self.logGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Лог", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.GameTab), QtGui.QApplication.translate("Europe", "Игра", None, QtGui.QApplication.UnicodeUTF8))
+
+import resources_rc

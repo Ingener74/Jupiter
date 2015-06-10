@@ -173,6 +173,12 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         self.box2dBodySettings.close()
 
 
+class Europe(QWidget, Ui_Europe):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.setupUi(self)
+
+
 def setStyle():
     if sys.platform == 'win32':
         QApplication.setStyle(u"windows")
@@ -189,6 +195,9 @@ def main():
     
     mainWindow = GameDesignerWindow()
     mainWindow.show()
+
+    europe = Europe()
+    europe.show()
     
     sys.exit(app.exec_())
 

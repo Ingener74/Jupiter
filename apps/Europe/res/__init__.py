@@ -5,3 +5,4 @@ from GameDesigner import *
 from NodeSettings import *
 from SpriteSettings import *
 from Box2dBodySettings import *
+from Europe import (Ui_Europe)

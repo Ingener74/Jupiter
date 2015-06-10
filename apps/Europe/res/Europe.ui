@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1183</width>
-    <height>789</height>
+    <width>1307</width>
+    <height>861</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,17 +21,122 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="EditorTab">
       <attribute name="title">
        <string>Редактор</string>
       </attribute>
+      <widget class="QGroupBox" name="resourcesGroupBox">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>276</width>
+         <height>225</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Ресурсы</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTreeView" name="resources"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="nodeTreeGroupBox">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>420</y>
+         <width>276</width>
+         <height>225</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Дерево узлов</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QTreeView" name="nodeTree"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="previewGroupBox">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>50</y>
+         <width>591</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Предпросмотр</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="codeGroupBox">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>460</y>
+         <width>571</width>
+         <height>291</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Редактор кода</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QTextEdit" name="textEdit_2">
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
      <widget class="QWidget" name="GameTab">
       <attribute name="title">
        <string>Игра</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QGroupBox" name="gameViewGroupBox">
+         <property name="title">
+          <string>Игра</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QGraphicsView" name="graphicsView"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="logGroupBox">
+         <property name="title">
+          <string>Лог</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QTextEdit" name="textEdit">
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
