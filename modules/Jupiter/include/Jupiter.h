@@ -80,17 +80,23 @@ T* node2(Node* t) {
 
 #ifdef SWIG
 
-    %template(node2Sprite)        node2<Sprite>;
-    %template(node2SpriteBox2d)   node2<SpriteBox2d>;
-    %template(node2Box2dNode)     node2<Box2dNode>;
-    %template(node2Camera)        node2<Camera>;
+    %template(node2Sprite)          node2<Sprite>;
+    %template(node2SpriteBox2d)     node2<SpriteBox2d>;
+    %template(node2Box2dNode)       node2<Box2dNode>;
+    %template(node2Camera)          node2<Camera>;
 
-    %template(node2Joint)         node2<Joint>;
-    %template(node2RevoluteJoint) node2<RevoluteJoint>;
-    %template(node2DistanceJoint) node2<DistanceJoint>;
-    %template(node2RopeJoint)     node2<RopeJoint>;
-    %template(node2GearJoint)     node2<GearJoint>;
-    %template(node2MotorJoint)    node2<MotorJoint>;
+    %template(node2Joint)           node2<Joint>;
+    %template(node2RevoluteJoint)   node2<RevoluteJoint>;
+    %template(node2DistanceJoint)   node2<DistanceJoint>;
+    %template(node2RopeJoint)       node2<RopeJoint>;
+    %template(node2MotorJoint)      node2<MotorJoint>;
+    %template(node2GearJoint)       node2<GearJoint>;
+    %template(node2WheelJoint)      node2<WheelJoint>;
+    %template(node2FrictionJoint)   node2<FrictionJoint>;
+    %template(node2MouseJoint)      node2<MouseJoint>;
+    %template(node2PrismaticJoint)  node2<PrismaticJoint>;
+    %template(node2PulleyJoint)     node2<PulleyJoint>;
+    %template(node2WeldJoint)       node2<WeldJoint>;
 
 #endif
 

@@ -19,13 +19,14 @@ class b2Shape;
 
 namespace jupiter {
 
-class PhysicsShape: virtual public RCO{
+class PhysicsShape: virtual public RCO {
 public:
     PhysicsShape();
     virtual ~PhysicsShape();
 
     virtual void setScale(float x, float y) = 0;
     virtual int shapesCount() const = 0;
+
     virtual b2FixtureDef* getFixtureDef(int index) = 0;
 };
 

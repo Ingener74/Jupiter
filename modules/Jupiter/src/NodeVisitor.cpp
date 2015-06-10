@@ -41,5 +41,43 @@ void NodeVisitor::visit(Camera*) {
 void NodeVisitor::end() {
 }
 
-} /* namespace jupiter */
+void NodeVisitor::visit(SpriteBox2d*) {
+}
 
+void NodeVisitor::visit(Joint*) {
+}
+
+void NodeVisitor::visit(RevoluteJoint*) {
+}
+
+void NodeVisitor::visit(DistanceJoint*) {
+}
+
+void NodeVisitor::visit(RopeJoint*) {
+}
+
+void NodeVisitor::visit(MotorJoint*) {
+}
+
+void NodeVisitor::visit(GearJoint*) {
+}
+
+void NodeVisitor::visit(WheelJoint*) {
+}
+
+void NodeVisitor::visit(FrictionJoint*) {
+}
+
+void NodeVisitor::visit(MouseJoint*) {
+}
+
+void NodeVisitor::visit(PrismaticJoint*) {
+}
+
+void NodeVisitor::visit(PulleyJoint*) {
+}
+
+void NodeVisitor::visit(WeldJoint*) {
+}
+
+} /* namespace jupiter */

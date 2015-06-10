@@ -12,9 +12,11 @@
 
 namespace jupiter {
 
+class Image;
+
 class ImageShape: public Shape {
 public:
-    ImageShape(class Image*);
+    ImageShape(Image*);
     virtual ~ImageShape();
 };
 

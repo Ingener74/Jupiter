@@ -261,7 +261,6 @@ class FallingBox(object):
         propellerJoint = j.RevoluteJoint(physics, propJointDef)
 
         # Машина
-        
         carBodyDef = b.b2BodyDef()
         carBodyDef.type = b.b2_dynamicBody
 
