@@ -259,7 +259,25 @@ class FallingBox(object):
         propJointDef = b.b2RevoluteJointDef()
         propJointDef.Initialize(propeller1.getPhysicsBody(), grounds[6].getPhysicsBody(), b.b2Vec2(4.6, 2.7))
         propellerJoint = j.RevoluteJoint(physics, propJointDef)
+
+        # Машина
         
+        carBodyDef = b.b2BodyDef()
+        carBodyDef.type = b.b2_dynamicBody
+
+        carFixtureDef = b.b2FixtureDef()
+        carFixtureDef.density = 3
+
+        carImage = j.PngImage('Resources/car.png')
+
+        carShape = j.ComplexShape(carImage, j.File('Resources/Box.json'), 'Car', carFixtureDef)
+
+        car = j.SpriteBox2d(physics, carBodyDef, carShape)
+        car.setProgram(shader).\
+            setTexture(j.ImageTexture(carImage)).\
+            setShape(j.ImageShape(carImage)).\
+            setScaleF(0.01)
+
         # Добавляем все узлы в дерево
         rn.\
             addNode(bg).\
@@ -287,7 +305,8 @@ class FallingBox(object):
             addNode(propeller2).\
             addNode(ship1).\
             addNode(propellerJoint).\
-            addNode(propBox)
+            addNode(propBox).\
+            addNode(car)
 
         self.game = j.Game()
         self.game.\
