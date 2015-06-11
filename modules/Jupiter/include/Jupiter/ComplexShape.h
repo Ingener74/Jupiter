@@ -12,17 +12,19 @@
 #else
     #include <json.hpp>
 #endif
+
+#include "PhysicsBodyEditorAtlas.h"
 #include "PhysicsShape.h"
 
 namespace jupiter {
 
-class File;
+class PhysicsBodyEditorShape;
 class Image;
 
 class ComplexShape: public PhysicsShape {
 public:
     ComplexShape();
-    ComplexShape(Image*, File*, std::string const& name, b2FixtureDef);
+    ComplexShape(Image*, PhysicsBodyEditorShape, b2FixtureDef);
     virtual ~ComplexShape();
 
     virtual void setScale(float x, float y);
@@ -30,12 +32,12 @@ public:
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
+//    std::vector<std::vector<b2Vec2>>   _polygons;
+//    std::vector<b2PolygonShape>        _polygonShapes;
 
-    void get(nlohmann::json j);
-
-    std::vector<std::vector<b2Vec2>>   _polygons;
-    std::vector<b2PolygonShape>        _polygonShapes;
-    b2FixtureDef                       _fixtureDef;
+    int width = 0, height = 0;
+    PhysicsBodyEditorShape   _shape;
+    b2FixtureDef             _fixtureDef;
 };
 
 } /* namespace jupiter */
