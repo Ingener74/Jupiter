@@ -7,6 +7,8 @@
 
 #include <sstream>
 
+#include "Jupiter/Ref.h"
+#include "Jupiter/File.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/PhysicsBodyEditorAtlas.h"
 
@@ -46,9 +48,10 @@ ostream& operator <<(ostream& out, const PhysicsBodyEditorShape& r) {
         { "name", r.name },
         { "imagePath", r.imagePath },
         { "origin" , {
-            {"x": r.origin.x},
-            {"y", r.origin.y}
-        }},
+                {"x", r.origin.x},
+                {"y", r.origin.y}
+            }
+        },
     };
 
     return out << j; /*"Shape{" << r.name << ", " << r.imagePath << ", (" << r.origin.x << "x" << r.origin.y << "), "
@@ -88,6 +91,12 @@ PhysicsBodyEditorAtlas::PhysicsBodyEditorAtlas(File* atlas) {
 }
 
 PhysicsBodyEditorAtlas::~PhysicsBodyEditorAtlas() {
+}
+
+PhysicsBodyEditorShape PhysicsBodyEditorAtlas::getShape(const std::string& name) {
+    auto it = _shapes.find(name);
+    jassert(it != _shapes.end(), "no shape with name " + name);
+    return it->second;
 }
 
 } /* namespace jupiter */

@@ -46,11 +46,13 @@
 
 #include "Jupiter/SpriteBox2d.h"
 
+#include "Jupiter/MoveAnimation.h"
+
 #include "Jupiter/PoligonShape.h"
 #include "Jupiter/CircleShape.h"
 #include "Jupiter/ComplexShape.h"
 
-#include "Jupiter/MoveAnimation.h"
+#include "Jupiter/PhysicsBodyEditorAtlas.h"
 
 #include "Jupiter/RevoluteJoint.h"
 #include "Jupiter/DistanceJoint.h"

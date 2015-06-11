@@ -57,6 +57,8 @@ set(SOURCES
     src/CircleShape.cpp
     src/ComplexShape.cpp
     
+    src/Physics/Box2D/PhysicsBodyEditorAtlas.cpp
+    
     src/Physics/Box2D/Joint.cpp
     src/Physics/Box2D/RevoluteJoint.cpp
     src/Physics/Box2D/DistanceJoint.cpp
