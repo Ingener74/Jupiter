@@ -15,3 +15,7 @@ libs
 /build-win/
 /Jupiter.sublime-project
 /Jupiter.sublime-workspace
+
+apps/Io/.idea
+apps/Europe/.idea
+3rdparty/json
