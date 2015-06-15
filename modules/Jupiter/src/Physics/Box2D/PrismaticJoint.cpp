@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-PrismaticJoint::PrismaticJoint(Box2dVisitor* visitor, b2PrismaticJointDef jointDef) :
+PrismaticJoint::PrismaticJoint(Physics* visitor, b2PrismaticJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

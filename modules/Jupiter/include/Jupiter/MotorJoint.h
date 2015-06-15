@@ -18,7 +18,7 @@ namespace jupiter {
 
 class MotorJoint: public Joint {
 public:
-    MotorJoint(Box2dVisitor*, b2MotorJointDef);
+    MotorJoint(Physics*, b2MotorJointDef);
     virtual ~MotorJoint();
 
     b2MotorJoint* getMotorJoint();

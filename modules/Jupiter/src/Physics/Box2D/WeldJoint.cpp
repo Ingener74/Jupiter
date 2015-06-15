@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-WeldJoint::WeldJoint(Box2dVisitor* visitor, b2WeldJointDef jointDef) :
+WeldJoint::WeldJoint(Physics* visitor, b2WeldJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

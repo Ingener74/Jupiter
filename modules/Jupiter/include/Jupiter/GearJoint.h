@@ -18,7 +18,7 @@ namespace jupiter {
 
 class GearJoint: public Joint {
 public:
-    GearJoint(Box2dVisitor*, b2GearJointDef);
+    GearJoint(Physics*, b2GearJointDef);
     virtual ~GearJoint();
 
     b2GearJoint* getGearJoint();

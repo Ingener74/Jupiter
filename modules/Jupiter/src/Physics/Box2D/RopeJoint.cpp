@@ -5,12 +5,12 @@
  *      Author: pavel
  */
 
-#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Physics.h"
 #include "Jupiter/RopeJoint.h"
 
 namespace jupiter {
 
-RopeJoint::RopeJoint(Box2dVisitor* visitor, b2RopeJointDef jointDef) :
+RopeJoint::RopeJoint(Physics* visitor, b2RopeJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

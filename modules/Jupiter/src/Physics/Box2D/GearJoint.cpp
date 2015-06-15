@@ -5,12 +5,11 @@
  *      Author: pavel
  */
 
-#include "Jupiter/Box2dVisitor.h"
 #include "Jupiter/GearJoint.h"
 
 namespace jupiter {
 
-GearJoint::GearJoint(Box2dVisitor* visitor, b2GearJointDef jointDef) :
+GearJoint::GearJoint(Physics* visitor, b2GearJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

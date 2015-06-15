@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-PulleyJoint::PulleyJoint(Box2dVisitor* visitor, b2PulleyJointDef jointDef) :
+PulleyJoint::PulleyJoint(Physics* visitor, b2PulleyJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

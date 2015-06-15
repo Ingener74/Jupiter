@@ -5,12 +5,12 @@
  *      Author: pavel
  */
 
-#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Physics.h"
 #include "Jupiter/DistanceJoint.h"
 
 namespace jupiter {
 
-DistanceJoint::DistanceJoint(Box2dVisitor* visitor, b2DistanceJointDef jointDef) :
+DistanceJoint::DistanceJoint(Physics* visitor, b2DistanceJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

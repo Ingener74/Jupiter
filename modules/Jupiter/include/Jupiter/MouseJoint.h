@@ -14,7 +14,7 @@ namespace jupiter {
 
 class MouseJoint: public Joint {
 public:
-    MouseJoint(Box2dVisitor*, b2MouseJointDef);
+    MouseJoint(Physics*, b2MouseJointDef);
     virtual ~MouseJoint();
 
     b2MouseJoint* getMouseJoint();

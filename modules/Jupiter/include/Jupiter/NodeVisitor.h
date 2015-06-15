@@ -19,9 +19,9 @@ namespace jupiter {
 
 class Node;
 class Sprite;
-class Box2dNode;
+class Body;
 class Camera;
-class SpriteBox2d;
+class SpriteBody;
 class Joint;
 
 class RevoluteJoint;
@@ -48,10 +48,10 @@ public:
 
     virtual void visit(Node*);
     virtual void visit(Sprite*);
-    virtual void visit(Box2dNode*);
+    virtual void visit(Body*);
     virtual void visit(Camera*);
 
-    virtual void visit(SpriteBox2d*);
+    virtual void visit(SpriteBody*);
 
     virtual void visit(Joint*);
     virtual void visit(RevoluteJoint*);

@@ -6,12 +6,11 @@
  */
 
 #include "Jupiter/JupiterError.h"
-#include "Jupiter/Box2dVisitor.h"
 #include "Jupiter/RevoluteJoint.h"
 
 namespace jupiter {
 
-RevoluteJoint::RevoluteJoint(Box2dVisitor* visitor, b2RevoluteJointDef jointDef) :
+RevoluteJoint::RevoluteJoint(Physics* visitor, b2RevoluteJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

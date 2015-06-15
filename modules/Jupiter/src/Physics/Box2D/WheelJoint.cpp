@@ -5,12 +5,12 @@
  *      Author: pavel
  */
 
-#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Physics.h"
 #include "Jupiter/WheelJoint.h"
 
 namespace jupiter {
 
-WheelJoint::WheelJoint(Box2dVisitor* visitor, b2WheelJointDef jointDef) :
+WheelJoint::WheelJoint(Physics* visitor, b2WheelJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-MouseJoint::MouseJoint(Box2dVisitor* visitor, b2MouseJointDef jointDef) :
+MouseJoint::MouseJoint(Physics* visitor, b2MouseJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

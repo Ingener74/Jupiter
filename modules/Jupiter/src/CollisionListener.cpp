@@ -5,7 +5,7 @@
  *      Author: pavel
  */
 
-#include "Jupiter/Box2dNode.h"
+#include "Jupiter/Body.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/CollisionListener.h"
 
@@ -17,7 +17,7 @@ CollisionListener::CollisionListener() {
 CollisionListener::~CollisionListener() {
 }
 
-void CollisionListener::collision(Box2dNode*) {
+void CollisionListener::collision(Body*) {
 }
 
 } /* namespace jupiter */
