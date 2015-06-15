@@ -27,7 +27,7 @@ struct Circle {
     float radius;
 };
 
-std::ostream& operator<<(std::ostream& out, const b2Vec2& r);
+std::ostream& operator<<(std::ostream&, const b2Vec2&);
 
 struct PhysicsBodyEditorShape{
     PhysicsBodyEditorShape() = default;
@@ -39,7 +39,8 @@ struct PhysicsBodyEditorShape{
     std::vector<std::vector<b2Vec2>>   polygons;
     std::vector<Circle>                circles;
 
-    friend std::ostream& operator<<(std::ostream& out, const PhysicsBodyEditorShape& r);
+    nlohmann::json getJson() const;
+    friend std::ostream& operator<<(std::ostream&, const PhysicsBodyEditorShape&);
 };
 
 class PhysicsBodyEditorAtlas {
@@ -48,6 +49,9 @@ public:
     virtual ~PhysicsBodyEditorAtlas();
 
     PhysicsBodyEditorShape getShape(std::string const& name);
+
+    nlohmann::json getJson() const;
+    friend std::ostream& operator<<(std::ostream&, const PhysicsBodyEditorAtlas&);
 
 private:
     std::map<std::string, PhysicsBodyEditorShape> _shapes;

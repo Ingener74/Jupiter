@@ -55,8 +55,8 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    WIDTH  = 1000
-    # WIDTH  = 300
+    # WIDTH  = 1000
+    WIDTH  = 300
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -153,6 +153,9 @@ class FallingBox(object):
         box7 = j.SpriteBox2d(box6)
         box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
+        # Сложная форма
+        phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
+
         # Сложная физическая форма
         ship1Image = j.PngImage('Resources/ship1.png')
         
@@ -160,7 +163,7 @@ class FallingBox(object):
         ship1FixDef.density = 4
         ship1FixDef.restitution = .6
         
-        shipComplexShape = j.ComplexShape(ship1Image, j.File('Resources/Box.json'), 'Ship', ship1FixDef)
+        shipComplexShape = j.ComplexShape(ship1Image, phAtlas.getShape('Ship'), ship1FixDef)
         
         ship1Def = b.b2BodyDef()
         ship1Def.type = b.b2_dynamicBody
@@ -210,7 +213,7 @@ class FallingBox(object):
 
         propellerImage = j.PngImage('Resources/propeller3.png')
 
-        self.propellerComplexShape = j.ComplexShape(propellerImage, j.File('Resources/Box.json'), 'Propeller3', propellerFixDef)
+        self.propellerComplexShape = j.ComplexShape(propellerImage, phAtlas.getShape('Propeller3'), propellerFixDef)
         propeller1 = j.SpriteBox2d(physics, propellerDef, self.propellerComplexShape)
         propeller1.\
             setProgram(shader).\
@@ -269,7 +272,7 @@ class FallingBox(object):
 
         carImage = j.PngImage('Resources/car.png')
 
-        carShape = j.ComplexShape(carImage, j.File('Resources/Box.json'), 'Car', carFixtureDef)
+        carShape = j.ComplexShape(carImage, phAtlas.getShape('Car'), carFixtureDef)
 
         car = j.SpriteBox2d(physics, carBodyDef, carShape)
         car.setProgram(shader).\

@@ -83,8 +83,8 @@ T* node2(Node* t) {
 #ifdef SWIG
 
     %template(node2Sprite)          node2<Sprite>;
-    %template(node2SpriteBox2d)     node2<SpriteBox2d>;
     %template(node2Box2dNode)       node2<Box2dNode>;
+    %template(node2SpriteBox2d)     node2<SpriteBox2d>;
     %template(node2Camera)          node2<Camera>;
 
     %template(node2Joint)           node2<Joint>;

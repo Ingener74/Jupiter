@@ -6,6 +6,7 @@
  */
 
 #include <sstream>
+#include <iomanip>
 
 #include "Jupiter/Ref.h"
 #include "Jupiter/File.h"
@@ -16,6 +17,10 @@ namespace jupiter {
 
 using namespace std;
 using namespace nlohmann;
+
+ostream& operator <<(ostream& out, const b2Vec2& r) {
+    return out << "(" << r.x << "x" << r.y << ")";
+}
 
 Circle::Circle(b2Vec2 center, float radius) :
     center(center), radius(radius) {
@@ -38,41 +43,36 @@ PhysicsBodyEditorShape::PhysicsBodyEditorShape(json rigidBody) {
         circles.emplace_back(b2Vec2 { float(circle["cx"]), float(circle["cy"]) }, float(circle["r"]));
 }
 
-ostream& operator <<(ostream& out, const b2Vec2& r) {
-    return out << "(" << r.x << "x" << r.y << ")";
+json PhysicsBodyEditorShape::getJson() const {
+    return json{
+        { "name", name },
+        { "imagePath", imagePath },
+        { "origin" , {
+                {"x", origin.x},
+                {"y", origin.y}
+            }
+        },
+        { "polygons", [=]{
+            json j;
+            for(auto const& poly: polygons){
+                json polygon;
+                for(auto const& point: poly)
+                    polygon.push_back(json { {"x", point.x}, {"y", point.y}});
+                j.push_back(polygon);
+            }
+            return j;
+        }()},
+        { "circles", [=]{
+            json circles_;
+            for(auto const& circle: circles)
+                circles_.push_back(json { {"cx", circle.center.x}, {"cy", circle.center.y}, {"cx", circle.radius}});
+            return circles_;
+        }()},
+    };
 }
 
 ostream& operator <<(ostream& out, const PhysicsBodyEditorShape& r) {
-
-    json j{
-        { "name", r.name },
-        { "imagePath", r.imagePath },
-        { "origin" , {
-                {"x", r.origin.x},
-                {"y", r.origin.y}
-            }
-        },
-    };
-
-    return out << j; /*"Shape{" << r.name << ", " << r.imagePath << ", (" << r.origin.x << "x" << r.origin.y << "), "
-        << [&] {stringstream s;s << ", polygons [";for (const auto& i: r.polygons) {
-                s << "[";
-                for (const auto& j: i) {
-                    s << "(" << j.x << "x" << j.y << "), ";
-                }
-                s << "]";
-            }
-            s << "]";
-            return s.str();
-        }() << [&] {
-            stringstream s;
-            s << ", circles [";
-            for (const auto& i: r.circles) {
-                s << "{(" << i.center.x << "x" << i.center.y << "), " << i.radius << "}, ";
-            }
-            s << "]";
-            return s.str();
-        }();*/
+    return out << setw(4) << r.getJson();
 }
 
 PhysicsBodyEditorAtlas::PhysicsBodyEditorAtlas(File* atlas) {
@@ -93,10 +93,23 @@ PhysicsBodyEditorAtlas::PhysicsBodyEditorAtlas(File* atlas) {
 PhysicsBodyEditorAtlas::~PhysicsBodyEditorAtlas() {
 }
 
-PhysicsBodyEditorShape PhysicsBodyEditorAtlas::getShape(const std::string& name) {
+PhysicsBodyEditorShape PhysicsBodyEditorAtlas::getShape(const string& name) {
     auto it = _shapes.find(name);
     jassert(it != _shapes.end(), "no shape with name " + name);
     return it->second;
+}
+
+json PhysicsBodyEditorAtlas::getJson() const {
+    return json { "rigidBodies", [=] {
+        json rigidBodies;
+        for(auto const& i: _shapes)
+            rigidBodies.push_back(i.second.getJson());
+        return rigidBodies;
+    }() };
+}
+
+ostream& operator<<(ostream& out, const PhysicsBodyEditorAtlas& r) {
+    return out << setw(4) << r.getJson();
 }
 
 } /* namespace jupiter */

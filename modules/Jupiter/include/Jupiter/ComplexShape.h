@@ -32,15 +32,13 @@ public:
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
-//    std::vector<std::vector<b2Vec2>>   _polygons;
-
-    std::vector<b2PolygonShape>   _polygonShapes;
-    std::vector<b2CircleShape>    _circleShapes;
-
     int                           _width = 0;
     int                           _height = 0;
     PhysicsBodyEditorShape        _shape;
+
     b2FixtureDef                  _fixtureDef;
+    std::vector<b2PolygonShape>   _polygonShapes;
+    std::vector<b2CircleShape>    _circleShapes;
 };
 
 } /* namespace jupiter */
