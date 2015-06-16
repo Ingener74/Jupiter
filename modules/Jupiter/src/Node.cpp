@@ -26,6 +26,21 @@ using namespace std;
 using namespace glm;
 using namespace nlohmann;
 
+
+/*
+
+transform
+    body
+        visualBody
+    sprite
+
+transform
+    camera
+        visual camera
+
+ */
+
+
 Node::Node() {
 }
 

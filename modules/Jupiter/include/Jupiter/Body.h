@@ -57,7 +57,7 @@ public:
     Body* setCollisionListener(CollisionListener*);
 
 protected:
-    Ref<Physics>         _visitor;
+    Ref<Physics>              _visitor;
 
     b2BodyDef                 _bodyDef;
     b2Body*                   _body               = nullptr;

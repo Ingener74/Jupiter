@@ -11,7 +11,6 @@
 #ifdef SWIG
 #else
     #include <memory>
-
     #include <json.hpp>
 #endif
 
