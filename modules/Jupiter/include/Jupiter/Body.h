@@ -35,12 +35,12 @@ public:
     Body(const Body&);
     virtual Body* clone(Body*);
 
-    virtual Body* setRotation(float x, float y, float z, float angle);
-    virtual Body* rotate(float x, float y, float z, float angle);
-    virtual Body* setPosition(float x, float y, float z);
-    virtual Body* translate(float x, float y, float z);
-    virtual Body* setScale(float x, float y, float z);
-    virtual Body* scale(float x, float y, float z);
+//    virtual Body* setRotation(float x, float y, float z, float angle);
+//    virtual Body* rotate(float x, float y, float z, float angle);
+//    virtual Body* setPosition(float x, float y, float z);
+//    virtual Body* translate(float x, float y, float z);
+//    virtual Body* setScale(float x, float y, float z);
+//    virtual Body* scale(float x, float y, float z);
 
     virtual Body* accept(NodeVisitor*);
 

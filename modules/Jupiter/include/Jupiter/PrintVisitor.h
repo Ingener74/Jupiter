@@ -25,33 +25,9 @@ public:
     virtual ~PrintVisitor();
 
     virtual void begin();
-
-    virtual void visit(Node*);
-    virtual void visit(Sprite*);
-    virtual void visit(Body*);
-    virtual void visit(Camera*);
-
-    virtual void visit(SpriteBody*);
-
-    virtual void visit(Joint*);
-    virtual void visit(RevoluteJoint*);
-    virtual void visit(DistanceJoint*);
-    virtual void visit(RopeJoint*);
-    virtual void visit(MotorJoint*);
-    virtual void visit(GearJoint*);
-    virtual void visit(WheelJoint*);
-    virtual void visit(FrictionJoint*);
-    virtual void visit(MouseJoint*);
-    virtual void visit(PrismaticJoint*);
-    virtual void visit(PulleyJoint*);
-    virtual void visit(WeldJoint*);
-
     virtual void end();
 
 private:
-    int calcTabs(Node*);
-    std::string tabs(int);
-
     Game* _game = nullptr;
 };
 

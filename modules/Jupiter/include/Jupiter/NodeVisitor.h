@@ -17,61 +17,47 @@
 
 namespace jupiter {
 
-class Node;
-class Sprite;
-class Body;
-class Camera;
-class SpriteBody;
-class VisualBody;
-class Joint;
+#define VISIT(X)                   \
+    virtual void push(class X*){}  \
+    virtual void visit(class X*){} \
+    virtual void pop(class X*){}   \
 
-class RevoluteJoint;
-class DistanceJoint;
-class RopeJoint;
-class MotorJoint;
-class GearJoint;
-class WheelJoint;
-class FrictionJoint;
-class MouseJoint;
-class PrismaticJoint;
-class PulleyJoint;
-class WeldJoint;
+#define VISIT_(X)           \
+    virtual void push(X*);  \
+    virtual void visit(X*); \
+    virtual void pop(X*);   \
 
 class NodeVisitor: virtual public RCO {
 public:
-    NodeVisitor();
-    virtual ~NodeVisitor();
+    NodeVisitor() = default;
+    virtual ~NodeVisitor() = default;
 
-    virtual void begin();
+    virtual void begin(){}
 
-    virtual void push(Node*);
-    virtual void pop();
+    VISIT(Node)
 
-    virtual void visit(Node*);
-    virtual void visit(Sprite*);
-    virtual void visit(Body*);
-    virtual void visit(SpriteBody*);
-    virtual void visit(VisualBody*);
+    VISIT(Transform)
+    VISIT(Sprite)
+    VISIT(Body)
+    VISIT(SpriteBody)
+    VISIT(VisualBody)
 
-    virtual void visit(Camera*);
+    VISIT(Camera)
 
-    virtual void visit(Joint*);
-    virtual void visit(RevoluteJoint*);
-    virtual void visit(DistanceJoint*);
-    virtual void visit(RopeJoint*);
-    virtual void visit(MotorJoint*);
-    virtual void visit(GearJoint*);
-    virtual void visit(WheelJoint*);
-    virtual void visit(FrictionJoint*);
-    virtual void visit(MouseJoint*);
-    virtual void visit(PrismaticJoint*);
-    virtual void visit(PulleyJoint*);
-    virtual void visit(WeldJoint*);
+    VISIT(Joint)
+    VISIT(RevoluteJoint)
+    VISIT(DistanceJoint)
+    VISIT(RopeJoint)
+    VISIT(MotorJoint)
+    VISIT(GearJoint)
+    VISIT(WheelJoint)
+    VISIT(FrictionJoint)
+    VISIT(MouseJoint)
+    VISIT(PrismaticJoint)
+    VISIT(PulleyJoint)
+    VISIT(WeldJoint)
 
-    virtual void end();
-
-protected:
-    std::stack<Node*> _stack;
+    virtual void end(){}
 };
 
 } /* namespace jupiter */

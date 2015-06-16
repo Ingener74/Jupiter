@@ -11,11 +11,13 @@
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Game.h"
-#include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/Texture.h"
 #include "Jupiter/File.h"
+
+#include "Jupiter/Node.h"
+#include "Jupiter/Transform.h"
 
 #include "Jupiter/FileFactory.h"
 

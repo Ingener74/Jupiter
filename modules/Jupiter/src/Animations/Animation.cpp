@@ -10,12 +10,12 @@
 
 namespace jupiter {
 
-void Animation::setNode(Node* node) {
+void Animation::setTransform(Transform* node) {
     jassert(node, "invalid node");
     _node = node;
 }
 
-Node* Animation::getNode() {
+Transform* Animation::getTransform() {
     jassert(_node, "no node");
     return _node;
 }

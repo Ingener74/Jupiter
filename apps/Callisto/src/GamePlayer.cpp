@@ -124,9 +124,9 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(bgTexture.get())
         ->setShape(bgShape.get())
         ->setVisible(true)
-        ->translateZ(-10.f)
-        ->scaleF(.3f)
-        ->setParent(rootNode.get())
+//        ->translateZ(-10.f)
+//        ->scaleF(.3f)
+//        ->setParent(rootNode.get())
     ;
 
     PngImage flourImage { "Resources/ground.png" };
@@ -141,13 +141,13 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(flourTexture.get())
         ->setShape(flourShape.get())
         ->setVisible(true)
-        ->translate(0.f, -190.f, 20.f)
-        ->scaleF(.8f)
-        ->setParent(rootNode.get())
+//        ->translate(0.f, -190.f, 20.f)
+//        ->scaleF(.8f)
+//        ->setParent(rootNode.get())
     ;
 
     flour1 = make_unique_<Sprite>();
-    flour1->clone(flour.get())->translateX(-40.f);
+//    flour1->clone(flour.get())->translateX(-40.f);
 
     PngImage boxImage { "Resources/box.png" };
     boxTexture = make_unique_<ImageTexture>(&boxImage);
@@ -159,12 +159,12 @@ bool createGameDirect(const variables_map& vm) {
         ->setTexture(boxTexture.get())
         ->setShape(boxShape.get())
 //        ->setController(boxController.get())
-        ->setMoveListener(&bm)
-        ->setScaleListener(&bm)
-        ->setVisible(true)
-        ->translate(0.f, 150.f, 20.f)
-        ->scaleF(.1f)
-        ->setParent(rootNode.get())
+//        ->setMoveListener(&bm)
+//        ->setScaleListener(&bm)
+//        ->setVisible(true)
+//        ->translate(0.f, 150.f, 20.f)
+//        ->scaleF(.1f)
+//        ->setParent(rootNode.get())
     ;
 
     rootNode
@@ -239,7 +239,7 @@ bool createGame(int argc, char* argv[]) {
 
 void draw() {
 
-    box->rotateZ(.03f);
+//    box->rotateZ(.03f);
 
     game->draw();
 }

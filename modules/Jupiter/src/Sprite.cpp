@@ -71,7 +71,7 @@ Sprite* Sprite::accept(NodeVisitor* nv) {
             jassert(i, "node is invalid");
             i->accept(nv);
         }
-        nv->pop();
+        nv->pop(this);
     }
     return this;
 }

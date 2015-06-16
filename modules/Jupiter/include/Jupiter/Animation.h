@@ -10,7 +10,7 @@
 
 namespace jupiter {
 
-class Node;
+class Transform;
 
 class Animation {
 public:
@@ -19,11 +19,11 @@ public:
 
     virtual void update(float dt) = 0;
 
-    void setNode(Node*);
-    Node* getNode();
+    void setTransform(Transform*);
+    Transform* getTransform();
 
 protected:
-    Node* _node = nullptr;
+    Transform* _node = nullptr;
 };
 
 } /* namespace jupiter */

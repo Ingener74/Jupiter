@@ -19,26 +19,26 @@
 
 namespace jupiter {
 
-class Camera;
-class VisualBody;
-
 class RenderVisitor: public NodeVisitor {
 public:
     RenderVisitor() = default;
-    RenderVisitor(Camera*);
+    RenderVisitor(class Camera*);
 
     virtual ~RenderVisitor() = default;
 
     virtual void begin();
 
-    virtual void visit(Sprite*);
-    virtual void visit(VisualBody*);
-    virtual void visit(Camera*);
+    VISIT_(Sprite)
+    VISIT_(VisualBody)
+    VISIT_(Camera)
+    VISIT_(Transform)
 
     virtual void end();
 
 private:
     Ref<Camera> _camera; // TODO должна быть не здесь а в дереве узлов
+
+    std::stack<Transform*> _transforms;
 };
 
 } /* namespace jupiter */

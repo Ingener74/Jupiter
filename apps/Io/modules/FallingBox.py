@@ -100,22 +100,26 @@ class FallingBox(object):
 
         physics = j.Physics(1.0 / self.FPS)
         
+        cameraTrans = j.Transform()
+        cameraTrans.setPosition(0, 0, -20)
         camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
-        camera.setPosition(0, 0, -20)#.setRotation(0, 1, 0, -0.3)
+        cameraTrans.addNode(camera)
 
         render = j.RenderVisitor(camera)
         
         rn = j.Node()
+        rn.addNode(cameraTrans)
         
+        bgT = j.Transform()
+        bgT.translate(0., 0., -1.).setScaleF(0.022)
+
         bgImage = j.PngImage('Resources/bg.png')
         bg = j.Sprite()
-        bg.setProgram(shader).\
-            setTexture(j.ImageTexture(bgImage)).\
-            setShape(j.ImageShape(bgImage)).\
-            translate(0., 0., -1.).\
-            setScaleF(0.022)
-            
-            
+        bg.setProgram(shader).setTexture(j.ImageTexture(bgImage)).setShape(j.ImageShape(bgImage))
+
+        bgT.addNode(bg)
+
+        
         self.boxTest = Box(window)
         self.boxCol = BoxCollision()
         boxImage = j.PngImage('Resources/box.png')
@@ -133,6 +137,7 @@ class FallingBox(object):
             setProgram(shader).\
             setTexture(j.ImageTexture(boxImage)).\
             setShape(j.ImageShape(boxImage)).\
+            
             setMoveListener(self.boxTest).\
             translate(0, 2, 1).\
             setScaleF(0.002)

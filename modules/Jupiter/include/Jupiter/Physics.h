@@ -27,10 +27,8 @@ public:
 
     virtual void begin();
 
-    virtual void push(Node*);
-    virtual void pop();
-
-    virtual void visit(Body*);
+    VISIT_(Body)
+    VISIT_(Transform);
 
     virtual void end();
 
@@ -53,6 +51,8 @@ private:
     int _positionIterations = 2;
     int _velocityIterations = 6;
     std::unique_ptr<b2ContactListener> _contactListener;
+
+    std::stack<Transform*> _transforms;
 };
 
 } /* namespace jupiter */

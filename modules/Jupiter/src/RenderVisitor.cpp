@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+#include "Jupiter/Transform.h"
 #include "Jupiter/Shader.h"
 #include "Jupiter/Camera.h"
 #include "Jupiter/Tools.h"
@@ -24,6 +25,9 @@ RenderVisitor::RenderVisitor(Camera* camera) {
 }
 
 void RenderVisitor::begin() {
+}
+
+void RenderVisitor::push(Sprite*){
 }
 
 void RenderVisitor::visit(Sprite* sprite) {
@@ -51,7 +55,7 @@ void RenderVisitor::visit(Sprite* sprite) {
     uniformView.set(_camera->getViewMatrix());
 
     auto uniformModel = shader->getUniform("Model");
-    uniformModel.set(sprite->getModel());
+    uniformModel.set(_transforms.top()->getModel());
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
@@ -63,12 +67,39 @@ void RenderVisitor::visit(Sprite* sprite) {
     glDrawArrays(drawTypes[sprite->getShape()->getType()], 0, sprite->getShape()->getVertexCount());
 }
 
+void RenderVisitor::pop(Sprite*){
+}
+
+void RenderVisitor::push(VisualBody*){
+}
+
 void RenderVisitor::visit(VisualBody* body) {
+}
+
+void RenderVisitor::pop(VisualBody*){
+}
+
+void RenderVisitor::push(Camera*){
 }
 
 void RenderVisitor::visit(Camera* camera) {
     jassert(camera, "invalid camera");
     _camera = camera;
+}
+
+void RenderVisitor::pop(Camera*){
+}
+
+void RenderVisitor::push(Transform* transform) {
+    jassert(transform, "invalid transform");
+    _transforms.push(transform);
+}
+
+void RenderVisitor::visit(Transform*) {
+}
+
+void RenderVisitor::pop(Transform*) {
+    _transforms.pop();
 }
 
 void RenderVisitor::end() {

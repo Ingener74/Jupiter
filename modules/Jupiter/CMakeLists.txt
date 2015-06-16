@@ -22,6 +22,7 @@ set(SOURCES
     src/PngImage.cpp
     
     src/Node.cpp
+    src/Transform.cpp
     
     src/Shape.cpp
     src/VertexComponent.cpp

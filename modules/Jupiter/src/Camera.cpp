@@ -27,7 +27,8 @@ mat4 Camera::getProjectionMatrix() const {
 }
 
 mat4 Camera::getViewMatrix() const {
-    return glm::translate( { }, _position) * glm::mat4_cast(_rotation);
+    jassert(false, "not implemented");
+//    return glm::translate( { }, _position) * glm::mat4_cast(_rotation);
 }
 
 void Camera::setViewMatrix(mat4 const& view) {
@@ -51,7 +52,7 @@ Camera* Camera::accept(NodeVisitor* nv) {
             jassert(i, "invalid node");
             i->accept(nv);
         }
-        nv->pop();
+        nv->pop(this);
     }
     return this;
 }

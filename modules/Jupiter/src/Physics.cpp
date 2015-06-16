@@ -13,6 +13,8 @@
 #include "Jupiter/CollisionListener.h"
 #include "Jupiter/MoveListener.h"
 #include "Jupiter/RotationListener.h"
+#include "Jupiter/Transform.h"
+
 #include "Jupiter/Physics.h"
 
 namespace jupiter {
@@ -69,28 +71,46 @@ void Physics::begin() {
     _world->Step(_timeStep, _velocityIterations, _positionIterations);
 }
 
-void Physics::push(Node*) {
+void Physics::push(Body*) {
 }
 
-void Physics::pop() {
+void Physics::pop(Body*) {
 }
 
 void Physics::visit(Body* node) {
     jassert(node, "node is empty");
 
+    auto transform = _transforms.top();
+
     float x = node->_body->GetPosition().x;
     float y = node->_body->GetPosition().y;
-    float z = node->_position.z;
+    float z = transform->getPositionZ();
+
     float a = node->_body->GetAngle();
 
-    node->_position.x = x;
-    node->_position.y = y;
-    node->_rotation = glm::rotate(quat { }, a, vec3 { 0.f, 0.f, 1.f });
+    transform->setPosition(x, y, z);
+    transform->setRotationZ(a);
 
-    if (node->_moveListener)
-        node->_moveListener->move(x, y, z);
-    if (node->_rotationListener)
-        node->_rotationListener->rotate(0.f, 0.f, 1.f, a);
+//    node->_position.x = x;
+//    node->_position.y = y;
+//    node->_rotation = glm::rotate(quat { }, a, vec3 { 0.f, 0.f, 1.f });
+
+//    if (node->_moveListener)
+//        node->_moveListener->move(x, y, z);
+//    if (node->_rotationListener)
+//        node->_rotationListener->rotate(0.f, 0.f, 1.f, a);
+}
+
+void Physics::push(Transform* transform) {
+    jassert(transform, "invalid transform");
+    _transforms.push(transform);
+}
+
+void Physics::visit(Transform*) {
+}
+
+void Physics::pop(Transform*) {
+    _transforms.pop();
 }
 
 void Physics::end() {

@@ -54,7 +54,7 @@ class OpenGLWidget(QGLWidget):
             self.startTimer(1000.0 / self.fallingBox.FPS)
             
         except RuntimeError, e:
-            raise SystemExit(u'Ошибка старта ' + str(e))
+            raise SystemExit(u'Ошибка старта ' + str(e).decode('utf-8'))
 
     def paintGL(self):
         glClearColor(0.1, 0.3, 0.1, 1.0)

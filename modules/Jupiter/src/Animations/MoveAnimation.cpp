@@ -5,7 +5,7 @@
  *      Author: pavel
  */
 
-#include "Jupiter/Node.h"
+#include "Jupiter/Transform.h"
 #include "Jupiter/MoveAnimation.h"
 
 namespace jupiter {

@@ -23,10 +23,12 @@ Body::Body(): Node(){
 Body::Body(Physics* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
     _visitor(visitor) {
 
+    jassert(false, "передай сюда позицию тела");
+
     _bodyDef              = bodyDef;
-    _bodyDef.position.x   = _position.x;
-    _bodyDef.position.y   = _position.y;
-    _bodyDef.angle        = glm::angle(_rotation);
+//    _bodyDef.position.x   = _position.x;
+//    _bodyDef.position.y   = _position.y;
+//    _bodyDef.angle        = glm::angle(_rotation);
     _bodyDef.userData     = this;
 
     _shape                = shape;
@@ -57,41 +59,41 @@ Body* Body::clone(Body* node) {
     return this;
 }
 
-Body* Body::setRotation(float x, float y, float z, float angle) {
-    Node::setRotation(x, y, z, angle);
-    transform();
-    return this;
-}
-
-Body* Body::rotate(float x, float y, float z, float angle) {
-    Node::rotate(x, y, z, angle);
-    transform();
-    return this;
-}
-
-Body* Body::setPosition(float x, float y, float z) {
-    Node::setPosition(x, y, z);
-    transform();
-    return this;
-}
-
-Body* Body::translate(float x, float y, float z) {
-    Node::translate(x, y, z);
-    transform();
-    return this;
-}
-
-Body* Body::setScale(float x, float y, float z) {
-    Node::setScale(x, y, z);
-    updateFixtures();
-    return this;
-}
-
-Body* Body::scale(float x, float y, float z) {
-    Node::scale(x, y, z);
-    updateFixtures();
-    return this;
-}
+//Body* Body::setRotation(float x, float y, float z, float angle) {
+//    Node::setRotation(x, y, z, angle);
+//    transform();
+//    return this;
+//}
+//
+//Body* Body::rotate(float x, float y, float z, float angle) {
+//    Node::rotate(x, y, z, angle);
+//    transform();
+//    return this;
+//}
+//
+//Body* Body::setPosition(float x, float y, float z) {
+//    Node::setPosition(x, y, z);
+//    transform();
+//    return this;
+//}
+//
+//Body* Body::translate(float x, float y, float z) {
+//    Node::translate(x, y, z);
+//    transform();
+//    return this;
+//}
+//
+//Body* Body::setScale(float x, float y, float z) {
+//    Node::setScale(x, y, z);
+//    updateFixtures();
+//    return this;
+//}
+//
+//Body* Body::scale(float x, float y, float z) {
+//    Node::scale(x, y, z);
+//    updateFixtures();
+//    return this;
+//}
 
 Body* Body::accept(NodeVisitor* nv) {
     jassert(nv, "visitor is nullptr");
@@ -102,7 +104,7 @@ Body* Body::accept(NodeVisitor* nv) {
             jassert(i, "node is invalid");
             i->accept(nv);
         }
-        nv->pop();
+        nv->pop(this);
     }
     return this;
 }
@@ -160,9 +162,11 @@ void Body::updateBody() {
     if(_body)
         _visitor->getWorld()->DestroyBody(_body);
 
-    _bodyDef.position.x = _position.x;
-    _bodyDef.position.y = _position.y;
-    _bodyDef.angle      = glm::angle(_rotation);
+    jassert(false, "положение тела???");
+
+//    _bodyDef.position.x = _position.x;
+//    _bodyDef.position.y = _position.y;
+//    _bodyDef.angle      = glm::angle(_rotation);
     _bodyDef.userData   = this;
 
     _body = _visitor->getWorld()->CreateBody(&_bodyDef);
@@ -178,7 +182,9 @@ void Body::updateFixtures() {
     for (auto i : _fixtures)
         _body->DestroyFixture(i);
 
-    _shape->setScale(_scale.x, _scale.y);
+    jassert(false, "масштаб???");
+
+//    _shape->setScale(_scale.x, _scale.y);
     _fixtures.resize(_shape->shapesCount());
 
     for (size_t i = 0; i < _shape->shapesCount(); ++i)
@@ -188,7 +194,10 @@ void Body::updateFixtures() {
 void Body::transform() {
     jassert(_body, "no body");
     jassert(_shape, "no shape");
-    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
+
+    jassert(false, "положение тела???");
+
+//    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
 }
 
 } /* namespace jupiter */
