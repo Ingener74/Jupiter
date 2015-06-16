@@ -26,6 +26,10 @@ class Transform: public Node {
 public:
     Transform();
     Transform(glm::vec3 position, float angle = 0.f, glm::vec3 rotation = {0.f, 0.f, 1.f}, glm::vec3 scale = {1.f, 1.f, 1.f});
+    Transform(float x, float y, float z,
+        float angle = 0.f,
+        float rx = 0.f, float ry = 0.f, float rz = 1.f,
+        float sx = 1.f, float sy = 1.f, float sz = 1.f);
     virtual ~Transform();
 
     float getRotationX() const;
@@ -86,8 +90,8 @@ public:
 
 private:
     glm::vec3               _position           = {0.f, 0.f, 0.f};
-    glm::vec3               _scale              = {1.f, 1.f, 1.f};
     glm::quat               _rotation           = glm::rotate(glm::quat{}, 0.f, glm::vec3{0.f, 0.f, 1.f});
+    glm::vec3               _scale              = {1.f, 1.f, 1.f};
 
     Ref<MoveListener>       _moveListener;
     Ref<ScaleListener>      _scaleListener;

@@ -26,7 +26,16 @@ Transform::Transform() {
 }
 
 Transform::Transform(glm::vec3 position, float angle, glm::vec3 rotation, glm::vec3 scale) :
-    _position(position), _scale(scale), _rotation(glm::rotate(glm::quat { }, angle, rotation)) {
+    _position(position), _rotation(glm::rotate(glm::quat { }, angle, rotation)), _scale(scale) {
+}
+
+Transform::Transform(float x, float y, float z,
+    float angle,
+    float rx, float ry, float rz,
+    float sx, float sy, float sz):
+        _position(x, y, z),
+        _rotation(glm::rotate(glm::quat { }, angle, vec3{rx, ry, rz})),
+        _scale(sx, sy, sz) {
 }
 
 Transform::~Transform() {

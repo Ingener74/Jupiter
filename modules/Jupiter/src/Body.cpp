@@ -25,12 +25,7 @@ Body::Body(): Node(){
 Body::Body(Physics* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
     _visitor(visitor) {
 
-    jassert(false, "передай сюда позицию тела");
-
     _bodyDef              = bodyDef;
-//    _bodyDef.position.x   = _position.x;
-//    _bodyDef.position.y   = _position.y;
-//    _bodyDef.angle        = glm::angle(_rotation);
     _bodyDef.userData     = this;
 
     _shape                = shape;
@@ -102,7 +97,6 @@ Body* Body::setPhysicsShape(PhysicsShape* shape) {
     updateFixtures();
     return this;
 }
-
 
 PhysicsShape* Body::getPhysicsShape() {
     jassert(_shape, "no shape");
