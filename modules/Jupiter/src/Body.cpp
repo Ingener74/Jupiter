@@ -10,6 +10,8 @@
 #include "Jupiter/CollisionListener.h"
 #include "Jupiter/Physics.h"
 #include "Jupiter/PhysicsShape.h"
+#include "Jupiter/Transform.h"
+
 #include "Jupiter/Body.h"
 
 namespace jupiter {
@@ -59,41 +61,12 @@ Body* Body::clone(Body* node) {
     return this;
 }
 
-//Body* Body::setRotation(float x, float y, float z, float angle) {
-//    Node::setRotation(x, y, z, angle);
-//    transform();
-//    return this;
-//}
-//
-//Body* Body::rotate(float x, float y, float z, float angle) {
-//    Node::rotate(x, y, z, angle);
-//    transform();
-//    return this;
-//}
-//
-//Body* Body::setPosition(float x, float y, float z) {
-//    Node::setPosition(x, y, z);
-//    transform();
-//    return this;
-//}
-//
-//Body* Body::translate(float x, float y, float z) {
-//    Node::translate(x, y, z);
-//    transform();
-//    return this;
-//}
-//
-//Body* Body::setScale(float x, float y, float z) {
-//    Node::setScale(x, y, z);
-//    updateFixtures();
-//    return this;
-//}
-//
-//Body* Body::scale(float x, float y, float z) {
-//    Node::scale(x, y, z);
-//    updateFixtures();
-//    return this;
-//}
+Body* Body::setParent(Node* node) {
+    auto transform = dynamic_cast<Transform*>(node);
+    jassert(transform, "parent must be transform");
+    _body->SetTransform( { transform->getPositionX(), transform->getPositionY() }, transform->getRotationAngle());
+    return this;
+}
 
 Body* Body::accept(NodeVisitor* nv) {
     jassert(nv, "visitor is nullptr");
@@ -201,3 +174,4 @@ void Body::transform() {
 }
 
 } /* namespace jupiter */
+

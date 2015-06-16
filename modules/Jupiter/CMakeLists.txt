@@ -48,7 +48,7 @@ set(SOURCES
     src/KeyboardListener.cpp
     
     src/Body.cpp
-    src/SpriteBody.cpp
+    # src/SpriteBody.cpp
     src/Physics/Box2D/VisualBody.cpp
     
     src/Physics.cpp

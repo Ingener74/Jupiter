@@ -36,17 +36,19 @@ endif()
 ################################################################################################
 # GLFW
 ################################################################################################
-set_source_files_properties(glfw.i PROPERTIES CPLUSPLUS ON)
-set_source_files_properties(glfw.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
-
-if(WITH_GLFW_LUA_WRAPPER)
-    SWIG_ADD_MODULE(glfwLua lua glfw.i)
-    SWIG_LINK_LIBRARIES(glfwLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
-endif()
-
-if(WITH_GLFW_PYTHON_WRAPPER)
-    SWIG_ADD_MODULE(glfwPython python glfw.i)
-    SWIG_LINK_LIBRARIES(glfwPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+if(USE_GLFW)
+    set_source_files_properties(glfw.i PROPERTIES CPLUSPLUS ON)
+    set_source_files_properties(glfw.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
+    
+    if(WITH_GLFW_LUA_WRAPPER)
+        SWIG_ADD_MODULE(glfwLua lua glfw.i)
+        SWIG_LINK_LIBRARIES(glfwLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
+    endif()
+    
+    if(WITH_GLFW_PYTHON_WRAPPER)
+        SWIG_ADD_MODULE(glfwPython python glfw.i)
+        SWIG_LINK_LIBRARIES(glfwPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+    endif()
 endif()
 
 ################################################################################################

@@ -41,7 +41,7 @@ struct Perspective {
     float fovy, aspect, near, far;
 };
 
-class Camera: virtual public Node {
+class Camera: public Node {
 public:
     Camera(Ortho = {});
     Camera(Perspective);

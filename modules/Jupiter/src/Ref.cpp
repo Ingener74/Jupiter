@@ -75,7 +75,7 @@ template class Ref<Game>;
 template class Ref<Node>;
 template class Ref<Sprite>;
 template class Ref<Body>;
-template class Ref<SpriteBody>;
+//template class Ref<SpriteBody>;
 template class Ref<VisualBody>;
 template class Ref<Camera>;
 
