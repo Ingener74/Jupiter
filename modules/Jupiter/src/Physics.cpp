@@ -1,5 +1,5 @@
 /*
- * Box2DVisitor.cpp
+ * Physics.cpp
  *
  *  Created on: May 14, 2015
  *      Author: pavel
@@ -8,12 +8,12 @@
 #include <Box2D/Box2D.h>
 
 #include "Jupiter/Tools.h"
-#include "Jupiter/Box2dNode.h"
+#include "Jupiter/Body.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/CollisionListener.h"
 #include "Jupiter/MoveListener.h"
 #include "Jupiter/RotationListener.h"
-#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Physics.h"
 
 namespace jupiter {
 
@@ -22,7 +22,7 @@ using namespace glm;
 
 class ContactListener: public b2ContactListener {
 public:
-    ContactListener(Box2dVisitor* visitor) :
+    ContactListener(Physics* visitor) :
         _visitor(visitor) {
     }
     virtual ~ContactListener() {
@@ -38,20 +38,20 @@ public:
     }
 
     virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-        auto nodeA = static_cast<Box2dNode*>(contact->GetFixtureA()->GetBody()->GetUserData());
+        auto nodeA = static_cast<Body*>(contact->GetFixtureA()->GetBody()->GetUserData());
         jassert(nodeA, "bad node A");
 
-        auto nodeB = static_cast<Box2dNode*>(contact->GetFixtureB()->GetBody()->GetUserData());
+        auto nodeB = static_cast<Body*>(contact->GetFixtureB()->GetBody()->GetUserData());
         jassert(nodeB, "bad node B");
 
         _visitor->collide(nodeA, nodeB);
     }
 
 private:
-    Box2dVisitor* _visitor = nullptr;
+    Physics* _visitor = nullptr;
 };
 
-Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityIterations) :
+Physics::Physics(float timeStep, int positionIterations, int velocityIterations) :
     _timeStep(timeStep), _positionIterations(positionIterations), _velocityIterations(velocityIterations) {
 
     b2Vec2 gravity(0, -9.8);
@@ -62,20 +62,20 @@ Box2dVisitor::Box2dVisitor(float timeStep, int positionIterations, int velocityI
     _world->SetContactListener(_contactListener.get());
 }
 
-Box2dVisitor::~Box2dVisitor() {
+Physics::~Physics() {
 }
 
-void Box2dVisitor::begin() {
+void Physics::begin() {
     _world->Step(_timeStep, _velocityIterations, _positionIterations);
 }
 
-void Box2dVisitor::push(Node*) {
+void Physics::push(Node*) {
 }
 
-void Box2dVisitor::pop() {
+void Physics::pop() {
 }
 
-void Box2dVisitor::visit(Box2dNode* node) {
+void Physics::visit(Body* node) {
     jassert(node, "node is empty");
 
     float x = node->_body->GetPosition().x;
@@ -93,42 +93,42 @@ void Box2dVisitor::visit(Box2dNode* node) {
         node->_rotationListener->rotate(0.f, 0.f, 1.f, a);
 }
 
-void Box2dVisitor::end() {
+void Physics::end() {
 }
 
-int Box2dVisitor::getPositionIterations() const {
+int Physics::getPositionIterations() const {
     return _positionIterations;
 }
 
-Box2dVisitor* Box2dVisitor::setPositionIterations(int positionIterations) {
+Physics* Physics::setPositionIterations(int positionIterations) {
     _positionIterations = positionIterations;
     return this;
 }
 
-float Box2dVisitor::getTimeStep() const {
+float Physics::getTimeStep() const {
     return _timeStep;
 }
 
-Box2dVisitor* Box2dVisitor::setTimeStep(float timeStep) {
+Physics* Physics::setTimeStep(float timeStep) {
     _timeStep = timeStep;
     return this;
 }
 
-int Box2dVisitor::getVelocityIterations() const {
+int Physics::getVelocityIterations() const {
     return _velocityIterations;
 }
 
-b2World* Box2dVisitor::getWorld() {
+b2World* Physics::getWorld() {
     jassert(_world, "Box2D world is invalid");
     return _world.get();
 }
 
-Box2dVisitor* Box2dVisitor::setVelocityIterations(int velocityIterations) {
+Physics* Physics::setVelocityIterations(int velocityIterations) {
     _velocityIterations = velocityIterations;
     return this;
 }
 
-void Box2dVisitor::collide(Box2dNode* a, Box2dNode* b) {
+void Physics::collide(Body* a, Body* b) {
     if (a->_collisionListener)
         a->_collisionListener->collision(b);
     if (b->_collisionListener)

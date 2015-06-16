@@ -14,7 +14,7 @@ namespace jupiter {
 
 class WeldJoint: public Joint {
 public:
-    WeldJoint(Box2dVisitor*, b2WeldJointDef);
+    WeldJoint(Physics*, b2WeldJointDef);
     virtual ~WeldJoint();
 
     b2WeldJoint* getWeldJoint();

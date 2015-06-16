@@ -18,7 +18,7 @@ namespace jupiter {
 
 class WheelJoint: public Joint {
 public:
-    WheelJoint(Box2dVisitor*, b2WheelJointDef);
+    WheelJoint(Physics*, b2WheelJointDef);
     virtual ~WheelJoint();
 
     b2WheelJoint* getWheelJoint();

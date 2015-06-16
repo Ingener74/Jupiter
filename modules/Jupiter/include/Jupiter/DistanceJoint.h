@@ -16,11 +16,11 @@
 
 namespace jupiter {
 
-class Box2dVisitor;
+class Physics;
 
 class DistanceJoint: public Joint {
 public:
-    DistanceJoint(Box2dVisitor*, b2DistanceJointDef);
+    DistanceJoint(Physics*, b2DistanceJointDef);
     virtual ~DistanceJoint();
 
     b2DistanceJoint* getDistanceJoint();

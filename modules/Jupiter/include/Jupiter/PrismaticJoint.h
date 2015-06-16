@@ -14,7 +14,7 @@ namespace jupiter {
 
 class PrismaticJoint: public Joint {
 public:
-    PrismaticJoint(Box2dVisitor*, b2PrismaticJointDef);
+    PrismaticJoint(Physics*, b2PrismaticJointDef);
     virtual ~PrismaticJoint();
 
     b2PrismaticJoint* getPrismaticJoint();

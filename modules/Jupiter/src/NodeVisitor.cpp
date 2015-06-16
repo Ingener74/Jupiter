@@ -32,7 +32,7 @@ void NodeVisitor::visit(Node*) {
 void NodeVisitor::visit(Sprite*) {
 }
 
-void NodeVisitor::visit(Box2dNode*) {
+void NodeVisitor::visit(Body*) {
 }
 
 void NodeVisitor::visit(Camera*) {
@@ -41,7 +41,7 @@ void NodeVisitor::visit(Camera*) {
 void NodeVisitor::end() {
 }
 
-void NodeVisitor::visit(SpriteBox2d*) {
+void NodeVisitor::visit(SpriteBody*) {
 }
 
 void NodeVisitor::visit(Joint*) {

@@ -5,8 +5,8 @@
  *      Author: pavel
  */
 
-#ifndef MODULES_JUPITER_INCLUDE_JUPITER_BOX2DVISITOR_H_
-#define MODULES_JUPITER_INCLUDE_JUPITER_BOX2DVISITOR_H_
+#ifndef MODULES_JUPITER_INCLUDE_JUPITER_PHYSICS_H_
+#define MODULES_JUPITER_INCLUDE_JUPITER_PHYSICS_H_
 
 #ifdef SWIG
 #else
@@ -20,32 +20,32 @@ class b2ContactListener;
 
 namespace jupiter {
 
-class Box2dVisitor: public NodeVisitor {
+class Physics: public NodeVisitor {
 public:
-    Box2dVisitor(float timeStep, int positionIterations = 2, int velocityIterations = 6);
-    virtual ~Box2dVisitor();
+    Physics(float timeStep, int positionIterations = 2, int velocityIterations = 6);
+    virtual ~Physics();
 
     virtual void begin();
 
     virtual void push(Node*);
     virtual void pop();
 
-    virtual void visit(Box2dNode*);
+    virtual void visit(Body*);
 
     virtual void end();
 
     b2World* getWorld();
 
     float getTimeStep() const;
-    Box2dVisitor* setTimeStep(float timeStep);
+    Physics* setTimeStep(float timeStep);
 
     int getPositionIterations() const;
-    Box2dVisitor* setPositionIterations(int positionIterations);
+    Physics* setPositionIterations(int positionIterations);
 
     int getVelocityIterations() const;
-    Box2dVisitor* setVelocityIterations(int velocityIterations);
+    Physics* setVelocityIterations(int velocityIterations);
 
-    void collide(Box2dNode* a, Box2dNode* b);
+    void collide(Body* a, Body* b);
 
 private:
     std::unique_ptr<b2World> _world;
@@ -57,4 +57,4 @@ private:
 
 } /* namespace jupiter */
 
-#endif /* MODULES_JUPITER_INCLUDE_JUPITER_BOX2DVISITOR_H_ */
+#endif /* MODULES_JUPITER_INCLUDE_JUPITER_PHYSICS_H_ */

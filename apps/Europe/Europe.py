@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import json
+
 from PySide.QtGui import *
 from PySide.QtOpenGL import *
 from PySide.QtCore import *
 
 from OpenGL.GL import *
-from OpenGL.GLU import *
 
 from res import *
 from modules import *
@@ -74,20 +73,6 @@ class SpriteSettings(QWidget, Ui_SpriteSettings):
         self.settings.setValue(self.__class__.__name__, self.saveGeometry())
 
 
-
-class Box2dBodySettings(QWidget, Ui_Box2dBodySettings):
-    def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
-        self.setupUi(self)
-        
-        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
-        self.restoreGeometry(self.settings.value(self.__class__.__name__))
-        
-    def closeEvent(self, e):
-        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, COMPANY, APPNAME)
-        self.settings.setValue(self.__class__.__name__, self.saveGeometry())
-
-
 class GlWidget(QGLWidget):
     
     WIDTH = 800
@@ -122,6 +107,7 @@ class GlWidget(QGLWidget):
         glViewport(0, 0, w, h)
 
 
+# noinspection PyPep8Naming
 class GameDesignerWindow(QWidget, Ui_GameDesigner):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -133,8 +119,9 @@ class GameDesignerWindow(QWidget, Ui_GameDesigner):
         nodeTreeModel = NodeTreeModel()
         self.nodeTreeView.setModel(nodeTreeModel)
         self.nodeTreeView.setEditTriggers(QAbstractItemView.DoubleClicked)
-        
-        self.__base = QFileDialog.getExistingDirectory(caption=u'Директория с ресурсами', options=QFileDialog.ShowDirsOnly).encode('ascii', 'ignore')
+
+        self.__base = QFileDialog.getExistingDirectory(caption=u'Директория с ресурсами',
+                                                       options=QFileDialog.ShowDirsOnly).encode('ascii', 'ignore')
         
         resourceModel = ResourceModel(self.__base)
         self.resourceTreeView.setModel(resourceModel)
@@ -179,15 +166,17 @@ class Europe(QWidget, Ui_Europe):
         self.setupUi(self)
 
 
+# noinspection PyCallByClass,PyTypeChecker,PyPep8Naming
 def setStyle():
     if sys.platform == 'win32':
-        QApplication.setStyle(u"windows")
+        QApplication.setStyle(u'windows')
     elif sys.platform == 'linux2':
-        QApplication.setStyle(u"plastique")
+        QApplication.setStyle(u'plastique')
     else:
         print u'Неизвестная система'
 
-    
+
+# noinspection PyPep8Naming
 def main():
     import sys
     setStyle()

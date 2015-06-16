@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-FrictionJoint::FrictionJoint(Box2dVisitor* visitor, b2FrictionJointDef jointDef) :
+FrictionJoint::FrictionJoint(Physics* visitor, b2FrictionJointDef jointDef) :
     Joint(visitor, jointDef) {
 }
 

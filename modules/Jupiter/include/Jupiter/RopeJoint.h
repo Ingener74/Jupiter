@@ -18,7 +18,7 @@ namespace jupiter {
 
 class RopeJoint: public Joint {
 public:
-    RopeJoint(Box2dVisitor*, b2RopeJointDef);
+    RopeJoint(Physics*, b2RopeJointDef);
     virtual ~RopeJoint();
 
     b2RopeJoint* getRopeJoint();

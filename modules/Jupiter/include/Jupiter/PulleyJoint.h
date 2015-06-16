@@ -14,7 +14,7 @@ namespace jupiter {
 
 class PulleyJoint: public Joint {
 public:
-    PulleyJoint(Box2dVisitor*, b2PulleyJointDef);
+    PulleyJoint(Physics*, b2PulleyJointDef);
     virtual ~PulleyJoint();
 
     b2PulleyJoint* getPulleyJoint();

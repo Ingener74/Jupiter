@@ -14,7 +14,7 @@ namespace jupiter {
 
 class FrictionJoint: public Joint {
 public:
-    FrictionJoint(Box2dVisitor*, b2FrictionJointDef);
+    FrictionJoint(Physics*, b2FrictionJointDef);
     virtual ~FrictionJoint();
 
     b2FrictionJoint* getFrictionJoint();

@@ -19,15 +19,15 @@
 
 namespace jupiter {
 
-class Box2dVisitor;
+class Physics;
 
 class Joint: virtual public Node {
 public:
-    Joint(Box2dVisitor*, b2JointDef);
+    Joint(Physics*, b2JointDef);
     virtual ~Joint();
 
 protected:
-    Ref<Box2dVisitor> _visitor;
+    Ref<Physics> _visitor;
     b2Joint*          _joint = nullptr;
 };
 

@@ -35,8 +35,8 @@
 #include "Jupiter/RenderVisitor.h"
 #include "Jupiter/PrintVisitor.h"
 
-#include "Jupiter/Box2dVisitor.h"
-#include "Jupiter/Box2dNode.h"
+#include "Jupiter/Physics.h"
+#include "Jupiter/Body.h"
 
 #include "Jupiter/MoveListener.h"
 #include "Jupiter/ScaleListener.h"
@@ -44,7 +44,7 @@
 #include "Jupiter/RotationListener.h"
 #include "Jupiter/KeyboardListener.h"
 
-#include "Jupiter/SpriteBox2d.h"
+#include "Jupiter/SpriteBody.h"
 
 #include "Jupiter/MoveAnimation.h"
 
@@ -83,8 +83,8 @@ T* node2(Node* t) {
 #ifdef SWIG
 
     %template(node2Sprite)          node2<Sprite>;
-    %template(node2Box2dNode)       node2<Box2dNode>;
-    %template(node2SpriteBox2d)     node2<SpriteBox2d>;
+    %template(node2Body)            node2<Body>;
+    %template(node2SpriteBody)      node2<SpriteBody>;
     %template(node2Camera)          node2<Camera>;
 
     %template(node2Joint)           node2<Joint>;

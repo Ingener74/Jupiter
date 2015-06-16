@@ -19,14 +19,14 @@
 
 namespace jupiter {
 
-class Box2dNode;
+class Body;
 
 class CollisionListener: virtual public Listener {
 public:
     CollisionListener();
     virtual ~CollisionListener();
 
-    virtual void collision(Box2dNode*);
+    virtual void collision(Body*);
 };
 
 } /* namespace jupiter */

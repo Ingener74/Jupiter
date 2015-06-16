@@ -5,12 +5,12 @@
  *      Author: Pavel
  */
 
-#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Physics.h"
 #include "Jupiter/Joint.h"
 
 namespace jupiter {
 
-Joint::Joint(Box2dVisitor* visitor, b2JointDef jointDef) :
+Joint::Joint(Physics* visitor, b2JointDef jointDef) :
     _visitor(visitor) {
     jassert(_visitor, "invalid Box2D visitor");
     _joint = _visitor->getWorld()->CreateJoint(&jointDef);

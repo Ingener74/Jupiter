@@ -47,10 +47,10 @@ set(SOURCES
     src/RotationListener.cpp
     src/KeyboardListener.cpp
     
-    src/Box2dNode.cpp
-    src/Box2dVisitor.cpp
+    src/Body.cpp
+    src/SpriteBody.cpp
     
-    src/SpriteBox2d.cpp
+    src/Physics.cpp
     
     src/PhysicsShape.cpp
     src/PoligonShape.cpp

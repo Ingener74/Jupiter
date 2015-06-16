@@ -29,7 +29,7 @@ class Box(j.MoveListener, j.KeyboardListener):
         pass
 
     def key(self, key):
-        body = j.node2Box2dNode(self.getNode()).getPhysicsBody()
+        body = j.node2Body(self.getNode()).getPhysicsBody()
         if key == 111 or key == 328:
             body.ApplyForceToCenter(b.b2Vec2(0, 100), True)
         if key == 116 or key == 336:
@@ -55,8 +55,8 @@ RAD2DEG = 180. / 3.1415926
 
 class FallingBox(object):
     
-    # WIDTH  = 1000
-    WIDTH  = 300
+    WIDTH  = 1000
+    # WIDTH  = 300
     HEIGTH = WIDTH * 3.0 / 5.0
     
     FPS    = 60.0
@@ -98,7 +98,7 @@ class FallingBox(object):
         # Атлас физических форм
         phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
 
-        physics = j.Box2dVisitor(1.0 / self.FPS)
+        physics = j.Physics(1.0 / self.FPS)
         
         camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
         camera.setPosition(0, 0, -20)#.setRotation(0, 1, 0, -0.3)
@@ -128,7 +128,7 @@ class FallingBox(object):
         
         boxPhShape = j.PoligonShape(boxImage, boxFixDef)
         
-        box1 = j.SpriteBox2d(physics, boxDef, boxPhShape)
+        box1 = j.SpriteBody(physics, boxDef, boxPhShape)
         box1.\
             setProgram(shader).\
             setTexture(j.ImageTexture(boxImage)).\
@@ -138,22 +138,22 @@ class FallingBox(object):
             setScaleF(0.002)
         box1.setCollisionListener(self.boxCol)
         
-        box2 = j.SpriteBox2d(box1)
+        box2 = j.SpriteBody(box1)
         box2.setScaleF(.0015).setPosition(-4, -2, 1)
          
-        box3 = j.SpriteBox2d(box1)
+        box3 = j.SpriteBody(box1)
         box3.setPosition(0, 3, 1).setScaleF(.001)
          
-        box4 = j.SpriteBox2d(box3)
+        box4 = j.SpriteBody(box3)
         box4.setPosition(-2, 2, 1)
          
-        box5 = j.SpriteBox2d(box3)
+        box5 = j.SpriteBody(box3)
         box5.setPosition(-3, 3, 1)
          
-        box6 = j.SpriteBox2d(box3)
+        box6 = j.SpriteBody(box3)
         box6.setScaleF(.002).setPosition(0, 3, 1)
          
-        box7 = j.SpriteBox2d(box6)
+        box7 = j.SpriteBody(box6)
         box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
         # Сложная физическая форма
@@ -168,7 +168,7 @@ class FallingBox(object):
         ship1Def = b.b2BodyDef()
         ship1Def.type = b.b2_dynamicBody
          
-        ship1 = j.SpriteBox2d(physics, ship1Def, shipComplexShape)
+        ship1 = j.SpriteBody(physics, ship1Def, shipComplexShape)
         ship1.setProgram(shader).\
             setTexture(j.ImageTexture(ship1Image)).\
             setShape(j.ImageShape(ship1Image)).\
@@ -186,22 +186,22 @@ class FallingBox(object):
         ballImage = j.PngImage('Resources/ball1.png')
         ballPhShape = j.CircleShape(ballImage, ballFixDef)
         
-        ball1 = j.SpriteBox2d(physics, ballDef, ballPhShape)
+        ball1 = j.SpriteBody(physics, ballDef, ballPhShape)
         ball1.setProgram(shader).\
             setTexture(j.ImageTexture(ballImage)).\
             setShape(j.ImageShape(ballImage)).\
             setScaleF(0.01).\
             setPosition(-5, 3, 1)
 
-        ball2 = j.SpriteBox2d(ball1)
+        ball2 = j.SpriteBody(ball1)
         ball2.setPosition(-4, 3, 1)
-        ball3 = j.SpriteBox2d(ball1)
+        ball3 = j.SpriteBody(ball1)
         ball3.setPosition(-5, 4, 1)
-        ball4 = j.SpriteBox2d(ball1)
+        ball4 = j.SpriteBody(ball1)
         ball4.setPosition(-4, 4, 1)
-        ball5 = j.SpriteBox2d(ball1)
+        ball5 = j.SpriteBody(ball1)
         ball5.setPosition(-6, 3, 1)
-        ball6 = j.SpriteBox2d(ball1)
+        ball6 = j.SpriteBody(ball1)
         ball6.setPosition(-6, 4, 1)
 
         # Пропеллер
@@ -214,7 +214,7 @@ class FallingBox(object):
         propellerImage = j.PngImage('Resources/propeller3.png')
 
         self.propellerComplexShape = j.ComplexShape(propellerImage, phAtlas.getShape('Propeller3'), propellerFixDef)
-        propeller1 = j.SpriteBox2d(physics, propellerDef, self.propellerComplexShape)
+        propeller1 = j.SpriteBody(physics, propellerDef, self.propellerComplexShape)
         propeller1.\
             setProgram(shader).\
             setTexture(j.ImageTexture(propellerImage)).\
@@ -222,7 +222,7 @@ class FallingBox(object):
             setScaleF(0.002).\
             setPosition(4.6, 3, 0.99)
 
-        propeller2 = j.SpriteBox2d(propeller1)
+        propeller2 = j.SpriteBody(propeller1)
         propeller2.setPosition(-4, 8, 0.99)
         
         # Соединим главную коробку и пропеллер
@@ -238,7 +238,7 @@ class FallingBox(object):
         
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
         
-        groundProto = j.SpriteBox2d(physics, b.b2BodyDef(), groundPhShape)
+        groundProto = j.SpriteBody(physics, b.b2BodyDef(), groundPhShape)
         groundProto.setProgram(shader).\
             setTexture(j.ImageTexture(groundImage)).\
             setShape(j.ImageShape(groundImage)).\
@@ -247,7 +247,7 @@ class FallingBox(object):
             setScaleF(0.01)
         
         
-        grounds = [j.SpriteBox2d(groundProto) for i in range(0, 7)]
+        grounds = [j.SpriteBody(groundProto) for i in range(0, 7)]
          
         grounds[0].translate( 2, -8, 0.98)
         grounds[1].translate(-2, -8, 0.98)
@@ -274,7 +274,7 @@ class FallingBox(object):
 
         carShape = j.ComplexShape(carImage, phAtlas.getShape('Car'), carFixtureDef)
 
-        car = j.SpriteBox2d(physics, carBodyDef, carShape)
+        car = j.SpriteBody(physics, carBodyDef, carShape)
         car.setProgram(shader).\
             setTexture(j.ImageTexture(carImage)).\
             setShape(j.ImageShape(carImage)).\

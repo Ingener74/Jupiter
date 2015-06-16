@@ -73,8 +73,8 @@ template class Ref<File>;
 
 template class Ref<Node>;
 template class Ref<Sprite>;
-template class Ref<Box2dNode>;
-template class Ref<SpriteBox2d>;
+template class Ref<Body>;
+template class Ref<SpriteBody>;
 template class Ref<Camera>;
 
 template class Ref<MoveListener>;
@@ -97,7 +97,7 @@ template class Ref<ImageShape>;
 
 template class Ref<NodeVisitor>;
 template class Ref<RenderVisitor>;
-template class Ref<Box2dVisitor>;
+template class Ref<Physics>;
 
 template class Ref<PhysicsShape>;
 template class Ref<PoligonShape>;

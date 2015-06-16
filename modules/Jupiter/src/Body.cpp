@@ -8,18 +8,18 @@
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/CollisionListener.h"
-#include "Jupiter/Box2dVisitor.h"
+#include "Jupiter/Physics.h"
 #include "Jupiter/PhysicsShape.h"
-#include "Jupiter/Box2dNode.h"
+#include "Jupiter/Body.h"
 
 namespace jupiter {
 
 using namespace std;
 
-Box2dNode::Box2dNode(): Node(){
+Body::Body(): Node(){
 }
 
-Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
+Body::Body(Physics* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
     _visitor(visitor) {
 
     _bodyDef              = bodyDef;
@@ -33,17 +33,17 @@ Box2dNode::Box2dNode(Box2dVisitor* visitor, b2BodyDef bodyDef, PhysicsShape* sha
     updateBody();
 }
 
-Box2dNode::~Box2dNode() {
+Body::~Body() {
     if (_body)
         _body->GetWorld()->DestroyBody(_body);
 }
 
-Box2dNode::Box2dNode(const Box2dNode& body){
-    clone(const_cast<Box2dNode*>(&body));
+Body::Body(const Body& body){
+    clone(const_cast<Body*>(&body));
 }
 
-Box2dNode* Box2dNode::clone(Box2dNode* node) {
-    Ref<Box2dNode>{node};
+Body* Body::clone(Body* node) {
+    Ref<Body>{node};
 
     jassert(node, "node is invalid");
     *this = *node;
@@ -56,43 +56,43 @@ Box2dNode* Box2dNode::clone(Box2dNode* node) {
     return this;
 }
 
-Box2dNode* Box2dNode::setRotation(float x, float y, float z, float angle) {
+Body* Body::setRotation(float x, float y, float z, float angle) {
     Node::setRotation(x, y, z, angle);
     transform();
     return this;
 }
 
-Box2dNode* Box2dNode::rotate(float x, float y, float z, float angle) {
+Body* Body::rotate(float x, float y, float z, float angle) {
     Node::rotate(x, y, z, angle);
     transform();
     return this;
 }
 
-Box2dNode* Box2dNode::setPosition(float x, float y, float z) {
+Body* Body::setPosition(float x, float y, float z) {
     Node::setPosition(x, y, z);
     transform();
     return this;
 }
 
-Box2dNode* Box2dNode::translate(float x, float y, float z) {
+Body* Body::translate(float x, float y, float z) {
     Node::translate(x, y, z);
     transform();
     return this;
 }
 
-Box2dNode* Box2dNode::setScale(float x, float y, float z) {
+Body* Body::setScale(float x, float y, float z) {
     Node::setScale(x, y, z);
     updateFixtures();
     return this;
 }
 
-Box2dNode* Box2dNode::scale(float x, float y, float z) {
+Body* Body::scale(float x, float y, float z) {
     Node::scale(x, y, z);
     updateFixtures();
     return this;
 }
 
-Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
+Body* Body::accept(NodeVisitor* nv) {
     jassert(nv, "visitor is nullptr");
     if (_visible) {
         nv->push(this);
@@ -106,7 +106,7 @@ Box2dNode* Box2dNode::accept(NodeVisitor* nv) {
     return this;
 }
 
-Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape* shape) {
+Body* Body::setPhysicsShape(PhysicsShape* shape) {
     jassert(shape, "invalid shape");
     _shape = shape;
     updateFixtures();
@@ -114,32 +114,32 @@ Box2dNode* Box2dNode::setPhysicsShape(PhysicsShape* shape) {
 }
 
 
-PhysicsShape* Box2dNode::getPhysicsShape() {
+PhysicsShape* Body::getPhysicsShape() {
     jassert(_shape, "no shape");
     return _shape.get();
 }
 
-b2Body* Box2dNode::getPhysicsBody() {
+b2Body* Body::getPhysicsBody() {
     jassert(_body, "no body");
     return _body;
 }
 
-b2Fixture* Box2dNode::getPhysicsFixture() {
+b2Fixture* Body::getPhysicsFixture() {
     jassert(false, "deprecated");
 }
 
-CollisionListener* Box2dNode::getCollisionListener() {
+CollisionListener* Body::getCollisionListener() {
     jassert(_collisionListener, "no listener");
     return _collisionListener.get();
 }
 
-Box2dNode* Box2dNode::setCollisionListener(CollisionListener* listener) {
+Body* Body::setCollisionListener(CollisionListener* listener) {
     jassert(listener, "invalid listener");
     _collisionListener = listener;
     return this;
 }
 
-void Box2dNode::updateBody() {
+void Body::updateBody() {
     jassert(_visitor, "no visitor");
 
     if(_body)
@@ -156,7 +156,7 @@ void Box2dNode::updateBody() {
         updateFixtures();
 }
 
-void Box2dNode::updateFixtures() {
+void Body::updateFixtures() {
     jassert(_body, "no body");
     jassert(_shape, "no shape");
 
@@ -170,7 +170,7 @@ void Box2dNode::updateFixtures() {
         _fixtures.at(i) = _body->CreateFixture(_shape->getFixtureDef(i));
 }
 
-void Box2dNode::transform() {
+void Body::transform() {
     jassert(_body, "no body");
     jassert(_shape, "no shape");
     _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());

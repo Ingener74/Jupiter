@@ -18,7 +18,7 @@ namespace jupiter {
 
 class RevoluteJoint: public Joint {
 public:
-    RevoluteJoint(Box2dVisitor*, b2RevoluteJointDef);
+    RevoluteJoint(Physics*, b2RevoluteJointDef);
     virtual ~RevoluteJoint();
 
     b2RevoluteJoint* getRevoluteJoint();
