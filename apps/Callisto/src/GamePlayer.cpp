@@ -104,7 +104,9 @@ bool createGameDirect(const variables_map& vm) {
 
     render = make_unique_<RenderVisitor>(&camera);
 
-    printVisitor = make_unique_<PrintVisitor>();
+    game = make_unique_<Game>();
+
+    printVisitor = make_unique_<PrintVisitor>(game.get());
     physics = make_unique_<NodeVisitor>();
 
     File vs { "Resources/sprite.vs" }, fs { "Resources/sprite.fs" };
@@ -173,7 +175,6 @@ bool createGameDirect(const variables_map& vm) {
         ->setVisible(true)
     ;
 
-    game = make_unique_<Game>();
     game
 
         ->setRootNode(rootNode.get())

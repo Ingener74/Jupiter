@@ -66,13 +66,13 @@ string PrintVisitor::tabs(int tab) {
     return s.str();
 }
 
-void PrintVisitor::visit(Box2dNode*) {
+void PrintVisitor::visit(Body*) {
 }
 
 void PrintVisitor::visit(Camera*) {
 }
 
-void PrintVisitor::visit(SpriteBox2d*) {
+void PrintVisitor::visit(SpriteBody*) {
 }
 
 void PrintVisitor::visit(Joint*) {
