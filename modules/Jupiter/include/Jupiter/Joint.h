@@ -21,7 +21,7 @@ namespace jupiter {
 
 class Physics;
 
-class Joint: virtual public Node {
+class Joint: public Node {
 public:
     Joint(Physics*, b2JointDef);
     virtual ~Joint();

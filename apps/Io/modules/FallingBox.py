@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-#encoding: utf8
+# encoding: utf8
 
 import sys
+
 from PySide.QtGui import QApplication, QMessageBox
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
@@ -9,20 +10,22 @@ PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 try:
     import JupiterPython as j
     import Box2DPython as b
+    from glmPython import vec3
 except ImportError as e:
     app = QApplication(sys.argv)
-    QMessageBox.critical(None, \
-                         PLAYER_TITLE, \
-                         u'Установи в PYTHONPATH путь до библиотеки _JupiterPython.{so, pyd, dll} и JupiterPython.py', \
-                         QMessageBox.Ok | QMessageBox.Default,\
+    QMessageBox.critical(None,
+                         PLAYER_TITLE,
+                         u'Установи в PYTHONPATH путь до библиотеки _JupiterPython.{so, pyd, dll} и JupiterPython.py',
+                         QMessageBox.Ok | QMessageBox.Default,
                          QMessageBox.NoButton)
     sys.exit(1)
+
 
 class Box(j.MoveListener, j.KeyboardListener):
     def __init__(self, window):
         j.MoveListener.__init__(self)
         j.KeyboardListener.__init__(self)
-        
+
         self.window = window
 
     def move(self, x, y, z):
@@ -41,28 +44,30 @@ class Box(j.MoveListener, j.KeyboardListener):
         if key == 57 or key == 65:
             body.ApplyForceToCenter(b.b2Vec2(0, 300), True)
 
+
 class BoxCollision(j.CollisionListener):
     def __init__(self):
         j.CollisionListener.__init__(self)
-        
+
     def collision(self, node):
-        #print u'Я столкнулся с ', node.getName(), u' тег ', node.getTag()
-        #self.getBox2dNode().applyForceToCenter(0., 3., True)
         pass
+
 
 DEG2RAD = 3.1415926 / 180.
 RAD2DEG = 180. / 3.1415926
 
+
+# noinspection PyPep8Naming
 class FallingBox(object):
-    
+
     # WIDTH  = 1000
-    WIDTH  = 300
-    HEIGTH = WIDTH * 3.0 / 5.0
-    
-    FPS    = 60.0
-    
+    WIDTH = 300
+    HEIGHT = WIDTH * 3.0 / 5.0
+
+    FPS = 60.0
+
     GROUND = 2
-    
+
     """
     - Сложная физическая форма из json(отладка)
     - Proxy узлы для отложенной загрузки
@@ -84,31 +89,31 @@ class FallingBox(object):
     * car profile sprites/images
     * explosion generators/ генераторы взрывов
     """
-    
+
     def __init__(self, window, width, height):
-        
+
         self.__isReady = False
-        
+
         j.File.setBase('../../samples/Box')
-        
+
         shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
-        #box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
-        
+        # box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
+
         # Атлас физических форм
         phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
 
         physics = j.Physics(1.0 / self.FPS)
-        
+
         cameraTrans = j.Transform()
         cameraTrans.setPosition(0, 0, -20)
         camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
         cameraTrans.addNode(camera)
 
         render = j.RenderVisitor(camera)
-        
+
         rn = j.Node()
         rn.addNode(cameraTrans)
-        
+
         bgT = j.Transform()
         bgT.translate(0., 0., -1.).setScaleF(0.022)
 
@@ -118,19 +123,23 @@ class FallingBox(object):
 
         bgT.addNode(bg)
 
-        
         self.boxTest = Box(window)
         self.boxCol = BoxCollision()
         boxImage = j.PngImage('Resources/box.png')
-        
+
         boxDef = b.b2BodyDef()
-        boxDef.type = b.b2_dynamicBody;
+        boxDef.type = b.b2_dynamicBody
         boxFixDef = b.b2FixtureDef()
         boxFixDef.density = 1.
         boxFixDef.restitution = .5
-        
+
         boxPhShape = j.PoligonShape(boxImage, boxFixDef)
-        
+
+        # box1 = j.Transform(vec3(0, 2, 1))
+        box1 = j.Transform(0, 2, 1)
+        box1.addNode(j.Body(physics, boxDef, boxPhShape))
+        box1.addNode(j.Sprite(j.ImageTexture(boxImage), j.ImageShape(boxImage), shader))
+
         box1 = j.SpriteBody(physics, boxDef, boxPhShape)
         box1.\
             setProgram(shader).\
@@ -140,55 +149,55 @@ class FallingBox(object):
             translate(0, 2, 1).\
             setScaleF(0.002)
         box1.setCollisionListener(self.boxCol)
-        
+
         box2 = j.SpriteBody(box1)
         box2.setScaleF(.0015).setPosition(-4, -2, 1)
-         
+
         box3 = j.SpriteBody(box1)
         box3.setPosition(0, 3, 1).setScaleF(.001)
-         
+
         box4 = j.SpriteBody(box3)
         box4.setPosition(-2, 2, 1)
-         
+
         box5 = j.SpriteBody(box3)
         box5.setPosition(-3, 3, 1)
-         
+
         box6 = j.SpriteBody(box3)
         box6.setScaleF(.002).setPosition(0, 3, 1)
-         
+
         box7 = j.SpriteBody(box6)
         box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
-        
+
         # Сложная физическая форма
         ship1Image = j.PngImage('Resources/ship1.png')
-        
+
         ship1FixDef = b.b2FixtureDef()
         ship1FixDef.density = 4
         ship1FixDef.restitution = .6
-        
+
         shipComplexShape = j.ComplexShape(ship1Image, phAtlas.getShape('Ship'), ship1FixDef)
-        
+
         ship1Def = b.b2BodyDef()
         ship1Def.type = b.b2_dynamicBody
-         
+
         ship1 = j.SpriteBody(physics, ship1Def, shipComplexShape)
         ship1.setProgram(shader).\
             setTexture(j.ImageTexture(ship1Image)).\
             setShape(j.ImageShape(ship1Image)).\
             setScaleF(0.01).\
             setPosition(3, 3, 1)
-        
+
         # Мячик
         ballDef = b.b2BodyDef()
         ballDef.type = b.b2_dynamicBody
-        
+
         ballFixDef = b.b2FixtureDef()
         ballFixDef.density = 4
         ballFixDef.restitution = 0.7
-        
+
         ballImage = j.PngImage('Resources/ball1.png')
         ballPhShape = j.CircleShape(ballImage, ballFixDef)
-        
+
         ball1 = j.SpriteBody(physics, ballDef, ballPhShape)
         ball1.setProgram(shader).\
             setTexture(j.ImageTexture(ballImage)).\
@@ -227,20 +236,20 @@ class FallingBox(object):
 
         propeller2 = j.SpriteBody(propeller1)
         propeller2.setPosition(-4, 8, 0.99)
-        
+
         # Соединим главную коробку и пропеллер
         propBoxDef = b.b2DistanceJointDef()
-        propBoxDef.Initialize(box1.getPhysicsBody(), propeller2.getPhysicsBody(), \
-            box1.getPhysicsBody().GetPosition(), propeller2.getPhysicsBody().GetPosition())
+        propBoxDef.Initialize(box1.getPhysicsBody(), propeller2.getPhysicsBody(),
+                              box1.getPhysicsBody().GetPosition(), propeller2.getPhysicsBody().GetPosition())
         propBoxDef.lenght = 1
 
         propBox = j.DistanceJoint(physics, propBoxDef)
 
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
-        
+
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
-        
+
         groundProto = j.SpriteBody(physics, b.b2BodyDef(), groundPhShape)
         groundProto.setProgram(shader).\
             setTexture(j.ImageTexture(groundImage)).\
@@ -248,16 +257,17 @@ class FallingBox(object):
             setName('flour').\
             setTag(self.GROUND).\
             setScaleF(0.01)
-        
-        
-        grounds = [j.SpriteBody(groundProto) for i in range(0, 7)]
-         
-        grounds[0].translate( 2, -8, 0.98)
+
+        grounds = []
+        for i in range(0, 7):
+            grounds.append(j.SpriteBody(groundProto))
+
+        grounds[0].translate(2, -8, 0.98)
         grounds[1].translate(-2, -8, 0.98)
-        grounds[2].translate( 4, -8, 0.98)
+        grounds[2].translate(4, -8, 0.98)
         grounds[3].translate(-4, -8, 0.98)
         grounds[4].translate(-7.5, -7.3, 0.98).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        grounds[5].translate( 7.5, -7.3, 0.98).setRotation(0, 0, 1,  30 * DEG2RAD)
+        grounds[5].translate(7.5, -7.3, 0.98).setRotation(0, 0, 1,  30 * DEG2RAD)
 
         grounds[6].translate(6, 3, 0.98).setRotation(0, 0, 1,  45 * DEG2RAD)
 
@@ -323,6 +333,6 @@ class FallingBox(object):
             setHeight(height)
 
         self.__isReady = True
-    
+
     def isReady(self):
         return self.__isReady

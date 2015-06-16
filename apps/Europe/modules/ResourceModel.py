@@ -2,7 +2,9 @@
 
 import os
 import string
+
 from PySide.QtCore import Qt, QAbstractItemModel, QModelIndex
+
 from JupiterPython import *
 
 """
@@ -29,19 +31,19 @@ Types = {"Image", "Texture", "Shape", "Shader", ... }
 """
 
 class Resource(object):
-    
-    NONE        = "None"
-    IMAGE       = "PngImage"
-    TEXTURE     = "ImageTexture"
-    SHAPE       = "ImageShape"
-    SHADER      = "Shader"
+
+    NONE = "None"
+    IMAGE = "PngImage"
+    TEXTURE = "ImageTexture"
+    SHAPE = "ImageShape"
+    SHADER = "Shader"
     
     def __init__(self, type_=NONE, name="Noname", obj=None):
-        self.__type     = type_
-        self.__name     = name
-        self.__parent   = None
-        self.__childs   = []
-        self.__object   = obj
+        self.__type = type_
+        self.__name = name
+        self.__parent = None
+        self.__childs = []
+        self.__object = obj
 
     def addChild(self, child):
         child.setParent(self)

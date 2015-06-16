@@ -22,7 +22,7 @@ class Shape;
 class Texture;
 class Shader;
 
-class Sprite: virtual public Node {
+class Sprite: public Node {
 public:
     Sprite(Texture* = nullptr, Shape* = nullptr, Shader* = nullptr);
     virtual ~Sprite() = default;

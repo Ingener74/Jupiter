@@ -46,7 +46,6 @@
 #include "Jupiter/RotationListener.h"
 #include "Jupiter/KeyboardListener.h"
 
-//#include "Jupiter/SpriteBody.h"
 #include "Jupiter/VisualBody.h"
 
 #include "Jupiter/MoveAnimation.h"
@@ -87,7 +86,6 @@ T* node2(Node* t) {
 
     %template(node2Sprite)          node2<Sprite>;
     %template(node2Body)            node2<Body>;
-//    %template(node2SpriteBody)      node2<SpriteBody>;
     %template(node2Camera)          node2<Camera>;
 
     %template(node2Joint)           node2<Joint>;

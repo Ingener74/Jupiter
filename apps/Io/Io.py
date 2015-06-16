@@ -35,7 +35,7 @@ class OpenGLWidget(QGLWidget):
 
     def initializeGL(self):
         self.setWindowTitle(PLAYER_TITLE)
-        self.resize(FallingBox.WIDTH, FallingBox.HEIGTH)
+        self.resize(FallingBox.WIDTH, FallingBox.HEIGHT)
         
         print 'Vendor   ', str(glGetString(GL_VENDOR))
         print 'Renderer ', str(glGetString(GL_RENDERER))
