@@ -11,6 +11,7 @@
 #ifdef SWIG
 #else
     #include <Box2D/Box2D.h>
+    #include <json.hpp>
 #endif
 
 #include "Node.h"
@@ -42,6 +43,9 @@ public:
     virtual Body* scale(float x, float y, float z);
 
     virtual Body* accept(NodeVisitor*);
+
+    virtual nlohmann::json getJson() const;
+    friend std::ostream& operator<<(std::ostream&, Body const&);
 
     Body* setPhysicsShape(PhysicsShape*);
     PhysicsShape* getPhysicsShape();

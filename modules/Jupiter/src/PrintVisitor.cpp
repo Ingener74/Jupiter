@@ -21,25 +21,21 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-PrintVisitor::PrintVisitor(Game* game) {
+PrintVisitor::PrintVisitor(Game* game) :
+    _game(game) {
 }
 
 PrintVisitor::~PrintVisitor() {
 }
 
 void PrintVisitor::begin() {
+    cout << *_game->getRootNode() << endl;
 }
 
 void PrintVisitor::visit(Node* node) {
-    int t = calcTabs(node);
-    cout << tabs(t) << "node visible:   " << node->isVisible() << endl;
 }
 
 void PrintVisitor::visit(Sprite* sprite) {
-    int t = calcTabs(sprite);
-    cout << tabs(t) << "sprite visible: " << sprite->isVisible() << endl <<
-            tabs(t) << "sprite width:   " << sprite->getTexture()->getWidth() << " x " << sprite->getTexture()->getHeight() << endl <<
-            tabs(t) << "sprite model:   " << sprite->getModel() << endl;
 }
 
 void PrintVisitor::end() {

@@ -11,6 +11,8 @@
 #ifdef SWIG
 #else
     #include <memory>
+
+    #include <json.hpp>
 #endif
 
 #include "Jupiter/Node.h"
@@ -39,6 +41,10 @@ public:
     Sprite* setProgram(Shader*);
 
     virtual Sprite* accept(NodeVisitor* nv);
+
+    virtual nlohmann::json getJson() const;
+    friend std::ostream& operator<<(std::ostream&, Sprite const&);
+
 protected:
     Ref<Texture> _texture;
     Ref<Shape>   _shape;

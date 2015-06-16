@@ -8,6 +8,11 @@
 #ifndef MODULES_JUPITER_INCLUDE_PRINTVISITOR_H_
 #define MODULES_JUPITER_INCLUDE_PRINTVISITOR_H_
 
+#ifdef SWIG
+#else
+    #include "Ref.h"
+#endif
+
 #include "NodeVisitor.h"
 
 namespace jupiter {
@@ -46,6 +51,8 @@ public:
 private:
     int calcTabs(Node*);
     std::string tabs(int);
+
+    Game* _game = nullptr;
 };
 
 } /* namespace jupiter */

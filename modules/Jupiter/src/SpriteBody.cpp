@@ -11,6 +11,9 @@
 
 namespace jupiter {
 
+using namespace std;
+using namespace nlohmann;
+
 SpriteBody::SpriteBody() :
     Sprite(), Body() {
 }
@@ -41,5 +44,20 @@ SpriteBody* SpriteBody::accept(NodeVisitor* nv) {
     return this;
 }
 
-} /* namespace jupiter */
+json SpriteBody::getJson() const {
+    return json{
+        {
+            "SpriteBody", {
+                { "Base", {
+                    Sprite::getJson(),
+                    Body::getJson() } }
+            }
+        }
+    };
+}
 
+ostream& operator<<(ostream& out, SpriteBody const& r) {
+    return out << setw(4) << r.getJson();
+}
+
+} /* namespace jupiter */

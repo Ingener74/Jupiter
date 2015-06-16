@@ -86,6 +86,7 @@ PhysicsBodyEditorAtlas::PhysicsBodyEditorAtlas(File* atlas) {
 
     for (auto const& rigidBody : j["rigidBodies"]) {
         PhysicsBodyEditorShape shape { rigidBody };
+//        cout << shape << endl;
         _shapes[shape.name] = shape;
     }
 }

@@ -9,8 +9,6 @@
 
 namespace jupiter {
 
-//using namespace std;
-
 NodeVisitor::NodeVisitor() {
 }
 

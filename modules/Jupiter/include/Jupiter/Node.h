@@ -113,6 +113,7 @@ public:
     glm::mat4 getModel() const;
 
     virtual nlohmann::json getJson() const;
+    friend std::ostream& operator<<(std::ostream&, Node const&);
 
 protected:
     bool                    _visible            = true;

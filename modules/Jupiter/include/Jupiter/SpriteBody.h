@@ -11,6 +11,7 @@
 #ifdef SWIG
 #else
     #include <Box2D/Box2D.h>
+    #include <json.hpp>
 #endif
 
 #include "Body.h"
@@ -32,6 +33,9 @@ public:
     virtual SpriteBody* clone(SpriteBody*);
 
     virtual SpriteBody* accept(NodeVisitor*);
+
+    virtual nlohmann::json getJson() const;
+    friend std::ostream& operator<<(std::ostream&, SpriteBody const&);
 
 private:
     SpriteBody& operator=(const SpriteBody&) = default;

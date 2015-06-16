@@ -15,6 +15,7 @@
 namespace jupiter {
 
 using namespace std;
+using namespace nlohmann;
 
 Body::Body(): Node(){
 }
@@ -104,6 +105,20 @@ Body* Body::accept(NodeVisitor* nv) {
         nv->pop();
     }
     return this;
+}
+
+json Body::getJson() const {
+    return json{
+        {
+            "Body", {
+                {"Base", {Node::getJson()}},
+            }
+        }
+    };
+}
+
+ostream& operator<<(ostream& out, Body const& r){
+    return out << setw(4) << r.getJson();
 }
 
 Body* Body::setPhysicsShape(PhysicsShape* shape) {

@@ -15,6 +15,7 @@
 namespace jupiter {
 
 using namespace std;
+using namespace nlohmann;
 
 Sprite::Sprite(const Sprite& sprite) {
     clone(const_cast<Sprite*>(&sprite));
@@ -73,6 +74,20 @@ Sprite* Sprite::accept(NodeVisitor* nv) {
         nv->pop();
     }
     return this;
+}
+
+json Sprite::getJson() const {
+    return json {
+        {
+            "Sprite", {
+                {"Base", {Node::getJson()} },
+            }
+        },
+    };
+}
+
+ostream& operator<<(ostream& out, Sprite const& r) {
+    return out << setw(4) << r.getJson();
 }
 
 } /* namespace ndk_game */

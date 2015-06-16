@@ -318,32 +318,38 @@ glm::mat4 Node::getModel() const {
 json Node::getJson() const {
     return json {
         { "Node",
-            { "visible", _visible },
-            { "tag", _tag },
-            { "name", _name },
-            { "position",
-                { "x", _position.x },
-                { "y", _position.y },
-                { "z", _position.z }
-            },
-            { "scale",
-                { "x", _scale.x },
-                { "y", _scale.y },
-                { "z", _scale.z }
-            },
-            { "rotation",
-                { "x", _rotation.x },
-                { "y", _rotation.y },
-                { "z", _rotation.z },
-                { "w", _rotation.w }
-            },
-//            {"nodes", [=]{
-//                nlohmann::json nodes;
-//                for(auto node: _nodes)
-//                    nodes.push_back(node->getJson());
-//                return nodes;
-//            }()},
+            {
+                { "visible", _visible },
+                { "tag", _tag },
+                { "name", _name },
+                { "position",{
+                        { "x", _position.x },
+                        { "y", _position.y },
+                        { "z", _position.z }}
+                },
+                { "scale",{
+                    { "x", _scale.x },
+                    { "y", _scale.y },
+                    { "z", _scale.z }}
+                },
+                { "rotation",{
+                    { "x", _rotation.x },
+                    { "y", _rotation.y },
+                    { "z", _rotation.z },
+                    { "w", _rotation.w }}
+                },
+                {"nodes", [=]{
+                    nlohmann::json nodes;
+                    for(auto node: _nodes)
+                        nodes.push_back(node->getJson());
+                    return nodes;
+                }()},
+            }
         }};
+}
+
+ostream& operator<<(ostream& out, Node const& r) {
+    return out << setw(4) << r.getJson();
 }
 
 } /* namespace jupiter */

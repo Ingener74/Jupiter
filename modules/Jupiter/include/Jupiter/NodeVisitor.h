@@ -49,9 +49,9 @@ public:
     virtual void visit(Node*);
     virtual void visit(Sprite*);
     virtual void visit(Body*);
-    virtual void visit(Camera*);
-
     virtual void visit(SpriteBody*);
+
+    virtual void visit(Camera*);
 
     virtual void visit(Joint*);
     virtual void visit(RevoluteJoint*);
@@ -69,7 +69,7 @@ public:
     virtual void end();
 
 protected:
-    std::stack<Node*> stack;
+    std::stack<Node*> _stack;
 };
 
 } /* namespace jupiter */
