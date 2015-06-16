@@ -33,13 +33,13 @@ void NodeVisitor::visit(Sprite*) {
 void NodeVisitor::visit(Body*) {
 }
 
-void NodeVisitor::visit(Camera*) {
-}
-
-void NodeVisitor::end() {
-}
-
 void NodeVisitor::visit(SpriteBody*) {
+}
+
+void NodeVisitor::visit(VisualBody*) {
+}
+
+void NodeVisitor::visit(Camera*) {
 }
 
 void NodeVisitor::visit(Joint*) {
@@ -76,6 +76,9 @@ void NodeVisitor::visit(PulleyJoint*) {
 }
 
 void NodeVisitor::visit(WeldJoint*) {
+}
+
+void NodeVisitor::end() {
 }
 
 } /* namespace jupiter */

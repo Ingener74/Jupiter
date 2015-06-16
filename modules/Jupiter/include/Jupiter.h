@@ -45,6 +45,7 @@
 #include "Jupiter/KeyboardListener.h"
 
 #include "Jupiter/SpriteBody.h"
+#include "Jupiter/VisualBody.h"
 
 #include "Jupiter/MoveAnimation.h"
 

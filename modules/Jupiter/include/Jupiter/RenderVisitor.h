@@ -20,6 +20,7 @@
 namespace jupiter {
 
 class Camera;
+class VisualBody;
 
 class RenderVisitor: public NodeVisitor {
 public:
@@ -31,6 +32,7 @@ public:
     virtual void begin();
 
     virtual void visit(Sprite*);
+    virtual void visit(VisualBody*);
     virtual void visit(Camera*);
 
     virtual void end();

@@ -322,7 +322,7 @@ json Node::getJson() const {
                 { "visible", _visible },
                 { "tag", _tag },
                 { "name", _name },
-                { "position",{
+                { "position", {
                         { "x", _position.x },
                         { "y", _position.y },
                         { "z", _position.z }}

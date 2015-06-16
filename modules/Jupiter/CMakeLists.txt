@@ -33,7 +33,6 @@ set(SOURCES
     src/NodeVisitor.cpp
     src/RenderVisitor.cpp
     src/PrintVisitor.cpp
-    
 
     src/Shader.cpp
     src/Attribute.cpp
@@ -49,6 +48,7 @@ set(SOURCES
     
     src/Body.cpp
     src/SpriteBody.cpp
+    src/Physics/Box2D/VisualBody.cpp
     
     src/Physics.cpp
     

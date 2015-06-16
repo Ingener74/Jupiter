@@ -22,6 +22,7 @@ class Sprite;
 class Body;
 class Camera;
 class SpriteBody;
+class VisualBody;
 class Joint;
 
 class RevoluteJoint;
@@ -50,6 +51,7 @@ public:
     virtual void visit(Sprite*);
     virtual void visit(Body*);
     virtual void visit(SpriteBody*);
+    virtual void visit(VisualBody*);
 
     virtual void visit(Camera*);
 

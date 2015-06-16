@@ -48,7 +48,9 @@ void ComplexShape::setScale(float x, float y) {
     for (auto poligon : _shape.polygons) {
         vector<b2Vec2> poly;
         for (auto point : poligon)
-            poly.emplace_back(_width * w * point.x * x, _height * h * point.y * y);
+            poly.emplace_back(
+                _width  * w * point.x * x,
+                _height * h * point.y * y);
 
         b2PolygonShape shape;
         shape.Set(poly.data(), poly.size());
