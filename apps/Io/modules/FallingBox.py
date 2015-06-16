@@ -136,7 +136,6 @@ class FallingBox(object):
             setProgram(shader).\
             setTexture(j.ImageTexture(boxImage)).\
             setShape(j.ImageShape(boxImage)).\
-            
             setMoveListener(self.boxTest).\
             translate(0, 2, 1).\
             setScaleF(0.002)
