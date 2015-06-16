@@ -6,6 +6,7 @@
  */
 
 #define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -22,6 +23,10 @@ using namespace std;
 using namespace glm;
 
 Transform::Transform() {
+}
+
+Transform::Transform(glm::vec3 position, float angle, glm::vec3 rotation, glm::vec3 scale) :
+    _position(position), _scale(scale), _rotation(glm::rotate(glm::quat { }, angle, rotation)) {
 }
 
 Transform::~Transform() {
@@ -238,3 +243,4 @@ glm::mat4 Transform::getModel() const {
 }
 
 } /* namespace jupiter */
+

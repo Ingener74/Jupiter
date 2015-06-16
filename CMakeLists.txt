@@ -23,6 +23,9 @@ option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"          ON)
 option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"         ON)
 option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"            ON)
 
+option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"        ON)
+option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"           ON)
+
 option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"      ON)
 option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"         ON)
 

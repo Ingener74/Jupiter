@@ -82,6 +82,22 @@ if(WITH_GL_PYTHON_WRAPPER)
 endif()
 
 ################################################################################################
+# glm
+################################################################################################
+set_source_files_properties(glm.i PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(glm.i PROPERTIES SWIG_FLAGS "")
+
+#if(WITH_GL_LUA_WRAPPER)
+#    SWIG_ADD_MODULE(glLua lua gl.i)
+#    SWIG_LINK_LIBRARIES(glLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
+#endif()
+
+if(WITH_GLM_PYTHON_WRAPPER)
+    SWIG_ADD_MODULE(glmPython python glm.i)
+    SWIG_LINK_LIBRARIES(glmPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+endif()
+
+################################################################################################
 # Box2D
 ################################################################################################
 set_source_files_properties(Box2D.i PROPERTIES CPLUSPLUS ON)

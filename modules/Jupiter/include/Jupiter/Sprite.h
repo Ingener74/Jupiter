@@ -24,7 +24,7 @@ class Shader;
 
 class Sprite: virtual public Node {
 public:
-    Sprite() = default;
+    Sprite(Texture* = nullptr, Shape* = nullptr, Shader* = nullptr);
     virtual ~Sprite() = default;
 
     Sprite(const Sprite&);

@@ -17,6 +17,10 @@ namespace jupiter {
 using namespace std;
 using namespace nlohmann;
 
+Sprite::Sprite(Texture* texture, Shape* shape, Shader* program) :
+    _texture(texture), _shape(shape), _program(program) {
+}
+
 Sprite::Sprite(const Sprite& sprite) {
     clone(const_cast<Sprite*>(&sprite));
 }

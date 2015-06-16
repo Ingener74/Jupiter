@@ -9,9 +9,9 @@
 #define MODULES_JUPITER_INCLUDE_JUPITER_TRANSFORM_H_
 
 #ifdef SWIG
-    #pragma SWIG nowarn=362
+#   pragma SWIG nowarn=362
 #else
-    #include "Ref.h"
+#   include "Ref.h"
 #endif
 
 #include "Node.h"
@@ -25,6 +25,7 @@ class RotationListener;
 class Transform: public Node {
 public:
     Transform();
+    Transform(glm::vec3 position, float angle = 0.f, glm::vec3 rotation = {0.f, 0.f, 1.f}, glm::vec3 scale = {1.f, 1.f, 1.f});
     virtual ~Transform();
 
     float getRotationX() const;
