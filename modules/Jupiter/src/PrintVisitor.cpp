@@ -13,6 +13,7 @@
 #include "Jupiter/Texture.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
+#include "Jupiter/Game.h"
 #include "Jupiter/PrintVisitor.h"
 
 namespace jupiter {
@@ -20,7 +21,7 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-PrintVisitor::PrintVisitor() {
+PrintVisitor::PrintVisitor(Game* game) {
 }
 
 PrintVisitor::~PrintVisitor() {
@@ -65,5 +66,49 @@ string PrintVisitor::tabs(int tab) {
     return s.str();
 }
 
-} /* namespace jupiter */
+void PrintVisitor::visit(Box2dNode*) {
+}
 
+void PrintVisitor::visit(Camera*) {
+}
+
+void PrintVisitor::visit(SpriteBox2d*) {
+}
+
+void PrintVisitor::visit(Joint*) {
+}
+
+void PrintVisitor::visit(RevoluteJoint*) {
+}
+
+void PrintVisitor::visit(DistanceJoint*) {
+}
+
+void PrintVisitor::visit(RopeJoint*) {
+}
+
+void PrintVisitor::visit(MotorJoint*) {
+}
+
+void PrintVisitor::visit(GearJoint*) {
+}
+
+void PrintVisitor::visit(WheelJoint*) {
+}
+
+void PrintVisitor::visit(FrictionJoint*) {
+}
+
+void PrintVisitor::visit(MouseJoint*) {
+}
+
+void PrintVisitor::visit(PrismaticJoint*) {
+}
+
+void PrintVisitor::visit(PulleyJoint*) {
+}
+
+void PrintVisitor::visit(WeldJoint*) {
+}
+
+} /* namespace jupiter */

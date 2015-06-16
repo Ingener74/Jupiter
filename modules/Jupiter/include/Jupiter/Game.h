@@ -22,7 +22,7 @@ class Node;
 class NodeVisitor;
 class KeyboardListener;
 
-class Game {
+class Game: virtual public RCO {
 public:
     Game() = default;
     virtual ~Game() = default;

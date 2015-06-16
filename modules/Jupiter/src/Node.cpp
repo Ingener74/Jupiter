@@ -24,6 +24,7 @@ namespace jupiter {
 
 using namespace std;
 using namespace glm;
+using namespace nlohmann;
 
 Node::Node() {
 }
@@ -312,6 +313,37 @@ RotationListener* Node::getRotationListener() {
 
 glm::mat4 Node::getModel() const {
     return glm::translate( { }, _position) * glm::mat4_cast(_rotation) * glm::scale( { }, _scale);
+}
+
+json Node::getJson() const {
+    return json {
+        { "Node",
+            { "visible", _visible },
+            { "tag", _tag },
+            { "name", _name },
+            { "position",
+                { "x", _position.x },
+                { "y", _position.y },
+                { "z", _position.z }
+            },
+            { "scale",
+                { "x", _scale.x },
+                { "y", _scale.y },
+                { "z", _scale.z }
+            },
+            { "rotation",
+                { "x", _rotation.x },
+                { "y", _rotation.y },
+                { "z", _rotation.z },
+                { "w", _rotation.w }
+            },
+//            {"nodes", [=]{
+//                nlohmann::json nodes;
+//                for(auto node: _nodes)
+//                    nodes.push_back(node->getJson());
+//                return nodes;
+//            }()},
+        }};
 }
 
 } /* namespace jupiter */

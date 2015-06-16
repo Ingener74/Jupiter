@@ -95,12 +95,15 @@ class FallingBox(object):
         shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
         #box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
         
-        physics       = j.Box2dVisitor(1.0 / self.FPS)
+        # Атлас физических форм
+        phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
+
+        physics = j.Box2dVisitor(1.0 / self.FPS)
         
         camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
         camera.setPosition(0, 0, -20)#.setRotation(0, 1, 0, -0.3)
 
-        render        = j.RenderVisitor(camera)
+        render = j.RenderVisitor(camera)
         
         rn = j.Node()
         
@@ -153,9 +156,6 @@ class FallingBox(object):
         box7 = j.SpriteBox2d(box6)
         box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
         
-        # Сложная форма
-        phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
-
         # Сложная физическая форма
         ship1Image = j.PngImage('Resources/ship1.png')
         

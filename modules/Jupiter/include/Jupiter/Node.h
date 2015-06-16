@@ -19,6 +19,8 @@
     #include <glm/glm.hpp>
     #include <glm/gtc/quaternion.hpp>
 
+    #include <json.hpp>
+
     #include "Ref.h"
 #endif
 
@@ -109,6 +111,8 @@ public:
     RotationListener* getRotationListener();
 
     glm::mat4 getModel() const;
+
+    virtual nlohmann::json getJson() const;
 
 protected:
     bool                    _visible            = true;
