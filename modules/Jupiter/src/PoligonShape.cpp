@@ -12,7 +12,7 @@
 
 namespace jupiter {
 
-PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef, float scale) :
+PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef) :
     _fixtureDef(fixtureDef) {
     Ref<Image> ir{image};
 
@@ -21,10 +21,10 @@ PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef, float scale) :
     jassert(image->getHeight(), "image height invalid");
     jassert(image->getData(), "image data invalid");
 
-    _width  = scale * image->getWidth()  / 2.f;
-    _height = scale * image->getHeight() / 2.f;
+    _width  = image->getWidth()  / 2.f;
+    _height = image->getHeight() / 2.f;
 
-    _shape.SetAsBox(_width, _height);
+    setScale(1.f, 1.f);
     _fixtureDef.shape = &_shape;
 }
 
@@ -32,7 +32,17 @@ PoligonShape::~PoligonShape() {
 }
 
 void PoligonShape::setScale(float x, float y) {
-    _shape.SetAsBox(_width * x, _height * x);
+    _scaleX = x;
+    _scaleY = y;
+    _shape.SetAsBox(_width * _scaleX, _height * _scaleY);
+}
+
+float PoligonShape::getScaleX() const {
+    return _scaleX;
+}
+
+float PoligonShape::getScaleY() const {
+    return _scaleY;
 }
 
 int PoligonShape::shapesCount() const {

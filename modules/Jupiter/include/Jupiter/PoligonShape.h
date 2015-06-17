@@ -21,15 +21,17 @@ class Image;
 
 class PoligonShape: public PhysicsShape {
 public:
-    PoligonShape(Image*, b2FixtureDef, float scale = 1.f);
+    PoligonShape(Image*, b2FixtureDef);
     virtual ~PoligonShape();
 
     virtual void setScale(float x, float y);
+    virtual float getScaleX() const;
+    virtual float getScaleY() const;
     virtual int shapesCount() const;
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
-    float _width = 0.f, _height = 0.f;
+    float _width = 0.f, _height = 0.f, _scaleX = 1.f, _scaleY = 1.f;
     b2FixtureDef   _fixtureDef;
     b2PolygonShape _shape;
 };

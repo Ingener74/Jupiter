@@ -26,7 +26,7 @@ ComplexShape::ComplexShape() {
 ComplexShape::ComplexShape(Image* image, PhysicsBodyEditorShape shape, b2FixtureDef fixtureDef) :
     _shape(shape), _fixtureDef(fixtureDef) {
     jassert(image, "invalid image");
-    Ref<Image> { image };
+    Ref<Image> im{ image };
 
     _width = image->getWidth();
     _height = image->getHeight();
@@ -42,6 +42,9 @@ void ComplexShape::setScale(float x, float y) {
     _polygonShapes.clear();
     _circleShapes.clear();
 
+    _scaleX = x;
+    _scaleY = y;
+
     float w = 1.f;
     float h = float(_height) / float(_width);
 
@@ -49,8 +52,8 @@ void ComplexShape::setScale(float x, float y) {
         vector<b2Vec2> poly;
         for (auto point : poligon)
             poly.emplace_back(
-                _width  * w * point.x * x,
-                _height * h * point.y * y);
+                _width  * w * point.x * _scaleX,
+                _height * h * point.y * _scaleY);
 
         b2PolygonShape shape;
         shape.Set(poly.data(), poly.size());
@@ -62,6 +65,14 @@ void ComplexShape::setScale(float x, float y) {
         shape.m_radius = circle.radius;
         _circleShapes.push_back(shape);
     }
+}
+
+float ComplexShape::getScaleX() const {
+    return _scaleX;
+}
+
+float ComplexShape::getScaleY() const {
+    return _scaleY;
 }
 
 int ComplexShape::shapesCount() const {

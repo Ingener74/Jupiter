@@ -54,7 +54,8 @@ Body* Body::clone() {
 Body* Body::setParent(Node* node) {
     auto transform = dynamic_cast<Transform*>(node);
     jassert(transform, "parent must be transform");
-    _body->SetTransform( { transform->getPositionX(), transform->getPositionY() }, transform->getRotationAngle());
+    setScale(transform);
+    setPosition(transform);
     return this;
 }
 
@@ -99,6 +100,20 @@ float Body::distance(Transform* transform) {
     vec2 trans{transform->getPositionX(), transform->getPositionY()};
     vec2 body{_body->GetPosition().x, _body->GetPosition().y};
     return length(trans - body);
+}
+
+Body* Body::setScale(Transform* transform) {
+    _shape->setScale(transform->getScaleX(), transform->getScaleY());
+    updateFixtures();
+    return this;
+}
+
+float Body::scaleDistance(Transform* transform) {
+    jassert(transform, "invalid transform");
+    jassert(_shape, "no shape");
+    vec2 trans { transform->getScaleX(), transform->getScaleY() };
+    vec2 shape { _shape->getScaleX(), _shape->getScaleY() };
+    return length(trans - shape);
 }
 
 Body* Body::setPhysicsShape(PhysicsShape* shape) {

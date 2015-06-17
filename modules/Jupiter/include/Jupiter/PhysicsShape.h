@@ -25,6 +25,8 @@ public:
     virtual ~PhysicsShape();
 
     virtual void setScale(float x, float y) = 0;
+    virtual float getScaleX() const = 0;
+    virtual float getScaleY() const = 0;
     virtual int shapesCount() const = 0;
 
     virtual b2FixtureDef* getFixtureDef(int index) = 0;

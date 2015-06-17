@@ -25,11 +25,13 @@ public:
     virtual ~CircleShape();
 
     virtual void setScale(float x, float y);
+    virtual float getScaleX() const;
+    virtual float getScaleY() const;
     virtual int shapesCount() const;
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
-    float _radius = 0.f;
+    float _radius = 0.f, _scale = 1.f;
     b2FixtureDef  _fixtureDef;
     b2CircleShape _shape;
 };

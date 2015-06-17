@@ -62,6 +62,12 @@ public:
     virtual void visit(Body* body) {
         jassert(!_stack.empty(), "stack empty");
         auto transform = _stack.top();
+
+        float scale = body->scaleDistance(transform);
+        if (scale > MinDistance) {
+            body->setScale(transform);
+        }
+
         float len = body->distance(transform);
         if (len > MinDistance) {
             body->setPosition(transform);

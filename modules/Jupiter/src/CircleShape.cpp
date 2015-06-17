@@ -14,15 +14,16 @@ namespace jupiter {
 
 CircleShape::CircleShape(Image* image, b2FixtureDef fixtureDef, float scale) :
     _fixtureDef(fixtureDef) {
-    Ref<Image>{image};
+    Ref<Image> im{image};
 
     jassert(image, "image invalid");
     jassert(image->getWidth(), "image width invalid");
     jassert(image->getHeight(), "image height invalid");
     jassert(image->getData(), "image data invalid");
 
-    _radius = scale * image->getWidth()/ 2.f;
-    _shape.m_radius = _radius;
+    _radius = image->getWidth() / 2.f;
+//    _shape.m_radius = _radius;
+    setScale(scale, scale);
     _fixtureDef.shape = &_shape;
 }
 
@@ -30,7 +31,16 @@ CircleShape::~CircleShape() {
 }
 
 void CircleShape::setScale(float x, float y) {
-    _shape.m_radius = _radius * x;
+    _scale = x;
+    _shape.m_radius = _radius * _scale;
+}
+
+float CircleShape::getScaleX() const {
+    return _scale;
+}
+
+float CircleShape::getScaleY() const {
+    return _scale;
 }
 
 int CircleShape::shapesCount() const {

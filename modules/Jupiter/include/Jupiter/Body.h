@@ -46,6 +46,9 @@ public:
     Body* setPosition(Transform*);
     float distance(Transform*);
 
+    Body* setScale(Transform*);
+    float scaleDistance(Transform*);
+
     Body* setPhysicsShape(PhysicsShape*);
     PhysicsShape* getPhysicsShape();
 
