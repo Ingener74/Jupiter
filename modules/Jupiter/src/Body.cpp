@@ -89,7 +89,7 @@ ostream& operator<<(ostream& out, Body const& r){
 Body* Body::setPosition(Transform* transform) {
     jassert(transform, "invalid transform");
     jassert(_body, "no body");
-    _body->SetTransform( { transform->getPositionX(), transform->getPositionY() }, transform->getRotationZ());
+    _body->SetTransform( { transform->getPositionX(), transform->getPositionY() }, transform->getRotationAngle());
     return this;
 }
 
