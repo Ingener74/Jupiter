@@ -79,7 +79,9 @@ void RenderVisitor::visit(VisualBody* body) {
 void RenderVisitor::pop(VisualBody*){
 }
 
-void RenderVisitor::push(Camera*){
+void RenderVisitor::push(Camera* camera){
+    jassert(camera, "invalid camera");
+    _cameras.push(camera);
 }
 
 void RenderVisitor::visit(Camera* camera) {
@@ -88,6 +90,7 @@ void RenderVisitor::visit(Camera* camera) {
 }
 
 void RenderVisitor::pop(Camera*){
+    _cameras.pop();
 }
 
 void RenderVisitor::push(Transform* transform) {

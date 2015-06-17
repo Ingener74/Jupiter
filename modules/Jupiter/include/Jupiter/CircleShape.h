@@ -21,7 +21,7 @@ class Image;
 
 class CircleShape: public PhysicsShape {
 public:
-    CircleShape(Image*, b2FixtureDef);
+    CircleShape(Image*, b2FixtureDef, float scale = 1.f);
     virtual ~CircleShape();
 
     virtual void setScale(float x, float y);

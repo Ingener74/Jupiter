@@ -39,6 +39,7 @@ private:
     Ref<Camera> _camera; // TODO должна быть не здесь а в дереве узлов
 
     std::stack<Transform*> _transforms;
+    std::stack<Camera*> _cameras;
 };
 
 } /* namespace jupiter */

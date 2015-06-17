@@ -133,7 +133,6 @@ class FallingBox(object):
 
         boxPhShape = j.PoligonShape(boxImage, boxFixDef, 0.002)
 
-        # box1 = j.Transform(vec3(0, 2, 1))
         box1 = j.Transform(0, 6, 1)
         box1.addNode(j.Body(physics, boxDef, boxPhShape))
         box1.addNode(j.Sprite(j.ImageTexture(boxImage), j.ImageShape(boxImage, 0.002), shader))
@@ -151,23 +150,20 @@ class FallingBox(object):
         #     setScaleF(0.002)
         # box1.setCollisionListener(self.boxCol)
 
-        # box2 = j.SpriteBody(box1)
-        # box2.setScaleF(.0015).setPosition(-4, -2, 1)
+        box3 = j.Transform(box1)
+        box3.setPosition(0, 3, 1)
 
-        # box3 = j.SpriteBody(box1)
-        # box3.setPosition(0, 3, 1).setScaleF(.001)
+        box4 = j.Transform(box3)
+        box4.setPosition(-2, 2, 1)
 
-        # box4 = j.SpriteBody(box3)
-        # box4.setPosition(-2, 2, 1)
+        box5 = j.Transform(box3)
+        box5.setPosition(-3, 3, 1)
 
-        # box5 = j.SpriteBody(box3)
-        # box5.setPosition(-3, 3, 1)
+        box6 = j.Transform(box3)
+        box6.setPosition(0, 3, 1)
 
-        # box6 = j.SpriteBody(box3)
-        # box6.setScaleF(.002).setPosition(0, 3, 1)
-
-        # box7 = j.SpriteBody(box6)
-        # box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
+        box7 = j.Transform(box6)
+        box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
 
         # Сложная физическая форма
         # ship1Image = j.PngImage('Resources/ship1.png')
@@ -189,17 +185,21 @@ class FallingBox(object):
         #     setPosition(3, 3, 1)
 
         # # Мячик
-        # ballDef = b.b2BodyDef()
-        # ballDef.type = b.b2_dynamicBody
+        ballDef = b.b2BodyDef()
+        ballDef.type = b.b2_dynamicBody
 
-        # ballFixDef = b.b2FixtureDef()
-        # ballFixDef.density = 4
-        # ballFixDef.restitution = 0.7
+        ballFixDef = b.b2FixtureDef()
+        ballFixDef.density = 4
+        ballFixDef.restitution = 0.7
 
-        # ballImage = j.PngImage('Resources/ball1.png')
-        # ballPhShape = j.CircleShape(ballImage, ballFixDef)
+        ballImage = j.PngImage('Resources/ball1.png')
+        ballPhShape = j.CircleShape(ballImage, ballFixDef)
 
-        # ball1 = j.SpriteBody(physics, ballDef, ballPhShape)
+        # старое ball1 = j.SpriteBody(physics, ballDef, ballPhShape)
+        # ball1 = j.Transform(-5, 3, 1)
+        # ball1.addNode(j.Body(physics, ballDef, ballPhShape))
+        # ball1.addNode(j.Sprite(j.ImageTexture(ballImage, 0.01), j.ImageShape(ballImage), shader))
+        
         # ball1.setProgram(shader).\
         #     setTexture(j.ImageTexture(ballImage)).\
         #     setShape(j.ImageShape(ballImage)).\
@@ -251,21 +251,13 @@ class FallingBox(object):
 
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef(), 0.01)
 
-        groundT = j.Transform(0, 0, 0.98)
-        groundT.addNode(j.Body(physics, b.b2BodyDef(), groundPhShape))
-        groundT.addNode(j.Sprite(j.ImageTexture(groundImage), j.ImageShape(groundImage, 0.01), shader))
-
-        # groundProto = j.SpriteBody(physics, b.b2BodyDef(), groundPhShape)
-        # groundProto.setProgram(shader).\
-        #     setTexture(j.ImageTexture(groundImage)).\
-        #     setShape(j.ImageShape(groundImage)).\
-        #     setName('flour').\
-        #     setTag(self.GROUND).\
-        #     setScaleF(0.01)
+        groundProto = j.Transform(0, 0, 0.98)
+        groundProto.addNode(j.Body(physics, b.b2BodyDef(), groundPhShape))
+        groundProto.addNode(j.Sprite(j.ImageTexture(groundImage), j.ImageShape(groundImage, 0.01), shader))
 
         grounds = []
         for i in range(0, 7):
-            grounds.append(j.Transform(groundT))
+            grounds.append(j.Transform(groundProto))
 
         grounds[0].translate(2, -8, 0.98)
         grounds[1].translate(-2, -8, 0.98)
@@ -329,7 +321,7 @@ class FallingBox(object):
         #     addNode(car)
 
         rn.addNode(bgT).\
-            addNode(groundT).\
+            addNode(groundProto).\
             addNode(grounds[0]).\
             addNode(grounds[1]).\
             addNode(grounds[2]).\
@@ -338,7 +330,12 @@ class FallingBox(object):
             addNode(grounds[5]).\
             addNode(grounds[6]).\
             addNode(box1).\
-            addNode(box2)
+            addNode(box2).\
+            addNode(box3).\
+            addNode(box4).\
+            addNode(box5).\
+            addNode(box6).\
+            addNode(box7)
 
         self.game = j.Game()
         self.game.\
