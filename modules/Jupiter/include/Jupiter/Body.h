@@ -53,11 +53,11 @@ public:
 
 protected:
     Ref<Physics>              _visitor;
+    Ref<PhysicsShape>         _shape;
 
     b2BodyDef                 _bodyDef;
-    b2Body*                   _body               = nullptr;
+    b2Body*                   _body = nullptr;
 
-    Ref<PhysicsShape>         _shape;
     std::vector<b2Fixture*>   _fixtures;
 
     Ref<CollisionListener>    _collisionListener;

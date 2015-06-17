@@ -118,18 +118,20 @@ class FallingBox(object):
 
         bgT.addNode(bg)
 
-        self.boxTest = Box(window)
-        self.boxCol = BoxCollision()
+        # Ящик
+        
+        # self.boxTest = Box(window)
+        # self.boxCol = BoxCollision()
         boxImage = j.PngImage('Resources/box.png')
-
+        
         boxDef = b.b2BodyDef()
         boxDef.type = b.b2_dynamicBody
         boxFixDef = b.b2FixtureDef()
         boxFixDef.density = 1.
         boxFixDef.restitution = .5
-
+        
         boxPhShape = j.PoligonShape(boxImage, boxFixDef, 0.002)
-
+        
         # box1 = j.Transform(vec3(0, 2, 1))
         box1 = j.Transform(0, 6, 1)
         box1.addNode(j.Body(physics, boxDef, boxPhShape))

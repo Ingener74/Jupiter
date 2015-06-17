@@ -141,6 +141,8 @@ Physics* Physics::setVelocityIterations(int velocityIterations) {
 }
 
 void Physics::collide(Body* a, Body* b) {
+    jassert(a, "a body invalid");
+    jassert(b, "b body invalid");
     if (a->_collisionListener)
         a->_collisionListener->collision(b);
     if (b->_collisionListener)

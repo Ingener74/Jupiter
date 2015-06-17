@@ -34,7 +34,7 @@ public:
     Node* removeNode(Node*);
 
     virtual Node* setParent(Node*);
-    Node* getParent();
+    virtual Node* getParent();
 
     bool isVisible() const;
     Node* setVisible(bool isVisible);

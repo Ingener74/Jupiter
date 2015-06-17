@@ -19,16 +19,14 @@ namespace jupiter {
 using namespace std;
 using namespace nlohmann;
 
-Body::Body(): Node(){
+Body::Body() :
+    Node() {
 }
 
 Body::Body(Physics* visitor, b2BodyDef bodyDef, PhysicsShape* shape) :
-    _visitor(visitor) {
+    _visitor(visitor), _shape(shape), _bodyDef(bodyDef) {
 
-    _bodyDef              = bodyDef;
-    _bodyDef.userData     = this;
-
-    _shape                = shape;
+    _bodyDef.userData = this;
 
     updateBody();
 }
