@@ -8,6 +8,8 @@
 #include "Jupiter/Ref.h"
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/NodeVisitor.h"
+#include "Jupiter/Transform.h"
+
 #include "Jupiter/Camera.h"
 
 namespace jupiter {
@@ -27,8 +29,8 @@ mat4 Camera::getProjectionMatrix() const {
 }
 
 mat4 Camera::getViewMatrix() const {
-    jassert(false, "not implemented");
-//    return glm::translate( { }, _position) * glm::mat4_cast(_rotation);
+    jassert(_transform, "not transform");
+    return glm::translate( { }, _transform->getPosition()) * glm::mat4_cast(_transform->getRotation());
 }
 
 void Camera::setViewMatrix(mat4 const& view) {
@@ -40,6 +42,12 @@ Camera* Camera::clone(Camera* camera) {
     Ref<Camera>{camera};
     jassert(camera, "node is invalid");
     *this = *camera;
+    return this;
+}
+
+Camera* Camera::setParent(Node* node) {
+    _transform = dynamic_cast<Transform*>(node);
+    jassert(_transform, "parent must be transform");
     return this;
 }
 

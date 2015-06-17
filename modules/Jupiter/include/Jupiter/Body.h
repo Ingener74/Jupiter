@@ -66,7 +66,6 @@ protected:
 
     void updateBody();
     void updateFixtures();
-    void transform();
 };
 
 } /* namespace jupiter */

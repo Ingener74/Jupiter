@@ -77,28 +77,20 @@ void Physics::push(Body*) {
 void Physics::pop(Body*) {
 }
 
-void Physics::visit(Body* node) {
-    jassert(node, "node is empty");
+void Physics::visit(Body* body) {
+    jassert(body, "node is empty");
+    jassert(!_transforms.empty(), "no transform nodes");
 
     auto transform = _transforms.top();
 
-    float x = node->_body->GetPosition().x;
-    float y = node->_body->GetPosition().y;
+    float x = body->_body->GetPosition().x;
+    float y = body->_body->GetPosition().y;
     float z = transform->getPositionZ();
 
-    float a = node->_body->GetAngle();
+    float a = body->_body->GetAngle();
 
     transform->setPosition(x, y, z);
     transform->setRotationZ(a);
-
-//    node->_position.x = x;
-//    node->_position.y = y;
-//    node->_rotation = glm::rotate(quat { }, a, vec3 { 0.f, 0.f, 1.f });
-
-//    if (node->_moveListener)
-//        node->_moveListener->move(x, y, z);
-//    if (node->_rotationListener)
-//        node->_rotationListener->rotate(0.f, 0.f, 1.f, a);
 }
 
 void Physics::push(Transform* transform) {

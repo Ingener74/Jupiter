@@ -32,10 +32,13 @@ public:
         float sx = 1.f, float sy = 1.f, float sz = 1.f);
     virtual ~Transform();
 
+    virtual Transform* accept(NodeVisitor*);
+
     float getRotationX() const;
     float getRotationY() const;
     float getRotationZ() const;
     float getRotationAngle() const;
+    glm::quat const& getRotation() const;
 
     virtual Transform* setRotation(float x, float y, float z, float angle);
     Transform* setRotationX(float angle);
@@ -50,6 +53,7 @@ public:
     float getPositionX() const;
     float getPositionY() const;
     float getPositionZ() const;
+    glm::vec3 const& getPosition() const;
 
     virtual Transform* setPosition(float x, float y, float z);
     Transform* setPositionX(float x);

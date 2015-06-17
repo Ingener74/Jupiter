@@ -26,6 +26,7 @@
 namespace jupiter {
 
 class NodeVisitor;
+class Transform;
 
 struct Ortho {
     Ortho(float left = -1, float right = 1, float top = 1, float bottom = -1, float near = -1, float far = 1) :
@@ -55,10 +56,14 @@ public:
 
     virtual Camera* clone(Camera*);
 
+    virtual Camera* setParent(Node*);
+
     virtual Camera* accept(NodeVisitor* nv);
 
 protected:
     glm::mat4 _projection, _view;
+
+    Transform* _transform = nullptr;
 };
 
 }  // namespace jupiter

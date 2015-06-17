@@ -14,6 +14,7 @@
 #include "Jupiter/MoveListener.h"
 #include "Jupiter/ScaleListener.h"
 #include "Jupiter/RotationListener.h"
+#include "Jupiter/NodeVisitor.h"
 
 #include "Jupiter/Transform.h"
 
@@ -41,6 +42,20 @@ Transform::Transform(float x, float y, float z,
 Transform::~Transform() {
 }
 
+Transform* Transform::accept(NodeVisitor* nv) {
+    jassert(nv, "visitor is nullptr");
+    if (_visible) {
+        nv->push(this);
+        nv->visit(this);
+        for (auto i : _nodes) {
+            jassert(i, "invalid node");
+            i->accept(nv);
+        }
+        nv->pop(this);
+    }
+    return this;
+}
+
 float Transform::getRotationX() const {
     return glm::axis(_rotation).x;
 }
@@ -55,6 +70,10 @@ float Transform::getRotationZ() const {
 
 float Transform::getRotationAngle() const {
     return glm::angle(_rotation);
+}
+
+glm::quat const& Transform::getRotation() const {
+    return _rotation;
 }
 
 Transform* Transform::setRotation(float x, float y, float z, float angle) {
@@ -105,6 +124,10 @@ float Transform::getPositionY() const {
 
 float Transform::getPositionZ() const {
     return _position.z;
+}
+
+glm::vec3 const& Transform::getPosition() const {
+    return _position;
 }
 
 Transform* Transform::setPosition(float x, float y, float z) {

@@ -16,7 +16,7 @@ class Image;
 
 class ImageShape: public Shape {
 public:
-    ImageShape(Image*);
+    ImageShape(Image*, float scale = 1.f);
     virtual ~ImageShape();
 };
 

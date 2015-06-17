@@ -138,190 +138,196 @@ class FallingBox(object):
         # box1 = j.Transform(vec3(0, 2, 1))
         box1 = j.Transform(0, 2, 1)
         box1.addNode(j.Body(physics, boxDef, boxPhShape))
-        box1.addNode(j.Sprite(j.ImageTexture(boxImage), j.ImageShape(boxImage), shader))
+        box1.addNode(j.Sprite(j.ImageTexture(boxImage), j.ImageShape(boxImage, 0.002), shader))
 
-        box1 = j.SpriteBody(physics, boxDef, boxPhShape)
-        box1.\
-            setProgram(shader).\
-            setTexture(j.ImageTexture(boxImage)).\
-            setShape(j.ImageShape(boxImage)).\
-            setMoveListener(self.boxTest).\
-            translate(0, 2, 1).\
-            setScaleF(0.002)
-        box1.setCollisionListener(self.boxCol)
+        # box1 = j.SpriteBody(physics, boxDef, boxPhShape)
+        # box1.\
+        #     setProgram(shader).\
+        #     setTexture(j.ImageTexture(boxImage)).\
+        #     setShape(j.ImageShape(boxImage)).\
+        #     setMoveListener(self.boxTest).\
+        #     translate(0, 2, 1).\
+        #     setScaleF(0.002)
+        # box1.setCollisionListener(self.boxCol)
 
-        box2 = j.SpriteBody(box1)
-        box2.setScaleF(.0015).setPosition(-4, -2, 1)
+        # box2 = j.SpriteBody(box1)
+        # box2.setScaleF(.0015).setPosition(-4, -2, 1)
 
-        box3 = j.SpriteBody(box1)
-        box3.setPosition(0, 3, 1).setScaleF(.001)
+        # box3 = j.SpriteBody(box1)
+        # box3.setPosition(0, 3, 1).setScaleF(.001)
 
-        box4 = j.SpriteBody(box3)
-        box4.setPosition(-2, 2, 1)
+        # box4 = j.SpriteBody(box3)
+        # box4.setPosition(-2, 2, 1)
 
-        box5 = j.SpriteBody(box3)
-        box5.setPosition(-3, 3, 1)
+        # box5 = j.SpriteBody(box3)
+        # box5.setPosition(-3, 3, 1)
 
-        box6 = j.SpriteBody(box3)
-        box6.setScaleF(.002).setPosition(0, 3, 1)
+        # box6 = j.SpriteBody(box3)
+        # box6.setScaleF(.002).setPosition(0, 3, 1)
 
-        box7 = j.SpriteBody(box6)
-        box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
+        # box7 = j.SpriteBody(box6)
+        # box7.setPosition(4, 3, 1).setRotation(0, 0, 1, 30 * DEG2RAD)
 
         # Сложная физическая форма
-        ship1Image = j.PngImage('Resources/ship1.png')
+        # ship1Image = j.PngImage('Resources/ship1.png')
 
-        ship1FixDef = b.b2FixtureDef()
-        ship1FixDef.density = 4
-        ship1FixDef.restitution = .6
+        # ship1FixDef = b.b2FixtureDef()
+        # ship1FixDef.density = 4
+        # ship1FixDef.restitution = .6
 
-        shipComplexShape = j.ComplexShape(ship1Image, phAtlas.getShape('Ship'), ship1FixDef)
+        # shipComplexShape = j.ComplexShape(ship1Image, phAtlas.getShape('Ship'), ship1FixDef)
 
-        ship1Def = b.b2BodyDef()
-        ship1Def.type = b.b2_dynamicBody
+        # ship1Def = b.b2BodyDef()
+        # ship1Def.type = b.b2_dynamicBody
 
-        ship1 = j.SpriteBody(physics, ship1Def, shipComplexShape)
-        ship1.setProgram(shader).\
-            setTexture(j.ImageTexture(ship1Image)).\
-            setShape(j.ImageShape(ship1Image)).\
-            setScaleF(0.01).\
-            setPosition(3, 3, 1)
+        # ship1 = j.SpriteBody(physics, ship1Def, shipComplexShape)
+        # ship1.setProgram(shader).\
+        #     setTexture(j.ImageTexture(ship1Image)).\
+        #     setShape(j.ImageShape(ship1Image)).\
+        #     setScaleF(0.01).\
+        #     setPosition(3, 3, 1)
 
-        # Мячик
-        ballDef = b.b2BodyDef()
-        ballDef.type = b.b2_dynamicBody
+        # # Мячик
+        # ballDef = b.b2BodyDef()
+        # ballDef.type = b.b2_dynamicBody
 
-        ballFixDef = b.b2FixtureDef()
-        ballFixDef.density = 4
-        ballFixDef.restitution = 0.7
+        # ballFixDef = b.b2FixtureDef()
+        # ballFixDef.density = 4
+        # ballFixDef.restitution = 0.7
 
-        ballImage = j.PngImage('Resources/ball1.png')
-        ballPhShape = j.CircleShape(ballImage, ballFixDef)
+        # ballImage = j.PngImage('Resources/ball1.png')
+        # ballPhShape = j.CircleShape(ballImage, ballFixDef)
 
-        ball1 = j.SpriteBody(physics, ballDef, ballPhShape)
-        ball1.setProgram(shader).\
-            setTexture(j.ImageTexture(ballImage)).\
-            setShape(j.ImageShape(ballImage)).\
-            setScaleF(0.01).\
-            setPosition(-5, 3, 1)
+        # ball1 = j.SpriteBody(physics, ballDef, ballPhShape)
+        # ball1.setProgram(shader).\
+        #     setTexture(j.ImageTexture(ballImage)).\
+        #     setShape(j.ImageShape(ballImage)).\
+        #     setScaleF(0.01).\
+        #     setPosition(-5, 3, 1)
 
-        ball2 = j.SpriteBody(ball1)
-        ball2.setPosition(-4, 3, 1)
-        ball3 = j.SpriteBody(ball1)
-        ball3.setPosition(-5, 4, 1)
-        ball4 = j.SpriteBody(ball1)
-        ball4.setPosition(-4, 4, 1)
-        ball5 = j.SpriteBody(ball1)
-        ball5.setPosition(-6, 3, 1)
-        ball6 = j.SpriteBody(ball1)
-        ball6.setPosition(-6, 4, 1)
+        # ball2 = j.SpriteBody(ball1)
+        # ball2.setPosition(-4, 3, 1)
+        # ball3 = j.SpriteBody(ball1)
+        # ball3.setPosition(-5, 4, 1)
+        # ball4 = j.SpriteBody(ball1)
+        # ball4.setPosition(-4, 4, 1)
+        # ball5 = j.SpriteBody(ball1)
+        # ball5.setPosition(-6, 3, 1)
+        # ball6 = j.SpriteBody(ball1)
+        # ball6.setPosition(-6, 4, 1)
 
-        # Пропеллер
-        propellerDef = b.b2BodyDef()
-        propellerDef.type = b.b2_dynamicBody
+        # # Пропеллер
+        # propellerDef = b.b2BodyDef()
+        # propellerDef.type = b.b2_dynamicBody
 
-        propellerFixDef = b.b2FixtureDef()
-        propellerFixDef.density = 1
+        # propellerFixDef = b.b2FixtureDef()
+        # propellerFixDef.density = 1
 
-        propellerImage = j.PngImage('Resources/propeller3.png')
+        # propellerImage = j.PngImage('Resources/propeller3.png')
 
-        self.propellerComplexShape = j.ComplexShape(propellerImage, phAtlas.getShape('Propeller3'), propellerFixDef)
-        propeller1 = j.SpriteBody(physics, propellerDef, self.propellerComplexShape)
-        propeller1.\
-            setProgram(shader).\
-            setTexture(j.ImageTexture(propellerImage)).\
-            setShape(j.ImageShape(propellerImage)).\
-            setScaleF(0.002).\
-            setPosition(4.6, 3, 0.99)
+        # self.propellerComplexShape = j.ComplexShape(propellerImage, phAtlas.getShape('Propeller3'), propellerFixDef)
+        # propeller1 = j.SpriteBody(physics, propellerDef, self.propellerComplexShape)
+        # propeller1.\
+        #     setProgram(shader).\
+        #     setTexture(j.ImageTexture(propellerImage)).\
+        #     setShape(j.ImageShape(propellerImage)).\
+        #     setScaleF(0.002).\
+        #     setPosition(4.6, 3, 0.99)
 
-        propeller2 = j.SpriteBody(propeller1)
-        propeller2.setPosition(-4, 8, 0.99)
+        # propeller2 = j.SpriteBody(propeller1)
+        # propeller2.setPosition(-4, 8, 0.99)
 
-        # Соединим главную коробку и пропеллер
-        propBoxDef = b.b2DistanceJointDef()
-        propBoxDef.Initialize(box1.getPhysicsBody(), propeller2.getPhysicsBody(),
-                              box1.getPhysicsBody().GetPosition(), propeller2.getPhysicsBody().GetPosition())
-        propBoxDef.lenght = 1
+        # # Соединим главную коробку и пропеллер
+        # propBoxDef = b.b2DistanceJointDef()
+        # propBoxDef.Initialize(box1.getPhysicsBody(), propeller2.getPhysicsBody(),
+        #                       box1.getPhysicsBody().GetPosition(), propeller2.getPhysicsBody().GetPosition())
+        # propBoxDef.lenght = 1
 
-        propBox = j.DistanceJoint(physics, propBoxDef)
+        # propBox = j.DistanceJoint(physics, propBoxDef)
 
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
 
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
 
-        groundProto = j.SpriteBody(physics, b.b2BodyDef(), groundPhShape)
-        groundProto.setProgram(shader).\
-            setTexture(j.ImageTexture(groundImage)).\
-            setShape(j.ImageShape(groundImage)).\
-            setName('flour').\
-            setTag(self.GROUND).\
-            setScaleF(0.01)
+        groundT = j.Transform()
+        groundT.addNode(j.Body(physics, b.b2BodyDef(), groundPhShape))
+        groundT.addNode(j.Sprite(j.ImageTexture(groundImage), j.ImageShape(groundImage, 0.01), shader))
 
-        grounds = []
-        for i in range(0, 7):
-            grounds.append(j.SpriteBody(groundProto))
+        # groundProto = j.SpriteBody(physics, b.b2BodyDef(), groundPhShape)
+        # groundProto.setProgram(shader).\
+        #     setTexture(j.ImageTexture(groundImage)).\
+        #     setShape(j.ImageShape(groundImage)).\
+        #     setName('flour').\
+        #     setTag(self.GROUND).\
+        #     setScaleF(0.01)
 
-        grounds[0].translate(2, -8, 0.98)
-        grounds[1].translate(-2, -8, 0.98)
-        grounds[2].translate(4, -8, 0.98)
-        grounds[3].translate(-4, -8, 0.98)
-        grounds[4].translate(-7.5, -7.3, 0.98).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        grounds[5].translate(7.5, -7.3, 0.98).setRotation(0, 0, 1,  30 * DEG2RAD)
+        # grounds = []
+        # for i in range(0, 7):
+        #     grounds.append(j.SpriteBody(groundProto))
 
-        grounds[6].translate(6, 3, 0.98).setRotation(0, 0, 1,  45 * DEG2RAD)
+        # grounds[0].translate(2, -8, 0.98)
+        # grounds[1].translate(-2, -8, 0.98)
+        # grounds[2].translate(4, -8, 0.98)
+        # grounds[3].translate(-4, -8, 0.98)
+        # grounds[4].translate(-7.5, -7.3, 0.98).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+        # grounds[5].translate(7.5, -7.3, 0.98).setRotation(0, 0, 1,  30 * DEG2RAD)
+
+        # grounds[6].translate(6, 3, 0.98).setRotation(0, 0, 1,  45 * DEG2RAD)
 
         # Приделаем пропеллер к одной из земель
-        propJointDef = b.b2RevoluteJointDef()
-        propJointDef.Initialize(propeller1.getPhysicsBody(), grounds[6].getPhysicsBody(), b.b2Vec2(4.6, 2.7))
-        propellerJoint = j.RevoluteJoint(physics, propJointDef)
+        # propJointDef = b.b2RevoluteJointDef()
+        # propJointDef.Initialize(propeller1.getPhysicsBody(), grounds[6].getPhysicsBody(), b.b2Vec2(4.6, 2.7))
+        # propellerJoint = j.RevoluteJoint(physics, propJointDef)
 
         # Машина
-        carBodyDef = b.b2BodyDef()
-        carBodyDef.type = b.b2_dynamicBody
+        # carBodyDef = b.b2BodyDef()
+        # carBodyDef.type = b.b2_dynamicBody
 
-        carFixtureDef = b.b2FixtureDef()
-        carFixtureDef.density = 3
+        # carFixtureDef = b.b2FixtureDef()
+        # carFixtureDef.density = 3
 
-        carImage = j.PngImage('Resources/car.png')
+        # carImage = j.PngImage('Resources/car.png')
 
-        carShape = j.ComplexShape(carImage, phAtlas.getShape('Car'), carFixtureDef)
+        # carShape = j.ComplexShape(carImage, phAtlas.getShape('Car'), carFixtureDef)
 
-        car = j.SpriteBody(physics, carBodyDef, carShape)
-        car.setProgram(shader).\
-            setTexture(j.ImageTexture(carImage)).\
-            setShape(j.ImageShape(carImage)).\
-            setScaleF(0.01)
+        # car = j.SpriteBody(physics, carBodyDef, carShape)
+        # car.setProgram(shader).\
+        #     setTexture(j.ImageTexture(carImage)).\
+        #     setShape(j.ImageShape(carImage)).\
+        #     setScaleF(0.01)
 
         # Добавляем все узлы в дерево
-        rn.\
-            addNode(bg).\
-            addNode(grounds[0]).\
-            addNode(grounds[1]).\
-            addNode(grounds[2]).\
-            addNode(grounds[3]).\
-            addNode(grounds[4]).\
-            addNode(grounds[5]).\
-            addNode(grounds[6]).\
-            addNode(box1).\
-            addNode(box2).\
-            addNode(box3).\
-            addNode(box4).\
-            addNode(box5).\
-            addNode(box6).\
-            addNode(box7).\
-            addNode(ball1).\
-            addNode(ball2).\
-            addNode(ball3).\
-            addNode(ball4).\
-            addNode(ball5).\
-            addNode(ball6).\
-            addNode(propeller1).\
-            addNode(propeller2).\
-            addNode(ship1).\
-            addNode(propellerJoint).\
-            addNode(propBox).\
-            addNode(car)
+        # rn.\
+        #     addNode(bg).\
+        #     addNode(grounds[0]).\
+        #     addNode(grounds[1]).\
+        #     addNode(grounds[2]).\
+        #     addNode(grounds[3]).\
+        #     addNode(grounds[4]).\
+        #     addNode(grounds[5]).\
+        #     addNode(grounds[6]).\
+        #     addNode(box1).\
+        #     addNode(box2).\
+        #     addNode(box3).\
+        #     addNode(box4).\
+        #     addNode(box5).\
+        #     addNode(box6).\
+        #     addNode(box7).\
+        #     addNode(ball1).\
+        #     addNode(ball2).\
+        #     addNode(ball3).\
+        #     addNode(ball4).\
+        #     addNode(ball5).\
+        #     addNode(ball6).\
+        #     addNode(propeller1).\
+        #     addNode(propeller2).\
+        #     addNode(ship1).\
+        #     addNode(propellerJoint).\
+        #     addNode(propBox).\
+        #     addNode(car)
+
+        rn.addNode(bgT).addNode(box1).addNode(groundT)
 
         self.game = j.Game()
         self.game.\

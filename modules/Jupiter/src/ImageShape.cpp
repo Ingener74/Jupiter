@@ -21,7 +21,7 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-ImageShape::ImageShape(Image* image) {
+ImageShape::ImageShape(Image* image, float scale) {
 
     Ref<Image>{image};
 
@@ -45,10 +45,10 @@ ImageShape::ImageShape(Image* image) {
     float z = 0.f;
 
     vec3
-    p0{-w/2,  h/2, z},
-    p1{ w/2,  h/2, z},
-    p2{-w/2, -h/2, z},
-    p3{ w/2, -h/2, z};
+    p0{scale * -w/2, scale *  h/2, z},
+    p1{scale *  w/2, scale *  h/2, z},
+    p2{scale * -w/2, scale * -h/2, z},
+    p3{scale *  w/2, scale * -h/2, z};
 
     vec2
     t0{w/l, 0.f},

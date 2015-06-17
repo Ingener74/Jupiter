@@ -129,11 +129,6 @@ void Body::updateBody() {
     if(_body)
         _visitor->getWorld()->DestroyBody(_body);
 
-    jassert(false, "положение тела???");
-
-//    _bodyDef.position.x = _position.x;
-//    _bodyDef.position.y = _position.y;
-//    _bodyDef.angle      = glm::angle(_rotation);
     _bodyDef.userData   = this;
 
     _body = _visitor->getWorld()->CreateBody(&_bodyDef);
@@ -149,22 +144,12 @@ void Body::updateFixtures() {
     for (auto i : _fixtures)
         _body->DestroyFixture(i);
 
-    jassert(false, "масштаб???");
+    // TODO масштаб???
 
-//    _shape->setScale(_scale.x, _scale.y);
     _fixtures.resize(_shape->shapesCount());
 
     for (size_t i = 0; i < _shape->shapesCount(); ++i)
         _fixtures.at(i) = _body->CreateFixture(_shape->getFixtureDef(i));
-}
-
-void Body::transform() {
-    jassert(_body, "no body");
-    jassert(_shape, "no shape");
-
-    jassert(false, "положение тела???");
-
-//    _body->SetTransform(b2Vec2(_position.x, _position.y), getRotationAngle());
 }
 
 } /* namespace jupiter */
