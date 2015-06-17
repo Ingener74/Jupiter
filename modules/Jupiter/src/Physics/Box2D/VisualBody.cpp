@@ -10,8 +10,8 @@
 
 namespace jupiter {
 
-VisualBody::VisualBody(Physics* physics, b2BodyDef bodyDef, PhysicsShape* shape) :
-    Body(physics, bodyDef, shape) {
+VisualBody::VisualBody(Shader* program) :
+    _shader(program) {
 }
 
 VisualBody::~VisualBody() {

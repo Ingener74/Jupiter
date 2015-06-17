@@ -10,17 +10,16 @@
 
 #ifdef SWIG
 #else
-    #include "Ref.h"
 #endif
 
 #include "Shader.h"
-#include "Body.h"
+#include "Node.h"
 
 namespace jupiter {
 
-class VisualBody: public Body {
+class VisualBody: public Node {
 public:
-    VisualBody(Physics*, b2BodyDef, PhysicsShape*);
+    VisualBody(Shader*);
     virtual ~VisualBody();
 
     VisualBody* setProgram(Shader*);
