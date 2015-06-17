@@ -7,6 +7,8 @@
 
 #include <Box2D/Box2D.h>
 
+#include "Jupiter/Settings.h"
+#include "Jupiter/Game.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Body.h"
 #include "Jupiter/Node.h"
@@ -53,6 +55,34 @@ private:
     Physics* _visitor = nullptr;
 };
 
+class PrePhysics: public NodeVisitor {
+public:
+    virtual void push(Body*) {
+    }
+    virtual void visit(Body* body) {
+        jassert(!_stack.empty(), "stack empty");
+        auto transform = _stack.top();
+        float len = body->distance(transform);
+        if (len > MinDistance) {
+            body->setPosition(transform);
+        }
+    }
+    virtual void pop(Body*) {
+    }
+
+    virtual void push(Transform* t) {
+        jassert(t, "invalid transform");
+        _stack.push(t);
+    }
+    virtual void visit(Transform*) {
+    }
+    virtual void pop(Transform*) {
+        _stack.pop();
+    }
+
+    stack<Transform*> _stack;
+};
+
 Physics::Physics(float timeStep, int positionIterations, int velocityIterations) :
     _timeStep(timeStep), _positionIterations(positionIterations), _velocityIterations(velocityIterations) {
 
@@ -67,7 +97,16 @@ Physics::Physics(float timeStep, int positionIterations, int velocityIterations)
 Physics::~Physics() {
 }
 
+namespace  {
+
+PrePhysics prePhysics;
+
+}  // namespace
+
 void Physics::begin() {
+
+    getGame()->getRootNode()->accept(&prePhysics);
+
     _world->Step(_timeStep, _velocityIterations, _positionIterations);
 }
 

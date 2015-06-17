@@ -28,7 +28,7 @@ public:
     virtual ~Sprite() = default;
 
     Sprite(const Sprite&);
-    virtual Sprite* clone(Sprite*);
+    virtual Sprite* clone();
 
     Texture* getTexture();
     Sprite* setTexture(Texture*);

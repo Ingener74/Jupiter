@@ -17,6 +17,7 @@
 namespace jupiter {
 
 using namespace std;
+using namespace glm;
 using namespace nlohmann;
 
 Body::Body() :
@@ -36,22 +37,18 @@ Body::~Body() {
         _body->GetWorld()->DestroyBody(_body);
 }
 
-Body::Body(const Body& body){
-    clone(const_cast<Body*>(&body));
-}
+Body::Body(const Body& body) :
+    Node(body) {
+    *this = body;
 
-Body* Body::clone(Body* node) {
-    Ref<Body>{node};
-
-    jassert(node, "node is invalid");
-    *this = *node;
-
-    _body    = nullptr;
+    _body = nullptr;
     _fixtures.clear();
 
     updateBody();
+}
 
-    return this;
+Body* Body::clone() {
+    return new Body(*this);
 }
 
 Body* Body::setParent(Node* node) {
@@ -87,6 +84,21 @@ json Body::getJson() const {
 
 ostream& operator<<(ostream& out, Body const& r){
     return out << setw(4) << r.getJson();
+}
+
+Body* Body::setPosition(Transform* transform) {
+    jassert(transform, "invalid transform");
+    jassert(_body, "no body");
+    _body->SetTransform( { transform->getPositionX(), transform->getPositionY() }, transform->getRotationZ());
+    return this;
+}
+
+float Body::distance(Transform* transform) {
+    jassert(transform, "invalid transform");
+    jassert(_body, "no body");
+    vec2 trans{transform->getPositionX(), transform->getPositionY()};
+    vec2 body{_body->GetPosition().x, _body->GetPosition().y};
+    return length(trans - body);
 }
 
 Body* Body::setPhysicsShape(PhysicsShape* shape) {

@@ -18,9 +18,7 @@ using namespace std;
 using namespace glm;
 using namespace nlohmann;
 
-
 /*
-
 transform
     body
         visualBody
@@ -29,9 +27,7 @@ transform
 transform
     camera
         visual camera
-
  */
-
 
 Node::Node() {
 }
@@ -39,14 +35,18 @@ Node::Node() {
 Node::~Node() {
 }
 
-Node::Node(const Node& node){
-    clone(const_cast<Node*>(&node));
+Node::Node(const Node& node) {
+    *this = node;
+    _nodes.clear();
+    for (auto i : node._nodes){
+        auto copy = i->clone();
+        copy->setParent(this);
+        _nodes.emplace_back(copy);
+    }
 }
 
-Node* Node::clone(Node* node) {
-    jassert(node, "node is invalid");
-    *this = *node;
-    return this;
+Node* Node::clone() {
+    return new Node(*this);
 }
 
 Node* Node::addNode(Node* node) {

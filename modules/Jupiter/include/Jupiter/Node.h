@@ -28,7 +28,7 @@ public:
     virtual ~Node();
 
     Node(const Node&);
-    virtual Node* clone(Node*);
+    virtual Node* clone();
 
     Node* addNode(Node*);
     Node* removeNode(Node*);

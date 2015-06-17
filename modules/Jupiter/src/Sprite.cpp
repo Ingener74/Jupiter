@@ -21,16 +21,13 @@ Sprite::Sprite(Texture* texture, Shape* shape, Shader* program) :
     _texture(texture), _shape(shape), _program(program) {
 }
 
-Sprite::Sprite(const Sprite& sprite) {
-    clone(const_cast<Sprite*>(&sprite));
+Sprite::Sprite(const Sprite& sprite) :
+    Node(sprite) {
+    *this = sprite;
 }
 
-Sprite* Sprite::clone(Sprite* sprite) {
-    Ref<Sprite> { sprite };
-
-    jassert(sprite, "sprite is invalid");
-    *this = *sprite;
-    return this;
+Sprite* Sprite::clone() {
+    return new Sprite(*this);
 }
 
 Texture* Sprite::getTexture() {

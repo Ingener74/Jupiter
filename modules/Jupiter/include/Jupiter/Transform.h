@@ -30,8 +30,11 @@ public:
         float angle = 0.f,
         float rx = 0.f, float ry = 0.f, float rz = 1.f,
         float sx = 1.f, float sy = 1.f, float sz = 1.f);
+
+    Transform(const Transform&);
     virtual ~Transform();
 
+    virtual Transform* clone();
     virtual Transform* accept(NodeVisitor*);
 
     float getRotationX() const;
@@ -100,6 +103,8 @@ private:
     Ref<MoveListener>       _moveListener;
     Ref<ScaleListener>      _scaleListener;
     Ref<RotationListener>   _rotationListener;
+
+    Transform& operator=(const Transform&) = default;
 };
 
 } /* namespace jupiter */

@@ -39,7 +39,21 @@ Transform::Transform(float x, float y, float z,
         _scale(sx, sy, sz) {
 }
 
+Transform::Transform(const Transform& transform) {
+    *this = transform;
+    _nodes.clear();
+    for (auto i : transform._nodes) {
+        auto copy = i->clone();
+        copy->setParent(this);
+        _nodes.emplace_back(copy);
+    }
+}
+
 Transform::~Transform() {
+}
+
+Transform* Transform::clone() {
+    return new Transform(*this);
 }
 
 Transform* Transform::accept(NodeVisitor* nv) {

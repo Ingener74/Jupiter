@@ -27,6 +27,8 @@ namespace jupiter {
     virtual void visit(X*); \
     virtual void pop(X*);   \
 
+class Game;
+
 class NodeVisitor: virtual public RCO {
 public:
     NodeVisitor() = default;
@@ -58,6 +60,12 @@ public:
     VISIT(WeldJoint)
 
     virtual void end(){}
+
+    Game* getGame();
+    NodeVisitor* setGame(Game* game);
+
+protected:
+    Game* _game = nullptr;
 };
 
 } /* namespace jupiter */

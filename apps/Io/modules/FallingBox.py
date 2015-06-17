@@ -119,23 +119,27 @@ class FallingBox(object):
         bgT.addNode(bg)
 
         # Ящик
-        
-        # self.boxTest = Box(window)
+
+        self.boxTest = Box(window)
         # self.boxCol = BoxCollision()
         boxImage = j.PngImage('Resources/box.png')
-        
+
         boxDef = b.b2BodyDef()
         boxDef.type = b.b2_dynamicBody
+
         boxFixDef = b.b2FixtureDef()
         boxFixDef.density = 1.
         boxFixDef.restitution = .5
-        
+
         boxPhShape = j.PoligonShape(boxImage, boxFixDef, 0.002)
-        
+
         # box1 = j.Transform(vec3(0, 2, 1))
         box1 = j.Transform(0, 6, 1)
         box1.addNode(j.Body(physics, boxDef, boxPhShape))
         box1.addNode(j.Sprite(j.ImageTexture(boxImage), j.ImageShape(boxImage, 0.002), shader))
+
+        box2 = j.Transform(box1)
+        box2.translateX(6).rotateZ(0.3)
 
         # box1 = j.SpriteBody(physics, boxDef, boxPhShape)
         # box1.\
@@ -247,7 +251,7 @@ class FallingBox(object):
 
         groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef(), 0.01)
 
-        groundT = j.Transform()
+        groundT = j.Transform(0, 0, 0.98)
         groundT.addNode(j.Body(physics, b.b2BodyDef(), groundPhShape))
         groundT.addNode(j.Sprite(j.ImageTexture(groundImage), j.ImageShape(groundImage, 0.01), shader))
 
@@ -259,18 +263,18 @@ class FallingBox(object):
         #     setTag(self.GROUND).\
         #     setScaleF(0.01)
 
-        # grounds = []
-        # for i in range(0, 7):
-        #     grounds.append(j.SpriteBody(groundProto))
+        grounds = []
+        for i in range(0, 7):
+            grounds.append(j.Transform(groundT))
 
-        # grounds[0].translate(2, -8, 0.98)
-        # grounds[1].translate(-2, -8, 0.98)
-        # grounds[2].translate(4, -8, 0.98)
-        # grounds[3].translate(-4, -8, 0.98)
-        # grounds[4].translate(-7.5, -7.3, 0.98).setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
-        # grounds[5].translate(7.5, -7.3, 0.98).setRotation(0, 0, 1,  30 * DEG2RAD)
+        grounds[0].translate(2, -8, 0.98)
+        grounds[1].translate(-2, -8, 0.98)
+        grounds[2].translate(4, -8, 0.98)
+        grounds[3].translate(-4, -8, 0.98)
+        grounds[4].translate(-7.5, -7.3, 0.98)# .setRotation(0, 0, 1, (360 - 30) * DEG2RAD)
+        grounds[5].translate(7.5, -7.3, 0.98)# .setRotation(0, 0, 1,  30 * DEG2RAD)
 
-        # grounds[6].translate(6, 3, 0.98).setRotation(0, 0, 1,  45 * DEG2RAD)
+        grounds[6].translate(6, 3, 0.98).setRotation(0, 0, 1,  45 * DEG2RAD)
 
         # Приделаем пропеллер к одной из земель
         # propJointDef = b.b2RevoluteJointDef()
@@ -324,7 +328,17 @@ class FallingBox(object):
         #     addNode(propBox).\
         #     addNode(car)
 
-        rn.addNode(bgT).addNode(box1).addNode(groundT)
+        rn.addNode(bgT).\
+            addNode(groundT).\
+            addNode(grounds[0]).\
+            addNode(grounds[1]).\
+            addNode(grounds[2]).\
+            addNode(grounds[3]).\
+            addNode(grounds[4]).\
+            addNode(grounds[5]).\
+            addNode(grounds[6]).\
+            addNode(box1).\
+            addNode(box2)
 
         self.game = j.Game()
         self.game.\

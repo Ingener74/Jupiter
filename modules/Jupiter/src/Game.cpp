@@ -71,10 +71,9 @@ Node* Game::getRootNode() {
 
 Game* jupiter::Game::setVisitors(const std::list<NodeVisitor*>& visitors) {
     jassert(!visitors.empty(), "invalid visitors list");
-//    _visitors = visitors;
 
     for (auto i : visitors)
-        _visitors.emplace_back(i);
+        _visitors.emplace_back(i->setGame(this));
 
     return this;
 }
@@ -85,6 +84,7 @@ const std::list<Ref<NodeVisitor>>& jupiter::Game::getVisitors() const {
 
 Game* jupiter::Game::addVisitor(NodeVisitor* visitor) {
     jassert(visitor, "visitor is invalid");
+    visitor->setGame(this);
     _visitors.emplace_back(visitor);
     return this;
 }

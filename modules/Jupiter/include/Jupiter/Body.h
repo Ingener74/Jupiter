@@ -23,6 +23,7 @@ class NodeVisitor;
 class Physics;
 class CollisionListener;
 class PhysicsShape;
+class Transform;
 
 class Body: public Node {
 public:
@@ -33,7 +34,7 @@ public:
     virtual ~Body();
 
     Body(const Body&);
-    virtual Body* clone(Body*);
+    virtual Body* clone();
 
     virtual Body* setParent(Node*);
 
@@ -41,6 +42,9 @@ public:
 
     virtual nlohmann::json getJson() const;
     friend std::ostream& operator<<(std::ostream&, Body const&);
+
+    Body* setPosition(Transform*);
+    float distance(Transform*);
 
     Body* setPhysicsShape(PhysicsShape*);
     PhysicsShape* getPhysicsShape();
