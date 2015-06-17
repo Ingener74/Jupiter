@@ -12,17 +12,17 @@
 
 namespace jupiter {
 
-PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef) :
+PoligonShape::PoligonShape(Image* image, b2FixtureDef fixtureDef, float scale) :
     _fixtureDef(fixtureDef) {
-    Ref<Image>{image};
+    Ref<Image> ir{image};
 
     jassert(image, "image invalid");
     jassert(image->getWidth(), "image width invalid");
     jassert(image->getHeight(), "image height invalid");
     jassert(image->getData(), "image data invalid");
 
-    _width = image->getWidth() / 2;
-    _height = image->getHeight() / 2;
+    _width  = scale * image->getWidth()  / 2.f;
+    _height = scale * image->getHeight() / 2.f;
 
     _shape.SetAsBox(_width, _height);
     _fixtureDef.shape = &_shape;

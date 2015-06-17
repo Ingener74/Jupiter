@@ -21,7 +21,7 @@ class Image;
 
 class PoligonShape: public PhysicsShape {
 public:
-    PoligonShape(Image*, b2FixtureDef);
+    PoligonShape(Image*, b2FixtureDef, float scale = 1.f);
     virtual ~PoligonShape();
 
     virtual void setScale(float x, float y);
@@ -29,7 +29,7 @@ public:
     virtual b2FixtureDef* getFixtureDef(int index);
 
 protected:
-    int _width = 0, _height = 0;
+    float _width = 0.f, _height = 0.f;
     b2FixtureDef   _fixtureDef;
     b2PolygonShape _shape;
 };

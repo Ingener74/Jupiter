@@ -74,15 +74,10 @@ class FallingBox(object):
     - Надо добавить ещё разных тел с разной формой, в том числе сложной, составной, разрушающейся формой
       и попробовать все Joint'ы, в рамках Ио до остальной разработки Европы
     - Надо сделать 2-й тип элемента рисования на кадрах
-    - Анимация
     - Звуки
     - Spine
     - import Tiled, tmx
     - 3D Mesh
-    
-    На выходные
-    - шарниры(joints)
-    - стек матриц модели
 
     Ключевые слова для поиска ресурсов для игр
     * platformer ground sprites
@@ -133,10 +128,10 @@ class FallingBox(object):
         boxFixDef.density = 1.
         boxFixDef.restitution = .5
 
-        boxPhShape = j.PoligonShape(boxImage, boxFixDef)
+        boxPhShape = j.PoligonShape(boxImage, boxFixDef, 0.002)
 
         # box1 = j.Transform(vec3(0, 2, 1))
-        box1 = j.Transform(0, 2, 1)
+        box1 = j.Transform(0, 6, 1)
         box1.addNode(j.Body(physics, boxDef, boxPhShape))
         box1.addNode(j.Sprite(j.ImageTexture(boxImage), j.ImageShape(boxImage, 0.002), shader))
 
@@ -248,7 +243,7 @@ class FallingBox(object):
         # Земля
         groundImage = j.PngImage('Resources/ground.png')
 
-        groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef())
+        groundPhShape = j.PoligonShape(groundImage, b.b2FixtureDef(), 0.01)
 
         groundT = j.Transform()
         groundT.addNode(j.Body(physics, b.b2BodyDef(), groundPhShape))
