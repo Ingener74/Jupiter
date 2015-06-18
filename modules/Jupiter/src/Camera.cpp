@@ -17,38 +17,27 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-Camera::Camera(Ortho ortho) {
+Camera::Camera(Transform* transform, Ortho ortho) :
+    _transform(transform) {
 }
 
-Camera::Camera(Perspective perspective) :
-    _projection(glm::perspective(perspective.fovy, perspective.aspect, perspective.near, perspective.far)) {
+Camera::Camera(Transform* transform, Perspective perspective) :
+    _transform(transform), _projection(
+        glm::perspective(perspective.fovy, perspective.aspect, perspective.near, perspective.far)) {
 }
 
-mat4 Camera::getProjectionMatrix() const {
-    return _projection;
+Camera::Camera(Camera const& camera) {
+    *this = camera;
+    _nodes.clear();
+    for (auto i : camera._nodes) {
+        auto copy = i->clone();
+        copy->setParent(this);
+        _nodes.emplace_back(copy);
+    }
 }
 
-mat4 Camera::getViewMatrix() const {
-    jassert(_transform, "not transform");
-    return glm::translate( { }, _transform->getPosition()) * glm::mat4_cast(_transform->getRotation());
-}
-
-void Camera::setViewMatrix(mat4 const& view) {
-    jassert(false, "deprecated");
-    _view = view;
-}
-
-Camera* Camera::clone(Camera* camera) {
-    Ref<Camera>{camera};
-    jassert(camera, "node is invalid");
-    *this = *camera;
-    return this;
-}
-
-Camera* Camera::setParent(Node* node) {
-    _transform = dynamic_cast<Transform*>(node);
-    jassert(_transform, "parent must be transform");
-    return this;
+Camera* Camera::clone() {
+    return new Camera(*this);
 }
 
 Camera* Camera::accept(NodeVisitor* nv) {
@@ -63,6 +52,15 @@ Camera* Camera::accept(NodeVisitor* nv) {
         nv->pop(this);
     }
     return this;
+}
+
+mat4 Camera::getProjectionMatrix() const {
+    return _projection;
+}
+
+mat4 Camera::getViewMatrix() const {
+    jassert(_transform, "no transform");
+    return glm::translate( { }, _transform->getPosition()) * glm::mat4_cast(_transform->getRotation());
 }
 
 }  // namespace jupiter

@@ -19,10 +19,21 @@
 
 namespace jupiter {
 
+class RenderObject{
+public:
+    virtual ~RenderObject() = default;
+
+    virtual Shader* getProgram() = 0;
+
+    virtual Uniform getProjectionUniform() const = 0;
+    virtual Uniform getViewUniform() const = 0;
+
+    virtual std::list<Attribute> getAttributes() const = 0;
+};
+
 class RenderVisitor: public NodeVisitor {
 public:
     RenderVisitor() = default;
-    RenderVisitor(class Camera*);
 
     virtual ~RenderVisitor() = default;
 
@@ -36,8 +47,6 @@ public:
     virtual void end();
 
 private:
-    Ref<Camera> _camera; // TODO должна быть не здесь а в дереве узлов
-
     std::stack<Transform*> _transforms;
     std::stack<Camera*> _cameras;
 };

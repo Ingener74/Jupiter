@@ -24,17 +24,20 @@ class NodeVisitor;
 
 class Node: public RCO {
 public:
-    Node();
-    virtual ~Node();
-
+    Node(bool visible = true, std::string const& name = "Node", int tag = -1);
     Node(const Node&);
-    virtual Node* clone();
 
-    Node* addNode(Node*);
-    Node* removeNode(Node*);
+    virtual ~Node() = default;
+
+    virtual Node* clone();
 
     virtual Node* setParent(Node*);
     virtual Node* getParent();
+
+    virtual Node* accept(NodeVisitor*);
+
+    Node* addNode(Node*);
+    Node* removeNode(Node*);
 
     bool isVisible() const;
     Node* setVisible(bool isVisible);
@@ -45,16 +48,14 @@ public:
     std::string getName() const;
     Node* setName(std::string name);
 
-    virtual Node* accept(NodeVisitor*);
-
     virtual nlohmann::json getJson() const;
     friend std::ostream& operator<<(std::ostream&, Node const&);
 
 protected:
     bool                    _visible   = true;
 
-    int                     _tag       = -1;
     std::string             _name;
+    int                     _tag       = -1;
 
     std::list<Ref<Node>>    _nodes;
     Node*                   _parent    = nullptr;

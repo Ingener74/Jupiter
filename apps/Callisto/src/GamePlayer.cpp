@@ -36,7 +36,7 @@ string title =R"(Jupiter Game Player)";
 
 up<Game>            game;
 
-Camera              camera;
+Ref<Camera>         camera;
 up<RenderVisitor>   render;
 up<NodeVisitor>     printVisitor;
 up<NodeVisitor>     physics;
@@ -99,10 +99,11 @@ bool createGameDirect(const variables_map& vm) {
     float y = viewRadius * sin(yAngle);
     float z = viewRadius * cos(xAngle);
 
-    camera = {
-        Perspective{45.f, width / height, 10.f, 10000.f}};
+//    Ref<Transform> cameraPos{0.f, 0.f, -20.f};
+//
+//    camera = Ref<Camera>{cameraPos.get(), Perspective{45.f, width / height, 10.f, 10000.f}};
 
-    render = make_unique_<RenderVisitor>(&camera);
+    render = make_unique_<RenderVisitor>();
 
     game = make_unique_<Game>();
 
@@ -273,7 +274,8 @@ void keyboard(uint8_t key) {
 
     auto view = lookAt(vec3(x, y, z), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
 //    render->setView(view);
-    camera.setViewMatrix(view);
+//    camera->setViewMatrix(view);
+//    camera->set
 }
 
 std::string getTitle() {

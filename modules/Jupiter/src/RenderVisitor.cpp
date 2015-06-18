@@ -20,10 +20,6 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
-RenderVisitor::RenderVisitor(Camera* camera) {
-    _camera = camera;
-}
-
 void RenderVisitor::begin() {
 }
 
@@ -32,6 +28,9 @@ void RenderVisitor::push(Sprite*){
 
 void RenderVisitor::visit(Sprite* sprite) {
     jassert(sprite, "Render visitor: sprite is nullptr");
+    jassert(!_cameras.empty(), "no cameras in tree above");
+
+    auto camera = _cameras.top();
 
     auto shader = sprite->getProgram();
 
@@ -49,10 +48,10 @@ void RenderVisitor::visit(Sprite* sprite) {
     textureCoords.set(sprite->getShape());
 
     auto uniformProjection = shader->getUniform("Projection");
-    uniformProjection.set(_camera->getProjectionMatrix());
+    uniformProjection.set(camera->getProjectionMatrix());
 
     auto uniformView = shader->getUniform("View");
-    uniformView.set(_camera->getViewMatrix());
+    uniformView.set(camera->getViewMatrix());
 
     auto uniformModel = shader->getUniform("Model");
     uniformModel.set(_transforms.top()->getModel());
@@ -84,9 +83,7 @@ void RenderVisitor::push(Camera* camera){
     _cameras.push(camera);
 }
 
-void RenderVisitor::visit(Camera* camera) {
-    jassert(camera, "invalid camera");
-    _camera = camera;
+void RenderVisitor::visit(Camera*) {
 }
 
 void RenderVisitor::pop(Camera*){
