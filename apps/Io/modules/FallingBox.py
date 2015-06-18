@@ -61,7 +61,7 @@ RAD2DEG = 180. / 3.1415926
 class FallingBox(object):
 
     # WIDTH  = 1000
-    WIDTH = 300
+    WIDTH = 400
     HEIGHT = WIDTH * 3.0 / 5.0
 
     FPS = 60.0
@@ -251,6 +251,15 @@ class FallingBox(object):
         grounds[5].translate(7.5, -7.3, 0).setRotation(0, 0, 1,  30 * DEG2RAD)
 
         grounds[6].translate(6, 3, 0).setRotation(0, 0, 1,  45 * DEG2RAD)
+
+        cudgel = j.Transform(10, -4, 0.1)
+        cudgelImage = j.PngImage('Resources/cudgel.png')
+
+        cudgel.rotateZ(45 * DEG2RAD)
+        cudgel.translateX(40)
+        cudgel.addNode(j.Sprite(j.ImageTexture(cudgelImage), j.ImageShape(cudgelImage), shader))
+
+        groundProto.addNode(cudgel)
 
         # Приделаем пропеллер к одной из земель
         # propJointDef = b.b2RevoluteJointDef()

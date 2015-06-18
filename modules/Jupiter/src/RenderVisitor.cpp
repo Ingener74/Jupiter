@@ -20,6 +20,10 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
+RenderVisitor::RenderVisitor() {
+    _models.push({});
+}
+
 void RenderVisitor::begin() {
 }
 
@@ -54,7 +58,8 @@ void RenderVisitor::visit(Sprite* sprite) {
     uniformView.set(camera->getViewMatrix());
 
     auto uniformModel = shader->getUniform("Model");
-    uniformModel.set(_transforms.top()->getModel());
+//    uniformModel.set(_transforms.top()->getModel());
+    uniformModel.set(_models.top());
 
     static GLenum drawTypes[] = {
             GL_TRIANGLES,
@@ -92,14 +97,18 @@ void RenderVisitor::pop(Camera*){
 
 void RenderVisitor::push(Transform* transform) {
     jassert(transform, "invalid transform");
-    _transforms.push(transform);
+//    _transforms.push(transform);
+
+    _models.push(_models.top() * transform->getModel());
 }
 
 void RenderVisitor::visit(Transform*) {
 }
 
 void RenderVisitor::pop(Transform*) {
-    _transforms.pop();
+//    _transforms.pop();
+
+    _models.pop();
 }
 
 void RenderVisitor::end() {

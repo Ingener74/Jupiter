@@ -33,7 +33,7 @@ public:
 
 class RenderVisitor: public NodeVisitor {
 public:
-    RenderVisitor() = default;
+    RenderVisitor();
 
     virtual ~RenderVisitor() = default;
 
@@ -48,6 +48,7 @@ public:
 
 private:
     std::stack<Transform*> _transforms;
+    std::stack<glm::mat4> _models;
     std::stack<Camera*> _cameras;
 };
 
