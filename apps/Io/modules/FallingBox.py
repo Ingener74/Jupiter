@@ -60,8 +60,8 @@ RAD2DEG = 180. / 3.1415926
 # noinspection PyPep8Naming
 class FallingBox(object):
 
-    WIDTH  = 1000
-    # WIDTH = 300
+    # WIDTH  = 1000
+    WIDTH = 400
     HEIGHT = WIDTH * 3.0 / 5.0
 
     FPS = 60.0
@@ -96,16 +96,17 @@ class FallingBox(object):
         phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
 
         physics = j.Physics(1.0 / self.FPS)
-
-        cameraTrans = j.Transform()
-        cameraTrans.setPosition(0, 0, -20)
-        camera = j.Camera(j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
-        cameraTrans.addNode(camera)
-
-        render = j.RenderVisitor(camera)
+        render = j.RenderVisitor()
 
         rn = j.Node()
-        rn.addNode(cameraTrans)
+        
+        cameraTrans = j.Transform(0, 0, -20)
+        
+        camera = j.Camera(cameraTrans, j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
+
+        rn.addNode(camera)
+
+        camera.addNode(cameraTrans)
 
         background = j.Transform()
         background.translate(0, 0, -1).setScaleF(0.022)
@@ -249,6 +250,15 @@ class FallingBox(object):
 
         grounds[6].translate(6, 3, 0).setRotation(0, 0, 1,  45 * DEG2RAD)
 
+        cudgel = j.Transform(10, -4, 0.1)
+        cudgelImage = j.PngImage('Resources/cudgel.png')
+
+        cudgel.rotateZ(45 * DEG2RAD)
+        cudgel.translateX(40)
+        cudgel.addNode(j.Sprite(j.ImageTexture(cudgelImage), j.ImageShape(cudgelImage), shader))
+
+        groundProto.addNode(cudgel)
+
         # Приделаем пропеллер к одной из земель
         # propJointDef = b.b2RevoluteJointDef()
         # propJointDef.Initialize(propeller1.getPhysicsBody(), grounds[6].getPhysicsBody(), b.b2Vec2(4.6, 2.7))
@@ -273,7 +283,7 @@ class FallingBox(object):
 
         # Добавляем все узлы в дерево
 
-        rn.addNode(background).\
+        camera.addNode(background).\
             addNode(groundProto).\
             addNode(grounds[0]).\
             addNode(grounds[1]).\

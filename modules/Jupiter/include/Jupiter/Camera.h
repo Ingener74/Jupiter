@@ -44,26 +44,23 @@ struct Perspective {
 
 class Camera: public Node {
 public:
-    Camera(Ortho = {});
-    Camera(Perspective);
+    Camera() = default;
+    Camera(Transform*, Ortho);
+    Camera(Transform*, Perspective);
+    Camera(Camera const&);
 
     virtual ~Camera() = default;
+
+    virtual Camera* clone();
+
+    virtual Camera* accept(NodeVisitor* nv);
 
     glm::mat4 getProjectionMatrix() const;
     glm::mat4 getViewMatrix() const;
 
-    void setViewMatrix(glm::mat4 const&);
-
-    virtual Camera* clone(Camera*);
-
-    virtual Camera* setParent(Node*);
-
-    virtual Camera* accept(NodeVisitor* nv);
-
 protected:
-    glm::mat4 _projection, _view;
-
     Transform* _transform = nullptr;
+    glm::mat4 _projection, _view;
 };
 
 }  // namespace jupiter

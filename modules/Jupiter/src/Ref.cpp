@@ -73,6 +73,7 @@ template class Ref<File>;
 template class Ref<Game>;
 
 template class Ref<Node>;
+template class Ref<Transform>;
 template class Ref<Sprite>;
 template class Ref<Body>;
 template class Ref<VisualBody>;

@@ -20,7 +20,14 @@ namespace jupiter {
 class VisualBody: public Node {
 public:
     VisualBody(Shader*);
+    VisualBody(VisualBody const&);
     virtual ~VisualBody();
+
+    virtual VisualBody* clone();
+
+    virtual VisualBody* setParent(Node*);
+
+    virtual VisualBody* accept(NodeVisitor*);
 
     VisualBody* setProgram(Shader*);
     Shader* getProgram();

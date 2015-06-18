@@ -18,16 +18,14 @@ using namespace std;
 using namespace glm;
 using namespace nlohmann;
 
-Node::Node() {
-}
-
-Node::~Node() {
+Node::Node(bool visible, std::string const& name, int tag) :
+    _visible(visible), _name(name), _tag(tag) {
 }
 
 Node::Node(const Node& node) {
     *this = node;
     _nodes.clear();
-    for (auto i : node._nodes){
+    for (auto i : node._nodes) {
         auto copy = i->clone();
         copy->setParent(this);
         _nodes.emplace_back(copy);
@@ -36,18 +34,6 @@ Node::Node(const Node& node) {
 
 Node* Node::clone() {
     return new Node(*this);
-}
-
-Node* Node::addNode(Node* node) {
-    jassert(node, "node is nullptr");
-    _nodes.emplace_back(node->setParent(this));
-    return this;
-}
-
-Node* Node::removeNode(Node* node) {
-    jassert(node, "node is nullptr");
-//    _nodes.remove(node); // FIXME разобраться с этиим
-    return this;
 }
 
 Node* Node::setParent(Node* parent) {
@@ -60,6 +46,34 @@ Node* Node::getParent() {
     return _parent;
 }
 
+Node* Node::accept(NodeVisitor* nv) {
+    jassert(nv, "visitor is nullptr");
+    if (_visible) {
+        nv->push(this);
+        nv->visit(this);
+        for (auto i : _nodes) {
+            jassert(i, "invalid node");
+            i->accept(nv);
+        }
+        nv->pop(this);
+    }
+    return this;
+}
+
+Node* Node::addNode(Node* node) {
+    jassert(node, "node is nullptr");
+    _nodes.emplace_back(node->setParent(this));
+    return this;
+}
+
+Node* Node::removeNode(Node* node) {
+    jassert(node, "node is nullptr");
+
+    jassert(false, "not implemented");
+//    _nodes.remove(node); // FIXME разобраться с этиим
+
+    return this;
+}
 
 bool Node::isVisible() const {
     return _visible;
@@ -85,20 +99,6 @@ std::string Node::getName() const {
 
 Node* Node::setName(std::string name) {
     _name = name;
-    return this;
-}
-
-Node* Node::accept(NodeVisitor* nv) {
-    jassert(nv, "visitor is nullptr");
-    if (_visible) {
-        nv->push(this);
-        nv->visit(this);
-        for (auto i : _nodes) {
-            jassert(i, "invalid node");
-            i->accept(nv);
-        }
-        nv->pop(this);
-    }
     return this;
 }
 
