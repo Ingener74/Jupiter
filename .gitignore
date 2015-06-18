@@ -16,6 +16,7 @@ libs
 /Jupiter.sublime-project
 /Jupiter.sublime-workspace
 
+.idea
 apps/Io/.idea
 apps/Europe/.idea
 apps/Painter/.idea
