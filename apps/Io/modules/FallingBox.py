@@ -251,11 +251,11 @@ class FallingBox(object):
         grounds[6].translate(6, 3, 0).setRotation(0, 0, 1,  45 * DEG2RAD)
 
         # Булава для тестирования стека матриц модели
-        cudgel = j.Transform(800, -4, 0.1)
         cudgelImage = j.PngImage('Resources/cudgel.png')
 
-        cudgel.rotateZ(45 * DEG2RAD)
-        cudgel.translateX(40)
+        cudgel = j.Transform(800, -4, 0.1)
+        cudgel.rotateZ(-90 * DEG2RAD)
+        cudgel.translateX(20)
         cudgel.setScaleF(4)
         cudgel.addNode(j.Sprite(j.ImageTexture(cudgelImage), j.ImageShape(cudgelImage), shader))
 
