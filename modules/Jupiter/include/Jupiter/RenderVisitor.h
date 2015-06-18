@@ -47,7 +47,6 @@ public:
     virtual void end();
 
 private:
-    std::stack<Transform*> _transforms;
     std::stack<glm::mat4> _models;
     std::stack<Camera*> _cameras;
 };

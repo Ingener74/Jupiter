@@ -58,7 +58,6 @@ void RenderVisitor::visit(Sprite* sprite) {
     uniformView.set(camera->getViewMatrix());
 
     auto uniformModel = shader->getUniform("Model");
-//    uniformModel.set(_transforms.top()->getModel());
     uniformModel.set(_models.top());
 
     static GLenum drawTypes[] = {
@@ -97,8 +96,6 @@ void RenderVisitor::pop(Camera*){
 
 void RenderVisitor::push(Transform* transform) {
     jassert(transform, "invalid transform");
-//    _transforms.push(transform);
-
     _models.push(_models.top() * transform->getModel());
 }
 
@@ -106,8 +103,6 @@ void RenderVisitor::visit(Transform*) {
 }
 
 void RenderVisitor::pop(Transform*) {
-//    _transforms.pop();
-
     _models.pop();
 }
 

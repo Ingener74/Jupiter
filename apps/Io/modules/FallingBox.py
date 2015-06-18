@@ -60,8 +60,8 @@ RAD2DEG = 180. / 3.1415926
 # noinspection PyPep8Naming
 class FallingBox(object):
 
-    # WIDTH  = 1000
-    WIDTH = 400
+    WIDTH  = 1000
+    # WIDTH = 400
     HEIGHT = WIDTH * 3.0 / 5.0
 
     FPS = 60.0
@@ -250,14 +250,16 @@ class FallingBox(object):
 
         grounds[6].translate(6, 3, 0).setRotation(0, 0, 1,  45 * DEG2RAD)
 
-        cudgel = j.Transform(10, -4, 0.1)
+        # Булава для тестирования стека матриц модели
+        cudgel = j.Transform(800, -4, 0.1)
         cudgelImage = j.PngImage('Resources/cudgel.png')
 
         cudgel.rotateZ(45 * DEG2RAD)
         cudgel.translateX(40)
+        cudgel.setScaleF(4)
         cudgel.addNode(j.Sprite(j.ImageTexture(cudgelImage), j.ImageShape(cudgelImage), shader))
 
-        groundProto.addNode(cudgel)
+        box1.addNode(cudgel)
 
         # Приделаем пропеллер к одной из земель
         # propJointDef = b.b2RevoluteJointDef()
