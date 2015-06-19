@@ -12,4 +12,16 @@ else()
     endif()
 
     add_subdirectory(Test)
+    
+    
+    option(WITH_FREETYPE_TEST "With FreeType test" OFF)
+    if(WITH_FREETYPE_TEST)
+        find_package(Freetype REQUIRED)
+        include_directories(
+            ${FREETYPE_INCLUDE_DIRS}
+        )
+        add_executable(freetype_test FreeType/main.cpp)
+        target_link_libraries(freetype_test ${FREETYPE_LIBRARIES})
+    endif()
+    
 endif()

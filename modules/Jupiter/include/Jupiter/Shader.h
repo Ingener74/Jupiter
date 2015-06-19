@@ -34,6 +34,8 @@ public:
     Attribute getAttribute(const std::string& name) const;
     Uniform getUniform(const std::string& name) const;
 
+//    void setCamera(Camera*){}
+
 protected:
     static GLuint createProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
     static GLuint createShader(GLenum shaderType, const std::string& source);

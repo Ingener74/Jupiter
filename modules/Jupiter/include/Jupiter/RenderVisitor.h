@@ -21,6 +21,8 @@ namespace jupiter {
 
 class RenderObject{
 public:
+    RenderObject(Camera*, Shader*, glm::mat4 model);
+
     virtual ~RenderObject() = default;
 
     virtual Shader* getProgram() = 0;
@@ -29,6 +31,9 @@ public:
     virtual Uniform getViewUniform() const = 0;
 
     virtual std::list<Attribute> getAttributes() const = 0;
+
+
+    virtual void setCamera(Camera*) = 0;
 };
 
 class RenderVisitor: public NodeVisitor {
