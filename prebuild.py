@@ -1,62 +1,76 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import sys, os
-import subprocess
-from PySide.QtGui import (QApplication, QFileDialog, QWidget)
+import sys
+from PySide.QtGui import (QApplication, QFileDialog, QWidget, QTextEdit)
+from PySide.QtCore import (QProcess)
 
 from prebuild import *
 
 
+# noinspection PyPep8Naming
+class Step(object):
+    def __init__(self, program, args):
+        self.output = None
+        self.program = program
+        self.args = args
 
-# import subprocess, os, sys
-# from PySide.QtGui import (QApplication, QTextEdit, QPushButton)
-# from PySide.QtCore import (QProcess)
+        self.proc = QProcess()
+        self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
+        self.proc.readyReadStandardError.connect(self.onReadStdOut)
+        self.proc.start(program, args)
 
+    def run(self):
+        pass
 
-# class Step(object):
-#     def __init__(self, program, args):
-#         self.output = None
-#         self.program = program
-#         self.args = args
+    def onReadStdOut(self):
+        self.textEdit.append(str(self.proc.readAllStandardOutput()))
+        self.textEdit.append(str(self.proc.readAllStandardError()))
 
-#         self.proc = QProcess()
-#         self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
-#         self.proc.readyReadStandardError.connect(self.onReadStdOut)
-#         self.proc.start(program, args)
-
-#     def run(self):
-        
-
-#     def onReadStdOut(self):
-#         self.textEdit.append(str(self.proc.readAllStandardOutput()))
-#         self.textEdit.append(str(self.proc.readAllStandardError()))
-
-#     def setOutput(self, output):
-#         self.output = output
+    def setOutput(self, output):
+        self.output = output
 
 
-# class BuildProc(object):
-#     def __init__(self, steps):
-#         self.__steps = steps
+class BuildProc(object):
+    def __init__(self, steps):
+        self.__steps = steps
 
-#     def run(self):
+    def run(self):
+        pass
 
 
+class MyProcess(object):
+    def __init__(self, textEdit, program, args):
 
-# class MyProcess(object):
-#     def __init__(self, textEdit, program, args):
+        self.textEdit = textEdit
 
-#         self.textEdit = textEdit
+        env = QProcess.systemEnvironment()
 
-#         self.proc = QProcess()
-#         self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
-#         self.proc.readyReadStandardError.connect(self.onReadStdOut)
-#         self.proc.start(program, args)
+        # env.insert('PATH', env.value('Path') + ';C:\\cygwin64\\bin')
 
-#     def onReadStdOut(self):
-#         self.textEdit.append(str(self.proc.readAllStandardOutput()))
-#         self.textEdit.append(str(self.proc.readAllStandardError()))
+        self.proc = QProcess()
+
+        # print env
+        for index, value in enumerate(env):
+            if value.startswith(u'PATH'):
+                env[index] = value + u';C:\\cygwin64\\bin'
+        print env
+
+        self.proc.setEnvironment(env)
+
+        self.proc.error.connect(self.onError)
+        self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
+        self.proc.readyReadStandardError.connect(self.onReadStdOut)
+        retval = self.proc.start(program, args)
+
+        print retval
+
+    def onReadStdOut(self):
+        self.textEdit.append(str(self.proc.readAllStandardOutput()))
+        self.textEdit.append(str(self.proc.readAllStandardError()))
+
+    def onError(self, procError):
+        print procError
 
 
 # if __name__ == '__main__':
@@ -71,14 +85,14 @@ from prebuild import *
 
 #     sys.exit(app.exec_())
 
-class BoostBuilder(Builder):
-    def __init__(self, downloader):
-        super(BoostBuilder, self).__init__(downloader)
-
-    def build(self):
-        self.downloader.show()
-
-        print 'after download'
+# class BoostBuilder(Builder):
+#     def __init__(self, downloader):
+#         super(BoostBuilder, self).__init__(downloader)
+#
+#     def build(self):
+#         self.downloader.show()
+#
+#         print 'after download'
 
 
 class MainWindow(QWidget, Ui_Main):
@@ -87,19 +101,6 @@ class MainWindow(QWidget, Ui_Main):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-
-        '''
-        '''
-
-        myEnv = os.environ.copy()
-        myEnv['PATH'] = 'C:\\cygwin64\\bin;' + myEnv['PATH']
-        # print myEnv
-
-        buildDirectory = '..'
-
-        out, err = subprocess.Popen(['wget.exe', 'https://box2d.googlecode.com/files/Box2D_v2.3.0.7z', '-P', buildDirectory], stdout=subprocess.PIPE, env=myEnv).communicate()
-        # output = proc.stdout.read()
-        # print output
 
     def keyPressEvent(self, e):
         if e.key() == QtCore.Qt.Key_Escape:
@@ -118,5 +119,16 @@ if __name__ == '__main__':
     # boostBuilder = BoostBuilder(Downloader(u'Скачай последнюю версию библиотеки Boost', \
     #                                        'http://sourceforge.net/projects/boost/files/boost/', platform))
     # boostBuilder.build()
+
+    te = QTextEdit()
+    te.resize(600, 300)
+    te.show()
+
+                     # 'C:/cygwin64/bin/wget.exe',
+    proc = MyProcess(te,
+                     'wget',
+                     ['http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.gz',
+                      '-P',
+                      'Download'])
 
     sys.exit(app.exec_())
