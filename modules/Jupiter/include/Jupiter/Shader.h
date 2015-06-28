@@ -26,6 +26,10 @@ namespace jupiter {
 
 class Shader: virtual public RCO{
 public:
+    enum class CameraPins {
+        PROJECTION, VIEW
+    };
+
     Shader() = default;
     virtual ~Shader() = default;
 
@@ -34,7 +38,7 @@ public:
     Attribute getAttribute(const std::string& name) const;
     Uniform getUniform(const std::string& name) const;
 
-//    void setCamera(Camera*){}
+    void setCamera(Camera*);
 
 protected:
     static GLuint createProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);

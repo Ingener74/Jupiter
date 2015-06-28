@@ -34,6 +34,35 @@ void RenderVisitor::visit(Sprite* sprite) {
     jassert(sprite, "Render visitor: sprite is nullptr");
     jassert(!_cameras.empty(), "no cameras in tree above");
 
+    /*
+     * Shader{} + Camera{Projection, View} + Object{Vertexes, Texcoords, Textures, Model}
+     *
+     * Shader <- Camera
+     * Shader <- Object
+     *
+     * Shader: Uniform{type: name = value} <- Camera{}
+     *
+     * "Shader":{
+     *      "vertex":"sprite.vs",
+     *      "fragment":"sprite.fs"
+     * },
+     * "Components":[
+     *      {
+     *          "Uniform":{
+     *              type: "mat4",
+     *              name: "ProjName"
+     *          }
+     *      },
+     *      {
+     *          "Uniform": {
+     *              "type": "mat4",
+     *              "name": "ViewName"
+     *          }
+     *      }
+     * ]
+     *
+     */
+
     auto camera = _cameras.top();
 
     auto shader = sprite->getProgram();

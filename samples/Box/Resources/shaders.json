@@ -1,0 +1,32 @@
+{
+    "Shaders":[
+        {
+            "Sprite":{
+                "Vertex":"sprite.vs",
+                "Fragment":"sprite.fs",
+                "Components":[
+                    {
+                        ""
+                    },
+                    {
+                        ""
+                    }
+                ]
+            }
+        },
+        {
+            "Box2D":{
+                "Vertex":"",
+                "Fragment":"",
+                "Component":[
+                    {
+                        ""
+                    },
+                    {
+                        ""
+                    }
+                ]
+            }
+        }
+    ]
+}
