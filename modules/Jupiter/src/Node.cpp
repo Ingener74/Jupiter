@@ -75,6 +75,17 @@ Node* Node::removeNode(Node* node) {
     return this;
 }
 
+int Node::index(Node* node) const {
+    jassert(node, "node is invalid");
+    int ind = -1;
+    for (auto const& i : _nodes) {
+        if (node == i.get())
+            return ind;
+        ind++;
+    }
+    return ind;
+}
+
 bool Node::isVisible() const {
     return _visible;
 }
@@ -140,3 +151,4 @@ ostream& operator<<(ostream& out, Node const& r) {
 }
 
 } /* namespace jupiter */
+
