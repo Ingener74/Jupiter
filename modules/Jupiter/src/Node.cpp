@@ -75,10 +75,10 @@ Node* Node::removeNode(Node* node) {
     return this;
 }
 
-int Node::index(Node* node) const {
+int Node::index(Node* node) {
     jassert(node, "node is invalid");
     int ind = -1;
-    for (auto const& i : _nodes) {
+    for (auto & i : _nodes) {
         if (node == i.get())
             return ind;
         ind++;

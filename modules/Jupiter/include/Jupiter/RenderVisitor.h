@@ -54,6 +54,8 @@ public:
 private:
     std::stack<glm::mat4> _models;
     std::stack<Camera*> _cameras;
+
+    Shader* _shader = nullptr;
 };
 
 } /* namespace jupiter */

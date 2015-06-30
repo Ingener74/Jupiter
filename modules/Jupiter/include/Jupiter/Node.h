@@ -39,7 +39,7 @@ public:
     Node* addNode(Node*);
     Node* removeNode(Node*);
 
-    int index(Node*) const;
+    int index(Node*);
 
     bool isVisible() const;
     Node* setVisible(bool isVisible);

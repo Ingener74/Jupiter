@@ -13,6 +13,7 @@
 namespace jupiter {
 
 using namespace std;
+using namespace glm;
 
 const int INVALID = -1;
 
@@ -96,5 +97,10 @@ GLuint Shader::createShader(GLenum shaderType, const string& source) {
             "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
 }
 
-} /* namespace jupiter */
+void Shader::setCamera(Camera*) {
+}
 
+void Shader::setModel(mat4 const& model) {
+}
+
+} /* namespace jupiter */
