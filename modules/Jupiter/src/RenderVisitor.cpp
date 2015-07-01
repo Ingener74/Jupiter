@@ -42,25 +42,6 @@ void RenderVisitor::visit(Sprite* sprite) {
      *
      * Shader: Uniform{type: name = value} <- Camera{}
      *
-     * "Shader":{
-     *      "vertex":"sprite.vs",
-     *      "fragment":"sprite.fs"
-     * },
-     * "Components":[
-     *      {
-     *          "Uniform":{
-     *              type: "mat4",
-     *              name: "ProjName"
-     *          }
-     *      },
-     *      {
-     *          "Uniform": {
-     *              "type": "mat4",
-     *              "name": "ViewName"
-     *          }
-     *      }
-     * ]
-     *
      */
 
     auto camera = _cameras.top();

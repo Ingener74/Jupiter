@@ -47,6 +47,10 @@ public:
     void setCamera(Camera*);
     void setModel(glm::mat4 const&);
 
+    void setProjection(class ProjectionGetter*);
+    void setView(class ViewGetter*);
+    void setModel(class ModelGetter*);
+
 protected:
     static GLuint createProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
     static GLuint createShader(GLenum shaderType, const std::string& source);
