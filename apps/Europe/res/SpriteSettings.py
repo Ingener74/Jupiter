@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/PyGameDesigner/res/SpriteSettings.ui'
+# Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/Europe/res/SpriteSettings.ui'
 #
-# Created: Tue May 19 21:04:30 2015
+# Created: Thu Jul 02 00:39:38 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
