@@ -2,15 +2,18 @@
 # encoding: utf-8
 
 import sys
-from PySide.QtGui import (QApplication, QFileDialog, QWidget, QTextEdit)
+
+from PySide.QtGui import (QApplication, QWidget, QTextEdit)
 from PySide.QtCore import (QProcess)
 
 from prebuild import *
 
 
-# noinspection PyPep8Naming
+
+# noinspection PyPep8Naming,PyUnresolvedReferences
 class Step(object):
     def __init__(self, program, args):
+        self.textEdit = None
         self.output = None
         self.program = program
         self.args = args
@@ -39,6 +42,7 @@ class BuildProc(object):
         pass
 
 
+# noinspection PyUnresolvedReferences,PyPep8Naming
 class MyProcess(object):
     def __init__(self, textEdit, program, args):
 
@@ -61,9 +65,7 @@ class MyProcess(object):
         self.proc.error.connect(self.onError)
         self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
         self.proc.readyReadStandardError.connect(self.onReadStdOut)
-        retval = self.proc.start(program, args)
-
-        print retval
+        print self.proc.start(program, args)
 
     def onReadStdOut(self):
         self.textEdit.append(str(self.proc.readAllStandardOutput()))
@@ -111,7 +113,7 @@ class MainWindow(QWidget, Ui_Main):
 
 # noinspection PyPep8Naming
 if __name__ == '__main__':
-    # noinspection PyCallByClass
+    # noinspection PyCallByClass,PyTypeChecker
     QApplication.setStyle(u'plastique')
     app = QApplication(sys.argv)
 
@@ -128,7 +130,7 @@ if __name__ == '__main__':
     te.resize(600, 300)
     te.show()
 
-                     # 'C:/cygwin64/bin/wget.exe',
+    # 'C:/cygwin64/bin/wget.exe',
     # proc = MyProcess(te,
     #                  'wget',
     #                  ['http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.gz',
