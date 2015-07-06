@@ -67,7 +67,10 @@ class MyProcess(object):
 
     def onReadStdOut(self):
         self.textEdit.append(str(self.proc.readAllStandardOutput()))
-        self.textEdit.append(str(self.proc.readAllStandardError()))
+
+    def onReadStdErr(self):
+        # self.textEdit.append(str(self.proc.readAllStandardError()))
+        print 'error: ', self.proc.readAllStandardError()
 
     def onError(self, procError):
         print procError
@@ -108,6 +111,7 @@ class MainWindow(QWidget, Ui_Main):
 
 # noinspection PyPep8Naming
 if __name__ == '__main__':
+    # noinspection PyCallByClass
     QApplication.setStyle(u'plastique')
     app = QApplication(sys.argv)
 
@@ -125,10 +129,11 @@ if __name__ == '__main__':
     te.show()
 
                      # 'C:/cygwin64/bin/wget.exe',
-    proc = MyProcess(te,
-                     'wget',
-                     ['http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.gz',
-                      '-P',
-                      'Download'])
+    # proc = MyProcess(te,
+    #                  'wget',
+    #                  ['http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.gz',
+    #                   '-P',
+    #                   'Download'])
+    proc = MyProcess(te, 'wget', ['echo', 'Foo42'])
 
     sys.exit(app.exec_())
