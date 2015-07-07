@@ -46,6 +46,7 @@ public:
 
     virtual void begin();
 
+    VISIT_(DrawNode)
     VISIT_(Sprite)
     VISIT_(VisualBody)
     VISIT_(Camera)

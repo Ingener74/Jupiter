@@ -36,6 +36,20 @@ RenderVisitor::RenderVisitor() {
 void RenderVisitor::begin() {
 }
 
+void RenderVisitor::push(DrawNode*){
+}
+
+void RenderVisitor::visit(DrawNode* node) {
+    jassert(node, "node is invalid");
+
+
+
+    glDrawElements(node->getMode(), node->getCount(), GL_UNSIGNED_SHORT, nullptr);
+}
+
+void RenderVisitor::pop(DrawNode*){
+}
+
 void RenderVisitor::push(Sprite*){
 }
 
