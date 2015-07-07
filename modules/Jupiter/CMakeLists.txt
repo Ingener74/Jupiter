@@ -29,6 +29,7 @@ set(SOURCES
     src/ImageShape.cpp
     
     src/Sprite.cpp
+    src/DrawNode.cpp
 
     src/Camera.cpp
     src/NodeVisitor.cpp

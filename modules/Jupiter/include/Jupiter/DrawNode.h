@@ -8,9 +8,16 @@
 #ifndef MODULES_JUPITER_INCLUDE_JUPITER_DRAWNODE_H_
 #define MODULES_JUPITER_INCLUDE_JUPITER_DRAWNODE_H_
 
+#ifdef SWIG
+#else
+    #include <GL/gl.h>
+#endif
+
 #include "Node.h"
 
 namespace jupiter {
+
+class Shader;
 
 class DrawNode: public Node {
 public:

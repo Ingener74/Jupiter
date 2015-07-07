@@ -15,6 +15,9 @@ DrawNode::DrawNode() {
 DrawNode::~DrawNode() {
 }
 
+void DrawNode::bind(Shader* program) {
+}
+
 GLenum DrawNode::getMode() const {
 }
 

@@ -13,6 +13,7 @@
 #include "Jupiter/Tools.h"
 #include "Jupiter/Node.h"
 #include "Jupiter/Sprite.h"
+#include "Jupiter/DrawNode.h"
 #include "Jupiter/RenderVisitor.h"
 
 namespace jupiter {
