@@ -38,6 +38,7 @@ public:
 
     VISIT(Node)
 
+    VISIT(DrawNode)
     VISIT(Transform)
     VISIT(Sprite)
     VISIT(Body)

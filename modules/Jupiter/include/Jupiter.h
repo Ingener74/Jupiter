@@ -17,6 +17,7 @@
 #include "Jupiter/File.h"
 
 #include "Jupiter/Node.h"
+#include "Jupiter/DrawNode.h"
 #include "Jupiter/Transform.h"
 
 #include "Jupiter/FileFactory.h"
