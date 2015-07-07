@@ -42,7 +42,7 @@ class BuildProc(object):
         pass
 
 
-# noinspection PyUnresolvedReferences,PyPep8Naming
+# noinspection PyUnresolvedReferences,PyPep8Naming,PyMethodMayBeStatic
 class MyProcess(object):
     def __init__(self, textEdit, program, args):
 

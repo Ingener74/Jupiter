@@ -97,6 +97,7 @@ template class Ref<FileShader>;
 template class Ref<Shape>;
 template class Ref<ImageShape>;
 
+template class Ref<RenderBatch>;
 template class Ref<NodeVisitor>;
 template class Ref<RenderVisitor>;
 template class Ref<Physics>;

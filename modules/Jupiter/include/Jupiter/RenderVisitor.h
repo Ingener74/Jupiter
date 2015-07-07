@@ -19,6 +19,25 @@
 
 namespace jupiter {
 
+class RenderData{
+public:
+    RenderData(){}
+    virtual ~RenderData(){}
+};
+
+class RenderBatch: public RCO {
+public:
+    RenderBatch() = default;
+    virtual ~RenderBatch() = default;
+
+    void setRenderData(RenderData*){} // Attributes
+
+    void setCamera(Camera*){} // model matrix
+    void setShader(Shader*){} // projection and view matrix
+
+    void draw(){}
+};
+
 class RenderVisitor: public NodeVisitor {
 public:
     RenderVisitor();
@@ -39,6 +58,8 @@ private:
     std::stack<Camera*> _cameras;
 
     Shader* _shader = nullptr;
+
+    std::list<Ref<RenderBatch>> _batches;
 };
 
 } /* namespace jupiter */

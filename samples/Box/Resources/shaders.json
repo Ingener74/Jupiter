@@ -6,10 +6,19 @@
                 "Fragment":"sprite.fs",
                 "Components":[
                     {
-                        ""
+                        "type":"mat4",
+                        "pin":"Camera.Projection",
+                        "name":"Projection"
                     },
                     {
-                        ""
+                        "type":"mat4",
+                        "pin":"Camera.View",
+                        "name":"View"
+                    },
+                    {
+                        "type":"mat4",
+                        "pin":"Model",
+                        "name":"Model"
                     }
                 ]
             }

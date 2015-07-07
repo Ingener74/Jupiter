@@ -60,7 +60,7 @@ RAD2DEG = 180. / 3.1415926
 # noinspection PyPep8Naming
 class FallingBox(object):
 
-    WIDTH  = 1000
+    WIDTH  = 800
     # WIDTH = 300
     HEIGHT = WIDTH * 3.0 / 5.0
 

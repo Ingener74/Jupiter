@@ -20,6 +20,15 @@ namespace jupiter {
 using namespace std;
 using namespace glm;
 
+/*
+ * Diff объекты
+ * для
+ * пред рендеринг
+ *
+ * создание списка батчей по разнице деревьев сцены
+ *
+ */
+
 RenderVisitor::RenderVisitor() {
     _models.push({});
 }
@@ -117,6 +126,9 @@ void RenderVisitor::pop(Transform*) {
 }
 
 void RenderVisitor::end() {
+    for (auto & batch : _batches) {
+        batch->draw();
+    }
 }
 
 } /* namespace jupiter */
