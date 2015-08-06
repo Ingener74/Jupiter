@@ -11,7 +11,9 @@ else()
         add_subdirectory(Callisto)
     endif()
 
-    add_subdirectory(Test)
+    if(WITH_TEST_PROGRAMS)
+        add_subdirectory(Test)
+    endif()
     
     
     option(WITH_FREETYPE_TEST "With FreeType test" OFF)

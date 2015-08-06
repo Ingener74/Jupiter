@@ -22,3 +22,4 @@ apps/Europe/.idea
 apps/Painter/.idea
 3rdparty/json
 Download
+/build_emscripten/

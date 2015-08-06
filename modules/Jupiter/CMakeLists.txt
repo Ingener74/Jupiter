@@ -84,6 +84,11 @@ elseif(MINGW)
         src/File-default.cpp
         src/JupiterError-win32.cpp
     )
+elseif(EMSCRIPTEN)
+    set(SOURCES ${SOURCES} 
+        src/File-default.cpp
+        src/JupiterError-win32.cpp
+    )
 else()
     set(SOURCES ${SOURCES} 
         src/File-default.cpp
@@ -99,14 +104,14 @@ endif()
 
 add_library(${PROJECT_NAME} ${SOURCES})
 
-set(LIBS
-    ${GL_LIBRARIES}
-    ${PNG_LIBRARIES}
-    ${BOX2D_LIBRARIES}
-    lodepng
-)
-
-target_link_libraries(${PROJECT_NAME} ${LIBS})
+# TODO if jupiter shader, then link
+#set(LIBS
+#    ${GL_LIBRARIES}
+#    ${PNG_LIBRARIES}
+#    ${BOX2D_LIBRARIES}
+#    lodepng
+#)
+#target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
 install(DIRECTORY include DESTINATION Jupiter)

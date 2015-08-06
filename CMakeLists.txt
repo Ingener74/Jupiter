@@ -29,6 +29,7 @@ option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"           ON)
 option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"      ON)
 option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"         ON)
 
+option(WITH_TEST_PROGRAMS         "Build test programs Test1, Test2" ON)
 
 if(USE_FREEGLUT AND USE_GLFW)
     message(FATAL_ERROR "Use freeglut OR glfw")
@@ -82,17 +83,12 @@ find_package(GLEW REQUIRED)
 # find Box2D
 find_package(Box2D REQUIRED)
 
-# find Lua
-if(WITH_GANIMEDE)
-endif()
-find_package(Lua)
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(3rdparty)
 
-include_directories(
+set(INCLUDE_DIRS
     ${Boost_INCLUDE_DIRS}
     
     ${PNG_INCLUDE_DIRS}
@@ -109,7 +105,7 @@ include_directories(
     
     ${BOX2D_INCLUDE_DIR}
     
-    ${LUA_INCLUDE_DIR}
+    #${LUA_INCLUDE_DIR}
     
     3rdparty/json/src
     3rdparty/lodepng
@@ -117,6 +113,16 @@ include_directories(
     modules/Jupiter/include
     modules/Ganymede/include
 )
+include_directories(${INCLUDE_DIRS})
+
+# find Lua
+if(WITH_GANIMEDE)
+endif()
+
+find_package(Lua)
+if(LUA_FOUND)
+    set(INCLUDE_DIRS ${INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
+endif()
 
 # GL libraries
 set(GL_LIBRARIES

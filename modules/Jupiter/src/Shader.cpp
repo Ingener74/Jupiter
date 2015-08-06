@@ -91,7 +91,8 @@ GLuint Shader::createShader(GLenum shaderType, const string& source) {
     vector<char> buf(infoLen);
     glGetShaderInfoLog(shader, infoLen, 0, buf.data());
 
-    static array<string, 2> shaderTypeString = { "GL_FRAGMENT_SHADER", "GL_VERTEX_SHADER" };
+//    static array<string, 2> shaderTypeString = { "GL_FRAGMENT_SHADER", "GL_VERTEX_SHADER" };
+    static string shaderTypeString[2] = { "GL_FRAGMENT_SHADER", "GL_VERTEX_SHADER" };
 
     throw JupiterError(""
             "can't create shader " + shaderTypeString[shaderType - GL_FRAGMENT_SHADER] + "\n" + &buf.front());
