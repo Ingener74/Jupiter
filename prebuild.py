@@ -4,10 +4,9 @@
 import sys
 
 from PySide.QtGui import (QApplication, QWidget, QTextEdit)
-from PySide.QtCore import (QProcess)
+from PySide.QtCore import (QProcess, Qt)
 
-from prebuild import *
-
+from prebuild import (Ui_Main)
 
 
 # noinspection PyPep8Naming,PyUnresolvedReferences
@@ -48,21 +47,21 @@ class MyProcess(object):
 
         self.textEdit = textEdit
 
-        env = QProcess.systemEnvironment()
-
-        # env.insert('PATH', env.value('Path') + ';C:\\cygwin64\\bin')
-
-        self.proc = QProcess()
-
+        # env = QProcess.systemEnvironment()
+        #
+        # # env.insert('PATH', env.value('Path') + ';C:\\cygwin64\\bin')
+        #
+        # self.proc = QProcess()
+        #
+        # # print env
+        # for index, value in enumerate(env):
+        #     if value.startswith(u'PATH'):
+        #         env[index] = value + u';C:\\cygwin64\\bin'
         # print env
-        for index, value in enumerate(env):
-            if value.startswith(u'PATH'):
-                env[index] = value + u';C:\\cygwin64\\bin'
-        print env
-
-        self.proc.setEnvironment(env)
-
-        self.proc.error.connect(self.onError)
+        #
+        # self.proc.setEnvironment(env)
+        #
+        # self.proc.error.connect(self.onError)
         self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
         self.proc.readyReadStandardError.connect(self.onReadStdOut)
         print self.proc.start(program, args)
@@ -108,8 +107,9 @@ class MainWindow(QWidget, Ui_Main):
         self.setupUi(self)
 
     def keyPressEvent(self, e):
-        if e.key() == QtCore.Qt.Key_Escape:
+        if e.key() == Qt.Key_Escape:
             raise SystemExit
+
 
 # noinspection PyPep8Naming
 if __name__ == '__main__':
@@ -126,16 +126,7 @@ if __name__ == '__main__':
     #                                        'http://sourceforge.net/projects/boost/files/boost/', platform))
     # boostBuilder.build()
 
-    te = QTextEdit()
-    te.resize(600, 300)
-    te.show()
-
-    # 'C:/cygwin64/bin/wget.exe',
-    # proc = MyProcess(te,
-    #                  'wget',
-    #                  ['http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.gz',
-    #                   '-P',
-    #                   'Download'])
-    proc = MyProcess(te, 'wget', ['echo', 'Foo42'])
+    bash = QProcess()
+    print bash.start('bash')
 
     sys.exit(app.exec_())
