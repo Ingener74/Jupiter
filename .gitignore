@@ -26,3 +26,7 @@ Download
 
 venv
 env
+samples/Box/Resources.png
+samples/Box/Resources.atlas
+samples/Box/Resources/atlas0.png
+samples/Box/Resources/atlas0.json
