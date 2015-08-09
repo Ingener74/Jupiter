@@ -83,12 +83,17 @@ find_package(GLEW REQUIRED)
 # find Box2D
 find_package(Box2D REQUIRED)
 
+# find Lua
+if(WITH_GANIMEDE)
+endif()
+find_package(Lua)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(3rdparty)
 
-set(INCLUDE_DIRS
+include_directories(
     ${Boost_INCLUDE_DIRS}
     
     ${PNG_INCLUDE_DIRS}
@@ -105,7 +110,7 @@ set(INCLUDE_DIRS
     
     ${BOX2D_INCLUDE_DIR}
     
-    #${LUA_INCLUDE_DIR}
+    ${LUA_INCLUDE_DIR}
     
     3rdparty/json/src
     3rdparty/lodepng
@@ -136,6 +141,14 @@ elseif(USE_GLFW)
 endif()
 
 add_definitions(-std=c++11)
+if(MINGW)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+    set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
+    set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
+else()
+#    add_definitions(-fPIC)
+endif()
 
 add_subdirectory(apps)
 

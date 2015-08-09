@@ -7,6 +7,7 @@ from PySide.QtGui import QApplication, QMessageBox
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
+# noinspection PyUnresolvedReferences
 try:
     import JupiterPython as j
     import Box2DPython as b

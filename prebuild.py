@@ -9,6 +9,7 @@ from PySide.QtCore import (QProcess, Qt)
 from prebuild import (Ui_Main)
 
 
+
 # noinspection PyPep8Naming,PyUnresolvedReferences
 class Step(object):
     def __init__(self, program, args):
@@ -57,6 +58,16 @@ class MyProcess(object):
         # for index, value in enumerate(env):
         #     if value.startswith(u'PATH'):
         #         env[index] = value + u';C:\\cygwin64\\bin'
+        env = QProcess.systemEnvironment()
+
+        # env.insert('PATH', env.value('Path') + ';C:\\cygwin64\\bin')
+
+        self.proc = QProcess()
+
+        """
+        Надо попробовать запускать баш, и передавать ему PATTH и то что надо вызвать!!!
+        """
+
         # print env
         #
         # self.proc.setEnvironment(env)
@@ -111,6 +122,23 @@ class MainWindow(QWidget, Ui_Main):
             raise SystemExit
 
 
+def test():
+    bash = QProcess()
+    bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
+    if not bash.waitForStarted():
+        print 'wait for started'
+        return False
+
+    bash.write('echo Test')
+    bash.closeWriteChannel()
+
+    if not bash.waitForFinished():
+        print 'wait for finished'
+        return False
+
+    result = bash.readAll()
+    print result
+
 # noinspection PyPep8Naming
 if __name__ == '__main__':
     # noinspection PyCallByClass,PyTypeChecker
@@ -126,7 +154,6 @@ if __name__ == '__main__':
     #                                        'http://sourceforge.net/projects/boost/files/boost/', platform))
     # boostBuilder.build()
 
-    bash = QProcess()
-    print bash.start('bash')
+    test()
 
     sys.exit(app.exec_())

@@ -97,8 +97,8 @@ class GlWidget(QGLWidget):
         print 'Renderer ', str(glGetString(GL_RENDERER))
         print 'OpenGL   ', str(glGetString(GL_VERSION))
         print 'GLSL     ', str(glGetString(GL_SHADING_LANGUAGE_VERSION))
-#         self.resize(800, 480) # try this
-        
+        # self.resize(800, 480) # try this
+
     def paintGL(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glClearColor(0.1, 0.3, 0.1, 1.0)
