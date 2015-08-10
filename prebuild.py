@@ -4,10 +4,9 @@
 import sys
 
 from PySide.QtGui import (QApplication, QWidget, QTextEdit)
-from PySide.QtCore import (QProcess, Qt)
+from PySide.QtCore import (QProcess, Qt, QProcessEnvironment, QDir)
 
 from prebuild import (Ui_Main)
-
 
 
 # noinspection PyPep8Naming,PyUnresolvedReferences
@@ -45,7 +44,6 @@ class BuildProc(object):
 # noinspection PyUnresolvedReferences,PyPep8Naming,PyMethodMayBeStatic
 class MyProcess(object):
     def __init__(self, textEdit, program, args):
-
         self.textEdit = textEdit
 
         # env = QProcess.systemEnvironment()
@@ -124,21 +122,37 @@ class MainWindow(QWidget, Ui_Main):
 
 def test():
     bash = QProcess()
-    # bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
-    bash.start('bash')
+
+    env = QProcessEnvironment.systemEnvironment()
+    env.insert('PATH', env.value('Path') + ';C:\\MinGW\\bin;C:\\MinGW\\mingw32\\bin;C:\\MinGW\\msys\\1.0\\bin')
+
+    bash.setProcessEnvironment(env)
+    bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
+    # bash.setWorkingDirectory(u'C:\\Users\\Pavel\\workspace\\Jupiter\\build-win\\')
+
+    work_dir = QDir('build-win')
+
+    print work_dir.absolutePath()
+
+    bash.setWorkingDirectory(work_dir.absolutePath())
+    print bash.workingDirectory()
+    # bash.start('bash')
+
     if not bash.waitForStarted():
         print 'wait for started'
         return False
 
-    bash.write('make')
+    # print bash.write('cd build-win && ls && make')
+    print bash.write('ls')
+    bash.waitForBytesWritten()
     bash.closeWriteChannel()
 
     if not bash.waitForFinished():
         print 'wait for finished'
         return False
 
-    result = bash.readAll()
-    print result
+    print bash.readAll()
+
 
 if __name__ == '__main__':
     test()
