@@ -124,12 +124,13 @@ class MainWindow(QWidget, Ui_Main):
 
 def test():
     bash = QProcess()
-    bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
+    # bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
+    bash.start('bash')
     if not bash.waitForStarted():
         print 'wait for started'
         return False
 
-    bash.write('echo Test')
+    bash.write('make')
     bash.closeWriteChannel()
 
     if not bash.waitForFinished():
@@ -138,6 +139,10 @@ def test():
 
     result = bash.readAll()
     print result
+
+if __name__ == '__main__':
+    test()
+    raise SystemExit
 
 # noinspection PyPep8Naming
 if __name__ == '__main__':

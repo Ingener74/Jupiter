@@ -26,6 +26,6 @@ set(LIBS
     #Ganymede
     Jupiter
 )
-target_link_libraries(${PROJECT_NAME} ${LIBS})
+target_link_libraries(${PROJECT_NAME} ${LIBS} lodepng)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/bin)
