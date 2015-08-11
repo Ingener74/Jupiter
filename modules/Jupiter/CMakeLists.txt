@@ -104,6 +104,12 @@ endif()
 
 add_library(${PROJECT_NAME} ${SOURCES})
 
+#
+#  В тестах для тестирования приватных членов делать 
+#  #define private public
+#  подсмотрено здесь https://github.com/nlohmann/json/blob/master/test/unit.cpp
+# 
+
 # TODO if jupiter shader, then link
 #set(LIBS
 #    ${GL_LIBRARIES}

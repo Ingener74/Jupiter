@@ -3,10 +3,10 @@
 
 import sys
 
-from PySide.QtGui import (QApplication, QWidget, QTextEdit)
-from PySide.QtCore import (QProcess, Qt, QProcessEnvironment, QDir)
+from PySide.QtGui import (QApplication, QWidget)
+from PySide.QtCore import (QProcess, Qt)
 
-from prebuild import (Ui_Main)
+from prebuild import (Ui_Main, BuildThread)
 
 
 # noinspection PyPep8Naming,PyUnresolvedReferences
@@ -63,7 +63,7 @@ class MyProcess(object):
         self.proc = QProcess()
 
         """
-        Надо попробовать запускать баш, и передавать ему PATTH и то что надо вызвать!!!
+        Надо попробовать запускать баш, и передавать ему PATH и то что надо вызвать!!!
         """
 
         # print env
@@ -121,29 +121,32 @@ class MainWindow(QWidget, Ui_Main):
 
 
 def test():
+
+    # - Добавление путей в PATH при необходимости в винде
+    # -
+
     bash = QProcess()
 
-    env = QProcessEnvironment.systemEnvironment()
-    env.insert('PATH', env.value('Path') + ';C:\\MinGW\\bin;C:\\MinGW\\mingw32\\bin;C:\\MinGW\\msys\\1.0\\bin')
+    # env = QProcessEnvironment.systemEnvironment()
+    # env.insert('PATH', env.value('Path') + ';C:\\MinGW\\bin;C:\\MinGW\\mingw32\\bin;C:\\MinGW\\msys\\1.0\\bin')
+    # bash.setProcessEnvironment(env)
 
-    bash.setProcessEnvironment(env)
-    bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
+    bash.start('bash')
+
+    # bash.start('C:/MinGW/msys/1.0/bin/bash.exe')
     # bash.setWorkingDirectory(u'C:\\Users\\Pavel\\workspace\\Jupiter\\build-win\\')
 
-    work_dir = QDir('build-win')
-
-    print work_dir.absolutePath()
-
-    bash.setWorkingDirectory(work_dir.absolutePath())
-    print bash.workingDirectory()
-    # bash.start('bash')
+    # work_dir = QDir('build-win')
+    # print work_dir.absolutePath()
+    # bash.setWorkingDirectory(work_dir.absolutePath())
+    # print bash.workingDirectory()
 
     if not bash.waitForStarted():
         print 'wait for started'
         return False
 
     # print bash.write('cd build-win && ls && make')
-    print bash.write('ls')
+    print bash.write('cd build && ls')
     bash.waitForBytesWritten()
     bash.closeWriteChannel()
 
@@ -154,9 +157,10 @@ def test():
     print bash.readAll()
 
 
-if __name__ == '__main__':
-    test()
-    raise SystemExit
+# if __name__ == '__main__':
+#     test()
+#     raise SystemExit
+
 
 # noinspection PyPep8Naming
 if __name__ == '__main__':
@@ -173,6 +177,9 @@ if __name__ == '__main__':
     #                                        'http://sourceforge.net/projects/boost/files/boost/', platform))
     # boostBuilder.build()
 
-    test()
+    # test()
+
+    build_thread = BuildThread()
+    build_thread.start()
 
     sys.exit(app.exec_())
