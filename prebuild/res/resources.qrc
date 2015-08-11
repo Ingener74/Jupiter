@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>start.png</file>
     <file>apartment_building.png</file>
     <file>home.png</file>
     <file>office_building (1).png</file>

@@ -9,38 +9,6 @@ from PySide.QtCore import (QProcess, Qt)
 from prebuild import (Ui_Main, BuildThread)
 
 
-# noinspection PyPep8Naming,PyUnresolvedReferences
-class Step(object):
-    def __init__(self, program, args):
-        self.textEdit = None
-        self.output = None
-        self.program = program
-        self.args = args
-
-        self.proc = QProcess()
-        self.proc.readyReadStandardOutput.connect(self.onReadStdOut)
-        self.proc.readyReadStandardError.connect(self.onReadStdOut)
-        self.proc.start(program, args)
-
-    def run(self):
-        pass
-
-    def onReadStdOut(self):
-        self.textEdit.append(str(self.proc.readAllStandardOutput()))
-        self.textEdit.append(str(self.proc.readAllStandardError()))
-
-    def setOutput(self, output):
-        self.output = output
-
-
-class BuildProc(object):
-    def __init__(self, steps):
-        self.__steps = steps
-
-    def run(self):
-        pass
-
-
 # noinspection PyUnresolvedReferences,PyPep8Naming,PyMethodMayBeStatic
 class MyProcess(object):
     def __init__(self, textEdit, program, args):
@@ -176,8 +144,6 @@ if __name__ == '__main__':
     # boostBuilder = BoostBuilder(Downloader(u'Скачай последнюю версию библиотеки Boost', \
     #                                        'http://sourceforge.net/projects/boost/files/boost/', platform))
     # boostBuilder.build()
-
-    # test()
 
     build_thread = BuildThread()
     build_thread.start()
