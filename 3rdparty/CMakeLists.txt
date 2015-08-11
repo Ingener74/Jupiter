@@ -6,3 +6,9 @@ else()
 endif()
 
 add_library(lodepng lodepng/lodepng.cpp)
+
+include(ExternalProject)
+
+add_subdirectory(Box2D)
+add_subdirectory(zlib)
+add_subdirectory(libpng)
