@@ -129,18 +129,19 @@ include_directories(
     modules/Jupiter/include
     modules/Ganymede/include
     
-    ${3RDPARTY_INSTALL}
+    ${3RDPARTY_INSTALL}/include
 )
-include_directories(${INCLUDE_DIRS})
+
+link_directories(
+    ${3RDPARTY_INSTALL}/lib
+)
 
 # find Lua
 if(WITH_GANIMEDE)
 endif()
 
 find_package(Lua)
-if(LUA_FOUND)
-    set(INCLUDE_DIRS ${INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
-endif()
+#include_directories(${LUA_INCLUDE_DIR})
 
 # GL libraries
 set(GL_LIBRARIES
