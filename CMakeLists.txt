@@ -42,54 +42,65 @@ endif()
 if(WITH_GAME_PLAYER)
 
     # find boost
-    set(Boost_USE_STATIC_LIBS    ON)
-    set(Boost_USE_MULTITHREADED  ON)
     if(MINGW)
-        set(Boost_COMPILER -mgw48)
+    elseif(EMSCRIPTEN)
     else()
-        set(Boost_COMPILER -gcc)
+        set(Boost_USE_STATIC_LIBS    ON)
+        set(Boost_USE_MULTITHREADED  ON)
+        if(MINGW)
+            set(Boost_COMPILER -mgw48)
+        else()
+            set(Boost_COMPILER -gcc)
+        endif()
+        
+        find_package(Boost 1.53.0 REQUIRED system filesystem program_options)
+    endif()
+
+endif()
+
+if(MINGW)
+elseif(EMSCRIPTEN)
+else()
+    # find png
+    find_package(PNG REQUIRED)
+    
+    find_package(FreeImage)
+    
+    # find glm
+    find_package(GLM REQUIRED)
+    
+    # find GLUT
+    if(USE_FREEGLUT)
+        add_definitions(-DUSE_FREEGLUT)
+        find_package(GLUT REQUIRED)
     endif()
     
-    find_package(Boost 1.53.0 REQUIRED system filesystem program_options)
-
+    # find GLFW
+    if(USE_GLFW)
+        add_definitions(-DUSE_GLFW)
+        find_package(GLFW REQUIRED)
+    endif()
+    
+    # find GLEW
+    find_package(GLEW REQUIRED)
+    
+    # find Box2D
+    find_package(Box2D REQUIRED)
+    
+    # find Lua
+    if(WITH_GANIMEDE)
+    endif()
+    find_package(Lua)
 endif()
 
-# find png
-find_package(PNG REQUIRED)
-
-find_package(FreeImage)
-
-# find glm
-find_package(GLM REQUIRED)
-
-# find GLUT
-if(USE_FREEGLUT)
-    add_definitions(-DUSE_FREEGLUT)
-    find_package(GLUT REQUIRED)
-endif()
-
-# find GLFW
-if(USE_GLFW)
-    add_definitions(-DUSE_GLFW)
-    find_package(GLFW REQUIRED)
-endif()
 
 # find OpenGL
 find_package(OpenGL REQUIRED)
 
-# find GLEW
-find_package(GLEW REQUIRED)
-
-# find Box2D
-find_package(Box2D REQUIRED)
-
-# find Lua
-if(WITH_GANIMEDE)
-endif()
-find_package(Lua)
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
 
 add_subdirectory(3rdparty)
 
@@ -117,6 +128,8 @@ include_directories(
     
     modules/Jupiter/include
     modules/Ganymede/include
+    
+    ${3RDPARTY_INSTALL}
 )
 include_directories(${INCLUDE_DIRS})
 
@@ -146,6 +159,11 @@ if(MINGW)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
     set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
     set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
+    
+    include_directories(
+        ${CMAKE_BINARY_DIR}/3rdparty/GLEW/${EXT_GLEW}-prefix/src/${EXT_GLEW}/include
+    )
+elseif(EMSCRIPTEN)
 else()
 #    add_definitions(-fPIC)
 endif()

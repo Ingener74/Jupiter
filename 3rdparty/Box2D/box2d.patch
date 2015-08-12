@@ -1,0 +1,46 @@
+diff --git a/Box2D/Box2D/CMakeLists.txt b/Box2D/Box2D/CMakeLists.txt
+index 05087d3..46a0b55 100644
+--- a/Box2D/Box2D/CMakeLists.txt
++++ b/Box2D/Box2D/CMakeLists.txt
+@@ -1,3 +1,4 @@
++cmake_minimum_required(VERSION 2.6)
+ set(BOX2D_Collision_SRCS
+ 	Collision/b2BroadPhase.cpp
+ 	Collision/b2CollideCircle.cpp
+diff --git a/Box2D/CMakeLists.txt b/Box2D/CMakeLists.txt
+index a290f15..58f2aa8 100644
+--- a/Box2D/CMakeLists.txt
++++ b/Box2D/CMakeLists.txt
+@@ -26,9 +26,9 @@ if(BOX2D_BUILD_EXAMPLES)
+ 
+   # Testbed and dependencies.
+   find_package(OpenGL REQUIRED)
+-  add_subdirectory(freeglut)
+-  add_subdirectory(glui)
+-  add_subdirectory(Testbed)
++  # add_subdirectory(freeglut)
++  # add_subdirectory(glui)
++  # add_subdirectory(Testbed)
+ endif(BOX2D_BUILD_EXAMPLES)
+ 
+ if(BOX2D_INSTALL_DOC)
+diff --git a/Box2D/HelloWorld/CMakeLists.txt b/Box2D/HelloWorld/CMakeLists.txt
+index c6ae2b2..b86b2eb 100644
+--- a/Box2D/HelloWorld/CMakeLists.txt
++++ b/Box2D/HelloWorld/CMakeLists.txt
+@@ -1,4 +1,5 @@
+ # Hello World examples
++cmake_minimum_required(VERSION 2.6)
+ include_directories (${Box2D_SOURCE_DIR})
+ add_executable(HelloWorld HelloWorld.cpp)
+ target_link_libraries (HelloWorld Box2D)
+diff --git a/Box2D/Testbed/CMakeLists.txt b/Box2D/Testbed/CMakeLists.txt
+index b030a48..342c348 100644
+--- a/Box2D/Testbed/CMakeLists.txt
++++ b/Box2D/Testbed/CMakeLists.txt
+@@ -1,4 +1,5 @@
+ # Some flags for Freeglut and GLUI.
++cmake_minimum_required(VERSION 2.6)
+ add_definitions( -DFREEGLUT_EXPORTS -DFREEGLUT_STATIC -D_CRT_SECURE_NO_WARNINGS )
+ 
+ # Define the framework files.

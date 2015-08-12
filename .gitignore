@@ -32,3 +32,4 @@ samples/Box/Resources/atlas0.png
 samples/Box/Resources/atlas0.json
 build_directory/Box2D
 /build_directory/
+/build_mingw/
