@@ -18,7 +18,10 @@ if(MINGW)
     ExternalProject_Add(
         ${EXT_FREEGLUT}
         URL                 http://downloads.sourceforge.net/project/freeglut/freeglut/3.0.0/freeglut-3.0.0.tar.gz
-        CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
+        CMAKE_ARGS          ${freeglut_build_method}
+                            -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
+                            -DFREEGLUT_BUILD_DEMOS=OFF 
+                            -DFREEGLUT_REPLACE_GLUT=OFF
     )
 else()
     add_definitions(-fPIC)

@@ -17,9 +17,7 @@ if(MINGW)
     
     ExternalProject_Add(
         ${EXT_GLM}
-        GIT_REPOSITORY      https://github.com/g-truc/glm.git
-        GIT_TAG             0.9.7.0
-        #PATCH_COMMAND       patch -p1 < ${CMAKE_CURRENT_LIST_DIR}/mingw.patch
+        URL                 https://github.com/g-truc/glm/archive/0.9.7.0.zip
         CMAKE_ARGS          ${GLM_build_method} -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
     )
 else()

@@ -7,8 +7,20 @@ if(USE_FREEGLUT)
     set(LIBS
         glew32
         glew32mx
-        freeglut
     )
+    if(MINGW)
+        if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+            set(LIBS ${LIBS} glut)
+        elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+            set(LIBS ${LIBS} freeglut)
+        else()
+            message(FATAL_ERROR "error")
+        endif()
+    else()
+        set(LIBS ${LIBS}
+            glut
+        )
+    endif()
 
     add_executable(Test-1 main.cpp v1/v1.cpp Shaders.cpp Tools.cpp)
     target_link_libraries(Test-1 ${GL_LIBRARIES} lodepng ${LIBS})
