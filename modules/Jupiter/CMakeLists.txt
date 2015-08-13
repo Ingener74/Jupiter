@@ -111,11 +111,12 @@ add_library(${PROJECT_NAME} ${SOURCES})
 # 
 
 # TODO if jupiter shader, then link
-#set(LIBS
-#    lodepng
-#)
-#target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
-target_link_libraries(${PROJECT_NAME} lodepng)
+set(LIBS
+    ${OPENGL_LIBRARIES}
+    ${GLEW_LIB}
+    lodepng
+)
+target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
 install(DIRECTORY include DESTINATION Jupiter)
