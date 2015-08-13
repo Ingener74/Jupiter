@@ -18,4 +18,4 @@
 %include <glm/detail/setup.hpp>
 %include <glm/detail/type_vec3.hpp>
 
-%template(glm::vec3) glm::tvec3<float, glm::highp>;
+// %template(glm::vec3) glm::tvec3<float, glm::highp>;

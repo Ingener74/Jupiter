@@ -14,6 +14,7 @@ add_subdirectory(GLEW)
 add_subdirectory(GLM)
 add_subdirectory(boost)
 add_subdirectory(freeglut)
+add_subdirectory(Lua)
 
 add_subdirectory(zlib)
 add_subdirectory(libpng)

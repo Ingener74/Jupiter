@@ -4,11 +4,12 @@ include_directories(.)
 
 if(USE_FREEGLUT)
 
-    set(LIBS
-        glew32
-        glew32mx
-    )
+    set(LIBS)
     if(MINGW)
+        set(LIBS ${LIBS} 
+            glew32 
+            glew32mx
+            )
         if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
             set(LIBS ${LIBS} glut)
         elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
