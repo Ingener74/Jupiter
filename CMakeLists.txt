@@ -56,7 +56,8 @@ include_directories(${OPENGL_INCLUDE_DIR})
 set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/lib)
 
 add_subdirectory(3rdparty)
 
@@ -178,9 +179,9 @@ if(MINGW)
     set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
     set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
     
-    include_directories(
-        ${CMAKE_BINARY_DIR}/3rdparty/GLEW/${EXT_GLEW}-prefix/src/${EXT_GLEW}/include
-    )
+#    include_directories(
+#        ${CMAKE_BINARY_DIR}/3rdparty/GLEW/${EXT_GLEW}-prefix/src/${EXT_GLEW}/include
+#    )
 elseif(EMSCRIPTEN)
 else()
 #    add_definitions(-fPIC)

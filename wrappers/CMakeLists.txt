@@ -14,18 +14,19 @@ set(CMAKE_SWIG_FLAGS "-c++")
 set_source_files_properties(Jupiter.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
 
-set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
 
 set(SHARED_LIBS
     Jupiter 
     ${OPENGL_LIBRARIES}
     ${GLEW_LIB}
+    ${BOX2D_LIB}
 )
 
 # Lua
 if(WITH_LUA_WRAPPER)
     SWIG_ADD_MODULE(JupiterLua lua Jupiter.i)
-    SWIG_LINK_LIBRARIES(JupiterLua ${SHARED_LIBS} ${LUA_LIBRARIES})
+    SWIG_LINK_LIBRARIES(JupiterLua ${SHARED_LIBS} ${LUA_LIB})
 endif()
 
 # Python
@@ -37,18 +38,18 @@ endif()
 ################################################################################################
 # GLFW
 ################################################################################################
-if(USE_GLFW)
+if(OPENGL_WINDOW_SYSTEM STREQUAL "GLFW")
     set_source_files_properties(glfw.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(glfw.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
     
     if(WITH_GLFW_LUA_WRAPPER)
         SWIG_ADD_MODULE(glfwLua lua glfw.i)
-        SWIG_LINK_LIBRARIES(glfwLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
+        SWIG_LINK_LIBRARIES(glfwLua ${OPENGL_LIBRARIES} ${GLEW_LIB} ${LUA_LIB})
     endif()
     
     if(WITH_GLFW_PYTHON_WRAPPER)
         SWIG_ADD_MODULE(glfwPython python glfw.i)
-        SWIG_LINK_LIBRARIES(glfwPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+        SWIG_LINK_LIBRARIES(glfwPython ${OPENGL_LIBRARIES} ${GLEW_LIB} ${PYTHON_LIBRARIES})
     endif()
 endif()
 
@@ -60,12 +61,12 @@ set_source_files_properties(glew.i PROPERTIES SWIG_FLAGS "-includeall;-nodefault
 
 if(WITH_GLEW_LUA_WRAPPER)
     SWIG_ADD_MODULE(glewLua lua glew.i)
-    SWIG_LINK_LIBRARIES(glewLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
+    SWIG_LINK_LIBRARIES(glewLua ${OPENGL_LIBRARIES} ${GLEW_LIB} ${LUA_LIB})
 endif()
 
 if(WITH_GLEW_PYTHON_WRAPPER)
     SWIG_ADD_MODULE(glewPython python glew.i)
-    SWIG_LINK_LIBRARIES(glewPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+    SWIG_LINK_LIBRARIES(glewPython ${OPENGL_LIBRARIES} ${GLEW_LIB} ${PYTHON_LIBRARIES})
 endif()
 
 ################################################################################################
@@ -76,12 +77,12 @@ set_source_files_properties(gl.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultct
 
 if(WITH_GL_LUA_WRAPPER)
     SWIG_ADD_MODULE(glLua lua gl.i)
-    SWIG_LINK_LIBRARIES(glLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
+    SWIG_LINK_LIBRARIES(glLua ${OPENGL_LIBRARIES} ${GLEW_LIB} ${LUA_LIB})
 endif()
 
 if(WITH_GL_PYTHON_WRAPPER)
     SWIG_ADD_MODULE(glPython python gl.i)
-    SWIG_LINK_LIBRARIES(glPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+    SWIG_LINK_LIBRARIES(glPython ${OPENGL_LIBRARIES} ${GLEW_LIB} ${PYTHON_LIBRARIES})
 endif()
 
 ################################################################################################
@@ -92,12 +93,12 @@ set_source_files_properties(glm.i PROPERTIES SWIG_FLAGS "")
 
 #if(WITH_GL_LUA_WRAPPER)
 #    SWIG_ADD_MODULE(glLua lua gl.i)
-#    SWIG_LINK_LIBRARIES(glLua ${GL_LIBRARIES} ${LUA_LIBRARIES})
+#    SWIG_LINK_LIBRARIES(glLua ${OPENGL_LIBRARIES} ${GLEW_LIB} ${LUA_LIB})
 #endif()
 
 if(WITH_GLM_PYTHON_WRAPPER)
     SWIG_ADD_MODULE(glmPython python glm.i)
-    SWIG_LINK_LIBRARIES(glmPython ${GL_LIBRARIES} ${PYTHON_LIBRARIES})
+    SWIG_LINK_LIBRARIES(glmPython ${OPENGL_LIBRARIES} ${GLEW_LIB} ${PYTHON_LIBRARIES})
 endif()
 
 ################################################################################################
@@ -108,12 +109,12 @@ set_source_files_properties(Box2D.i PROPERTIES SWIG_FLAGS "")
 
 if(WITH_BOX2D_LUA_WRAPPER)
     SWIG_ADD_MODULE(Box2DLua lua Box2D.i)
-    SWIG_LINK_LIBRARIES(Box2DLua ${BOX2D_LIBRARIES} ${LUA_LIBRARIES})
+    SWIG_LINK_LIBRARIES(Box2DLua ${BOX2D_LIB} ${LUA_LIB})
 endif()
 
 if(WITH_BOX2D_PYTHON_WRAPPER)
     SWIG_ADD_MODULE(Box2DPython python Box2D.i)
-    SWIG_LINK_LIBRARIES(Box2DPython ${BOX2D_LIBRARIES} ${PYTHON_LIBRARIES})
+    SWIG_LINK_LIBRARIES(Box2DPython ${BOX2D_LIB} ${PYTHON_LIBRARIES})
 endif()
 
 
