@@ -112,12 +112,10 @@ add_library(${PROJECT_NAME} ${SOURCES})
 
 # TODO if jupiter shader, then link
 #set(LIBS
-#    ${GL_LIBRARIES}
-#    ${PNG_LIBRARIES}
-#    ${BOX2D_LIBRARIES}
 #    lodepng
 #)
-#target_link_libraries(${PROJECT_NAME} ${LIBS})
+#target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
+target_link_libraries(${PROJECT_NAME} lodepng)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
 install(DIRECTORY include DESTINATION Jupiter)

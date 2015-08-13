@@ -7,15 +7,14 @@ if(ANDROID)
 
 else()
     
-    if(WITH_GAME_PLAYER)
-        add_subdirectory(Callisto)
-    endif()
-
     if(WITH_TEST_PROGRAMS)
         add_subdirectory(Test)
     endif()
     
-    
+    if(WITH_GAME_PLAYER)
+        add_subdirectory(Callisto)
+    endif()
+
     option(WITH_FREETYPE_TEST "With FreeType test" OFF)
     if(WITH_FREETYPE_TEST)
         find_package(Freetype REQUIRED)

@@ -9,23 +9,26 @@ set(SOURCES
     src/GamePlayer.cpp
 )
 
-if(USE_FREEGLUT)
+if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     set(SOURCES ${SOURCES} src/GlutMain.cpp)
-elseif(USE_GLFW)
+elseif(OPENGL_WINDOW_SYSTEM STREQUAL "GLFW")
     set(SOURCES ${SOURCES} src/GLFWMain.cpp)
+else()
+    message(FATAL_ERROR "Invalid OpenGL window system")
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 set(LIBS
-    ${GL_LIBRARIES}
-    ${Boost_LIBRARIES}
-    ${PNG_LIBRARIES}
-    #${LUA_LIBRARIES}
-    
-    #Ganymede
+    ${OPENGL_LIBRARIES} 
+    ${GLEW_LIB}
+    ${GL_WINDOW}
+    ${BOOST_LIB}
+    ${PNG_LIB}
+
     Jupiter
 )
-target_link_libraries(${PROJECT_NAME} ${LIBS} lodepng)
+
+target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/bin)
