@@ -9,10 +9,31 @@ add_library(lodepng lodepng/lodepng.cpp)
 
 include(ExternalProject)
 
-add_subdirectory(Box2D)
-add_subdirectory(GLEW)
-add_subdirectory(GLM)
-add_subdirectory(boost)
-add_subdirectory(freeglut)
-add_subdirectory(Lua)
-add_subdirectory(libpng)
+if(NOT FIND_PACKAGE_BOOST AND WITH_GAME_PLAYER)
+    add_subdirectory(boost)
+endif()
+
+if(NOT FIND_PACKAGE_BOX2D)
+    add_subdirectory(Box2D)
+endif()
+
+if(NOT FIND_PACKAGE_FREEGLUT)
+    add_subdirectory(freeglut)
+endif()
+
+if(NOT FIND_PACKAGE_GLEW)
+    add_subdirectory(GLEW)
+endif()
+
+if(NOT FIND_PACKAGE_GLM)
+    add_subdirectory(GLM)
+endif()
+
+if(NOT FIND_PACKAGE_LUA)
+    add_subdirectory(Lua)
+endif()
+
+if(NOT FIND_PACKAGE_LIBPNG)
+    add_subdirectory(libpng)
+endif()
+

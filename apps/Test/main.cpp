@@ -25,10 +25,12 @@ int main(int argc, char **argv) {
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
 
+#ifndef EMSCRIPTEN
         // Для OpenGL 3.3
         glutInitContextVersion(3, 3);
         glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
         glutInitContextProfile(GLUT_CORE_PROFILE);
+#endif
 
         glutCreateWindow("Test");
 
@@ -95,7 +97,11 @@ void mouseMove(int x, int y) {
 
 void key(unsigned char k, int x, int y) {
     if (k == 27)
+#ifdef EMSCRIPTEN
+        exit(EXIT_SUCCESS);
+#else
         glutLeaveMainLoop();
+#endif
 }
 
 void specKey ( int key, int x, int y ){

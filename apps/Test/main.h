@@ -22,7 +22,7 @@
 #include <climits>
 
 #include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <GL/glut.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

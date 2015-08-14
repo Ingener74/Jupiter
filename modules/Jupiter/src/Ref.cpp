@@ -45,6 +45,7 @@ Ref<T>& Ref<T>::operator=(T* r) {
     _ptr = r;
     if (_ptr)
         _ptr->addRef();
+    return *this; // TODO Проверить!!!
 }
 
 template<typename T>
