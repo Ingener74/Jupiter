@@ -3,20 +3,18 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_BOOST ext_boost)
 
 if(NOT FIND_PACKAGE_BOOST)
-
-    if(WITH_GAME_PLAYER)
-        if(MINGW)
-            set(boost_build_method "")
-            
-            ExternalProject_Add(
-                ${EXT_BOOST}
-                URL                 http://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.gz
-                CONFIGURE_COMMAND   start ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/bootstrap.sh
-            )
-        else()
-            add_definitions(-fPIC)
-        endif()
+    if(MINGW AND MSYS)
+    elseif(EMSCRIPTEN)
+    elseif(ANDROID)
+    else()
+        ExternalProject_Add(
+            ${EXT_BOOST}
+            URL                 http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz
+            BINARY_DIR          ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}
+            CONFIGURE_COMMAND   ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/bootstrap.sh
+            # BUILD_COMMAND       ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/b2 variant=release link=static threading=multi runtime-link=static
+            BUILD_COMMAND       ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/b2 variant=release threading=multi runtime-link=static
+            INSTALL_COMMAND     ./b2 install --prefix=${3RDPARTY_INSTALL}
+        )
     endif()
-
 endif()
-

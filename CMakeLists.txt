@@ -3,7 +3,24 @@ cmake_minimum_required(VERSION 2.8.11)
 # include modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
 
-option(FIND_PACKAGE_BOOST         "" ON)
+if(MINGW AND MSYS)
+    message(STATUS "MinGW or MSYS build")
+elseif(EMSCRIPTEN)
+    message(STATUS "Emscripten build")
+elseif(ANDROID)
+    message(STATUS "Android build")
+else()
+    message(STATUS "Linux build")
+endif()
+
+if(MINGW AND MSYS)
+    option(FIND_PACKAGE_BOOST         "" ON)
+elseif(EMSCRIPTEN)
+elseif(ANDROID)
+else()
+    option(FIND_PACKAGE_BOOST         "" OFF)
+endif()
+
 option(FIND_PACKAGE_BOX2D         "" OFF)
 option(FIND_PACKAGE_FREEGLUT      "" OFF)
 option(FIND_PACKAGE_GLFW          "" OFF)
@@ -38,16 +55,6 @@ option(WITH_TEST_PROGRAMS         "Build test programs Test1, Test2" ON)
 
 set(OPENGL_WINDOW_SYSTEM "FreeGLUT" CACHE STRING "Select a OpenGL window system")
 set_property(CACHE OPENGL_WINDOW_SYSTEM PROPERTY STRINGS "FreeGLUT" "GLFW")
-
-if(MINGW AND MSYS)
-    message(STATUS "MinGW or MSYS build")
-elseif(EMSCRIPTEN)
-    message(STATUS "Emscripten build")
-elseif(ANDROID)
-    message(STATUS "Android build")
-else()
-    message(STATUS "Linux build")
-endif()
 
 # find OpenGL
 find_package(OpenGL REQUIRED)
@@ -91,7 +98,13 @@ if(FIND_PACKAGE_GLEW)
     find_package(GLEW REQUIRED)
     set(GLEW_LIB ${GLEW_LIB} ${GLEW_LIBRARIES})
 else()
-    set(GLEW_LIB ${GLEW_LIB} glew32 glew32mx)
+    if(MINGW AND MSYS)
+        set(GLEW_LIB ${GLEW_LIB} glew32 glew32mx)
+    elseif(EMSCRIPTEN)
+    elseif(ANDROID)
+    else()
+        set(GLEW_LIB ${GLEW_LIB} GLEW GLEWmx)
+    endif()
 endif()
 
 # FreeGLUT and GLFW
@@ -160,7 +173,11 @@ if(WITH_GAME_PLAYER)
         include_directories(${Boost_INCLUDE_DIRS})
         set(BOOST_LIB ${BOOST_LIB} ${Boost_LIBRARIES})
     else()
-        message(FATAL_ERROR "Boost not from find_package not supported yet")
+        list(APPEND BOOST_LIB 
+            boost_filesystem
+            boost_program_options
+            boost_system
+        )
     endif()
 endif()
 
@@ -174,19 +191,16 @@ else()
 endif()
 
 add_definitions(-std=c++11)
-if(MINGW)
+if(MINGW AND MSYS)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
     set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
     set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
-    
-#    include_directories(
-#        ${CMAKE_BINARY_DIR}/3rdparty/GLEW/${EXT_GLEW}-prefix/src/${EXT_GLEW}/include
-#    )
 elseif(EMSCRIPTEN)
+elseif(ANDROID)
 else()
-#    add_definitions(-fPIC)
 endif()
+
 
 add_subdirectory(apps)
 
