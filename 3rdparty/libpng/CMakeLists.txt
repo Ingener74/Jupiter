@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_PNG ext_libpng)
 
 if(NOT FIND_PACKAGE_LIBPNG)
-    if(MINGW AND MSYS)
+    if(MINGW OR MSYS)
         ExternalProject_Add(
             ${EXT_PNG}
             URL                 http://downloads.sourceforge.net/project/libpng/libpng16/1.6.18/libpng-1.6.18.tar.xz

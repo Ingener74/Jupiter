@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_FREEGLUT ext_freeglut)
 
 if(NOT FIND_PACKAGE_FREEGLUT)
-    if(MINGW AND MSYS)
+    if(MINGW OR MSYS)
         set(freeglut_build_method "")
     
         if(CMAKE_TOOLCHAIN_FILE)

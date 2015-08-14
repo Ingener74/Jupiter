@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_LUA ext_Lua)
 
 if(NOT FIND_PACKAGE_LUA)
-    if(MINGW AND MSYS)
+    if(MINGW OR MSYS)
         unset(Lua_build_method)
         
         if(CMAKE_TOOLCHAIN_FILE)

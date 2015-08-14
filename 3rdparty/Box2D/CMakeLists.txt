@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_BOX2D ext_Box2D)
 
 if(NOT FIND_PACKAGE_BOX2D)
-    if(MINGW AND MSYS)
+    if(MINGW OR MSYS)
         set(Box2D_build_method "")
         
         if(CMAKE_TOOLCHAIN_FILE)

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.11)
 
 set(EXT_BOOST ext_boost)
 
-if(NOT FIND_PACKAGE_BOOST)
+if(NOT FIND_PACKAGE_BOOST AND WITH_GAME_PLAYER)
     if(MINGW AND MSYS)
     elseif(EMSCRIPTEN)
     elseif(ANDROID)

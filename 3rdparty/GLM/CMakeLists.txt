@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_GLM ext_GLM)
 
 if(NOT FIND_PACKAGE_GLM)
-    if(MINGW AND MSYS)
+    if(MINGW OR MSYS)
         set(GLM_build_method "")
         
         if(CMAKE_TOOLCHAIN_FILE)

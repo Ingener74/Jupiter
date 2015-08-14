@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.11)
 set(EXT_GLEW ext_GLEW)
 
 if(NOT FIND_PACKAGE_GLEW)
-    if(MINGW AND MSYS)
+    if(MINGW OR MSYS)
         set(GLEW_build_method "")
         
         if(CMAKE_TOOLCHAIN_FILE)
