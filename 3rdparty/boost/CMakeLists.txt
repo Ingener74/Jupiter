@@ -13,7 +13,7 @@ if(NOT FIND_PACKAGE_BOOST)
             BINARY_DIR          ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}
             CONFIGURE_COMMAND   ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/bootstrap.sh
             # BUILD_COMMAND       ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/b2 variant=release link=static threading=multi runtime-link=static
-            BUILD_COMMAND       ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/b2 variant=release threading=multi runtime-link=static
+            BUILD_COMMAND       ${CMAKE_BINARY_DIR}/3rdparty/boost/${EXT_BOOST}-prefix/src/${EXT_BOOST}/b2 variant=release link=static threading=multi
             INSTALL_COMMAND     ./b2 install --prefix=${3RDPARTY_INSTALL}
         )
     endif()
