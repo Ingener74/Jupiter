@@ -16,7 +16,11 @@
 #else
     #include <string>
 
-    #include <GL/glew.h>
+    #ifdef ANDROID
+        #include <GLES2/gl2.h>
+    #else
+        #include <GL/gl.h>
+    #endif
 
     #define GLM_FORCE_RADIANS
     #include <glm/glm.hpp>

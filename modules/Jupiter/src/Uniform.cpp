@@ -5,6 +5,10 @@
  *      Author: ingener
  */
 
+#ifndef ANDROID
+    #include <GL/glew.h>
+#endif
+
 #include <iostream>
 #include "Jupiter/Tools.h"
 #include "Jupiter/Texture.h"

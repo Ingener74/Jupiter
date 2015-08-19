@@ -7,6 +7,10 @@
 
 #include <iterator>
 
+#ifndef ANDROID
+    #include <GL/glew.h>
+#endif
+
 #include "Jupiter/Ref.h"
 #include "Jupiter/File.h"
 #include "Jupiter/FileShader.h"

@@ -1,3 +1,6 @@
 [submodule "3rdparty/json"]
 	path = 3rdparty/json
 	url = https://github.com/Ingener74/json.git
+[submodule "3rdparty/android_cmake"]
+	path = 3rdparty/android_cmake
+	url = https://github.com/taka-no-me/android-cmake.git

@@ -7,7 +7,11 @@
 
 #include <string>
 
-#include <GL/glew.h>
+#ifdef ANDROID
+    #include <GLES2/gl2.h>
+#else
+    #include <GL/glew.h>
+#endif
 
 #include "Jupiter.h"
 
@@ -22,8 +26,10 @@ void startJupiter() {
      * сделай makeCurrentContext
      */
 
+#ifndef ANDROID
     auto result = glewInit();
     jassert(GLEW_OK == result, string {"glewInit error: "} + reinterpret_cast<const char*>(glewGetErrorString(result)));
+#endif
 }
 
 void endJupiter() {

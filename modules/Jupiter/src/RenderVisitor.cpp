@@ -7,6 +7,10 @@
 
 #include <iostream>
 
+#ifndef ANDROID
+    #include <GL/glew.h>
+#endif
+
 #include "Jupiter/Transform.h"
 #include "Jupiter/Shader.h"
 #include "Jupiter/Camera.h"

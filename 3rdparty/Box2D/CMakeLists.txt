@@ -29,6 +29,18 @@ if(MINGW OR MSYS)
     )
 elseif(EMSCRIPTEN)
 elseif(ANDROID)
+    ExternalProject_Add(
+        ${EXT_BOX2D}
+        URL                 https://github.com/erincatto/Box2D/archive/v2.3.1.zip
+        PATCH_COMMAND       patch -p1 < ${CMAKE_CURRENT_LIST_DIR}/box2d.android.patch
+        CONFIGURE_COMMAND   cmake ${CMAKE_BINARY_DIR}/3rdparty/Box2D/${EXT_BOX2D}-prefix/src/${EXT_BOX2D}/Box2D 
+                            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                            -DBOX2D_INSTALL=ON
+                            -DBOX2D_BUILD_EXAMPLES=OFF
+                            -DBOX2D_BUILD_SHARED=ON
+                            -DBOX2D_BUILD_STATIC=ON
+                            -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
+    )
 else()
     ExternalProject_Add(
         ${EXT_BOX2D}

@@ -10,7 +10,11 @@
 
 #ifdef SWIG
 #else
-    #include <GL/gl.h>
+    #ifdef ANDROID
+        #include <GLES2/gl2.h>
+    #else
+        #include <GL/gl.h>
+    #endif
 #endif
 
 #include "Node.h"

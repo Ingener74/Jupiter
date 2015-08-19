@@ -10,7 +10,11 @@
 #include <iomanip>
 #include <string>
 
-#include <GL/glew.h>
+#ifdef ANDROID
+    #include <GLES2/gl2.h>
+#else
+    #include <GL/glew.h>
+#endif
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

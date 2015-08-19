@@ -60,8 +60,10 @@ if(NOT EMSCRIPTEN OR NOT ANDROID)
 endif()
 
 # find OpenGL
-find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIR})
+if(NOT ANDROID)
+    find_package(OpenGL REQUIRED)
+    include_directories(${OPENGL_INCLUDE_DIR})
+endif()
 
 set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
 

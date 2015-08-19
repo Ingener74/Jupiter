@@ -5,6 +5,11 @@
  *      Author: pavel
  */
 
+#ifdef ANDROID
+    #include <GLES2/gl2.h>
+#else
+    #include <GL/glew.h>
+#endif
 #include "Jupiter/Ref.h"
 #include "Jupiter/Tools.h"
 #include "Jupiter/Image.h"

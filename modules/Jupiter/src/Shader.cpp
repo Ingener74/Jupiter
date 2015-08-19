@@ -7,6 +7,12 @@
 
 #include <string>
 
+#ifdef ANDROID
+    #include <GLES2/gl2.h>
+#else
+    #include <GL/glew.h>
+#endif
+
 #include "Jupiter/Tools.h"
 #include "Jupiter/Shader.h"
 

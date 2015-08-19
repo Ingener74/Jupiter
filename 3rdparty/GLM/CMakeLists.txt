@@ -22,6 +22,11 @@ if(MINGW OR MSYS)
     )
 elseif(EMSCRIPTEN)
 elseif(ANDROID)
+    ExternalProject_Add(
+        ${EXT_GLM}
+        URL                 https://github.com/g-truc/glm/archive/0.9.7.0.zip
+        CMAKE_ARGS          -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
+    )
 else()
     ExternalProject_Add(
         ${EXT_GLM}
