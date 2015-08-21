@@ -2,35 +2,26 @@ cmake_minimum_required(VERSION 2.8.11)
 
 set(EXT_GLM ext_GLM)
 
+unset(ADDITIONAL_FLAGS)
+
 if(MINGW OR MSYS)
-    set(GLM_build_method "")
-    
     if(CMAKE_TOOLCHAIN_FILE)
-        message(STATUS "GLM CMAKE_TOOLCHAIN_FILE method")
-        set(GLM_build_method -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
+        set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
     elseif(CMAKE_GENERATOR STREQUAL "MSYS Makefiles")
-        message(STATUS "GLM MSYS Makefiles method")
-        set(GLM_build_method -G "MSYS Makefiles")
+        set(ADDITIONAL_FLAGS -G "MSYS Makefiles")
     else()
         message(FATAL_ERROR "GLM unknown method")
     endif()
     
-    ExternalProject_Add(
-        ${EXT_GLM}
-        URL                 https://github.com/g-truc/glm/archive/0.9.7.0.zip
-        CMAKE_ARGS          ${GLM_build_method} -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
-    )
 elseif(EMSCRIPTEN)
+    set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
 elseif(ANDROID)
-    ExternalProject_Add(
-        ${EXT_GLM}
-        URL                 https://github.com/g-truc/glm/archive/0.9.7.0.zip
-        CMAKE_ARGS          -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
-    )
+    set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
 else()
-    ExternalProject_Add(
-        ${EXT_GLM}
-        URL                 https://github.com/g-truc/glm/archive/0.9.7.0.zip
-        CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
-    )    
 endif()
+
+ExternalProject_Add(
+    ${EXT_GLM}
+    URL                 https://github.com/g-truc/glm/archive/0.9.7.0.zip
+    CMAKE_ARGS          ${ADDITIONAL_FLAGS} -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
+)

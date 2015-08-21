@@ -57,11 +57,11 @@ inline void Program::setProgram(GLuint program) {
 }
 
 inline GLint Program::getAttribute_(const std::string& name) const {
-    glGetAttribLocation(program, name.c_str());
+    return glGetAttribLocation(program, name.c_str());
 }
 
 inline GLint Program::getUniform_(const std::string& name) const {
-    glGetUniformLocation(program, name.c_str());
+    return glGetUniformLocation(program, name.c_str());
 }
 
 #endif /* APPS_TEST_V2_PROGRAM_H_ */

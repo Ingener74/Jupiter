@@ -1,0 +1,50 @@
+diff -Naur lua-5.2.3/CMakeLists.txt ../Jupiter/build_emscripten/3rdparty/Lua/ext_Lua-prefix/src/ext_Lua/CMakeLists.txt
+--- lua-5.2.3/CMakeLists.txt	2014-02-19 15:31:36.000000000 +0400
++++ ../Jupiter/build_emscripten/3rdparty/Lua/ext_Lua-prefix/src/ext_Lua/CMakeLists.txt	2015-08-21 13:27:49.047667745 +0300
+@@ -134,20 +134,20 @@
+   set_target_properties ( liblua PROPERTIES COMPILE_DEFINITIONS LUA_BUILD_AS_DLL )
+ endif ()
+ 
+-add_executable ( lua ${SRC_LUA} src/lua.rc )
+-target_link_libraries ( lua liblua )
++# add_executable ( lua ${SRC_LUA} src/lua.rc )
++# target_link_libraries ( lua liblua )
+ 
+-add_executable ( luac ${SRC_CORE} ${SRC_LIB} ${SRC_LUAC} src/luac.rc )
+-target_link_libraries ( luac ${LIBS} )
++# add_executable ( luac ${SRC_CORE} ${SRC_LIB} ${SRC_LUAC} src/luac.rc )
++# target_link_libraries ( luac ${LIBS} )
+ 
+ # On windows a variant of the lua interpreter without console output needs to be built
+-if ( LUA_BUILD_WLUA )
+-  add_executable ( wlua WIN32 src/wmain.c ${SRC_LUA} src/lua.rc )
+-  target_link_libraries ( wlua liblua )
+-  install_executable ( wlua )
+-endif ( )
++# if ( LUA_BUILD_WLUA )
++#   add_executable ( wlua WIN32 src/wmain.c ${SRC_LUA} src/lua.rc )
++#   target_link_libraries ( wlua liblua )
++#   install_executable ( wlua )
++# endif ( )
+ 
+-install_executable ( lua luac )
++# install_executable ( lua luac )
+ install_library ( liblua )
+ install_data ( README.md )
+ #install_lua_module ( strict etc/strict.lua )
+diff -Naur lua-5.2.3/src/loadlib_rel.c ../Jupiter/build_emscripten/3rdparty/Lua/ext_Lua-prefix/src/ext_Lua/src/loadlib_rel.c
+--- lua-5.2.3/src/loadlib_rel.c	2014-02-19 15:31:36.000000000 +0400
++++ ../Jupiter/build_emscripten/3rdparty/Lua/ext_Lua-prefix/src/ext_Lua/src/loadlib_rel.c	2015-08-21 13:16:48.590690951 +0300
+@@ -141,6 +141,12 @@
+   #include <sys/sysctl.h>
+ #endif
+ 
++#if !defined(getpid)
++  int getpid(){
++    return 0;
++  }
++#endif
++
+ static void setprogdir(lua_State *L) {
+   char progdir[_PATH_MAX + 1];
+   char *lb;

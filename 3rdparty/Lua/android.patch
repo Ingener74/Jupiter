@@ -1,0 +1,12 @@
+diff -Naur lua-5.2.3/src/llex.c ../Jupiter/build_android/3rdparty/Lua/ext_Lua-prefix/src/ext_Lua/src/llex.c
+--- lua-5.2.3/src/llex.c	2014-02-19 15:31:36.000000000 +0400
++++ ../Jupiter/build_android/3rdparty/Lua/ext_Lua-prefix/src/ext_Lua/src/llex.c	2015-08-21 15:36:18.149267954 +0300
+@@ -202,7 +202,7 @@
+ 
+ 
+ #if !defined(getlocaledecpoint)
+-#define getlocaledecpoint()	(localeconv()->decimal_point[0])
++#define getlocaledecpoint()	('.')
+ #endif
+ 
+ 
