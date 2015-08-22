@@ -312,6 +312,8 @@ void reshape(int w, int h) {
 
 void init(){
 
+    cout << "Test program 1" << endl;
+
     boxImage        = getBase() + "/Resources/box.png";
     shipImage       = getBase() + "/Resources/ship1.png";
 

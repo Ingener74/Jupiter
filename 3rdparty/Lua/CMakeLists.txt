@@ -17,12 +17,15 @@ if(MINGW OR MSYS)
 elseif(EMSCRIPTEN)
     set(PATCH_FILE        ${CMAKE_CURRENT_LIST_DIR}/emscripten.patch)
     set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                         -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
                          -DBUILD_SHARED_LIBS=OFF
                          -DCMAKE_C_FLAGS="-Wno-warn-absolute-paths"
                          -DCMAKE_CXX_FLAGS="-Wno-warn-absolute-paths")
 elseif(ANDROID)
     set(PATCH_FILE        ${CMAKE_CURRENT_LIST_DIR}/android.patch)
-    set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
+    set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                         -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
+    )
 else()
 endif()
 
