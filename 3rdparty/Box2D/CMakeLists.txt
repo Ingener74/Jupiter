@@ -7,13 +7,8 @@ unset(ADDITIONAL_FLAGS)
 
 if(MINGW OR MSYS)
     set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/box2d.patch)
-    if(CMAKE_TOOLCHAIN_FILE)
-        set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
-    elseif(CMAKE_GENERATOR STREQUAL "MSYS Makefiles")
-        set(ADDITIONAL_FLAGS -G "MSYS Makefiles")
-    else()
-        message(FATAL_ERROR "Box2D unknown method")
-    endif()
+    set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} 
+                         -DCMAKE_GENERATOR=${CMAKE_GENERATOR})
 
 elseif(EMSCRIPTEN)
     set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/box2d.patch)
