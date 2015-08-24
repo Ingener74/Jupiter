@@ -35,4 +35,8 @@ if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
         v2/Program.cpp
     )
     target_link_libraries(Test-2 lodepng ${LIBS})
+    
+    add_executable(Test-4
+        test-4.cpp
+    )
 endif()
