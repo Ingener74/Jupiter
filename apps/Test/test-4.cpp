@@ -15,8 +15,6 @@
 #include <GL/freeglut.h>
 #endif
 
-#include "test_lib/TestLib.h"
-
 using namespace std;
 
 void reshape(int w, int h) {
@@ -41,9 +39,6 @@ void timer(int time) {
 int main(int argc, char* argv[]) {
 
     try {
-        TestLib test_lib;
-        test_lib.test();
-
         int width = 640, height = 480;
 
         glutInit(&argc, argv);
