@@ -42,13 +42,18 @@ size_t upperPowerOfTwo(size_t v) {
 
 Texture loadTexture(const std::string& fileName) {
 
+    cout << __PRETTY_FUNCTION__ << endl;
+
     Texture result;
 
     vector<uint8_t> data;
     unsigned w, h;
+    cout << __PRETTY_FUNCTION__ << endl;
     auto error = lodepng::decode(data, w, h, fileName, LCT_RGBA);
+    cout << __PRETTY_FUNCTION__ << lodepng_error_text(error)<< endl;
     if (error)
         throw runtime_error(lodepng_error_text(error));
+    cout << __PRETTY_FUNCTION__ << endl;
 
     result.width = w;
     result.height = h;

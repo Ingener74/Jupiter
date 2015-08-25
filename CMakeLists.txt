@@ -205,12 +205,10 @@ if(MINGW OR MSYS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
     set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
     set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
+
 elseif(EMSCRIPTEN)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-warn-absolute-paths")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-warn-absolute-paths")
-#    if (NOT CMAKE_EXECUTABLE_SUFFIX STREQUAL ".js")
-#        message(FATAL_ERROR "The default suffix for building executables should be .js!")
-#    endif()
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 elseif(ANDROID)

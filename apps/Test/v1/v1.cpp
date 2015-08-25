@@ -64,6 +64,54 @@ void main(){
     gl_FragColor = texture2D(texture, vtexcoord);
 }
 
+)", coloredSpriteVertexGLES2 = R"(
+
+uniform   mat4 projection, view, model;
+
+attribute vec4 vertex;
+attribute vec4 color;
+
+varying vec4 vcolor;
+
+void main(){
+    gl_Position = projection * view * model * vertex;
+    vcolor = color;
+}
+
+)", coloredSpriteFragmentGLES2 = R"(
+
+precision mediump float;
+varying vec4 vcolor;
+
+void main(){
+    gl_FragColor = vcolor;
+}
+
+)", texturedSpriteVertexGLES2 = R"(
+
+uniform   mat4 projection, view, model;
+
+attribute vec4 vertex;
+attribute vec2 texcoord;
+
+varying vec2 vtexcoord;
+
+void main(){
+    gl_Position = projection * view * model * vertex;
+    vtexcoord = texcoord;
+}
+
+)", texturedSpriteFragmentGLES2 = R"(
+
+precision mediump float;
+varying vec2 vtexcoord;
+
+uniform sampler2D texture;
+
+void main(){
+    gl_FragColor = texture2D(texture, vtexcoord);
+}
+
 )";
 
 struct VertexPositionColor{
@@ -298,7 +346,7 @@ public:
 };
 
 unique_ptr<ColoredSprite> boxSprite, flourSprite, bgSprite, boxHeadSprite;
-unique_ptr<TexturedSprite> tBoxSprite, ship;
+//unique_ptr<TexturedSprite> tBoxSprite, ship;
 
 mat4 proj, view;
 
@@ -311,14 +359,15 @@ void reshape(int w, int h) {
 }
 
 void init(){
-
-    cout << "Test program 1" << endl;
-
     boxImage        = getBase() + "/Resources/box.png";
     shipImage       = getBase() + "/Resources/ship1.png";
 
     {
+#ifdef EMSCRIPTEN
+        cs.shader = createProgram(coloredSpriteVertexGLES2, coloredSpriteFragmentGLES2);
+#else
         cs.shader = createProgram(coloredSpriteVertex, coloredSpriteFragment);
+#endif
 
         cs.uProjection = glGetUniformLocation(cs.shader, "projection");
         cs.uView       = glGetUniformLocation(cs.shader, "view");
@@ -332,7 +381,11 @@ void init(){
         glUniformMatrix4fv(cs.uView, 1, GL_FALSE, &view[0][0]);
     }
     {
+#ifdef EMSCRIPTEN
+        ts.shader = createProgram(texturedSpriteVertexGLES2, texturedSpriteFragmentGLES2);
+#else
         ts.shader = createProgram(texturedSpriteVertex, texturedSpriteFragment);
+#endif
 
         ts.uProjection = glGetUniformLocation(ts.shader, "projection");
         ts.uView       = glGetUniformLocation(ts.shader, "view");
@@ -353,16 +406,16 @@ void init(){
     bgSprite       = make_unique_<ColoredSprite>(cs, bg,       bgInd,       GL_TRIANGLES);
     boxHeadSprite  = make_unique_<ColoredSprite>(cs, boxHead,  boxHeadInd,  GL_TRIANGLES);
 
-    tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(boxImage));
-    ship           = make_unique_<TexturedSprite>(ts, shipVerteces, shipTexCoords, shipIndices, GL_TRIANGLE_STRIP, loadTexture(shipImage));
+//    tBoxSprite     = make_unique_<TexturedSprite>(ts, tBox,     tBoxInd,     GL_TRIANGLES, loadTexture(boxImage));
+//    ship           = make_unique_<TexturedSprite>(ts, shipVerteces, shipTexCoords, shipIndices, GL_TRIANGLE_STRIP, loadTexture(shipImage));
 
     boxSprite->model        = glm::translate(boxSprite->model,     vec3(0.f,  30.f,  0.f));
     boxHeadSprite->model    = glm::translate(boxHeadSprite->model, vec3(0.f,  3.0f,  0.f));
     flourSprite->model      = glm::translate(flourSprite->model,   vec3(0.f, -40.f,  0.f));
     bgSprite->model         = glm::translate(bgSprite->model,      vec3(0.f,   0.f, -1.f));
-    tBoxSprite->model       = glm::translate(tBoxSprite->model,    vec3(0.f, -13.f,  4.f));
 
-    ship->model             = glm::translate(ship->model,          vec3(0.f,  -20.f,  5.f));
+//    tBoxSprite->model       = glm::translate(tBoxSprite->model,    vec3(0.f, -13.f,  4.f));
+//    ship->model             = glm::translate(ship->model,          vec3(0.f,  -20.f,  5.f));
 }
 
 void display(void) {
@@ -380,12 +433,12 @@ void display(void) {
         boxHeadSprite->draw( { boxSprite->model });
     }
 
-    {
-        glUseProgram(ts.shader);
-
-        tBoxSprite->draw( { boxSprite->model });
-        ship->draw();
-    }
+//    {
+//        glUseProgram(ts.shader);
+//
+//        tBoxSprite->draw( { boxSprite->model });
+//        ship->draw();
+//    }
 
     glFlush();
     glutSwapBuffers();
@@ -399,5 +452,5 @@ void deinit(){
     bgSprite.reset();
     flourSprite.reset();
     boxHeadSprite.reset();
-    tBoxSprite.reset();
+//    tBoxSprite.reset();
 }

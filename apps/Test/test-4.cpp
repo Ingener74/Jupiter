@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <stdexcept>
 
 #include <GL/glew.h>
 #ifdef EMSCRIPTEN
@@ -13,6 +14,8 @@
 #else
 #include <GL/freeglut.h>
 #endif
+
+#include "test_lib/TestLib.h"
 
 using namespace std;
 
@@ -38,13 +41,14 @@ void timer(int time) {
 int main(int argc, char* argv[]) {
 
     try {
+        TestLib test_lib;
+        test_lib.test();
+
         int width = 640, height = 480;
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
-
-        cout << "Test program main" << endl;
 
         glutCreateWindow("Test 4");
 

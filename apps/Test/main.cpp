@@ -16,16 +16,12 @@ float width = w * m, height = h * m;
 
 int main(int argc, char **argv) {
     try {
-        if(argc < 2)
-            throw invalid_argument("usage: ./Test <path-to-resource>");
-
-        base = argv[1];
+//        if(argc < 2)
+//            throw invalid_argument("usage: ./Test <path-to-resource>");
 
         glutInit(&argc, argv);
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
-
-        cout << "Test program main" << endl;
 
 #ifndef EMSCRIPTEN
         // Для OpenGL 3.3

@@ -6,13 +6,8 @@ unset(PATCH_FILE)
 unset(ADDITIONAL_FLAGS)
 
 if(MINGW OR MSYS)
-    if(CMAKE_TOOLCHAIN_FILE)
-        set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE})
-    elseif(CMAKE_GENERATOR STREQUAL "MSYS Makefiles")
-        set(ADDITIONAL_FLAGS -G "MSYS Makefiles")
-    else()
-        message(FATAL_ERROR "Lua unknown method")
-    endif()
+    set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} 
+                         -DCMAKE_GENERATOR=${CMAKE_GENERATOR})
 
 elseif(EMSCRIPTEN)
     set(PATCH_FILE        ${CMAKE_CURRENT_LIST_DIR}/emscripten.patch)

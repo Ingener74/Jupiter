@@ -5,6 +5,7 @@
  *      Author: pavel
  */
 
+#include <iostream>
 #include <array>
 #include <vector>
 
@@ -15,13 +16,14 @@
 using namespace std;
 
 GLuint createProgram(const string& vertexShaderSource, const string& fragmentShaderSource) {
-    if (vertexShaderSource.empty())
+    if (vertexShaderSource.size() == 0)
         throw runtime_error("vertex shader is empty");
-    if (fragmentShaderSource.empty())
+    if (fragmentShaderSource.size() == 0)
         throw runtime_error("fragment shader is empty");
 
     GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
 
     GLuint program = glCreateProgram();
     if (!program)
@@ -67,6 +69,7 @@ GLuint createShader(GLenum shaderType, const string& source) {
 
     GLint infoLen = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+
     if (!infoLen)
         throw runtime_error("error in create shader");
 
