@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8.11)
 
 set(EXT_PNG ext_libpng)
 
+unset(PATCH_FILE)
+
 if(MINGW OR MSYS)
     ExternalProject_Add(
         ${EXT_PNG}
@@ -18,13 +20,15 @@ elseif(ANDROID)
     ExternalProject_Add(
         ${EXT_PNG}
         URL                 http://downloads.sourceforge.net/project/libpng/libpng16/1.6.18/libpng-1.6.18.tar.xz
+        PATCH_COMMAND       patch -p1 < ${CMAKE_CURRENT_LIST_DIR}/android_win.patch
         CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX=${3RDPARTY_INSTALL}
-                            -DPNG_SHARED=ON
+                            -DPNG_SHARED=OFF
                             -DPNG_STATIC=ON
                             -DPNG_TESTS=OFF
                             -DPNG_DEBUG=OFF
                             -DPNG_FRAMEWORK=OFF
                             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                            -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
     )
 else()
     ExternalProject_Add(
