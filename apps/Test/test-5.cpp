@@ -17,7 +17,7 @@ using namespace std;
 em++ ../../../apps/Test/test-5.cpp -s ASYNCIFY=1 -o test-5.html
 */
 
-const char* file_url = "http://localhost:9999/test_file";
+const char* file_url = "http://localhost:9999/ball";
 
 void onLoadData(void* user_data, void* buffer, int size_in_bytes) {
     cout << (const char *)buffer << endl;
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 //        cout << "error " << error << ", w = " << w << ", h = " << h << endl;
 
         cout << "1" << endl;
-        emscripten_async_wget(file_url, "/tmp/test_file", onLoad, onError);
+        emscripten_async_wget(file_url, "/tmp/ball.png", onLoad, onError);
         emscripten_set_main_loop(wait, 0, 0);
         cout << "2" << endl;
 

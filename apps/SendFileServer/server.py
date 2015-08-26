@@ -21,5 +21,11 @@ def test_file():
     return send_file('test_file', mimetype='text/plain')
 
 
+@app.route('/ball')
+def ball():
+    print 'file was requested'
+    return send_file('ball.png', mimetype='image/png')
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=9999)
