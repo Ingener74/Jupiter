@@ -1,8 +1,10 @@
 # encoding: utf8
 
 from flask import Flask, send_file
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
 
 
 @app.route('/')
@@ -22,6 +24,7 @@ def test_file():
 
 
 @app.route('/ball')
+@cross_origin()
 def ball():
     print 'file was requested'
     return send_file('ball.png', mimetype='image/png')
