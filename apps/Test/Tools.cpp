@@ -42,8 +42,6 @@ size_t upperPowerOfTwo(size_t v) {
 
 Texture loadTexture(const std::string& fileName) {
 
-    cout << __PRETTY_FUNCTION__ << endl;
-
     Texture result;
 
     vector<uint8_t> data;
