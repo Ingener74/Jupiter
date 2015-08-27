@@ -14,30 +14,6 @@
 
 using namespace std;
 
-//class In {
-//public:
-//    friend class Out;
-//
-//    In() {
-//    }
-//    virtual ~In() {
-//    }
-//
-//    void update() {
-//    }
-//
-//protected:
-//
-//    In& operator+(Out* out){
-//        return _outs;
-//    }
-//    In& operator+(Out*){
-//    }
-//
-//    list<Out> _outs;
-//};
-//
-
 /*
 
 

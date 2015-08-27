@@ -21,6 +21,8 @@ void In::update() {
     cout << __PRETTY_FUNCTION__ << endl;
 }
 
-void In::outOff() {
+void In::outOff(Out* out) {
+    if (out != _out)
+        throw runtime_error("not this out");
     _out = nullptr;
 }
