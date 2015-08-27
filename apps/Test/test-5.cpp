@@ -14,6 +14,38 @@
 
 using namespace std;
 
+//class In {
+//public:
+//    friend class Out;
+//
+//    In() {
+//    }
+//    virtual ~In() {
+//    }
+//
+//    void update() {
+//    }
+//
+//protected:
+//
+//    In& operator+(Out* out){
+//        return _outs;
+//    }
+//    In& operator+(Out*){
+//    }
+//
+//    list<Out> _outs;
+//};
+//
+
+/*
+
+
+|File|Out -> In|Image|Out -> In|Texture|Out
+               |     |Out -> In|Shape|Out
+
+*/
+
 class LoadFile {
 public:
     LoadFile(const std::string& url, const std::string& file) :
@@ -24,7 +56,6 @@ public:
     }
 
 private:
-    // emscripten_async_wget2
     static void onload_func(unsigned arg0, void* userData, const char* file) {
         auto self = static_cast<LoadFile*>(userData);
 
@@ -44,19 +75,18 @@ private:
 
 class LoadData {
 public:
-    LoadData(const std::string& url){
+    LoadData(const std::string& url) {
         emscripten_async_wget2_data(url.c_str(), "GET", "", this, 1, data_onload_func, data_onerror_func,
             data_onprogress_func);
     }
-    virtual ~LoadData(){
+    virtual ~LoadData() {
     }
 
 private:
-    // emscripten_async_wget2_data
     static void data_onload_func(unsigned arg0, void* userData, void* buffer, unsigned sizeInBytes) {
         auto self = static_cast<LoadFile*>(userData);
 
-        vector<uint8_t> in{static_cast<uint8_t*>(buffer), static_cast<uint8_t*>(buffer) + sizeInBytes};
+        vector<uint8_t> in { static_cast<uint8_t*>(buffer), static_cast<uint8_t*>(buffer) + sizeInBytes };
 
         lodepng::State s;
         vector<uint8_t> data;
@@ -76,13 +106,15 @@ const char* file_url = "http://127.0.0.1:9999/ball";
 int main(int argc, char* argv[]) {
     try {
 
-        LoadData memFile("http://127.0.0.1:9999/ball");
-        LoadFile loadFile("http://127.0.0.1:9999/ball", "/tmp/ball.png");
+        LoadData ball_data("http://127.0.0.1:9999/ball");
+        LoadFile ball_file("http://127.0.0.1:9999/ball", "/tmp/ball.png");
+
+        emscripten_force_exit(0);
 
         return 0;
     } catch (exception const & e) {
         cerr << e.what() << endl;
-        return 1;
+        emscripten_force_exit(1);
     }
     return 0;
 }
