@@ -20,3 +20,7 @@ In::~In() {
 void In::update() {
     cout << __PRETTY_FUNCTION__ << endl;
 }
+
+void In::outOff() {
+    _out = nullptr;
+}

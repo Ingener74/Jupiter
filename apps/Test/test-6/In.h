@@ -19,6 +19,8 @@ public:
     void update();
 
 private:
+    void outOff();
+
     Out* _out;
 };
 
