@@ -19,6 +19,7 @@ public:
 
     template<typename Data>
     Data* getData(){
+        return nullptr;
     }
 
     void add(In* in);

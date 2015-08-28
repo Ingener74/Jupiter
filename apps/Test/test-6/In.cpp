@@ -6,8 +6,10 @@
  */
 
 #include <iostream>
+#include <stdexcept>
 
 #include "In.h"
+#include "Out.h"
 
 using namespace std;
 
@@ -18,7 +20,9 @@ In::~In() {
 }
 
 void In::update() {
-    cout << __PRETTY_FUNCTION__ << endl;
+    if(!_out)
+        return;
+    auto data = _out->getData<int>();
 }
 
 void In::outOff(Out* out) {

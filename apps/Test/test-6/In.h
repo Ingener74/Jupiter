@@ -10,6 +10,8 @@
 
 #include <list>
 
+class Out;
+
 class In {
 public:
     friend class Out;
@@ -21,7 +23,7 @@ public:
 private:
     void outOff(Out*);
 
-    Out* _out;
+    Out* _out = nullptr;
 };
 
 #endif /* APPS_TEST_TEST_6_IN_H_ */

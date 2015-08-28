@@ -17,7 +17,6 @@ public:
     virtual ~TextureIO();
 
     In* getImage();
-
     void setImage(In* image);
 
 private:
