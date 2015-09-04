@@ -37,4 +37,10 @@ if(NOT FIND_PACKAGE_LIBPNG)
     add_subdirectory(libpng)
 endif()
 
-add_subdirectory(OpenAL)
+if(NOT FIND_PACKAGE_OPENAL)
+    add_subdirectory(OpenAL)
+endif()
+
+if(NOT FIND_PACKAGE_FREETYPE)
+    add_subdirectory(FreeType)
+endif()
