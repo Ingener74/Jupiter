@@ -13,16 +13,16 @@ else()
     message(STATUS "Linux build")
 endif()
 
-if(MINGW OR MSYS)
-    option(FIND_PACKAGE_BOOST         "force find_package for boost" ON)
-elseif(EMSCRIPTEN)
-elseif(NOT EMSCRIPTEN AND NOT ANDROID)
+# Под Emscripten и Android надобности в этих библиотеках нет
+if(NOT EMSCRIPTEN AND NOT ANDROID)
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
     option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
     option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
-elseif(ANDROID)
-else()
-    option(FIND_PACKAGE_BOOST         "force find_package for boost" OFF)
+endif()
+
+# Под Emscripten надобности в этой библиотеке нет
+if(NOT EMSCRIPTEN)
+    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
 endif()
 
 option(FIND_PACKAGE_BOX2D         "force find_package for Box2D"     OFF)
@@ -30,30 +30,47 @@ option(FIND_PACKAGE_GLM           "force find_package for glm"       OFF)
 option(FIND_PACKAGE_LUA           "force find_package for Lua"       OFF)
 option(FIND_PACKAGE_LIBPNG        "force find_package for libpng"    OFF)
 
-option(WITH_WRAPPERS              "Wrapper"                         ON)
-option(WITH_LUA_WRAPPER           "Lua wrapper"                     ON)
-option(WITH_PYTHON_WRAPPER        "Python wrapper"                  ON)
+# Под Emscripten и Android буст мне не нужен, а ...
+if(NOT EMSCRIPTEN AND NOT ANDROID AND NOT MINGW AND NOT MSYS)
+    option(FIND_PACKAGE_BOOST         "force find_package for boost"     OFF)
+endif()
 
-option(WITH_GANIMEDE              "Build Ganimede"                  OFF)
-option(WITH_GAME_PLAYER           "Build with c++ game player"      ON)
+# ... под MinGW или MSYS буст только через find_package
+if(MINGW OR MSYS)
+    option(FIND_PACKAGE_BOOST         "force find_package for boost" ON)
+endif()
 
-option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"       ON)
-option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"          ON)
+# Под Emscripten и Android врапперы пока не собираем
+if(NOT EMSCRIPTEN AND NOT ANDROID)
+    option(WITH_WRAPPERS              "Wrapper"                         ON)
+    option(WITH_LUA_WRAPPER           "Lua wrapper"                     ON)
+    option(WITH_PYTHON_WRAPPER        "Python wrapper"                  ON)
+    
+    option(WITH_GANIMEDE              "Build Ganimede"                  OFF)
+    option(WITH_GAME_PLAYER           "Build with c++ game player"      ON)
+    
+    option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"       ON)
+    option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"          ON)
+    
+    option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"       ON)
+    option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"          ON)
+    
+    option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"         ON)
+    option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"            ON)
+    
+    option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"        ON)
+    option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"           ON)
+    
+    option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"      ON)
+    option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"         ON)
+endif()
 
-option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"       ON)
-option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"          ON)
+# Под Android эти программы не собираем
+if(NOT ANDROID)
+    option(WITH_TEST_PROGRAMS         "Build test programs Test1, Test2" ON)
+endif()
 
-option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"         ON)
-option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"            ON)
-
-option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"        ON)
-option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"           ON)
-
-option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"      ON)
-option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"         ON)
-
-option(WITH_TEST_PROGRAMS         "Build test programs Test1, Test2" ON)
-
+# Под Emscripten и Android это не актуально
 if(NOT EMSCRIPTEN OR NOT ANDROID)
     set(OPENGL_WINDOW_SYSTEM "FreeGLUT" CACHE STRING "Select a OpenGL window system")
     set_property(CACHE OPENGL_WINDOW_SYSTEM PROPERTY STRINGS "FreeGLUT" "GLFW")
@@ -197,6 +214,23 @@ if(FIND_PACKAGE_LIBPNG)
     include_directories(${PNG_INCLUDE_DIRS})
     set(PNG_LIB ${PNG_LIB} ${PNG_LIBRARIES})
 else()
+endif()
+
+# OpenAL
+unset(OPENAL_LIB)
+if(FIND_PACKAGE_OPENAL)
+    find_package(OpenAL REQUIRED)
+    include_directories(${OPENAL_INCLUDE_DIR})
+    list(APPEND ${OPENAL_LIBRARY})
+else()
+    if(MINGW OR MSYS)
+        list(APPEND OpenAL32)
+    elseif(EMSCRIPTEN)
+    elseif(ANDROID)
+        list(APPEND openal)
+    else()
+        list(APPEND openal)
+    endif()
 endif()
 
 add_definitions(-std=c++11)
