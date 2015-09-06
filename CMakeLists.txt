@@ -168,13 +168,13 @@ if(FIND_PACKAGE_GLM)
 endif()
 
 # Box2D
-set(BOX2D_LIB)
+unset(BOX2D_LIB)
 if(FIND_PACKAGE_BOX2D)
     find_package(Box2D REQUIRED)
     include_directories(${BOX2D_INCLUDE_DIR})
-    set(BOX2D_LIB ${BOX2D_LIB} ${BOX2D_LIBRARIES})
+    list(APPEND BOX2D_LIB ${BOX2D_LIBRARIES})
 else()
-    set(BOX2D_LIB ${BOX2D_LIB} Box2D)
+    list(APPEND BOX2D_LIB Box2D)
 endif()
 
 # Boost
@@ -198,7 +198,7 @@ if(WITH_GAME_PLAYER)
         find_package(Boost 1.53.0 REQUIRED system filesystem program_options)
 
         include_directories(${Boost_INCLUDE_DIRS})
-        set(BOOST_LIB ${BOOST_LIB} ${Boost_LIBRARIES})
+        list(APPEND BOOST_LIB ${Boost_LIBRARIES})
     else()
         list(APPEND BOOST_LIB 
             boost_filesystem
@@ -213,7 +213,7 @@ set(PNG_LIB)
 if(FIND_PACKAGE_LIBPNG)
     find_package(PNG REQUIRED)
     include_directories(${PNG_INCLUDE_DIRS})
-    set(PNG_LIB ${PNG_LIB} ${PNG_LIBRARIES})
+    list(APPEND PNG_LIB ${PNG_LIBRARIES})
 else()
 endif()
 
