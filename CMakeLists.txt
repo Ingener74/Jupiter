@@ -241,6 +241,8 @@ if(FIND_PACKAGE_FREETYPE)
     include_directories(${FREETYPE_INCLUDE_DIRS})
     list(APPEND FREETYPE_LIB ${OPENAL_LIBRARY})
 else()
+    include_directories(${3RDPARTY_INSTALL}/include/freetype2)
+    
     list(APPEND FREETYPE_LIB freetype)
 endif()
 
