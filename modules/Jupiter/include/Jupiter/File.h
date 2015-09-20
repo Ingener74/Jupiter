@@ -16,7 +16,6 @@
     #include <iostream>
     #include <memory>
     #include <vector>
-
 #endif
 
 #include "RCO.h"

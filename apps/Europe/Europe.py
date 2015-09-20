@@ -167,19 +167,9 @@ class Europe(QWidget, Ui_Europe):
 
 
 # noinspection PyCallByClass,PyTypeChecker,PyPep8Naming
-def setStyle():
-    if sys.platform == 'win32':
-        QApplication.setStyle(u'windows')
-    elif sys.platform == 'linux2':
-        QApplication.setStyle(u'plastique')
-    else:
-        print u'Неизвестная система'
-
-
-# noinspection PyPep8Naming
 def main():
     import sys
-    setStyle()
+    QApplication.setStyle(u'plastique')
     app = QApplication(sys.argv)
     
     mainWindow = GameDesignerWindow()

@@ -30,6 +30,7 @@ Types = {"Image", "Texture", "Shape", "Shader", ... }
 
 """
 
+
 class Resource(object):
 
     NONE = "None"
@@ -78,6 +79,7 @@ class Resource(object):
     
     def __repr__(self):
         return str(self)
+
 
 class ResourceModel(QAbstractItemModel):
     def __init__(self, base):
