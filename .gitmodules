@@ -4,3 +4,6 @@
 [submodule "3rdparty/android_cmake"]
 	path = 3rdparty/android_cmake
 	url = https://github.com/taka-no-me/android-cmake.git
+[submodule "cmake/Toolchains/android-cmake"]
+	path = cmake/Toolchains/android-cmake
+	url = https://github.com/taka-no-me/android-cmake.git
