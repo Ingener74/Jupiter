@@ -1,0 +1,24 @@
+diff -Naur glfw-3.1.1//src/CMakeLists.txt ../Jupiter/build_mingw/3rdparty/GLFW/ext_GLFW-prefix/src/ext_GLFW/src/CMakeLists.txt
+--- glfw-3.1.1//src/CMakeLists.txt	2015-03-19 15:21:52 +0000
++++ ../Jupiter/build_mingw/3rdparty/GLFW/ext_GLFW-prefix/src/ext_GLFW/src/CMakeLists.txt	2015-09-22 16:51:46 +0000
+@@ -71,7 +71,8 @@
+         set_target_properties(glfw PROPERTIES PREFIX "" IMPORT_PREFIX "")
+ 
+         if (MINGW)
+-            set_target_properties(glfw PROPERTIES IMPORT_SUFFIX "dll.a")
++            set_target_properties(glfw PROPERTIES IMPORT_PREFIX "lib")
++            set_target_properties(glfw PROPERTIES IMPORT_SUFFIX ".dll.a")
+         else()
+             set_target_properties(glfw PROPERTIES IMPORT_SUFFIX "dll.lib")
+         endif()
+@@ -91,6 +92,9 @@
+ endif()
+ 
+ if (GLFW_INSTALL)
+-    install(TARGETS glfw EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
++    install(TARGETS glfw EXPORT glfwTargets 
++        RUNTIME DESTINATION bin
++        LIBRARY DESTINATION bin
++        ARCHIVE DESTINATION lib)
+ endif()
+ 

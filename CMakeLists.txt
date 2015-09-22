@@ -89,6 +89,21 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/lib)
 
+if(MINGW OR MSYS)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+    set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
+    set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
+
+elseif(EMSCRIPTEN)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-warn-absolute-paths")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-warn-absolute-paths")
+    set(CMAKE_EXECUTABLE_SUFFIX ".html")
+
+elseif(ANDROID)
+else()
+endif()
+
 add_subdirectory(3rdparty)
 
 include_directories(
@@ -163,7 +178,7 @@ if(NOT EMSCRIPTEN AND NOT ANDROID)
         if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
             list(APPEND GL_WINDOW glfw)
         elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-            list(APPEND glfw3dll)
+            list(APPEND GL_WINDOW glfw3)
         else()
             message(FATAL_ERROR "error")
         endif()
@@ -257,21 +272,6 @@ else()
 endif()
 
 add_definitions(-std=c++11)
-if(MINGW OR MSYS)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-    set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
-    set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
-
-elseif(EMSCRIPTEN)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-warn-absolute-paths")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-warn-absolute-paths")
-    set(CMAKE_EXECUTABLE_SUFFIX ".html")
-
-elseif(ANDROID)
-else()
-endif()
-
 
 add_subdirectory(apps)
 
