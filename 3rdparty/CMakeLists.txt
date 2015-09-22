@@ -45,6 +45,11 @@ if(NOT FIND_PACKAGE_OPENAL)
     add_subdirectory(OpenAL)
 endif()
 
+# Пока не используем
+# if(NOT FIND_PACKAGE_OPENAL)
+#     add_subdirectory(freealut)
+# endif()
+
 if(NOT FIND_PACKAGE_FREETYPE)
     add_subdirectory(FreeType)
 endif()
