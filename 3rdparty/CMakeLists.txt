@@ -21,6 +21,10 @@ if(NOT FIND_PACKAGE_FREEGLUT)
     add_subdirectory(freeglut)
 endif()
 
+if(NOT FIND_PACKAGE_GLFW)
+    add_subdirectory(GLFW)
+endif()
+
 if(NOT FIND_PACKAGE_GLEW)
     add_subdirectory(GLEW)
 endif()
@@ -44,3 +48,4 @@ endif()
 if(NOT FIND_PACKAGE_FREETYPE)
     add_subdirectory(FreeType)
 endif()
+

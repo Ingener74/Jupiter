@@ -38,20 +38,20 @@ endif()
 ################################################################################################
 # GLFW
 ################################################################################################
-if(OPENGL_WINDOW_SYSTEM STREQUAL "GLFW")
+#if(OPENGL_WINDOW_SYSTEM STREQUAL "GLFW")
     set_source_files_properties(glfw.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(glfw.i PROPERTIES SWIG_FLAGS "-includeall;-nodefaultctor")
     
     if(WITH_GLFW_LUA_WRAPPER)
         SWIG_ADD_MODULE(glfwLua lua glfw.i)
-        SWIG_LINK_LIBRARIES(glfwLua ${OPENGL_LIBRARIES} ${GLEW_LIB} ${LUA_LIB})
+        SWIG_LINK_LIBRARIES(glfwLua ${GL_WINDOW} ${GLEW_LIB} ${LUA_LIB})
     endif()
     
     if(WITH_GLFW_PYTHON_WRAPPER)
         SWIG_ADD_MODULE(glfwPython python glfw.i)
-        SWIG_LINK_LIBRARIES(glfwPython ${OPENGL_LIBRARIES} ${GLEW_LIB} ${PYTHON_LIBRARIES})
+        SWIG_LINK_LIBRARIES(glfwPython ${GL_WINDOW} ${GLEW_LIB} ${PYTHON_LIBRARIES})
     endif()
-endif()
+#endif()
 
 ################################################################################################
 # GLEW

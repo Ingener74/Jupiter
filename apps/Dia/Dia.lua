@@ -25,28 +25,34 @@ else
     error('init jupiter error: ' .. res)
 end
 
-g1.glViewport(0, 0, 800, 480)
+local width = 800
+local height = 480
+
+g1.glViewport(0, 0, width, height)
 g1.glEnable(g1.GL_TEXTURE_2D)
 g1.glEnable(g1.GL_DEPTH_TEST)
 
-j.File.setBase('../../samples/Box')
+j.File.setBase('../../../samples/Box')
 
 shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
 
 bgImage   = j.PngImage('Resources/bg.png')
-bgTexture = j.ImageTexture(bgImage)
-bgShape   = j.ImageShape(bgImage)
-bg        = j.Sprite()
-bg:setProgram(shader):setTexture(bgTexture):setShape(bgShape)
+bg        = j.Transform()
+bg:translate(0, 0, -1):setScaleF(0.22)
+bg:addNode(j.Sprite(j.ImageTexture(bgImage), j.ImageShape(bgImage), shader))
 
 rootNode = j.Node()
-rootNode:addNode(bg)
 
-camera   = j.Camera(45.0,   800.0, 480.0,   1.0, 1000.0,   0.0, 0.0, 100.0,   0.0, 0.0, 0.0,   0.0, 1.0, 0.0)
-renderer = j.RenderVisitor(camera)
+cameraTrans = j.Transform(0, 0, -20)
+camera   = j.Camera(cameraTrans, j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
+camera:addNode(cameraTrans):addNode(bg)
+
+rootNode:addNode(camera)
+
+renderer = j.RenderVisitor()
 
 game = j.Game()
-game:setRootNode(rootNode):addVisitor(renderer):setWidth(800.0):setHeight(480.0)
+game:setRootNode(rootNode):addVisitor(renderer):setWidth(width):setHeight(height)
 
 print('OpenGL Version:                  ' .. g1.glGetString(g1.GL_VERSION))
 print('OpenGL Shading Language Version: ' .. g1.glGetString(g1.GL_SHADING_LANGUAGE_VERSION))
