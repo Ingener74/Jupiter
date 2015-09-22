@@ -121,7 +121,7 @@ link_directories(${3RDPARTY_INSTALL}/lib)
 # Libraries sets
 
 # Lua
-set(LUA_LIB)
+unset(LUA_LIB)
 if(FIND_PACKAGE_LUA)
     find_package(Lua)
     include_directories(${LUA_INCLUDE_DIR})
@@ -131,7 +131,7 @@ else()
 endif()
 
 # GLEW
-set(GLEW_LIB)
+unset(GLEW_LIB)
 if(FIND_PACKAGE_GLEW)
     find_package(GLEW REQUIRED)
     set(GLEW_LIB ${GLEW_LIB} ${GLEW_LIBRARIES})
@@ -146,14 +146,8 @@ else()
 endif()
 
 # FreeGLUT and GLFW
-set(GL_WINDOW)
+unset(GL_WINDOW)
 if(NOT EMSCRIPTEN AND NOT ANDROID)
-    if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
-    elseif(OPENGL_WINDOW_SYSTEM STREQUAL "GLFW")
-    else()
-        message(FATAL_ERROR "Invalid OpenGL window system")
-    endif()
-
     # FreeGLUT window system
     if(FIND_PACKAGE_FREEGLUT)
         find_package(GLUT REQUIRED)
@@ -234,7 +228,7 @@ if(WITH_GAME_PLAYER)
 endif()
 
 # PNG
-set(PNG_LIB)
+unset(PNG_LIB)
 if(FIND_PACKAGE_LIBPNG)
     find_package(PNG REQUIRED)
     include_directories(${PNG_INCLUDE_DIRS})
