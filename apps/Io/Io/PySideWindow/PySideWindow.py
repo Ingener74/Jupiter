@@ -51,7 +51,7 @@ class OpenGLWidget(QGLWidget):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         try:
-            if self.fallingBox != None and self.fallingBox.isReady():
+            if self.fallingBox and self.fallingBox.isReady():
                 self.fallingBox.game.draw()
 
         except RuntimeError, e:
