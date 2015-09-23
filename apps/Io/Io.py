@@ -1,100 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PySide.QtCore import (Qt)
-from PySide.QtGui import (QWidget, QIcon, QPixmap, QApplication, QMessageBox)
-from PySide.QtOpenGL import (QGLWidget)
+import sys
 
-from Io import *
-from res import *
+from PySide.QtGui import (QApplication)
 
-PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
-
-try:
-    from OpenGL.GL import *
-    from OpenGL.GLU import *
-    from OpenGL.GLUT import *
-except ImportError as e:
-    app = QApplication(sys.argv)
-    QMessageBox.critical(None, PLAYER_TITLE, u'Установи PyOpenGL', QMessageBox.Ok | QMessageBox.Default,
-                         QMessageBox.NoButton)
-    sys.exit(1)
-
-
-class OpenGLWidget(QGLWidget):
-    def __init__(self, parent=None):
-        QGLWidget.__init__(self, parent, None)
-        self.setWindowIcon(QIcon(QPixmap(':/main.png')))
-
-        self.fallingBox = None
-
-    def initializeGL(self):
-        self.setWindowTitle(PLAYER_TITLE)
-        self.resize(Io.WIDTH, Io.HEIGHT)
-
-        print 'Vendor   ', str(glGetString(GL_VENDOR))
-        print 'Renderer ', str(glGetString(GL_RENDERER))
-        print 'OpenGL   ', str(glGetString(GL_VERSION))
-        print 'GLSL     ', str(glGetString(GL_SHADING_LANGUAGE_VERSION))
-
-        glEnable(GL_TEXTURE_2D)
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-
-        try:
-            j.startJupiter()
-            self.fallingBox = Io(self, self.width(), self.height())
-
-            self.startTimer(1000.0 / self.fallingBox.FPS)
-
-        except RuntimeError, e:
-            raise SystemExit(u'Ошибка старта ' + str(e).decode('utf-8'))
-
-    def paintGL(self):
-        glClearColor(0.1, 0.3, 0.1, 1.0)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-        try:
-            if self.fallingBox != None and self.fallingBox.isReady():
-                self.fallingBox.game.draw()
-
-        except RuntimeError, e:
-            raise SystemExit(str(e))
-
-    def resizeGL(self, w, h):
-        glViewport(0, 0, w, h)
-
-    def timerEvent(self, event):
-        self.update()
-
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_F5:
-            self.fallingBox = Io(self, self.width(), self.height())
-        if event.key() == Qt.Key_Escape:
-            raise SystemExit
-        self.fallingBox.game.keyboard(event.nativeScanCode())
-
-    def closeEvent(self, e):
-        j.endJupiter()
-
-
-class Select(QWidget, Ui_SelectImpl):
-    def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
-        self.setupUi(self)
-
-        self.PySideButton.clicked.connect(self.pySide)
-        self.FreeGlutButton.clicked.connect(self.glut)
-
-    def pySide(self):
-        window = OpenGLWidget()
-        window.show()
-        self.close()
-
-    def glut(self):
-        pass
-
+from Io import Select
 
 if __name__ == '__main__':
     try:
