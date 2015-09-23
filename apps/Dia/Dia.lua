@@ -38,21 +38,30 @@ shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs
 
 bgImage   = j.PngImage('Resources/bg.png')
 bg        = j.Transform()
-bg:translate(0, 0, -1):setScaleF(0.22)
-bg:addNode(j.Sprite(j.ImageTexture(bgImage), j.ImageShape(bgImage), shader))
+bg:
+    translate(0, 0, -1):
+    setScaleF(0.22):
+    addNode(j.Sprite(j.ImageTexture(bgImage), j.ImageShape(bgImage), shader))
 
 rootNode = j.Node()
 
 cameraTrans = j.Transform(0, 0, -20)
 camera   = j.Camera(cameraTrans, j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
-camera:addNode(cameraTrans):addNode(bg)
+camera:
+    addNode(cameraTrans):
+    addNode(bg)
 
 rootNode:addNode(camera)
 
-renderer = j.RenderVisitor()
+--addVisitor(j.PrintVisitor(game)):
 
 game = j.Game()
-game:setRootNode(rootNode):addVisitor(renderer):setWidth(width):setHeight(height)
+game:
+    setRootNode(rootNode):
+    addVisitor(j.RenderVisitor()):
+    setWidth(width):
+    setHeight(height)
+
 
 print('OpenGL Version:                  ' .. g1.glGetString(g1.GL_VERSION))
 print('OpenGL Shading Language Version: ' .. g1.glGetString(g1.GL_SHADING_LANGUAGE_VERSION))

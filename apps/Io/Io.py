@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PySide.QtCore import (Qt)
 from PySide.QtGui import (QWidget, QIcon, QPixmap, QApplication, QMessageBox)
 from PySide.QtOpenGL import (QGLWidget)
 

@@ -64,8 +64,7 @@ RAD2DEG = 180. / 3.1415926
 # noinspection PyPep8Naming
 class Io(object):
 
-    WIDTH  = 800
-    # WIDTH = 300
+    WIDTH = 1024
     HEIGHT = WIDTH * 3.0 / 5.0
 
     FPS = 60.0
@@ -91,7 +90,7 @@ class Io(object):
 
         self.__isReady = False
 
-        j.File.setBase('../../samples/Box')
+        j.File.setBase('../../../samples/Box')
 
         shader = j.FileShader(j.File('Resources/sprite.vs'), j.File('Resources/sprite.fs'))
         # box2dSh = j.FileShader(j.File('Resources/box2d.vs'), j.File('Resources/box2d.fs'))
