@@ -7,7 +7,7 @@ from PySide.QtGui import QApplication, QMessageBox
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
-WIDTH = 1024
+WIDTH = 1200
 HEIGHT = int(WIDTH * 3.0 / 5.0)
 
 FPS = 60.0
@@ -17,7 +17,6 @@ FPS = 60.0
 try:
     import JupiterPython as j
     import Box2DPython as b
-    # from glmPython import vec3
 except ImportError as e:
     app = QApplication(sys.argv)
 

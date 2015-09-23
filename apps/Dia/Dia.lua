@@ -31,6 +31,8 @@ local height = 480
 g1.glViewport(0, 0, width, height)
 g1.glEnable(g1.GL_TEXTURE_2D)
 g1.glEnable(g1.GL_DEPTH_TEST)
+g1.glEnable(g1.GL_BLEND)
+g1.glBlendFunc(g1.GL_SRC_ALPHA, g1.GL_ONE_MINUS_SRC_ALPHA)
 
 j.File.setBase('../../../samples/Box')
 
