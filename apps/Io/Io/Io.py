@@ -7,6 +7,12 @@ from PySide.QtGui import QApplication, QMessageBox
 
 PLAYER_TITLE = u"Игровой плеер на движке Юпитер"
 
+WIDTH = 1024
+HEIGHT = int(WIDTH * 3.0 / 5.0)
+
+FPS = 60.0
+
+
 # noinspection PyUnresolvedReferences
 try:
     import JupiterPython as j
@@ -64,11 +70,6 @@ RAD2DEG = 180. / 3.1415926
 # noinspection PyPep8Naming
 class Io(object):
 
-    WIDTH = 1024
-    HEIGHT = WIDTH * 3.0 / 5.0
-
-    FPS = 60.0
-
     GROUND = 2
 
     """
@@ -86,7 +87,7 @@ class Io(object):
     * explosion generators/ генераторы взрывов
     """
 
-    def __init__(self, window, width, height):
+    def __init__(self, window):
 
         self.__isReady = False
 
@@ -98,14 +99,14 @@ class Io(object):
         # Атлас физических форм
         phAtlas = j.PhysicsBodyEditorAtlas(j.File('Resources/Box.json'))
 
-        physics = j.Physics(1.0 / self.FPS)
+        physics = j.Physics(1.0 / FPS)
         render = j.RenderVisitor()
 
         rn = j.Node()
 
         cameraTrans = j.Transform(0, 0, -20)
 
-        camera = j.Camera(cameraTrans, j.Perspective(45.0, width * 1. / height * 1., 1.0, 1000.0))
+        camera = j.Camera(cameraTrans, j.Perspective(45.0, WIDTH * 1. / HEIGHT * 1., 1.0, 1000.0))
 
         rn.addNode(camera)
 
@@ -320,8 +321,8 @@ class Io(object):
             addVisitor(physics).\
             addVisitor(render).\
             addKeyboardListener(self.boxTest).\
-            setWidth(width).\
-            setHeight(height)
+            setWidth(WIDTH).\
+            setHeight(HEIGHT)
 
         self.__isReady = True
 

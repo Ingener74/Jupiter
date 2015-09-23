@@ -3,7 +3,7 @@
 
 import sys
 
-from PySide.QtGui import (QApplication)
+from PySide.QtGui import QApplication
 
 from Io import Select
 

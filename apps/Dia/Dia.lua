@@ -9,10 +9,10 @@ if not g2.glfwInit() then
     g2.glfwTerminate()
 end
 
-g2.glfwWindowHint(g2.GLFW_CONTEXT_VERSION_MAJOR, 3)
-g2.glfwWindowHint(g2.GLFW_CONTEXT_VERSION_MINOR, 3)
-g2.glfwWindowHint(g2.GLFW_OPENGL_PROFILE, g2.GLFW_OPENGL_CORE_PROFILE);
-g2.glfwWindowHint(g2.GLFW_OPENGL_COMPAT_PROFILE, g2.GLFW_OPENGL_FORWARD_COMPAT);
+--g2.glfwWindowHint(g2.GLFW_CONTEXT_VERSION_MAJOR, 3)
+--g2.glfwWindowHint(g2.GLFW_CONTEXT_VERSION_MINOR, 3)
+--g2.glfwWindowHint(g2.GLFW_OPENGL_PROFILE, g2.GLFW_OPENGL_CORE_PROFILE);
+--g2.glfwWindowHint(g2.GLFW_OPENGL_FORWARD_COMPAT, g2.GLFW_OPENGL_COMPAT_PROFILE);
 
 local window = g2.glfwCreateWindow(800, 480, "Дия - плеер игр на Lua для Юпитера", nil, nil)
 
@@ -40,7 +40,7 @@ bgImage   = j.PngImage('Resources/bg.png')
 bg        = j.Transform()
 bg:
     translate(0, 0, -1):
-    setScaleF(0.22):
+    setScaleF(0.02):
     addNode(j.Sprite(j.ImageTexture(bgImage), j.ImageShape(bgImage), shader))
 
 rootNode = j.Node()

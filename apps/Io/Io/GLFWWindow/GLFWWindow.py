@@ -1,33 +1,33 @@
 # -*- coding: utf-8 -*-
-from PySide.QtCore import Signal
+from PySide.QtCore import Signal, QObject
 
 from glfwPython import *
 from OpenGL.GL import *
+from Io import Io, j, WIDTH, HEIGHT, PLAYER_TITLE
 
-from Io import Io, j
 
-class GLFWWindow(object):
+class GLFWWindow(QObject):
     on_close = Signal(object)
 
     def __init__(self):
+        QObject.__init__(self)
         self.fallingBox = None
 
     def show(self):
+
+        print WIDTH, HEIGHT
 
         # Initialize the library
         if not glfwInit():
             return False
 
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GLFW_OPENGL_FORWARD_COMPAT);
-
-        width = 800
-        height = 480
+        # glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
+        # glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
+        # glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
+        # glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GLFW_OPENGL_FORWARD_COMPAT)
 
         # Create a windowed mode window and its OpenGL context
-        window = glfwCreateWindow(width, height, "Hello World", None, None)
+        window = glfwCreateWindow(WIDTH, HEIGHT, "", None, None)
         if not window:
             glfwTerminate()
             return False
@@ -40,15 +40,18 @@ class GLFWWindow(object):
         print 'OpenGL Vendor:                   ', glGetString(GL_VENDOR)
         print 'OpenGL Renderer:                 ', glGetString(GL_RENDERER)
 
-        glViewport(0, 0, width, height)
-        # glEnable(GL_TEXTURE_2D)
+        # Limit the frameRate to 60fps.
+        glfwSwapInterval(1)
+
+        glViewport(0, 0, WIDTH, HEIGHT)
+        glEnable(GL_TEXTURE_2D)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
         try:
             j.startJupiter()
-            self.fallingBox = Io(self, width, height)
+            self.fallingBox = Io(self)
 
             # self.startTimer(1000.0 / self.fallingBox.FPS)
 
@@ -79,4 +82,5 @@ class GLFWWindow(object):
         return True
 
     def close(self):
-        self.on_close.emit()
+        j.endJupiter()
+        self.on_close.emit(None)

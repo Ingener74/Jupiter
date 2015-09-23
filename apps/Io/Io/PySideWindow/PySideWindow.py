@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from PySide.QtCore import (Qt)
+from PySide.QtCore import (Qt, Signal)
 from PySide.QtGui import (QIcon, QPixmap, QApplication, QMessageBox)
 from PySide.QtOpenGL import (QGLWidget)
 
@@ -13,10 +13,13 @@ except ImportError as e:
                          QMessageBox.NoButton)
     sys.exit(1)
 
-from Io import PLAYER_TITLE, Io, j
+from Io import PLAYER_TITLE, Io, j, WIDTH, HEIGHT, FPS
 
 
 class OpenGLWidget(QGLWidget):
+
+    on_close = Signal(object)
+
     def __init__(self, parent=None):
         QGLWidget.__init__(self, parent, None)
         self.setWindowIcon(QIcon(QPixmap(':/main.png')))
@@ -25,7 +28,7 @@ class OpenGLWidget(QGLWidget):
 
     def initializeGL(self):
         self.setWindowTitle(PLAYER_TITLE)
-        self.resize(Io.WIDTH, Io.HEIGHT)
+        self.resize(WIDTH, HEIGHT)
 
         print 'Vendor   ', str(glGetString(GL_VENDOR))
         print 'Renderer ', str(glGetString(GL_RENDERER))
@@ -39,9 +42,9 @@ class OpenGLWidget(QGLWidget):
 
         try:
             j.startJupiter()
-            self.fallingBox = Io(self, self.width(), self.height())
+            self.fallingBox = Io(self)
 
-            self.startTimer(1000.0 / self.fallingBox.FPS)
+            self.startTimer(1000.0 / FPS)
 
         except RuntimeError, e:
             raise SystemExit(u'Ошибка старта ' + str(e).decode('utf-8'))
@@ -65,10 +68,11 @@ class OpenGLWidget(QGLWidget):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_F5:
-            self.fallingBox = Io(self, self.width(), self.height())
+            self.fallingBox = Io(self)
         if event.key() == Qt.Key_Escape:
             raise SystemExit
         self.fallingBox.game.keyboard(event.nativeScanCode())
 
     def closeEvent(self, e):
         j.endJupiter()
+        self.on_close.emit(None)

@@ -10,24 +10,23 @@ class Select(QWidget, Ui_SelectImpl):
         QWidget.__init__(self, parent)
         self.setupUi(self)
 
+        self.pyside_window = OpenGLWidget()
+        self.pyside_window.on_close.connect(self.close)
+
         self.glfw_window = GLFWWindow.GLFWWindow()
-        # self.glfw_window.on_close.connect(self.glfwClose)
+        self.glfw_window.on_close.connect(self.close)
 
-        self.PySideButton.clicked.connect(self.pySide)
-        self.FreeGlutButton.clicked.connect(self.glut)
-        self.GLFWButton.clicked.connect(self.onGLFW)
+        self.PySideButton.clicked.connect(self.startPySide)
+        self.FreeGlutButton.clicked.connect(self.startGLUT)
+        self.GLFWButton.clicked.connect(self.startGLFW)
 
-    def pySide(self):
-        window = OpenGLWidget()
-        window.show()
-        self.close()
+    def startPySide(self):
+        self.hide()
+        self.pyside_window.show()
 
-    def onGLFW(self):
+    def startGLFW(self):
         self.hide()
         self.glfw_window.show()
 
-    def glfwClose(self):
+    def startGLUT(self):
         self.close()
-
-    def glut(self):
-        pass
