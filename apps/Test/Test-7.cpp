@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <vector>
+#include <string>
 #include <iostream>
 #include <stdexcept>
 
@@ -12,6 +14,30 @@
 #include <AL/alc.h>
 
 using namespace std;
+
+vector<uint8_t> getFileData(string const& filename){
+    FILE* df = fopen(filename.c_str(), "rb");
+
+    fseek(df, 0, SEEK_END);
+    auto size = ftell(df);
+    rewind(df);
+
+    vector<uint8_t> buffer;
+    buffer.resize(size);
+
+    char*
+    ptr = reinterpret_cast<char*>(buffer.data());
+
+    auto res = fread(ptr, sizeof(char), size, df);
+//    jassert(res == size, "can't read file");
+
+//    ptr = reinterpret_cast<char*>(buffer.data());
+//    setg(ptr, ptr, ptr + buffer.capacity());
+
+    fclose(df);
+
+    return move(buffer);
+}
 
 class OpenALPlayer {
 public:
