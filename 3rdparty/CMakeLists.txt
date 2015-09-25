@@ -54,3 +54,11 @@ if(NOT FIND_PACKAGE_FREETYPE)
     add_subdirectory(FreeType)
 endif()
 
+#if(NOT FIND_PACKAGE_OGG)
+    add_subdirectory(Ogg)
+#endif()
+
+#if(NOT FIND_PACKAGE_VORBIS)
+    add_subdirectory(Vorbis)
+#endif()
+
