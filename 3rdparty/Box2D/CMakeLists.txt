@@ -6,12 +6,12 @@ unset(PATCH_FILE)
 unset(ADDITIONAL_FLAGS)
 
 if(MINGW OR MSYS)
-    set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/box2d.patch)
+    set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/linux.patch)
     set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} 
                          -DCMAKE_GENERATOR=${CMAKE_GENERATOR})
 
 elseif(EMSCRIPTEN)
-    set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/box2d.patch)
+    set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/linux.patch)
     set(ADDITIONAL_FLAGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                          -DCMAKE_GENERATOR=${CMAKE_GENERATOR}
                          -DCMAKE_C_FLAGS="-Wno-warn-absolute-paths"
@@ -24,7 +24,7 @@ elseif(ANDROID)
     )
 
 else()
-    set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/box2d.patch)
+    set(PATCH_FILE       ${CMAKE_CURRENT_LIST_DIR}/linux.patch)
 
 endif()
 

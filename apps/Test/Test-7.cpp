@@ -310,7 +310,6 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
 
 //                    fwrite(convbuffer,2*vi.channels,bout,some_output_stream);
                     outStream.write(reinterpret_cast<char*>(convbuffer), 2*vi.channels * bout);
-//                    cout << "output write " << vi.channels << ", " << convsize << endl;
 
                     vorbis_synthesis_read(&vd,bout); /* tell libvorbis how
                                                         many samples we

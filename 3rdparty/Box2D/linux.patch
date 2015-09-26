@@ -1,0 +1,21 @@
+diff -Naur b/Box2D/CMakeLists.txt a/Box2D/CMakeLists.txt
+--- b/Box2D/CMakeLists.txt	2014-04-06 04:43:12.000000000 +0400
++++ a/Box2D/CMakeLists.txt	2015-09-26 17:51:30.629087242 +0300
+@@ -22,13 +22,13 @@
+ 
+ if(BOX2D_BUILD_EXAMPLES)
+   # HelloWorld console example.
+-  add_subdirectory(HelloWorld)
++#  add_subdirectory(HelloWorld)
+ 
+   # Testbed and dependencies.
+   find_package(OpenGL REQUIRED)
+-  add_subdirectory(freeglut)
+-  add_subdirectory(glui)
+-  add_subdirectory(Testbed)
++#  add_subdirectory(freeglut)
++#  add_subdirectory(glui)
++#  add_subdirectory(Testbed)
+ endif(BOX2D_BUILD_EXAMPLES)
+ 
+ if(BOX2D_INSTALL_DOC)
