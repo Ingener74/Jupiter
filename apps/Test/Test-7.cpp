@@ -61,7 +61,8 @@ private:
 class OutputStreamBuffer: public streambuf{
 public:
 //    const size_t StartSize = 1<<13; // 8 Килобайт
-    const size_t StartSize = 1<<24; // 16 Мегабайт
+//    const size_t StartSize = 1<<24; // 16 Мегабайт
+    const size_t StartSize = 1<<26; // 67 Мегабайт
     OutputStreamBuffer() :
         _buffer(StartSize) {
         setp(reinterpret_cast<char*>(_buffer.data()), reinterpret_cast<char*>(_buffer.data()) + _buffer.size());
@@ -137,8 +138,7 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
         if(bytes<BUFFER_SIZE)break;
 
         /* error case.  Must not be Vorbis data */
-        fprintf(stderr,"Input does not appear to be an Ogg bitstream.\n");
-        exit(1);
+        throw runtime_error("Input does not appear to be an Ogg bitstream.");
       }
 
       /* Get the serial number and set up the rest of decode. */
@@ -156,22 +156,15 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
       vorbis_info_init(&vi);
       vorbis_comment_init(&vc);
       if(ogg_stream_pagein(&os,&og)<0){
-        /* error; stream version mismatch perhaps */
-        fprintf(stderr,"Error reading first page of Ogg bitstream data.\n");
-        exit(1);
+    	  throw runtime_error("Error reading first page of Ogg bitstream data.");
       }
 
       if(ogg_stream_packetout(&os,&op)!=1){
-        /* no page? must not be vorbis */
-        fprintf(stderr,"Error reading initial header packet.\n");
-        exit(1);
+    	  throw runtime_error("Error reading initial header packet.");
       }
 
       if(vorbis_synthesis_headerin(&vi,&vc,&op)<0){
-        /* error case; not a vorbis header */
-        fprintf(stderr,"This Ogg bitstream does not contain Vorbis "
-                "audio data.\n");
-        exit(1);
+    	  throw runtime_error("This Ogg bitstream does not contain Vorbis audio data.");
       }
 
       /* At this point, we're sure we're Vorbis. We've set up the logical
@@ -199,15 +192,11 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
               result=ogg_stream_packetout(&os,&op);
               if(result==0)break;
               if(result<0){
-                /* Uh oh; data at some point was corrupted or missing!
-                   We can't tolerate that in a header.  Die. */
-                fprintf(stderr,"Corrupt secondary header.  Exiting.\n");
-                exit(1);
+            	  throw runtime_error("Corrupt secondary header.  Exiting.");
               }
               result=vorbis_synthesis_headerin(&vi,&vc,&op);
               if(result<0){
-                fprintf(stderr,"Corrupt secondary header.  Exiting.\n");
-                exit(1);
+            	  throw runtime_error("Corrupt secondary header.  Exiting.");
               }
               i++;
             }
@@ -221,8 +210,7 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
         bytes = inStream.gcount();
 
         if(bytes==0 && i<2){
-          fprintf(stderr,"End of file before finding all Vorbis headers!\n");
-          exit(1);
+        	throw runtime_error("End of file before finding all Vorbis headers!");
         }
         ogg_sync_wrote(&oy,bytes);
       }
@@ -232,11 +220,12 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
       {
         char **ptr=vc.user_comments;
         while(*ptr){
-          fprintf(stderr,"%s\n",*ptr);
+//          fprintf(stderr,"%s\n",*ptr);
+          cout << *ptr << endl;
           ++ptr;
         }
-        cerr << "Bitstream is " << vi.channels << " channel, " << vi.rate << endl;
-        cerr << "Encoded by: " << vc.vendor << endl;
+        cout << "Bitstream is " << vi.channels << " channel, " << vi.rate << endl;
+        cout << "Encoded by: " << vc.vendor << endl;
       }
 
       convsize=BUFFER_SIZE/vi.channels;
@@ -447,9 +436,14 @@ public:
 
         data = pcmData.data();
         size = pcmData.size();
-        freq = 48000;
+//        freq = 48000;
+        freq = 44100;
+
+        cout << "buffer data" << endl;
 
         alBufferData(_buffer, AL_FORMAT_STEREO16, data, size, freq);
+
+        cout << "buffer data end" << endl;
 
         alGenSources(1, &_source);
         OpenALPlayer::checkErrors();
@@ -483,20 +477,33 @@ private:
 int main(int argc, char **argv) {
     try {
         cout << "OpenAL test" << endl;
+
+        if (argc < 2)
+            throw runtime_error("Usage: ./Test-7 </path/to/ogg/file>");
+
         OpenALPlayer oap;
 
-        string sample_file = "C:/Users/Pavel/workspace/ACDC_-_Back_In_Black-sample.ogg";
+//        string sample_file = "C:/Users/Pavel/workspace/ACDC_-_Back_In_Black-sample.ogg";
 
-        Sound sound(sample_file);
-        sound.play();
+        Sound sound(argv[1]);
 
-//        auto oggData = getFileData(sample_file);
-//        cout << "ogg data size " << oggData.size() << endl;
-//        auto pcmData = getPCMFromOGG(oggData);
-//        cout << "pcm data size " << pcmData.size() << endl;
+        cout << "Enter command: " << endl
+            << "p for play" << endl
+            << "s for stop" << endl
+            << "q for quit" << endl;
 
-        int i;
-        cin >> i;
+        char command = ' ';
+        while(command != 'q'){
+            cin >> command;
+            switch(command){
+            case 'p':
+                sound.play();
+                break;
+            case 's':
+                sound.stop();
+                break;
+            }
+        }
 
         cout << "Good bye" << endl;
 
