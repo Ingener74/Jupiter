@@ -138,6 +138,7 @@ json Node::getJson() const {
 //                },
                 {"nodes", [=]{
                     nlohmann::json nodes;
+//                    transform(_nodes.begin(), _nodes.end(), back_inserter(nodes), [](Ref<Node> & node){ return node->getJson(); });
                     for(auto node: _nodes)
                         nodes.push_back(node->getJson());
                     return nodes;

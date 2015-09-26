@@ -57,5 +57,5 @@ if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     add_subdirectory(test-6)
     
     add_executable(Test-7 Test-7.cpp)
-    target_link_libraries(Test-7 ${OPENAL_LIB})
+    target_link_libraries(Test-7 ${OPENAL_LIB} ${OGG_LIB} ${VORBIS_LIB})
 endif()

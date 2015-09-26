@@ -30,6 +30,8 @@ option(FIND_PACKAGE_BOX2D         "force find_package for Box2D"     OFF)
 option(FIND_PACKAGE_GLM           "force find_package for glm"       OFF)
 option(FIND_PACKAGE_LUA           "force find_package for Lua"       OFF)
 option(FIND_PACKAGE_LIBPNG        "force find_package for libpng"    OFF)
+option(FIND_PACKAGE_OGG           "force find package for Ogg"       OFF)
+option(FIND_PACKAGE_VORBIS        "force find package for Vorbis"    OFF)
 
 # Под Emscripten и Android буст мне не нужен, а ...
 if(NOT EMSCRIPTEN AND NOT ANDROID AND NOT MINGW AND NOT MSYS)
@@ -263,6 +265,20 @@ else()
     include_directories(${3RDPARTY_INSTALL}/include/freetype2)
     
     list(APPEND FREETYPE_LIB freetype)
+endif()
+
+# Ogg
+unset(OGG_LIB)
+if(FIND_PACKAGE_OGG)
+else()
+    list(APPEND OGG_LIB ogg)
+endif()
+
+# Vorbis
+unset(VORBIS_LIB)
+if(FIND_PACKAGE_VORBIS)
+else()
+    list(APPEND VORBIS_LIB vorbis)
 endif()
 
 add_definitions(-std=c++11)
