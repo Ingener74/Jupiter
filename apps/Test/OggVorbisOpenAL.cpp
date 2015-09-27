@@ -62,16 +62,14 @@ class OutputStreamBuffer: public streambuf{
 public:
 //    const size_t StartSize = 1<<13; // 8 Килобайт
 //    const size_t StartSize = 1<<24; // 16 Мегабайт
-    const size_t StartSize = 1<<26; // 67 Мегабайт
+    const size_t startSize = 1<<26; // 67 Мегабайт
     OutputStreamBuffer() :
-        _buffer(StartSize) {
+        _buffer(startSize) {
         setp(reinterpret_cast<char*>(_buffer.data()), reinterpret_cast<char*>(_buffer.data()) + _buffer.size());
     }
     virtual ~OutputStreamBuffer(){}
 
     vector<uint8_t> getBuffer() {
-//        cout << "real size " << pptr() - pbase() << endl;
-//        cout << "full size " << epptr() - pbase() << endl;
         return vector<uint8_t>{pbase(), pptr()};
     }
 
@@ -108,7 +106,6 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
 
     char *buffer;
     int  bytes;
-
 
     /********** Decode setup ************/
 
@@ -220,7 +217,6 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
       {
         char **ptr=vc.user_comments;
         while(*ptr){
-//          fprintf(stderr,"%s\n",*ptr);
           cout << *ptr << endl;
           ++ptr;
         }
@@ -356,9 +352,9 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
     return outStreamBuffer.getBuffer();
 }
 
-class OpenALPlayer {
+class Listener {
 public:
-    OpenALPlayer() {
+    Listener() {
         ALfloat position[] = { 0.f, 0.f, 0.f };
         ALfloat velocity[] = { 0.f, 0.f, 0.f };
         ALfloat orientation[] = {
@@ -393,7 +389,7 @@ public:
         alListenerfv(AL_VELOCITY, velocity);
         alListenerfv(AL_ORIENTATION, orientation);
     }
-    virtual ~OpenALPlayer() {
+    virtual ~Listener() {
         if (_context)
             alcMakeContextCurrent(nullptr);
         if (_context)
@@ -419,13 +415,13 @@ private:
 /**
  * Класс источника звука(пока что вместе с буфером)
  */
-class Sound {
+class Speaker {
 public:
-    Sound(string const& filename, bool loop = false) {
-        OpenALPlayer::checkErrors();
+    Speaker(string const& filename, bool loop = false) {
+        Listener::checkErrors();
 
         alGenBuffers(1, &_buffer);
-        OpenALPlayer::checkErrors();
+        Listener::checkErrors();
 
         const ALvoid* data = nullptr;
         ALsizei size = 0;
@@ -445,7 +441,7 @@ public:
         cout << "buffer data end" << endl;
 
         alGenSources(1, &_source);
-        OpenALPlayer::checkErrors();
+        Listener::checkErrors();
 
         alSourcei(_source, AL_BUFFER, _buffer);
         alSourcef(_source, AL_PITCH, 1.f);
@@ -453,7 +449,7 @@ public:
         alSourcefv(_source, AL_POSITION, _position);
         alSourcefv(_source, AL_VELOCITY, _velocity);
     }
-    virtual ~Sound() {
+    virtual ~Speaker() {
         alDeleteSources(1, &_source);
         alDeleteBuffers(1, &_buffer);
     }
@@ -480,11 +476,9 @@ int main(int argc, char **argv) {
         if (argc < 2)
             throw runtime_error("Usage: ./Test-7 </path/to/ogg/file>");
 
-        OpenALPlayer oap;
+        Listener oap;
 
-//        string sample_file = "C:/Users/Pavel/workspace/ACDC_-_Back_In_Black-sample.ogg";
-
-        Sound sound(argv[1]);
+        Speaker sound(argv[1]);
 
         cout << "Enter command: " << endl
             << "p for play" << endl

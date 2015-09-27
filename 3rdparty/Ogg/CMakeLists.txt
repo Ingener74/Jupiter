@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-set(EXT_OGG ext_ogg)
+set(EXT_OGG ext_Ogg)
 
 unset(PATCH_FILE)
 
