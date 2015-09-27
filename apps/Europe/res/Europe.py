@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'C:/Users/Pavel/workspace/Jupiter/apps/Europe/res/Europe.ui'
 #
-# Created: Wed Jun 10 23:43:41 2015
+# Created: Sun Sep 27 21:52:43 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -77,10 +77,17 @@ class Ui_Europe(object):
         self.verticalLayout_4.addWidget(self.textEdit)
         self.verticalLayout_6.addWidget(self.logGroupBox)
         self.tabWidget.addTab(self.GameTab, "")
+        self.tab = QtGui.QWidget()
+        self.tab.setAccessibleName("")
+        self.tab.setObjectName("tab")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtGui.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.tabWidget.addTab(self.tab_2, "")
         self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(Europe)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(Europe)
 
     def retranslateUi(self, Europe):
@@ -93,5 +100,7 @@ class Ui_Europe(object):
         self.gameViewGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Игра", None, QtGui.QApplication.UnicodeUTF8))
         self.logGroupBox.setTitle(QtGui.QApplication.translate("Europe", "Лог", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.GameTab), QtGui.QApplication.translate("Europe", "Игра", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("Europe", "Физические формы", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("Europe", "Упаковка текстур", None, QtGui.QApplication.UnicodeUTF8))
 
 import resources_rc
