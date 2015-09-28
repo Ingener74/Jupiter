@@ -297,11 +297,8 @@ vector<uint8_t> getPCMFromOGG(vector<uint8_t> const& data){
                       }
                     }
 
-                    if (clipflag) {
-                        stringstream s;
-                        s << "Clipping in frame " << (long) (vd.sequence);
-                        throw runtime_error(s.str());
-                    }
+                                    if (clipflag)
+                                        cerr << "warning: clipping in frame " << (long) (vd.sequence) << endl;
 
 
 //                    fwrite(convbuffer,2*vi.channels,bout,some_output_stream);
