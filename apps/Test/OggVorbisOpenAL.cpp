@@ -502,6 +502,10 @@ public:
         alSourceStop(_source);
     }
 
+    void pause(){
+        alSourcePause(_source);
+    }
+
 private:
     shared_ptr<Sound> _sound;
 
@@ -509,6 +513,14 @@ private:
     ALfloat _velocity[3] = {0.f, 0.f, 0.f};
     ALuint _source = 0;
 };
+
+void commands() {
+    cout << "Enter command: " << endl <<
+        "p for play" << endl <<
+        "P for pause" << endl <<
+        "s for stop" << endl <<
+        "q for quit" << endl;
+}
 
 int main(int argc, char **argv) {
     try {
@@ -523,10 +535,7 @@ int main(int argc, char **argv) {
 
         Speaker speaker(sound);
 
-        cout << "Enter command: " << endl
-            << "p for play" << endl
-            << "s for stop" << endl
-            << "q for quit" << endl;
+        commands();
 
         char command = ' ';
         while(command != 'q'){
@@ -535,8 +544,14 @@ int main(int argc, char **argv) {
             case 'p':
                 speaker.play();
                 break;
+            case 'P':
+                speaker.pause();
+                break;
             case 's':
                 speaker.stop();
+                break;
+            default:
+                commands();
                 break;
             }
         }
