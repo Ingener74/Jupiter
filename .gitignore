@@ -23,6 +23,7 @@ apps/Painter/.idea
 3rdparty/json
 Download
 /build_emscripten/
+/doc/blog/node_modules
 
 venv
 /doc/blog/bower_components
