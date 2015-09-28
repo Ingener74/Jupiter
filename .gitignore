@@ -25,6 +25,7 @@ Download
 /build_emscripten/
 
 venv
+/doc/blog/bower_components
 env
 samples/Box/Resources.png
 samples/Box/Resources.atlas

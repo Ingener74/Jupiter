@@ -557,7 +557,6 @@ int main(int argc, char **argv) {
         }
 
         cout << "Good bye" << endl;
-
     } catch (exception const& e) {
         cerr << e.what() << endl;
     }
