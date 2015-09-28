@@ -45,20 +45,17 @@ if(NOT FIND_PACKAGE_OPENAL)
     add_subdirectory(OpenAL)
 endif()
 
-# Пока не используем
-# if(NOT FIND_PACKAGE_OPENAL)
-#     add_subdirectory(freealut)
-# endif()
-
 if(NOT FIND_PACKAGE_FREETYPE)
     add_subdirectory(FreeType)
 endif()
 
-#if(NOT FIND_PACKAGE_OGG)
+if(NOT FIND_PACKAGE_OGG)
     add_subdirectory(Ogg)
-#endif()
+endif()
 
-#if(NOT FIND_PACKAGE_VORBIS)
+if(NOT FIND_PACKAGE_VORBIS)
     add_subdirectory(Vorbis)
-#endif()
+endif()
+
+add_subdirectory(mpg123)
 
