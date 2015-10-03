@@ -16,6 +16,7 @@ elseif(EMSCRIPTEN)
     # Emscripten already contain glut
 elseif(ANDROID)
     # Using EGL
+elseif(APPLE)
 else()
     ExternalProject_Add(
         ${EXT_FREEGLUT}
