@@ -314,8 +314,8 @@ SoundData getPCMFromOGG(vector<uint8_t> const& data){
                                         }
                                     }
 
-                                    if (clipflag)
-                                        cerr << "warning: clipping in frame " << (long) (vd.sequence) << endl;
+//                                    if (clipflag)
+//                                        cerr << "warning: clipping in frame " << (long) (vd.sequence) << endl;
 
 //                                  fwrite(convbuffer,2*vi.channels,bout,some_output_stream);
                                     outStream.write(reinterpret_cast<char*>(convbuffer), 2 * vi.channels * bout); // Пишем в мой буфер
@@ -524,8 +524,6 @@ void commands() {
 
 int main(int argc, char **argv) {
     try {
-        cout << "OpenAL test" << endl;
-
         if (argc < 2)
             throw runtime_error("Usage: ./Test-7 </path/to/ogg/file>");
 
