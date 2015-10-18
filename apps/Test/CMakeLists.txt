@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 include_directories(.)
 
+add_subdirectory(ViperFreaky)
+
 if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     set(LIBS
         ${OPENGL_LIBRARIES} 
