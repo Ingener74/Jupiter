@@ -9,7 +9,11 @@
 #define APPS_TEST_V2_ATTRIBUTE_H_
 
 #include <string>
-#include <GL/gl.h>
+#if defined(__APPLE__)
+	#include <OpenGL/gl.h>
+#else
+	#include <GL/gl.h>
+#endif
 
 class Attribute {
 public:

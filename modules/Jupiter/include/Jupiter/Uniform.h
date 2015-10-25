@@ -16,11 +16,13 @@
 #else
     #include <string>
 
-    #ifdef ANDROID
-        #include <GLES2/gl2.h>
-    #else
-        #include <GL/gl.h>
-    #endif
+	#if defined(ANDROID)
+		#include <GLES2/gl2.h>
+	#elif defined(__APPLE__)
+		#include <OpenGL/gl.h>
+	#else
+		#include <GL/gl.h>
+	#endif
 
     #define GLM_FORCE_RADIANS
     #include <glm/glm.hpp>

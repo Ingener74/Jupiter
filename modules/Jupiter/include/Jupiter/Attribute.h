@@ -11,10 +11,12 @@
 #ifdef SWIG
 #else
     #include <string>
-    #ifdef ANDROID
+    #if defined(ANDROID)
         #include <GLES2/gl2.h>
-    #else
-        #include <GL/gl.h>
+    #elif defined(__APPLE__)
+		#include <OpenGL/gl.h>
+	#else
+		#include <GL/gl.h>
     #endif
 #endif
 
