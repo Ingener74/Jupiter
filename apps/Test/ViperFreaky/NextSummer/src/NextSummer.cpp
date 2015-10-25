@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include <python2.7/Python.h>
+#include <Python.h>
 
 #include "NextSummer.h"
 
