@@ -10,9 +10,11 @@
 
 #include <GL/glew.h>
 #ifdef EMSCRIPTEN
-#include <GL/glut.h>
+    #include <GL/glut.h>
+#elif __APPLE__
+	#include <GLUT/glut.h>
 #else
-#include <GL/freeglut.h>
+    #include <GL/freeglut.h>
 #endif
 
 using namespace std;

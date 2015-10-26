@@ -23,7 +23,8 @@ int main(int argc, char **argv) {
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
 
-#ifndef EMSCRIPTEN
+// #ifndef EMSCRIPTEN
+#if !defined(EMSCRIPTEN) && !defined(__APPLE__)
         // Для OpenGL 3.3
         glutInitContextVersion(3, 3);
         glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
@@ -95,7 +96,7 @@ void mouseMove(int x, int y) {
 
 void key(unsigned char k, int x, int y) {
     if (k == 27)
-#ifdef EMSCRIPTEN
+#if defined(EMSCRIPTEN) || defined(__APPLE__)
         exit(EXIT_SUCCESS);
 #else
         glutLeaveMainLoop();
