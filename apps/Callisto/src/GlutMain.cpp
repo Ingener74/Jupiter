@@ -6,7 +6,13 @@
  */
 
 #include "GamePlayer.h"
-#include <GL/glut.h>
+#ifdef EMSCRIPTEN
+    #include <GL/glut.h>
+#elif __APPLE__
+	#include <GLUT/glut.h>
+#else
+    #include <GL/freeglut.h>
+#endif
 
 using namespace std;
 
