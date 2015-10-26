@@ -23,7 +23,6 @@ int main(int argc, char **argv) {
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
         glutInitWindowSize(width, height);
 
-// #ifndef EMSCRIPTEN
 #if !defined(EMSCRIPTEN) && !defined(__APPLE__)
         // Для OpenGL 3.3
         glutInitContextVersion(3, 3);

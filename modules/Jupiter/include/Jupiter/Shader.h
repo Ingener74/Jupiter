@@ -13,13 +13,7 @@
     #include <string>
     #include <memory>
 
-    #if defined(ANDROID)
-        #include <GLES2/gl2.h>
-    #elif defined(__APPLE__)
-		#include <OpenGL/gl.h>
-	#else
-		#include <GL/gl.h>
-    #endif
+    #include <CrossPlatformOpenGL.h>
 #endif
 
 #include "RCO.h"

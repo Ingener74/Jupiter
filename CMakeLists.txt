@@ -20,19 +20,31 @@ if(MINGW OR MSYS)
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
     option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
     option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
+    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
+    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
+
 elseif(EMSCRIPTEN)
-    message(STATUS "Emscripten build")
+
 elseif(ANDROID)
-    message(STATUS "Android build")
+    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
+    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
+
 elseif(APPLE)
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  ON)
     option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
     option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
+    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    ON)
+    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
+
 else()
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
     option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
     option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
+    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
+    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
+
 endif()
+
 #if(NOT EMSCRIPTEN AND NOT ANDROID)
 #    option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
 #    option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
@@ -40,13 +52,13 @@ endif()
 #endif()
 
 # Под Emscripten надобности в этой библиотеке нет
-if(APPLE)
-    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    ON)
-    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
-elseif(NOT EMSCRIPTEN)
-    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
-    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
-endif()
+#if(APPLE)
+#    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    ON)
+#    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
+#elseif(NOT EMSCRIPTEN)
+#    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
+#    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
+#endif()
 
 option(FIND_PACKAGE_BOX2D         "force find_package for Box2D"     OFF)
 option(FIND_PACKAGE_GLM           "force find_package for glm"       OFF)
@@ -134,6 +146,7 @@ include_directories(
     3rdparty/json/src
     3rdparty/lodepng
     
+    common/include
     modules/Jupiter/include
     modules/Ganymede/include
     

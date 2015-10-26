@@ -9,13 +9,7 @@
 #include <stdexcept>
 
 #include <GL/glew.h>
-#ifdef EMSCRIPTEN
-    #include <GL/glut.h>
-#elif __APPLE__
-	#include <GLUT/glut.h>
-#else
-    #include <GL/freeglut.h>
-#endif
+#include <CrossPlatformGLUT.h>
 
 using namespace std;
 
