@@ -15,50 +15,36 @@ else()
     message(STATUS "Linux build")
 endif()
 
-# Под Emscripten и Android надобности в этих библиотеках нет
 if(MINGW OR MSYS)
+    option(FIND_PACKAGE_BOOST         "force find_package for boost"     ON)
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
-    option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
-    option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
     option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
-    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
 
 elseif(EMSCRIPTEN)
+    option(FIND_PACKAGE_BOOST         "force find_package for boost"     OFF)
+    option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
+    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
 
 elseif(ANDROID)
+    option(FIND_PACKAGE_BOOST         "force find_package for boost"     OFF)
+    option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
     option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
-    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
 
 elseif(APPLE)
+    option(FIND_PACKAGE_BOOST         "force find_package for boost"     OFF)
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  ON)
-    option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
-    option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
     option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    ON)
-    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
 
 else()
+    option(FIND_PACKAGE_BOOST         "force find_package for boost"     OFF)
     option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
-    option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
-    option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
     option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
-    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
 
 endif()
 
-#if(NOT EMSCRIPTEN AND NOT ANDROID)
-#    option(FIND_PACKAGE_FREEGLUT      "force find_package for FreeGLUT"  OFF)
-#    option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
-#    option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
-#endif()
-
-# Под Emscripten надобности в этой библиотеке нет
-#if(APPLE)
-#    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    ON)
-#    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
-#elseif(NOT EMSCRIPTEN)
-#    option(FIND_PACKAGE_OPENAL        "force find_package for OpenAL"    OFF)
-#    option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
-#endif()
+option(FIND_PACKAGE_GLFW          "force find_package for GLFW"      OFF) 
+option(FIND_PACKAGE_GLEW          "force find_package for GLEW"      OFF)
+option(FIND_PACKAGE_FREETYPE      "force find_package for FreeType"  OFF)
 
 option(FIND_PACKAGE_BOX2D         "force find_package for Box2D"     OFF)
 option(FIND_PACKAGE_GLM           "force find_package for glm"       OFF)
@@ -66,16 +52,6 @@ option(FIND_PACKAGE_LUA           "force find_package for Lua"       OFF)
 option(FIND_PACKAGE_LIBPNG        "force find_package for libpng"    OFF)
 option(FIND_PACKAGE_OGG           "force find package for Ogg"       OFF)
 option(FIND_PACKAGE_VORBIS        "force find package for Vorbis"    OFF)
-
-# Под Emscripten и Android буст мне не нужен, а ...
-if(NOT EMSCRIPTEN AND NOT ANDROID AND NOT MINGW AND NOT MSYS)
-    option(FIND_PACKAGE_BOOST         "force find_package for boost"     OFF)
-endif()
-
-# ... под MinGW или MSYS буст только через find_package
-if(MINGW OR MSYS)
-    option(FIND_PACKAGE_BOOST         "force find_package for boost" ON)
-endif()
 
 # Под Emscripten и Android врапперы пока не собираем
 if(NOT EMSCRIPTEN AND NOT ANDROID)
