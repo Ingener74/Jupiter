@@ -60,5 +60,6 @@ if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     
     add_executable(OggVorbisOpenAL OggVorbisOpenAL.cpp)
     target_link_libraries(OggVorbisOpenAL ${OPENAL_LIB} ${OGG_LIB} ${VORBIS_LIB})
+    add_dependencies(OggVorbisOpenAL ext_Ogg ext_Vorbis)
 
 endif()
