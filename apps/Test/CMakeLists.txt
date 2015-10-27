@@ -22,6 +22,16 @@ if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     else()
         target_link_libraries(Test-1 lodepng ${LIBS})
     endif()
+    if(MINGW OR MSYS)
+        add_dependencies(Test-1 ext_freeglut ext_GLFW ext_GLEW)
+    elseif(EMSCRIPTEN)
+    elseif(ANDROID)
+    elseif(APPLE)
+        add_dependencies(Test-1 ext_freeglut ext_GLFW ext_GLEW)
+    else()
+        add_dependencies(Test-1 ext_freeglut ext_GLFW ext_GLEW)
+    endif()
+        
 
     add_executable(Test-1-8 
         main.cpp 
