@@ -6,6 +6,7 @@ before_install:
         - sudo apt-get install -qq libegl1-mesa-dev libxmu6 libxmu-dev zlib1g-dev libpcre3-dev p7zip-full libxi-dev libreadline-dev
         - wget https://cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz --no-check-certificate
         - tar xf cmake-3.3.2-Linux-x86_64.tar.gz
-        - export PATH=$PATH:cmake-3.3.2-Linux-x86_64/bin
+        - 
 
-script: cmake --version && mkdir build && cd build && cmake .. && cmake --build .
+script: export PATH=$PATH:cmake-3.3.2-Linux-x86_64/bin && echo $PATH && cmake --version && mkdir build && cd build && cmake .. && cmake --build .
+
