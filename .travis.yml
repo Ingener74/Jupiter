@@ -1,0 +1,5 @@
+language: python
+compiler:
+    - gcc
+    - clang
+script: cmake
