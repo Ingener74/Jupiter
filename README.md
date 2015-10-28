@@ -2,7 +2,11 @@
 
 ![Github Logo](/doc/images/Jupiter.png)
 
+Travis-ci.org
 [![Build Status](https://travis-ci.org/Ingener74/Jupiter.svg?branch=master)](https://travis-ci.org/Ingener74/Jupiter)
+
+Drone.io
+[![Build Status](https://drone.io/github.com/Ingener74/Jupiter/status.png)](https://drone.io/github.com/Ingener74/Jupiter/latest)
 
 ## Сборка под Linux
 
