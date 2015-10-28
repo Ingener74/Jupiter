@@ -120,3 +120,9 @@ target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
 install(DIRECTORY include DESTINATION Jupiter)
+
+add_executable(JupiterTests tests/main.cpp)
+target_link_libraries(JupiterTests Jupiter gmock gtest pthread gmock_main gtest_main)
+
+
+
