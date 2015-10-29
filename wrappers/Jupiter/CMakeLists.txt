@@ -5,6 +5,25 @@ set_source_files_properties(Jupiter.i PROPERTIES SWIG_FLAGS "-includeall;-nodefa
 
 set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
 
+# Ещё ошибоньки
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Sprite.h(31) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Sprite.h(42) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Transform.h(37) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Transform.h(38) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Camera.h(54) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Camera.h(56) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Body.h(37) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Body.h(39) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Body.h(41) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\VisualBody.h(26) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\VisualBody.h(28) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\VisualBody.h(30) : Warning 822: Covariant return types not supported in Java. Proxy method will return jupiter::Node *.
+
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\NodeVisitor.h(63) : Warning 314: 'end' is a Lua keyword, renaming to 'c_end'
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\RenderVisitor.h(55) : Warning 314: 'end' is a Lua keyword, renaming to 'c_end'
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\PrintVisitor.h(28) : Warning 314: 'end' is a Lua keyword, renaming to 'c_end'
+#C:\Users\Pavel\workspace\Jupiter\modules\Jupiter\include\Jupiter\Physics.h(33) : Warning 314: 'end' is a Lua keyword, renaming to 'c_end'
+
 set(SHARED_LIBS
     Jupiter 
     ${OPENGL_LIB}

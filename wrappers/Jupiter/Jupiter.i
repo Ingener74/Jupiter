@@ -9,9 +9,11 @@
     #warning no tupemaps
 #endif
 
+#if !defined(SWIGJAVA)
 %begin %{
 #include <cmath>
 %}
+#endif
 
 %{
 #include "Jupiter.h"
