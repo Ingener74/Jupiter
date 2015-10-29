@@ -13,7 +13,7 @@ set(SOURCES
 add_library(NextSummer ${SOURCES})
 
 find_package(SWIG)
-include(${SWIG_USE_FILE})
+include(UseSWIG)
 
 find_package(PythonLibs 2.7 REQUIRED)
 include_directories(

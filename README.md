@@ -14,7 +14,7 @@ Drone.io      | [![Build Status](https://drone.io/github.com/Ingener74/Jupiter/s
 1.1. install other dependencies
 
 ```
-sudo apt-get install libegl1-mesa-dev libxmu6 libxmu-dev zlib1g-dev libpython-dev libpcre3-dev p7zip-full libxi-dev libreadline-dev 
+sudo apt-get install libegl1-mesa-dev libxmu6 libxmu-dev zlib1g-dev libpython-dev libpcre3-dev p7zip-full libxi-dev libreadline-dev xorg-dev 
 ```
 
 1.2. SWIG 3
@@ -33,6 +33,7 @@ make && sudo make install
 ```
 git clone https://github.com/Ingener74/Jupiter.git
 cd Jupiter
+git submodule update --init
 mkdir build
 cmake ..
 make
