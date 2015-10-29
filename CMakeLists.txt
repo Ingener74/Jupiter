@@ -53,31 +53,28 @@ option(FIND_PACKAGE_LIBPNG        "force find_package for libpng"    OFF)
 option(FIND_PACKAGE_OGG           "force find package for Ogg"       OFF)
 option(FIND_PACKAGE_VORBIS        "force find package for Vorbis"    OFF)
 
-# Под Emscripten и Android врапперы пока не собираем
-if(NOT EMSCRIPTEN AND NOT ANDROID)
-    option(WITH_WRAPPERS              "Wrapper"                         ON)
-    option(WITH_LUA_WRAPPER           "Lua wrapper"                     ON)
-    option(WITH_PYTHON_WRAPPER        "Python wrapper"                  ON)
-    option(WITH_JAVA_WRAPPER          "Java wrapper"                    ON)
-    
-    option(WITH_GANIMEDE              "Build Ganimede"                  OFF)
-    option(WITH_GAME_PLAYER           "Build with c++ game player"      ON)
-    
-    option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"       ON)
-    option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"          ON)
-    
-    option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"       ON)
-    option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"          ON)
-    
-    option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"         ON)
-    option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"            ON)
-    
-    option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"        ON)
-    option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"           ON)
-    
-    option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"      ON)
-    option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"         ON)
-endif()
+option(WITH_WRAPPERS              "Wrapper"                          ON)
+option(WITH_LUA_WRAPPER           "Lua wrapper"                      ON)
+option(WITH_PYTHON_WRAPPER        "Python wrapper"                   ON)
+option(WITH_JAVA_WRAPPER          "Java wrapper"                     ON)
+                                                                     
+option(WITH_GANIMEDE              "Build Ganimede"                   OFF)
+option(WITH_GAME_PLAYER           "Build with c++ game player"       ON)
+                                                                     
+option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"        ON)
+option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"           ON)
+                                                                     
+option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"        ON)
+option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"           ON)
+                                                                     
+option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"          ON)
+option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"             ON)
+                                                                     
+option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"         ON)
+option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"            ON)
+                                                                     
+option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"       ON)
+option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"          ON)
 
 # Под Android эти программы не собираем
 if(NOT ANDROID)
@@ -90,10 +87,14 @@ if(NOT EMSCRIPTEN OR NOT ANDROID)
     set_property(CACHE OPENGL_WINDOW_SYSTEM PROPERTY STRINGS "FreeGLUT" "GLFW")
 endif()
 
+unset(OPENGL_LIB)
 # find OpenGL
 if(NOT ANDROID)
     find_package(OpenGL REQUIRED)
     include_directories(${OPENGL_INCLUDE_DIR})
+    list(APPEND OPENGL_LIB ${OPENGL_LIBRARIES})
+else()
+    list(APPEND OPENGL_LIB GLESv2 EGL)
 endif()
 
 set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
