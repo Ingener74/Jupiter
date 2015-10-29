@@ -5,20 +5,16 @@
  *      Author: pavel
  */
 
-#include "Jupiter/FileFactory.h"
+#include "Jupiter/IO/AndroidAssetFactory.h"
 
 namespace jupiter {
 
 using namespace std;
 
-//FileFactory fileFactory;
+AndroidAssetFactory androidAssetFactory { nullptr };
 
-BufferFactory* File::_factory = nullptr; // &fileFactory;
+BufferFactory* File::_factory = &androidAssetFactory;
 string File::_base = "";
 
 }  // namespace jupiter
-
-
-
-
 

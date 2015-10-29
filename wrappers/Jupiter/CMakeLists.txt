@@ -30,11 +30,20 @@ endif()
 
 if (NOT EMSCRIPTEN) 
 
-    # Java
-    if(WITH_JAVA_WRAPPER)
-        SWIG_ADD_MODULE(JupiterJava java Jupiter.i)
-        set_target_properties(JupiterJava PROPERTIES NO_SONAME OFF)
-        SWIG_LINK_LIBRARIES(JupiterJava ${SHARED_LIBS})
+    if(ANDROID)
+        # Java
+        if(WITH_JAVA_WRAPPER)
+            SWIG_ADD_MODULE(JupiterJava java Jupiter.i)
+            set_target_properties(JupiterJava PROPERTIES NO_SONAME OFF)
+            SWIG_LINK_LIBRARIES(JupiterJava ${SHARED_LIBS} android)
+        endif()
+    else()
+        # Java
+        if(WITH_JAVA_WRAPPER)
+            SWIG_ADD_MODULE(JupiterJava java Jupiter.i)
+            set_target_properties(JupiterJava PROPERTIES NO_SONAME OFF)
+            SWIG_LINK_LIBRARIES(JupiterJava ${SHARED_LIBS})
+        endif()
     endif()
 
 endif()

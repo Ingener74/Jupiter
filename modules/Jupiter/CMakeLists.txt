@@ -82,6 +82,7 @@ if(ANDROID)
     set(SOURCES ${SOURCES} 
         src/File-android.cpp
         src/JupiterError-win32.cpp
+        src/IO/AndroidAssetFactory.cpp
     )
 elseif(MINGW)
     set(SOURCES ${SOURCES} 
