@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 2.8.11)
 
 find_package(SWIG)
-include(${SWIG_USE_FILE})
+# include(${SWIG_USE_FILE})
+include(UseSWIG)
 
 find_package(PythonLibs 2.7 REQUIRED)
 include_directories(
     ${PYTHON_INCLUDE_PATH} 
     .
 )
+
+find_package(Java REQUIRED)
+include(UseJava)
 
 set(CMAKE_SWIG_FLAGS "-c++")
 
@@ -34,6 +38,12 @@ if(WITH_PYTHON_WRAPPER)
     SWIG_ADD_MODULE(JupiterPython python Jupiter.i)
     SWIG_LINK_LIBRARIES(JupiterPython ${SHARED_LIBS} ${PYTHON_LIBRARIES})
 endif()
+
+# Java
+#if(WITH_JAVA_WRAPPER)
+#    SWIG_ADD_MODULE(JupiterJava java Jupiter.i)
+#    SWIG_LINK_LIBRARIES(JupiterJava ${SHARED_LIBS})
+#endif()
 
 ################################################################################################
 # GLFW

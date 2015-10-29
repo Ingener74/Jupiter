@@ -110,7 +110,7 @@ add_library(${PROJECT_NAME} ${SOURCES})
 #  подсмотрено здесь https://github.com/nlohmann/json/blob/master/test/unit.cpp
 # 
 
-# TODO if jupiter shader, then link
+# TODO if jupiter shared, then link
 set(LIBS
     ${OPENGL_LIBRARIES}
     ${GLEW_LIB}
@@ -121,8 +121,17 @@ target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)
 install(DIRECTORY include DESTINATION Jupiter)
 
-add_executable(JupiterTests tests/main.cpp)
-target_link_libraries(JupiterTests Jupiter gmock gtest pthread gmock_main gtest_main)
+if(MINGW OR MSYS)
+elseif(EMSCRIPTEN)
+elseif(ANDROID)
+elseif(APPLE)
+    add_executable(JupiterTests tests/main.cpp)
+    target_link_libraries(JupiterTests Jupiter gmock gtest pthread gmock_main gtest_main)
+else()
+    add_executable(JupiterTests tests/main.cpp)
+    target_link_libraries(JupiterTests Jupiter gmock gtest pthread gmock_main gtest_main)
+endif()
+
 
 
 

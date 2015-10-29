@@ -3,6 +3,8 @@
     %module(directors="1") JupiterPython
 #elif defined(SWIGLUA)
     %module(directors="1") JupiterLua
+#elif defined(SWIGJAVA)
+    %module(directors="1") JupiterJava
 #else
     #warning no tupemaps
 #endif
