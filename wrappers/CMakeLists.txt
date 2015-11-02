@@ -27,13 +27,16 @@ set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
 
 add_subdirectory(Jupiter)
 
+set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
+
 add_subdirectory(glfw)
 
 add_subdirectory(glew)
-
-add_subdirectory(gl)
 
 add_subdirectory(glm)
 
 add_subdirectory(Box2D)
 
+add_subdirectory(gl)
+
+set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)

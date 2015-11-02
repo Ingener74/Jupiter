@@ -64,18 +64,24 @@ option(WITH_GAME_PLAYER           "Build with c++ game player"       ON)
                                                                      
 option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"        ON)
 option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"           ON)
+option(WITH_GLFW_JAVA_WRAPPER     "Build GLFW Java Wrapper"          ON)
+option(WITH_GLFW_CSHARP_WRAPPER   "Build GLFW C# Wrapper"            ON)
                                                                      
 option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"        ON)
 option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"           ON)
+option(WITH_GLEW_CSHARP_WRAPPER   "Build GLEW C# Wrapper"            ON)
                                                                      
 option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"          ON)
 option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"             ON)
+option(WITH_GL_CSHARP_WRAPPER     "Build GL C# Wrapper"              ON)
                                                                      
 option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"         ON)
 option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"            ON)
                                                                      
 option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"       ON)
 option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"          ON)
+option(WITH_BOX2D_JAVA_WRAPPER    "Build Box2D Java Wrapper"         ON)
+option(WITH_BOX2D_CSHARP_WRAPPER  "Build Box2D C# Wrapper"           ON)
 
 # Под Android эти программы не собираем
 if(NOT ANDROID)
