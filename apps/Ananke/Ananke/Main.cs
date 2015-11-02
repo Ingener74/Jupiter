@@ -5,26 +5,25 @@ namespace Ananke
 	public class MainClass: MonoGLo
 	{
 		public static Game game;
+		public static int width = 800;
+		public static int height = 480;
 
 		public static Game init()
 		{
-			JupiterCSHARP.startJupiter ();
-
-			var width = 800;
-			var height = 480;
-
 			glViewport (0, 0, width, height);
 			glEnable (GL_TEXTURE_2D);
 			glEnable (GL_DEPTH_TEST);
 			glEnable (GL_BLEND);
 			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+			JupiterCSHARP.startJupiter ();
+
 			File.setBase("../../../samples/Box");
 
 			var shader = new FileShader(new File("Resources/sprite.vs"), new File("Resources/sprite.fs"));
 
-			var bgImage   = new PngImage("Resources/bg.png");
-			var bg        = new Transform();
+			var bgImage = new PngImage("Resources/bg.png");
+			var bg = new Transform ();
 			bg.translate(0, 0, -1);
 			bg.setScaleF(0.02f);
 			bg.addNode(new Sprite(new ImageTexture(bgImage), new ImageShape(bgImage), shader));
@@ -62,18 +61,14 @@ namespace Ananke
 			glViewport(0, 0, w, h);
 		}
 
-		public static void Main (string[] args)
+		public static void Main ()
 		{
-			if (args.Length == 0)
-			{
-				args=new string [1];
-				args[0]="Material.exe";
-			}
+			var args = new string [1]{"Ananke.exe"};
+			var argc = args.Length;
 
-			int argc=args.Length;
-			glutInit(ref argc, args);	
+			glutInit(ref argc, args);
 			glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-			glutInitWindowSize(800, 480);       
+			glutInitWindowSize(width, height);
 			glutCreateWindow("Ananke - C# game player");
 			game = init();
 			glutDisplayFunc(new GlutDisplayFuncCallback(display));
