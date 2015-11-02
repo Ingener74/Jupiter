@@ -12,7 +12,7 @@ set(SOURCES
     src/File.cpp
     src/FileFactory.cpp
     
-    src/Game.cpp
+    src/Games/Game.cpp
     
     src/Tools.cpp
     src/Texture.cpp
@@ -88,6 +88,7 @@ elseif(MINGW)
     set(SOURCES ${SOURCES} 
         src/File-default.cpp
         src/JupiterError-win32.cpp
+        src/Games/GamePython.cpp
     )
 elseif(EMSCRIPTEN)
     set(SOURCES ${SOURCES} 
@@ -98,6 +99,7 @@ else()
     set(SOURCES ${SOURCES} 
         src/File-default.cpp
         src/JupiterError-linux.cpp
+        src/Games/GamePython.cpp
     )
 endif()
 
@@ -106,6 +108,20 @@ else()
     add_definitions(-fPIC)
 endif()
 
+# TODO if jupiter shared, then link
+set(LIBS
+    ${OPENGL_LIBRARIES}
+    ${GLEW_LIB}
+    lodepng
+)
+
+if(NOT ANDROID AND NOT EMSCRIPTEN)
+    find_package(PythonLibs 2.7 REQUIRED)
+    if(PYTHONLIBS_FOUND)
+        include_directories(PYTHON_INCLUDE_DIRS)
+        list(APPEND LIBS ${PYTHON_LIBRARIES})
+    endif()
+endif()
 
 add_library(${PROJECT_NAME} ${SOURCES})
 
@@ -115,12 +131,6 @@ add_library(${PROJECT_NAME} ${SOURCES})
 #  подсмотрено здесь https://github.com/nlohmann/json/blob/master/test/unit.cpp
 # 
 
-# TODO if jupiter shared, then link
-set(LIBS
-    ${OPENGL_LIBRARIES}
-    ${GLEW_LIB}
-    lodepng
-)
 target_link_libraries(${PROJECT_NAME} lodepng ${LIBS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION Jupiter/lib)

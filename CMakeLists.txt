@@ -53,31 +53,36 @@ option(FIND_PACKAGE_LIBPNG        "force find_package for libpng"    OFF)
 option(FIND_PACKAGE_OGG           "force find package for Ogg"       OFF)
 option(FIND_PACKAGE_VORBIS        "force find package for Vorbis"    OFF)
 
+# Cобирать ли вообще обёртки
 option(WITH_WRAPPERS              "Wrapper"                          ON)
+
+# Собирать ли обёртки для Юпитера на разных языках
 option(WITH_LUA_WRAPPER           "Lua wrapper"                      ON)
 option(WITH_PYTHON_WRAPPER        "Python wrapper"                   ON)
 option(WITH_JAVA_WRAPPER          "Java wrapper"                     ON)
 option(WITH_CSHARP_WRAPPER        "C# wrapper"                       ON)
-                                                                     
-option(WITH_GANIMEDE              "Build Ganimede"                   OFF)
-option(WITH_GAME_PLAYER           "Build with c++ game player"       ON)
-                                                                     
+
+# Собирать ли Калисто
+option(WITH_CALLISTO              "Build Callisto C++ Game Player"   ON)
+
 option(WITH_GLFW_PYTHON_WRAPPER   "Build GLFW Python Wrapper"        ON)
 option(WITH_GLFW_LUA_WRAPPER      "Build GLFW Lua Wrapper"           ON)
 option(WITH_GLFW_JAVA_WRAPPER     "Build GLFW Java Wrapper"          ON)
 option(WITH_GLFW_CSHARP_WRAPPER   "Build GLFW C# Wrapper"            ON)
-                                                                     
+
 option(WITH_GLEW_PYTHON_WRAPPER   "Build GLEW Python Wrapper"        ON)
 option(WITH_GLEW_LUA_WRAPPER      "Build GLEW Lua Wrapper"           ON)
+option(WITH_GLEW_JAVA_WRAPPER     "Build GLEW Java Wrapper"          ON)
 option(WITH_GLEW_CSHARP_WRAPPER   "Build GLEW C# Wrapper"            ON)
-                                                                     
+
 option(WITH_GL_PYTHON_WRAPPER     "Build GL Python Wrapper"          ON)
 option(WITH_GL_LUA_WRAPPER        "Build GL Lua Wrapper"             ON)
+option(WITH_GL_JAVA_WRAPPER       "Build GL Java Wrapper"            ON)
 option(WITH_GL_CSHARP_WRAPPER     "Build GL C# Wrapper"              ON)
-                                                                     
+
 option(WITH_GLM_PYTHON_WRAPPER    "Build glm Python Wrapper"         ON)
 option(WITH_GLM_LUA_WRAPPER       "Build glm Lua Wrapper"            ON)
-                                                                     
+
 option(WITH_BOX2D_PYTHON_WRAPPER  "Build Box2D Python Wrapper"       ON)
 option(WITH_BOX2D_LUA_WRAPPER     "Build Box2D Lua Wrapper"          ON)
 option(WITH_BOX2D_JAVA_WRAPPER    "Build Box2D Java Wrapper"         ON)
@@ -106,10 +111,12 @@ endif()
 
 set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
 
+# Место куда будут складываться собранные части
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/lib)
 
+# Дополнительные флаги
 if(MINGW OR MSYS)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
@@ -125,15 +132,16 @@ elseif(ANDROID)
 else()
 endif()
 
+# Собираем зависимости
 add_subdirectory(3rdparty)
 
+# Собираем включения
 include_directories(
     3rdparty/json/src
     3rdparty/lodepng
     
     common/include
     modules/Jupiter/include
-    modules/Ganymede/include
     
     ${3RDPARTY_INSTALL}/include
 )
@@ -224,7 +232,7 @@ endif()
 
 # Boost
 set(BOOST_LIB)
-if(WITH_GAME_PLAYER)
+if(WITH_CALLISTO)
     if(FIND_PACKAGE_BOOST)
     
         if(MINGW)

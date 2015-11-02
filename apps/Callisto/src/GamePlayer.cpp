@@ -8,14 +8,12 @@
 #include "GamePlayer.h"
 
 #include <Jupiter.h>
-//#include <Ganymede/Ganimede.h>
 
 using namespace std;
 using namespace glm;
 using namespace boost::filesystem;
 using namespace boost::program_options;
 
-//using namespace ganymede;
 using namespace jupiter;
 
 template<typename T>

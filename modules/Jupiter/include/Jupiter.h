@@ -10,11 +10,16 @@
 
 #include "Jupiter/JupiterError.h"
 #include "Jupiter/Tools.h"
-#include "Jupiter/Game.h"
 #include "Jupiter/Sprite.h"
 #include "Jupiter/Image.h"
 #include "Jupiter/Texture.h"
 #include "Jupiter/File.h"
+
+#include "Jupiter/Game.h"
+
+#if !defined(ANDROID) && !defined(EMSCRIPTEN)
+    #include "Jupiter/Games/GamePython.h"
+#endif
 
 #include "Jupiter/Node.h"
 #include "Jupiter/DrawNode.h"

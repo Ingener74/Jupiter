@@ -26,4 +26,11 @@ if (NOT ANDROID AND NOT EMSCRIPTEN)
         SWIG_LINK_LIBRARIES(glewCSharp ${OPENGL_LIBRARIES} ${GLEW_LIB})
     endif()
 
+    if(WITH_GLEW_JAVA_WRAPPER)
+        set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin/GLEW/Java)
+    
+        SWIG_ADD_MODULE(glewJava java glew.i)
+        SWIG_LINK_LIBRARIES(glewJava ${OPENGL_LIBRARIES} ${GLEW_LIB})
+    endif()
+
 endif()
