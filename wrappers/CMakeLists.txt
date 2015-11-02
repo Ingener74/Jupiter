@@ -6,9 +6,6 @@ include(UseSWIG)
 if(NOT ANDROID AND NOT EMSCRIPTEN)
     find_package(PythonLibs 2.7 REQUIRED)
 endif()
-#include_directories(
-#    .
-#)
 
 find_package(Java REQUIRED)
 if(NOT ANDROID AND NOT EMSCRIPTEN)
@@ -23,11 +20,8 @@ include_directories(
 )
 
 set(CMAKE_SWIG_FLAGS "-c++")
-set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
 
 add_subdirectory(Jupiter)
-
-set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
 
 add_subdirectory(glfw)
 
@@ -38,5 +32,3 @@ add_subdirectory(glm)
 add_subdirectory(Box2D)
 
 add_subdirectory(gl)
-
-set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin)
