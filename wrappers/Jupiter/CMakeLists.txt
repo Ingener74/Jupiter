@@ -44,6 +44,12 @@ if (NOT ANDROID AND NOT EMSCRIPTEN)
         SWIG_ADD_MODULE(JupiterPython python Jupiter.i)
         SWIG_LINK_LIBRARIES(JupiterPython ${SHARED_LIBS} ${PYTHON_LIBRARIES})
     endif()
+    
+    # C#
+    if(WITH_CSHARP_WRAPPER)
+        SWIG_ADD_MODULE(JupiterCSharp csharp Jupiter.i)
+        SWIG_LINK_LIBRARIES(JupiterCSharp ${SHARED_LIBS})
+    endif()
 
 endif()
 

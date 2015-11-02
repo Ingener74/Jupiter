@@ -57,6 +57,7 @@ option(WITH_WRAPPERS              "Wrapper"                          ON)
 option(WITH_LUA_WRAPPER           "Lua wrapper"                      ON)
 option(WITH_PYTHON_WRAPPER        "Python wrapper"                   ON)
 option(WITH_JAVA_WRAPPER          "Java wrapper"                     ON)
+option(WITH_CSHARP_WRAPPER        "C# wrapper"                       ON)
                                                                      
 option(WITH_GANIMEDE              "Build Ganimede"                   OFF)
 option(WITH_GAME_PLAYER           "Build with c++ game player"       ON)

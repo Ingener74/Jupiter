@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ananke", "Ananke\Ananke.csproj", "{FD24C0C9-8F55-40B1-9E54-86105F12DBD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlidingDagger", "SlidingDagger\SlidingDagger.csproj", "{F225C673-E9B0-4611-917C-0337C3C3AC49}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F225C673-E9B0-4611-917C-0337C3C3AC49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F225C673-E9B0-4611-917C-0337C3C3AC49}.Debug|x86.Build.0 = Debug|Any CPU
+		{F225C673-E9B0-4611-917C-0337C3C3AC49}.Release|x86.ActiveCfg = Release|Any CPU
+		{F225C673-E9B0-4611-917C-0337C3C3AC49}.Release|x86.Build.0 = Release|Any CPU
+		{FD24C0C9-8F55-40B1-9E54-86105F12DBD9}.Debug|x86.ActiveCfg = Debug|x86
+		{FD24C0C9-8F55-40B1-9E54-86105F12DBD9}.Debug|x86.Build.0 = Debug|x86
+		{FD24C0C9-8F55-40B1-9E54-86105F12DBD9}.Release|x86.ActiveCfg = Release|x86
+		{FD24C0C9-8F55-40B1-9E54-86105F12DBD9}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Ananke\Ananke.csproj
+	EndGlobalSection
+EndGlobal
