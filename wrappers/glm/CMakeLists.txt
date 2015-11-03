@@ -11,6 +11,7 @@ if (NOT ANDROID AND NOT EMSCRIPTEN)
     #endif()
     
     if(WITH_GLM_PYTHON_WRAPPER)
+        set(CMAKE_SWIG_OUTDIR ${3RDPARTY_INSTALL}/bin/glm/Python)
         SWIG_ADD_MODULE(glmPython python glm.i)
         SWIG_LINK_LIBRARIES(glmPython ${OPENGL_LIBRARIES} ${GLEW_LIB} ${PYTHON_LIBRARIES})
     endif()

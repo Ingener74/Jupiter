@@ -3,6 +3,10 @@
     %module glPython
 #elif defined(SWIGLUA)
     %module glLua
+#elif defined(SWIGCSHARP)
+    %module glCSharp
+#elif defined(SWIGJAVA)
+    %module glJava
 #else
     #warning no tupemaps
 #endif

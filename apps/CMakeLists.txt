@@ -11,7 +11,7 @@ else()
         add_subdirectory(Test)
     endif()
     
-    if(WITH_GAME_PLAYER)
+    if(WITH_CALLISTO)
         add_subdirectory(Callisto)
     endif()
 

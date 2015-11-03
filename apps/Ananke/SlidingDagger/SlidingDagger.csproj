@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F225C673-E9B0-4611-917C-0337C3C3AC49}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SlidingDagger</RootNamespace>
+    <AssemblyName>SlidingDagger</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Animation.cs">
+      <Link>Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Attribute.cs">
+      <Link>Attribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Body.cs">
+      <Link>Body.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Buffer.cs">
+      <Link>Buffer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\BufferFactory.cs">
+      <Link>BufferFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Camera.cs">
+      <Link>Camera.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Circle.cs">
+      <Link>Circle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\CircleShape.cs">
+      <Link>CircleShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\CollisionListener.cs">
+      <Link>CollisionListener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\ComplexShape.cs">
+      <Link>ComplexShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\DistanceJoint.cs">
+      <Link>DistanceJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\DrawNode.cs">
+      <Link>DrawNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\File.cs">
+      <Link>File.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\FileFactory.cs">
+      <Link>FileFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\FileShader.cs">
+      <Link>FileShader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\FrictionJoint.cs">
+      <Link>FrictionJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\GearJoint.cs">
+      <Link>GearJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Image.cs">
+      <Link>Image.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\ImageShape.cs">
+      <Link>ImageShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\ImageTexture.cs">
+      <Link>ImageTexture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Joint.cs">
+      <Link>Joint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\JupiterCSHARP.cs">
+      <Link>JupiterCSHARP.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\JupiterCSHARPPINVOKE.cs">
+      <Link>JupiterCSHARPPINVOKE.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\JupiterError.cs">
+      <Link>JupiterError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\KeyboardListener.cs">
+      <Link>KeyboardListener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Listener.cs">
+      <Link>Listener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\MotorJoint.cs">
+      <Link>MotorJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\MouseJoint.cs">
+      <Link>MouseJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\MoveAnimation.cs">
+      <Link>MoveAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\MoveListener.cs">
+      <Link>MoveListener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Node.cs">
+      <Link>Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\NodeVisitor.cs">
+      <Link>NodeVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Ortho.cs">
+      <Link>Ortho.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Perspective.cs">
+      <Link>Perspective.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Physics.cs">
+      <Link>Physics.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PhysicsBodyEditorAtlas.cs">
+      <Link>PhysicsBodyEditorAtlas.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PhysicsBodyEditorShape.cs">
+      <Link>PhysicsBodyEditorShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PhysicsShape.cs">
+      <Link>PhysicsShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PngImage.cs">
+      <Link>PngImage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PoligonShape.cs">
+      <Link>PoligonShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PrintVisitor.cs">
+      <Link>PrintVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PrismaticJoint.cs">
+      <Link>PrismaticJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\PulleyJoint.cs">
+      <Link>PulleyJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RCO.cs">
+      <Link>RCO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RenderBatch.cs">
+      <Link>RenderBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RenderData.cs">
+      <Link>RenderData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RenderVisitor.cs">
+      <Link>RenderVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RevoluteJoint.cs">
+      <Link>RevoluteJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RopeJoint.cs">
+      <Link>RopeJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\RotationListener.cs">
+      <Link>RotationListener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\ScaleListener.cs">
+      <Link>ScaleListener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Shader.cs">
+      <Link>Shader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Shape.cs">
+      <Link>Shape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Sprite.cs">
+      <Link>Sprite.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2Body.cs">
+      <Link>SWIGTYPE_p_b2Body.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2BodyDef.cs">
+      <Link>SWIGTYPE_p_b2BodyDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2DistanceJoint.cs">
+      <Link>SWIGTYPE_p_b2DistanceJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2DistanceJointDef.cs">
+      <Link>SWIGTYPE_p_b2DistanceJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2Fixture.cs">
+      <Link>SWIGTYPE_p_b2Fixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2FixtureDef.cs">
+      <Link>SWIGTYPE_p_b2FixtureDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2FrictionJoint.cs">
+      <Link>SWIGTYPE_p_b2FrictionJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2FrictionJointDef.cs">
+      <Link>SWIGTYPE_p_b2FrictionJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2GearJoint.cs">
+      <Link>SWIGTYPE_p_b2GearJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2GearJointDef.cs">
+      <Link>SWIGTYPE_p_b2GearJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2JointDef.cs">
+      <Link>SWIGTYPE_p_b2JointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2MotorJoint.cs">
+      <Link>SWIGTYPE_p_b2MotorJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2MotorJointDef.cs">
+      <Link>SWIGTYPE_p_b2MotorJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2MouseJoint.cs">
+      <Link>SWIGTYPE_p_b2MouseJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2MouseJointDef.cs">
+      <Link>SWIGTYPE_p_b2MouseJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2PrismaticJoint.cs">
+      <Link>SWIGTYPE_p_b2PrismaticJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2PrismaticJointDef.cs">
+      <Link>SWIGTYPE_p_b2PrismaticJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2PulleyJoint.cs">
+      <Link>SWIGTYPE_p_b2PulleyJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2PulleyJointDef.cs">
+      <Link>SWIGTYPE_p_b2PulleyJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2RevoluteJoint.cs">
+      <Link>SWIGTYPE_p_b2RevoluteJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2RevoluteJointDef.cs">
+      <Link>SWIGTYPE_p_b2RevoluteJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2RopeJoint.cs">
+      <Link>SWIGTYPE_p_b2RopeJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2RopeJointDef.cs">
+      <Link>SWIGTYPE_p_b2RopeJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2Vec2.cs">
+      <Link>SWIGTYPE_p_b2Vec2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2WeldJoint.cs">
+      <Link>SWIGTYPE_p_b2WeldJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2WeldJointDef.cs">
+      <Link>SWIGTYPE_p_b2WeldJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2WheelJoint.cs">
+      <Link>SWIGTYPE_p_b2WheelJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2WheelJointDef.cs">
+      <Link>SWIGTYPE_p_b2WheelJointDef.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_b2World.cs">
+      <Link>SWIGTYPE_p_b2World.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_Body.cs">
+      <Link>SWIGTYPE_p_Body.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_DistanceJoint.cs">
+      <Link>SWIGTYPE_p_DistanceJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_FrictionJoint.cs">
+      <Link>SWIGTYPE_p_FrictionJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_GearJoint.cs">
+      <Link>SWIGTYPE_p_GearJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_GLenum.cs">
+      <Link>SWIGTYPE_p_GLenum.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_glm__mat4.cs">
+      <Link>SWIGTYPE_p_glm__mat4.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_glm__mat4x4.cs">
+      <Link>SWIGTYPE_p_glm__mat4x4.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_glm__quat.cs">
+      <Link>SWIGTYPE_p_glm__quat.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_glm__vec3.cs">
+      <Link>SWIGTYPE_p_glm__vec3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_Joint.cs">
+      <Link>SWIGTYPE_p_Joint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_ModelGetter.cs">
+      <Link>SWIGTYPE_p_ModelGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_MotorJoint.cs">
+      <Link>SWIGTYPE_p_MotorJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_MouseJoint.cs">
+      <Link>SWIGTYPE_p_MouseJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_nlohmann__json.cs">
+      <Link>SWIGTYPE_p_nlohmann__json.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_PrismaticJoint.cs">
+      <Link>SWIGTYPE_p_PrismaticJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_ProjectionGetter.cs">
+      <Link>SWIGTYPE_p_ProjectionGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_PulleyJoint.cs">
+      <Link>SWIGTYPE_p_PulleyJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_RevoluteJoint.cs">
+      <Link>SWIGTYPE_p_RevoluteJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_RopeJoint.cs">
+      <Link>SWIGTYPE_p_RopeJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_SpriteBody.cs">
+      <Link>SWIGTYPE_p_SpriteBody.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__istream.cs">
+      <Link>SWIGTYPE_p_std__istream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__listT_jupiter__NodeVisitor_p_t.cs">
+      <Link>SWIGTYPE_p_std__listT_jupiter__NodeVisitor_p_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__listT_RefT_jupiter__NodeVisitor_t_t.cs">
+      <Link>SWIGTYPE_p_std__listT_RefT_jupiter__NodeVisitor_t_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__vectorT_float_t.cs">
+      <Link>SWIGTYPE_p_std__vectorT_float_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__vectorT_jupiter__Circle_t.cs">
+      <Link>SWIGTYPE_p_std__vectorT_jupiter__Circle_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__vectorT_std__vectorT_b2Vec2_t_t.cs">
+      <Link>SWIGTYPE_p_std__vectorT_std__vectorT_b2Vec2_t_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_std__vectorT_uint8_t_t.cs">
+      <Link>SWIGTYPE_p_std__vectorT_uint8_t_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_uint32_t.cs">
+      <Link>SWIGTYPE_p_uint32_t.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_VertexComponent.cs">
+      <Link>SWIGTYPE_p_VertexComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_ViewGetter.cs">
+      <Link>SWIGTYPE_p_ViewGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_VisualBody.cs">
+      <Link>SWIGTYPE_p_VisualBody.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_void.cs">
+      <Link>SWIGTYPE_p_void.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_WeldJoint.cs">
+      <Link>SWIGTYPE_p_WeldJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\SWIGTYPE_p_WheelJoint.cs">
+      <Link>SWIGTYPE_p_WheelJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Texture.cs">
+      <Link>Texture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Tools.cs">
+      <Link>Tools.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Transform.cs">
+      <Link>Transform.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\Uniform.cs">
+      <Link>Uniform.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\VisualBody.cs">
+      <Link>VisualBody.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\WeldJoint.cs">
+      <Link>WeldJoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\build\install\bin\Jupiter\CSharp\WheelJoint.cs">
+      <Link>WheelJoint.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

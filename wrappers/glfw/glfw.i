@@ -3,6 +3,10 @@
     %module glfwPython
 #elif defined(SWIGLUA)
     %module glfwLua
+#elif defined(SWIGJAVA)
+    %module glfwJava
+#elif defined(SWIGCSHARP)
+    %module glfwCSharp
 #else
     #warning no tupemaps
 #endif

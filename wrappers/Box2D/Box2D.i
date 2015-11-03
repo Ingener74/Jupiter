@@ -3,6 +3,10 @@
     %module(directors="1") Box2DPython
 #elif defined(SWIGLUA)
     %module(directors="1") Box2DLua
+#elif defined(SWIGJAVA)
+    %module(directors="1") Box2DJava
+#elif defined(SWIGCSHARP)
+    %module(directors="1") Box2DCSharp
 #else
     #warning no tupemaps
 #endif
@@ -29,6 +33,34 @@ Box2D/Common/b2Math.h:494: Warning 503: Can't wrap 'operator -' unless renamed t
 Box2D/Common/b2Math.h:511: Warning 503: Can't wrap 'operator +' unless renamed to a valid identifier.
 */
 #pragma SWIG nowarn=509,503
+
+/*
+b2Body.h:357: Warning 516: Overloaded method b2Body::GetFixtureList() const ignored,
+b2Body.h:356: Warning 516: using b2Body::GetFixtureList() instead.
+b2Body.h:361: Warning 516: Overloaded method b2Body::GetJointList() const ignored,
+b2Body.h:360: Warning 516: using b2Body::GetJointList() instead.
+b2Body.h:367: Warning 516: Overloaded method b2Body::GetContactList() const ignored,
+b2Body.h:366: Warning 516: using b2Body::GetContactList() instead.
+b2Body.h:371: Warning 516: Overloaded method b2Body::GetNext() const ignored,
+b2Body.h:370: Warning 516: using b2Body::GetNext() instead.
+b2Body.h:381: Warning 516: Overloaded method b2Body::GetWorld() const ignored,
+b2Body.h:380: Warning 516: using b2Body::GetWorld() instead.
+b2Fixture.h:118: Warning 516: Overloaded method b2Fixture::GetShape() const ignored,
+b2Fixture.h:117: Warning 516: using b2Fixture::GetShape() instead.
+b2Fixture.h:141: Warning 516: Overloaded method b2Fixture::GetBody() const ignored,
+b2Fixture.h:140: Warning 516: using b2Fixture::GetBody() instead.
+b2Fixture.h:146: Warning 516: Overloaded method b2Fixture::GetNext() const ignored,
+b2Fixture.h:145: Warning 516: using b2Fixture::GetNext() instead.
+b2World.h:128: Warning 516: Overloaded method b2World::GetBodyList() const ignored,
+b2World.h:127: Warning 516: using b2World::GetBodyList() instead.
+b2World.h:134: Warning 516: Overloaded method b2World::GetJointList() const ignored,
+b2World.h:133: Warning 516: using b2World::GetJointList() instead.
+b2World.h:142: Warning 516: Overloaded method b2World::GetContactList() const ignored,
+b2World.h:141: Warning 516: using b2World::GetContactList() instead.
+Joints/b2Joint.h:130: Warning 516: Overloaded method b2Joint::GetNext() const ignored,
+Joints/b2Joint.h:129: Warning 516: using b2Joint::GetNext() instead.
+*/
+#pragma SWIG nowarn=516,
 
 %include <Box2D/Common/b2Math.h>
 %include <Box2D/Common/b2Settings.h>

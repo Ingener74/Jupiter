@@ -9,7 +9,7 @@ add_library(lodepng lodepng/lodepng.cpp)
 
 include(ExternalProject)
 
-if(NOT FIND_PACKAGE_BOOST AND WITH_GAME_PLAYER)
+if(NOT FIND_PACKAGE_BOOST AND WITH_CALLISTO)
     add_subdirectory(boost)
 endif()
 

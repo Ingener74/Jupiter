@@ -5,6 +5,8 @@
     %module(directors="1") JupiterLua
 #elif defined(SWIGJAVA)
     %module(directors="1") JupiterJava
+#elif defined(SWIGCSHARP)
+    %module(directors="1") JupiterCSHARP
 #else
     #warning no tupemaps
 #endif
@@ -36,6 +38,20 @@
 // PrintVisitor.h(28) : Warning 314: 'end' is a Lua keyword, renaming to 'c_end'
 // Physics.h(33) : Warning 314: 'end' is a Lua keyword, renaming to 'c_end'
 #pragma SWIG nowarn=314
+
+// Sprite.h:31: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Sprite.h:42: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Transform.h:37: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Transform.h:38: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Camera.h:54: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Camera.h:56: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Body.h:37: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Body.h:39: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// Body.h:41: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// VisualBody.h:26: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// VisualBody.h:28: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+// VisualBody.h:30: Warning 842: Covariant return types not supported in C#. Proxy method will return jupiter::Node *.
+#pragma SWIG nowarn=842
 
 %{
 #include "Jupiter.h"
