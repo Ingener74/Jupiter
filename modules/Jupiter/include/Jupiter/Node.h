@@ -9,7 +9,6 @@
 #define MODULES_JUPITER_INCLUDE_JUPITER_NODE_H_
 
 #ifdef SWIG
-    #pragma SWIG nowarn=362
 #else
     #include <list>
     #include <string>
