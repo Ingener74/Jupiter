@@ -7,11 +7,10 @@
 
 #include <string>
 
-#ifdef ANDROID
-    #include <GLES2/gl2.h>
-#else
+#ifndef ANDROID
     #include <GL/glew.h>
 #endif
+#include <CrossPlatformOpenGL.h>
 
 #include "Jupiter.h"
 

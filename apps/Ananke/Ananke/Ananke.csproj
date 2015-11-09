@@ -34,6 +34,11 @@
     <Compile Include="Main.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MonoGLo">
+      <HintPath>..\..\..\..\MonoGLo-0.2\lib\MonoGLo.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SlidingDagger\SlidingDagger.csproj">
       <Project>{F225C673-E9B0-4611-917C-0337C3C3AC49}</Project>
       <Name>SlidingDagger</Name>
@@ -42,10 +47,5 @@
       <Project>{CBD63DA6-1E72-458C-8ADB-7D56742B9E15}</Project>
       <Name>SurrealCrayon</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="MonoGLo">
-      <HintPath>..\..\..\..\MonoGLo-0.2\lib\MonoGLo.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
