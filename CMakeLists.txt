@@ -326,6 +326,46 @@ else()
     list(APPEND VORBIS_LIB vorbis)
 endif()
 
+# POCO
+#
+# Предупреждение: порядок библиотек в списке не менять, иначе для некоторых платформ может не собраться
+#
+unset(POCO_LIB)
+if(MSVC)
+    set(POCO_LIB
+        PocoDatad
+        PocoJSONd
+        PocoUtild
+        PocoNetd
+        PocoXMLd
+        PocoFoundationd
+        PocoDataSQLited
+    )
+else()
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(POCO_LIB
+            PocoDatad
+            PocoJSONd
+            PocoUtild
+            PocoNetd
+            PocoFoundationd
+            PocoDataSQLited PocoDatad
+            # PocoNetSSLd PocoUtild PocoJSONd PocoCryptod ssl crypto
+        )
+    else()
+        set(POCO_LIB
+            PocoData
+            PocoJSON
+            PocoUtil
+            PocoNet
+            PocoFoundation
+            PocoDataSQLite PocoData
+            # PocoNetSSL PocoUtil PocoJSON PocoCrypto ssl crypto
+        )
+    endif()
+endif()
+
+
 add_definitions(-std=c++11)
 
 add_subdirectory(apps)

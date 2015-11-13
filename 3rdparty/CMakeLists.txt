@@ -50,6 +50,8 @@ if(NOT FIND_PACKAGE_VORBIS)
     add_subdirectory(Vorbis)
 endif()
 
+add_subdirectory(POCO)
+
 add_subdirectory(mpg123)
 
 add_subdirectory(gmock)
