@@ -1,0 +1,5 @@
+/sysroot-android/
+/sysroot-linux/
+/sysroot-msys_mingw/
+/sysroot-emscripten/
+/sysroot-macos/

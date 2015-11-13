@@ -16,9 +16,8 @@ namespace jupiter {
 
 using namespace std;
 
-GamePython::GamePython(File* script) {
-    Py_Initialize();
-    PyRun_SimpleString(reinterpret_cast<const char*>(script->getBuffer().data()));
+GamePython::GamePython(File* script) :
+    GamePython(reinterpret_cast<const char*>(script->getBuffer().data())) {
 }
 
 GamePython::GamePython(const std::string& script) {

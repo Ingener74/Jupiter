@@ -3,16 +3,22 @@ cmake_minimum_required(VERSION 2.8.11)
 # include modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
 
+unset(BUILD_PLATFORM)
 if(MINGW OR MSYS)
     message(STATUS "MinGW or MSYS build")
+    set(BUILD_PLATFORM msys_mingw)
 elseif(EMSCRIPTEN)
     message(STATUS "Emscripten build")
+    set(BUILD_PLATFORM emscripten)
 elseif(ANDROID)
     message(STATUS "Android build")
+    set(BUILD_PLATFORM android)
 elseif(APPLE)
     message(STATUS "MacOS build")
+    set(BUILD_PLATFORM macos)
 else()
     message(STATUS "Linux build")
+    set(BUILD_PLATFORM linux)
 endif()
 
 if(MINGW OR MSYS)
@@ -109,12 +115,10 @@ else()
     list(APPEND OPENGL_LIB GLESv2 EGL)
 endif()
 
-set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
+set(SYSROOT ${CMAKE_SOURCE_DIR}/3rdparty/sysroot-${BUILD_PLATFORM})
 
-# Место куда будут складываться собранные части
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/lib)
+# set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
+set(3RDPARTY_INSTALL ${SYSROOT})
 
 # Дополнительные флаги
 if(MINGW OR MSYS)
@@ -133,20 +137,29 @@ else()
 endif()
 
 # Собираем зависимости
+if(NOT EXISTS ${SYSROOT})
 add_subdirectory(3rdparty)
+endif()
+
+set(3RDPARTY_INSTALL ${CMAKE_BINARY_DIR}/install)
+
+# Место куда будут складываться собранные части
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${3RDPARTY_INSTALL}/lib)
 
 # Собираем включения
 include_directories(
     3rdparty/json/src
-    3rdparty/lodepng
     
+    modules/lodepng
     common/include
     modules/Jupiter/include
     
-    ${3RDPARTY_INSTALL}/include
+    ${SYSROOT}/include
 )
 
-link_directories(${3RDPARTY_INSTALL}/lib)
+link_directories(${SYSROOT}/lib)
 
 # Libraries sets
 

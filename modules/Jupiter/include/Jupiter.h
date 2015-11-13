@@ -17,8 +17,14 @@
 
 #include "Jupiter/Game.h"
 
-#if !defined(ANDROID) && !defined(EMSCRIPTEN)
-    #include "Jupiter/Games/GamePython.h"
+#ifdef SWIG
+    #if defined(SWIGPYTHON)
+        #include "Jupiter/Games/GamePython.h"
+    #endif
+#else
+    #if !defined(ANDROID) && !defined(EMSCRIPTEN)
+        #include "Jupiter/Games/GamePython.h"
+    #endif
 #endif
 
 #include "Jupiter/Node.h"

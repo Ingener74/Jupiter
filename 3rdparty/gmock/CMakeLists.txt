@@ -11,6 +11,7 @@ elseif(APPLE)
         URL                 https://googlemock.googlecode.com/files/gmock-1.7.0.zip
         CMAKE_ARGS          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         INSTALL_COMMAND     mkdir -p ${3RDPARTY_INSTALL}/include && 
+                            mkdir -p ${3RDPARTY_INSTALL}/lib &&
                             cp -R ${CMAKE_BINARY_DIR}/3rdparty/gmock/${EXT_GMOCK}-prefix/src/${EXT_GMOCK}/include ${3RDPARTY_INSTALL} &&
                             cp -R ${CMAKE_BINARY_DIR}/3rdparty/gmock/${EXT_GMOCK}-prefix/src/${EXT_GMOCK}/gtest/include ${3RDPARTY_INSTALL} &&
                             cp -R ${CMAKE_BINARY_DIR}/3rdparty/gmock/${EXT_GMOCK}-prefix/src/${EXT_GMOCK}-build/libgmock.a ${3RDPARTY_INSTALL}/lib && 
@@ -24,6 +25,8 @@ else()
         URL                 https://googlemock.googlecode.com/files/gmock-1.7.0.zip
         CMAKE_ARGS          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         INSTALL_COMMAND     mkdir -p ${3RDPARTY_INSTALL}/include && 
+                            mkdir -p ${3RDPARTY_INSTALL}/include/gmock &&
+                            mkdir -p ${3RDPARTY_INSTALL}/lib &&
                             cp -R ${CMAKE_BINARY_DIR}/3rdparty/gmock/${EXT_GMOCK}-prefix/src/${EXT_GMOCK}/include ${3RDPARTY_INSTALL} &&
                             cp -R ${CMAKE_BINARY_DIR}/3rdparty/gmock/${EXT_GMOCK}-prefix/src/${EXT_GMOCK}/gtest/include ${3RDPARTY_INSTALL} &&
                             cp -R ${CMAKE_BINARY_DIR}/3rdparty/gmock/${EXT_GMOCK}-prefix/src/${EXT_GMOCK}-build/libgmock.a ${3RDPARTY_INSTALL}/lib && 
