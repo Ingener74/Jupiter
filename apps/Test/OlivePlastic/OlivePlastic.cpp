@@ -61,14 +61,25 @@ private:
 
 class OutputStreamBuffer: public streambuf{
 public:
-//    const size_t StartSize = 1<<13; // 8 Килобайт
+    const size_t startSize = 1<<12; // 4 Килобайт
 //    const size_t StartSize = 1<<24; // 16 Мегабайт
-    const size_t startSize = 1<<26; // 67 Мегабайт
+//    const size_t startSize = 1<<26; // 67 Мегабайт
     OutputStreamBuffer() :
         _buffer(startSize) {
         setp(reinterpret_cast<char*>(_buffer.data()), reinterpret_cast<char*>(_buffer.data()) + _buffer.size());
     }
     virtual ~OutputStreamBuffer(){}
+
+    virtual int_type overflow(int_type c = traits_type::eof()) {
+        size_t pos = _buffer.size();
+        _buffer.resize(_buffer.size() * 2);
+        setp(reinterpret_cast<char*>(_buffer.data()), reinterpret_cast<char*>(_buffer.data()) + _buffer.size());
+        pbump(pos);
+        *pptr() = c;
+        pbump(1);
+
+        return traits_type::not_eof(c);
+    }
 
     vector<uint8_t> getBuffer() {
         return vector<uint8_t>{pbase(), pptr()};
