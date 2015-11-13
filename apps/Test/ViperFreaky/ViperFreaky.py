@@ -13,4 +13,9 @@ ns = NextSummer('Inside script')
 
 ns.sayHelloNextSummer()
 
+ns.execPythonScript('''
+from NextSummerPython import NextSummer
+ns = NextSummer('Inside inside script')
+	''')
+
     """)

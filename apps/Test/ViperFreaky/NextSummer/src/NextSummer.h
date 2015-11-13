@@ -23,6 +23,7 @@ public:
 
 private:
     std::string _s;
+    static int _i;
 };
 
 } /* namespace nextsummer */

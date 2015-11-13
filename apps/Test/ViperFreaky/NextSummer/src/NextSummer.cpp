@@ -15,12 +15,16 @@ namespace nextsummer {
 
 using namespace std;
 
+int NextSummer::_i = 0;
+
 NextSummer::NextSummer(std::string const& s): _s(s) {
     cout << __PRETTY_FUNCTION__ << " " << _s << endl;
+    cout << _i++ << endl;
 }
 
 NextSummer::~NextSummer() {
     cout << __PRETTY_FUNCTION__ << " " << _s << endl;
+    cout << --_i << endl;
 }
 
 void NextSummer::sayHelloNextSummer() {
@@ -30,7 +34,7 @@ void NextSummer::sayHelloNextSummer() {
 void NextSummer::execPythonScript(const std::string& script) {
     Py_Initialize();
     PyRun_SimpleString(script.c_str());
-    Py_Finalize();
+    // Py_Finalize();
 }
 
 } /* namespace nextsummer */

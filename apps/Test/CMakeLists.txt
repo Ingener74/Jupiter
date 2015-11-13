@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 include_directories(.)
 
 add_subdirectory(ViperFreaky)
+add_subdirectory(OlivePlastic)
 
 if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     set(LIBS
@@ -67,9 +68,4 @@ if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     endif()
     
     add_subdirectory(test-6)
-    
-    add_executable(OggVorbisOpenAL OggVorbisOpenAL.cpp)
-    target_link_libraries(OggVorbisOpenAL ${OPENAL_LIB} ${OGG_LIB} ${VORBIS_LIB})
-    # add_dependencies(OggVorbisOpenAL ext_Ogg ext_Vorbis)
-
 endif()
