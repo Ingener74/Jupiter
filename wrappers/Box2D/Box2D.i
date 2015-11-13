@@ -11,9 +11,11 @@
     #warning no tupemaps
 #endif
 
-%begin %{
-#include <cmath>
-%}
+#if !defined(SWIGJAVA)
+    %begin %{
+    #include <cmath>
+    %}
+#endif
 
 %{
 #include <Box2D/Box2D.h>

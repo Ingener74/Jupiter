@@ -14,17 +14,10 @@ class OutBuffer: public std::streambuf {
 public:
     OutBuffer() :
         _buffer(100) {
-//        setg(_buffer.data(), _buffer.data(), _buffer.data() + _buffer.size());
         setp(_buffer.data(), _buffer.data() + _buffer.size());
     }
     virtual ~OutBuffer() {
     }
-
-/*
-    virtual int_type pbackfail(int_type __c = traits_type::eof()) {
-        return traits_type::eof();
-    }
-*/
 
     /**
      *  @brief  Consumes data from the buffer; writes to the
@@ -63,7 +56,6 @@ public:
         return traits_type::not_eof(c);
     }
 
-//private:
     std::vector<char> _buffer;
 };
 

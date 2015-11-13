@@ -7,7 +7,9 @@
 
 #include <sstream>
 
-#include <python2.7/Python.h>
+// #include <python2.7/Python.h>
+#include <cmath>
+#include <Python.h>
 
 #include "Jupiter/File.h"
 #include "Jupiter/Games/GamePython.h"

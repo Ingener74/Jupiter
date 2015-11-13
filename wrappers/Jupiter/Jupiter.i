@@ -12,9 +12,9 @@
 #endif
 
 #if !defined(SWIGJAVA)
-%begin %{
-#include <cmath>
-%}
+    %begin %{
+    #include <cmath>
+    %}
 #endif
 
 // #pragma SWIG nowarn=362

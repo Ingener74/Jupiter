@@ -18,7 +18,7 @@ if(MINGW OR MSYS)
                             -DENABLE_PDF=OFF
                             -DENABLE_PAGECOMPILER=OFF
                             -DENABLE_PAGECOMPILER_FILE2PAGE=OFF
-                            -DENABLE_ZIP=ON
+                            -DENABLE_ZIP=OFF
                             -DENABLE_XML=OFF
                             -DENABLE_MONGODB=ON
                             -DENABLE_TESTS=OFF
