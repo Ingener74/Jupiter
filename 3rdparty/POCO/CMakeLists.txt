@@ -62,9 +62,9 @@ elseif(APPLE)
                             -DENABLE_MONGODB=OFF
                             -DENABLE_TESTS=OFF
                             -DPOCO_STATIC=ON
-                            -DOPENSSL_INCLUDE_DIR=${3RDPARTY_INSTALL}/include
-                            -DOPENSSL_CRYPTO_LIBRARY=${3RDPARTY_INSTALL}/lib/libcrypto.a
-                            -DOPENSSL_SSL_LIBRARY=${3RDPARTY_INSTALL}/lib/libssl.a
+                            # -DOPENSSL_INCLUDE_DIR=${3RDPARTY_INSTALL}/include
+                            # -DOPENSSL_CRYPTO_LIBRARY=${3RDPARTY_INSTALL}/lib/libcrypto.a
+                            # -DOPENSSL_SSL_LIBRARY=${3RDPARTY_INSTALL}/lib/libssl.a
     )
 
 elseif(EMSCRIPTEN)
