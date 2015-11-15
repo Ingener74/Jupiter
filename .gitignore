@@ -38,3 +38,4 @@ build_directory/Box2D
 build_directory
 build_mingw
 build_mingw64
+/build-android/

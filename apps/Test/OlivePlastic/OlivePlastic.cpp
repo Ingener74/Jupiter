@@ -24,6 +24,16 @@
 
 using namespace std;
 
+/**
+ * Когда запускаешь в VirtualBox, и выпадает такая ошибка:
+ *
+ * AL lib: (EE) ALCplaybackOSS_open: Could not open /dev/dsp: No such file or directory
+ * can't open device
+ *
+ * Решение тут:
+ * http://en.sfml-dev.org/forums/index.php?topic=6731.0
+ */
+
 /*
  * Получить данные из файла
  */
@@ -62,8 +72,6 @@ private:
 class OutputStreamBuffer: public streambuf{
 public:
     const size_t startSize = 1<<12; // 4 Килобайт
-//    const size_t StartSize = 1<<24; // 16 Мегабайт
-//    const size_t startSize = 1<<26; // 67 Мегабайт
     OutputStreamBuffer() :
         _buffer(startSize) {
         setp(reinterpret_cast<char*>(_buffer.data()), reinterpret_cast<char*>(_buffer.data()) + _buffer.size());
@@ -485,7 +493,7 @@ private:
  */
 class Speaker {
 public:
-    Speaker(shared_ptr<Sound> sound, bool loop = false) :
+    Speaker(Sound* sound, bool loop = false) :
         _sound(sound) {
         if(!_sound)
             throw runtime_error("sound is invalid");
@@ -502,6 +510,7 @@ public:
         alSourcefv(_source, AL_VELOCITY, _velocity);
     }
     virtual ~Speaker() {
+        stop();
         alDeleteSources(1, &_source);
     }
 
@@ -518,7 +527,7 @@ public:
     }
 
 private:
-    shared_ptr<Sound> _sound;
+    Sound* _sound;
 
     ALfloat _position[3] = {0.f, 0.f, 0.f};
     ALfloat _velocity[3] = {0.f, 0.f, 0.f};
@@ -540,9 +549,9 @@ int main(int argc, char **argv) {
 
         Listener listener;
 
-        auto sound = make_shared<Sound>(argv[1]);
+        Sound sound{argv[1]};
 
-        Speaker speaker(sound);
+        Speaker speaker{&sound};
 
         commands();
 

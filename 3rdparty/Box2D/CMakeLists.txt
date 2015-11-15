@@ -25,14 +25,15 @@ elseif(ANDROID)
     )
 
 else()
-    set(PATCH_FILE          ${CMAKE_CURRENT_LIST_DIR}/linux.patch)
+    # set(PATCH_FILE          ${CMAKE_CURRENT_LIST_DIR}/linux.patch)
 
 endif()
 
 ExternalProject_Add(
     ${EXT_BOX2D}
-    URL                     https://github.com/erincatto/Box2D/archive/v2.3.1.zip
-    PATCH_COMMAND           patch -p1 < ${PATCH_FILE}
+    # URL                     https://github.com/erincatto/Box2D/archive/v2.3.1.zip
+    URL                     https://github.com/Ingener74/Box2D/archive/master.zip
+    # PATCH_COMMAND           patch -p1 < ${PATCH_FILE}
     CONFIGURE_COMMAND       cmake ${CMAKE_BINARY_DIR}/3rdparty/Box2D/${EXT_BOX2D}-prefix/src/${EXT_BOX2D}/Box2D
                             ${ADDITIONAL_FLAGS}
                             -DBOX2D_INSTALL=ON
