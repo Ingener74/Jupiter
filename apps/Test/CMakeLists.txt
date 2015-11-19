@@ -5,6 +5,7 @@ include_directories(.)
 add_subdirectory(ViperFreaky)
 add_subdirectory(OlivePlastic)
 add_subdirectory(HungryStreet)
+add_subdirectory(RichLaser)
 
 if(OPENGL_WINDOW_SYSTEM STREQUAL "FreeGLUT")
     set(LIBS

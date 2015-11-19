@@ -10,7 +10,7 @@
 
 #ifdef SWIG
     namespace jupiter {
-        %ignore BufferFactory::create(const std::string& fileName);
+        %ignore /*jupiter::*/BufferFactory::create(const std::string& fileName);
     }  // namespace jupiter
 #else
     #include <iostream>
