@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
     cout << "RichLaser" << endl;
 
     out << "foo " << 42 << endl;
+    out << "quz ";
     out << "bar" << endl;
 }
 
