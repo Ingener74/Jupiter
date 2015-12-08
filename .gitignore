@@ -5,16 +5,10 @@
 bin
 obj
 project.properties
-build_android
-build
 libs
 .classpath
 .pyc
 
-/build-linux/
-/build-win/
-/build-mac/
-/build-ios/
 /Jupiter.sublime-project
 /Jupiter.sublime-workspace
 
@@ -24,7 +18,6 @@ apps/Europe/.idea
 apps/Painter/.idea
 3rdparty/json
 Download
-/build_emscripten/
 /doc/blog/node_modules
 
 venv
@@ -34,8 +27,3 @@ samples/Box/Resources.png
 samples/Box/Resources.atlas
 samples/Box/Resources/atlas0.png
 samples/Box/Resources/atlas0.json
-build_directory/Box2D
-build_directory
-build_mingw
-build_mingw64
-/build-android/
