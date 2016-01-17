@@ -22,5 +22,5 @@ install:
     - sudo make install
     - cd ..
 
-script: mkdir build && cd build && ../cmake-3.3.2-Linux-x86_64/bin/cmake --version && ../cmake-3.3.2-Linux-x86_64/bin/cmake .. && ../cmake-3.3.2-Linux-x86_64/bin/cmake --build .
+script: mkdir -p build && cd build && ../cmake-3.3.2-Linux-x86_64/bin/cmake --version && ../cmake-3.3.2-Linux-x86_64/bin/cmake .. && ../cmake-3.3.2-Linux-x86_64/bin/cmake --build .
 
