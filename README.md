@@ -15,3 +15,8 @@ cd build
 ./install-dependencies.sh
 ./build-all.sh
 ```
+
+Работает пока ещё не плохо, движок в разработке, а пока вот вам скриншот и видосик :)
+![Github Logo](/doc/images/1.png)
+![Linux Io running](https://youtu.be/EQzQxmY26Vk)
+
