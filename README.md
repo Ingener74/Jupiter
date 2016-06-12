@@ -18,5 +18,5 @@ cd build
 
 Работает пока ещё не плохо, движок в разработке, а пока вот вам скриншот и видосик :)
 ![Github Logo](/doc/images/1.png)
-![Linux Io running](https://youtu.be/EQzQxmY26Vk)
+[![IMAGE Jupiter Io running](http://img.youtube.com/vi/EQzQxmY26Vk/0.jpg)](http://www.youtube.com/watch?v=EQzQxmY26Vk)
 
