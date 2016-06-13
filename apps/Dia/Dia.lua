@@ -42,7 +42,7 @@ bgImage   = j.PngImage('Resources/bg.png')
 bg        = j.Transform()
 bg:
     translate(0, 0, -1):
-    setScaleF(0.02):
+    setScaleF(0.022):
     addNode(j.Sprite(j.ImageTexture(bgImage), j.ImageShape(bgImage), shader))
 
 rootNode = j.Node()
